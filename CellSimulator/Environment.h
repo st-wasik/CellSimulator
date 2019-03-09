@@ -22,6 +22,8 @@ public:
 	static double getRadiation();
 	static void setRadiation(const double&);
 
+	static sf::Vector2f getEnvironmentSize();
+
 private:
 	static std::vector<Cell> cells;
 
@@ -29,7 +31,7 @@ private:
 
 	static sf::RectangleShape environmentBackground;
 
-	static double temperature;
+	static double _temperature;
 
-	static double radiation;
+	static double _radiation;
 };
