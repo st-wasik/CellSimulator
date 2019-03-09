@@ -1,14 +1,11 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 #include <vector>
+
 class Environment final
 {
 public:
 	Environment() = delete;
-
-	static double temperature;
-
-	static double radiation;
 
 	static void clear();
 
@@ -16,7 +13,13 @@ public:
 
 	static void update();
 
-	static void draw(sf::RenderWindow& window);
+	static void draw(sf::RenderWindow & window);
+
+	static double getTemperature();
+	static void setTemperature(const double&);
+
+	static double getRadiation();
+	static void setRadiation(const double&);
 
 private:
 	static std::vector<int/*Cell*/> cells;
@@ -25,4 +28,7 @@ private:
 
 	static sf::RectangleShape environmentBackground;
 
+	static double temperature;
+
+	static double radiation;
 };

@@ -1,5 +1,6 @@
 #include "MainApp.h"
 #include "Mouse.h"
+#include "Environment.h"
 #include <iostream>
 
 sf::RenderWindow* MainApp::window;
@@ -18,7 +19,12 @@ MainApp::~MainApp() {}
 void MainApp::run(sf::RenderWindow& w)
 {
 	window = &w;
+
 	configure();
+	Environment::configure();
+
+
+
 	sf::Event event;
 
 	while (window->isOpen())
@@ -32,16 +38,19 @@ void MainApp::run(sf::RenderWindow& w)
 		}
 
 		window->clear();
+
+		Environment::draw(*window);
+
 		window->display();
 	}
 }
 
-const sf::RenderWindow & MainApp::getWindowHandle()
+sf::RenderWindow & MainApp::getWindowHandle()
 {
 	return *window;
 }
 
-const sf::View & MainApp::getViewHandle()
+sf::View & MainApp::getViewHandle()
 {
 	return view;
 }

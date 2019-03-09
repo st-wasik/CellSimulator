@@ -9,9 +9,9 @@ public:
 
 	static void run(sf::RenderWindow& window);
 	
-	static const sf::RenderWindow& getWindowHandle();
+	static sf::RenderWindow& getWindowHandle();
 
-	static const sf::View& getViewHandle();
+	static sf::View& getViewHandle();
 
 private:
 
