@@ -1,6 +1,7 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 #include <vector>
+#include "Cell.h"
 
 class Environment final
 {
@@ -22,7 +23,7 @@ public:
 	static void setRadiation(const double&);
 
 private:
-	static std::vector<int/*Cell*/> cells;
+	static std::vector<Cell> cells;
 
 	static std::vector<int/*Substance*/> substances;
 

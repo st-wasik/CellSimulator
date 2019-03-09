@@ -1,6 +1,7 @@
 #include "Environment.h"
+#include <random>
 
-std::vector<int/*Cell*/> Environment::cells;
+std::vector<Cell> Environment::cells;
 
 std::vector<int/*Substance*/> Environment::substances;
 
@@ -24,13 +25,23 @@ void Environment::configure()
 	eb.setOutlineColor(sf::Color::Red);
 	eb.setOutlineThickness(5);
 	eb.setPosition(sf::Vector2f{ 0,0 });
+
+	//To be positioned elsewhere in future
+	std::random_device dev;
+	std::mt19937 rng(dev());
+	std::uniform_int_distribution<std::mt19937::result_type> distW(0, 800-40);
+	std::uniform_int_distribution<std::mt19937::result_type> distH(0, 600-40);
+
+	for (int i = 0; i < 20; i++) {
+		cells.push_back(Cell(20, sf::Vector2f(distW(rng), distH(rng))));
+	}
 }
 
 void Environment::update()
 {
 	for (auto & cell : cells)
 	{
-		//cell.update();
+		cell.update();
 	}
 
 	for (auto & subst : substances)
@@ -42,6 +53,9 @@ void Environment::update()
 void Environment::draw(sf::RenderWindow & window)
 {
 	window.draw(environmentBackground);
+	for (auto & cell : cells) {
+		window.draw(cell);
+	}
 }
 
 double Environment::getTemperature()
