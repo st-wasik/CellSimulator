@@ -24,12 +24,18 @@
     <ClCompile Include="Mouse.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Environment.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MainApp.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Mouse.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Environment.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
