@@ -15,6 +15,8 @@ std::string MainApp::windowTitle;
 
 int MainApp::_currentZoom = 0;
 
+float MainApp::deltaTime = 0;
+
 
 MainApp::~MainApp() {}
 
@@ -25,12 +27,15 @@ void MainApp::run(sf::RenderWindow& w)
 	configure();
 	Environment::configure();
 
+	view.setCenter(sf::Vector2f(Environment::getEnvironmentSize().x / 2, Environment::getEnvironmentSize().y / 2));
 
 
 	sf::Event event;
+	sf::Clock deltaTimeClock;
 
 	while (window->isOpen())
 	{
+		deltaTimeClock.restart();
 		cell::Mouse::update();
 
 		while (window->pollEvent(event))
@@ -40,7 +45,6 @@ void MainApp::run(sf::RenderWindow& w)
 
 			if (event.type == sf::Event::MouseWheelScrolled)
 			{
-				std::clog << event.mouseWheelScroll.delta << std::endl;
 				cell::Mouse::setWheelDelta(event.mouseWheelScroll.delta);
 			}
 		}
@@ -49,7 +53,7 @@ void MainApp::run(sf::RenderWindow& w)
 		updateViewCenter();
 		updateViewZoom();
 
-
+		Environment::update();
 
 		window->clear();
 
@@ -57,6 +61,7 @@ void MainApp::run(sf::RenderWindow& w)
 		Environment::draw(*window);
 
 		window->display();
+		deltaTime = 0.001 * deltaTimeClock.getElapsedTime().asMicroseconds();
 	}
 }
 
@@ -82,10 +87,13 @@ void MainApp::configure()
 	//TODO: load textures
 
 	window->create(windowVideoMode, windowTitle, sf::Style::Close);
+	window->setFramerateLimit(60);
 
 	view.setSize(sf::Vector2f(windowVideoMode.width, windowVideoMode.height));
 	view.setCenter(sf::Vector2f(windowVideoMode.width / 2, windowVideoMode.height / 2));
 	window->setView(view);
+
+
 }
 
 void MainApp::updateViewZoom()
@@ -123,7 +131,7 @@ void MainApp::updateViewCenter()
 	else if (cell::Mouse::isRightPressed())
 	{
 		auto mv = cell::Mouse::getPositionShift();
-		constexpr float moveFactor = -0.95f;
+		constexpr float moveFactor = -0.9f;
 		view.move(sf::Vector2f{ mv.x*moveFactor, mv.y*moveFactor });
 	}
 }

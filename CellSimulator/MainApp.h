@@ -35,5 +35,7 @@ private:
 	static constexpr int _maxZoom = 10;
 	static constexpr int _minZoom = -7;
 
+	static float deltaTime;
+
 };
 
