@@ -7,7 +7,7 @@ public:
 	MainApp() = delete;
 	~MainApp();
 
-	static void run();
+	static void run(sf::RenderWindow& window);
 	
 	static const sf::RenderWindow& getWindowHandle();
 
@@ -17,7 +17,7 @@ private:
 
 	static void configure();
 
-	static sf::RenderWindow window;
+	static sf::RenderWindow* window;
 
 	static sf::View view;
 

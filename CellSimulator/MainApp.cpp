@@ -1,8 +1,8 @@
 #include "MainApp.h"
 #include "Mouse.h"
+#include <iostream>
 
-
-sf::RenderWindow MainApp::window;
+sf::RenderWindow* MainApp::window;
 
 sf::View MainApp::view;
 
@@ -15,29 +15,30 @@ std::string MainApp::windowTitle;
 
 MainApp::~MainApp() {}
 
-void MainApp::run()
+void MainApp::run(sf::RenderWindow& w)
 {
+	window = &w;
 	configure();
 	sf::Event event;
 
-	while (window.isOpen())
+	while (window->isOpen())
 	{
 		cell::Mouse::update();
 
-		while (window.pollEvent(event))
+		while (window->pollEvent(event))
 		{
 			if (event.type == sf::Event::Closed)
-				window.close();
+				window->close();
 		}
 
-		window.clear();
-		window.display();
+		window->clear();
+		window->display();
 	}
 }
 
 const sf::RenderWindow & MainApp::getWindowHandle()
 {
-	return window;
+	return *window;
 }
 
 const sf::View & MainApp::getViewHandle()
@@ -50,15 +51,17 @@ void MainApp::configure()
 	windowVideoMode = sf::VideoMode(800, 600);
 	windowTitle = "Cell Simulator";
 
+	std::clog << windowTitle << " - build " << __DATE__ << " " << __TIME__ << std::endl;
+
 	//TODO: load font
 
 	//TODO: load textures
 
-	window.create(windowVideoMode, windowTitle, sf::Style::Close);
+	window->create(windowVideoMode, windowTitle, sf::Style::Close);
 
 	view.setSize(sf::Vector2f(windowVideoMode.width, windowVideoMode.height));
 	view.setCenter(sf::Vector2f( windowVideoMode.width/2, windowVideoMode.height/2 ));
-	window.setView(view);
+	window->setView(view);
 }
 
 

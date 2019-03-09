@@ -3,7 +3,8 @@
 
 int main()
 {
-	MainApp::run();
+	sf::RenderWindow window;
+	MainApp::run(window);
 
 	return 0;
 }
