@@ -42,6 +42,16 @@ void Environment::update()
 void Environment::draw(sf::RenderWindow & window)
 {
 	window.draw(environmentBackground);
+
+	for (auto & subst : substances)
+	{
+		//subst.draw(window);
+	}
+
+	for (auto & cell : cells)
+	{
+		//cell.draw(window);
+	}
 }
 
 double Environment::getTemperature()
