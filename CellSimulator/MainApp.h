@@ -27,5 +27,13 @@ private:
 
 	static std::string windowTitle;
 
+	static void updateViewZoom();
+
+	static void updateViewCenter();
+
+	static int _currentZoom;
+	static constexpr int _maxZoom = 10;
+	static constexpr int _minZoom = -7;
+
 };
 

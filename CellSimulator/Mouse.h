@@ -16,6 +16,8 @@ namespace cell
 
 		static sf::Vector2f getPosition();
 
+		static sf::Vector2f getPositionShift();
+
 		static bool wasLeftPressed();
 
 		static bool wasLeftReleased();
@@ -26,13 +28,19 @@ namespace cell
 
 		static bool wasRigthReleased();
 
-		static bool isRigthPressed();
+		static bool isRightPressed();
+
+		static void setWheelDelta(const float&);
+
+		static float getWheelDelta();
 
 	private:
 		static bool _currentIsLeftPressed;
 		static bool _currentIsRightPressed;
 		static bool _prevIsLeftPressed;
 		static bool _prevIsRightPressed;
-		static sf::Vector2f _position;
+		static sf::Vector2f _currentPosition;
+		static sf::Vector2f _prevPosition;
+		static float _wheelDelta;
 	};
 }

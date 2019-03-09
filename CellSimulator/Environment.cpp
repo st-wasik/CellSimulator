@@ -6,9 +6,9 @@ std::vector<int/*Substance*/> Environment::substances;
 
 sf::RectangleShape Environment::environmentBackground;
 
-double Environment::temperature;
+double Environment::_temperature;
 
-double Environment::radiation;
+double Environment::_radiation;
 
 void Environment::clear()
 {
@@ -56,20 +56,25 @@ void Environment::draw(sf::RenderWindow & window)
 
 double Environment::getTemperature()
 {
-	return temperature;
+	return _temperature;
 }
 
 void Environment::setTemperature(const double & t)
 {
-	temperature = t;
+	_temperature = t;
 }
 
 double Environment::getRadiation()
 {
-	return radiation;
+	return _radiation;
 }
 
 void Environment::setRadiation(const double & r)
 {
-	radiation = r;
+	_radiation = r;
+}
+
+sf::Vector2f Environment::getEnvironmentSize()
+{
+	return environmentBackground.getSize();
 }
