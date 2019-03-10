@@ -1,10 +1,10 @@
 #include <SFML/Graphics.hpp>
+#include <TGUI/TGUI.hpp>
 #include "MainApp.h"
 
 int main()
 {
-	sf::RenderWindow window;
-	MainApp::run(window);
+	MainApp::run();
 
 	return 0;
 }

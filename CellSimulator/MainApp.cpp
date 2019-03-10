@@ -1,139 +1,42 @@
 #include "MainApp.h"
-#include "Mouse.h"
-#include "Environment.h"
-#include <iostream>
+#include "CellSimApp.h"
+#include "EnvSettingsApp.h"
+#include <thread>
+#include <atomic>
 
-sf::RenderWindow* MainApp::window;
-
-sf::View MainApp::view;
-
-sf::Font MainApp::defaultFont;
-
-sf::VideoMode MainApp::windowVideoMode;
-
-std::string MainApp::windowTitle;
-
-int MainApp::_currentZoom = 0;
-
-float MainApp::deltaTime = 0;
-
-
-MainApp::~MainApp() {}
-
-void MainApp::run(sf::RenderWindow& w)
+void MainApp::run()
 {
-	window = &w;
+	// SFML DOCS
+	//Events must be polled in the window's thread
+	//This is an important limitation of most operating systems :
+	//the event loop(more precisely, the pollEvent or waitEvent function) 
+	//must be called in the same thread that created the window.This 
+	//means that if you want to create a dedicated thread for event 
+	//handling, you'll have to make sure that the window is created 
+	//in this thread too. If you really want to split things between 
+	//threads, it is more convenient to keep event handling in the main 
+	//thread and move the rest (rendering, physics, logic, ...) to a 
+	//separate thread instead. This configuration will also be 
+	//compatible with the other limitation described below.
 
-	configure();
-	Environment::configure();
+	CellSimApp::configure();
+	EnvSettingsApp::configure();
 
-	view.setCenter(sf::Vector2f(Environment::getEnvironmentSize().x / 2, Environment::getEnvironmentSize().y / 2));
+	CellSimApp::getWindowHandle()->setActive();
+	EnvSettingsApp::getWindowHandle()->setPosition({ 25, 25 });
 
+	CellSimApp::getWindowHandle()->setPosition(
+		sf::Vector2i{ static_cast<int>(EnvSettingsApp::getWindowHandle()->getPosition().x + EnvSettingsApp::getWindowHandle()->getSize().x + 10), EnvSettingsApp::getWindowHandle()->getPosition().y }
+	);
 
-	sf::Event event;
-	sf::Clock deltaTimeClock;
+	std::thread envApp(&EnvSettingsApp::run);
+	CellSimApp::run();
 
-	while (window->isOpen())
-	{
-		deltaTimeClock.restart();
-		cell::Mouse::update();
-
-		while (window->pollEvent(event))
-		{
-			if (event.type == sf::Event::Closed)
-				window->close();
-
-			if (event.type == sf::Event::MouseWheelScrolled)
-			{
-				cell::Mouse::setWheelDelta(event.mouseWheelScroll.delta);
-			}
-		}
-
-		//update
-		updateViewCenter();
-		updateViewZoom();
-
-		Environment::update();
-
-		window->clear();
-
-		//draw
-		Environment::draw(*window);
-
-		window->display();
-		deltaTime = 0.001 * deltaTimeClock.getElapsedTime().asMicroseconds();
-	}
+	envApp.join();
 }
 
-sf::RenderWindow & MainApp::getWindowHandle()
+void MainApp::close()
 {
-	return *window;
+	CellSimApp::close();
+	EnvSettingsApp::close();
 }
-
-sf::View & MainApp::getViewHandle()
-{
-	return view;
-}
-
-void MainApp::configure()
-{
-	windowVideoMode = sf::VideoMode(1378, 768);
-	windowTitle = "Cell Simulator";
-
-	std::clog << windowTitle << " - build " << __DATE__ << " " << __TIME__ << std::endl;
-
-	//TODO: load font
-
-	//TODO: load textures
-
-	window->create(windowVideoMode, windowTitle, sf::Style::Close);
-	window->setFramerateLimit(60);
-
-	view.setSize(sf::Vector2f(windowVideoMode.width, windowVideoMode.height));
-	view.setCenter(sf::Vector2f(windowVideoMode.width / 2, windowVideoMode.height / 2));
-	window->setView(view);
-
-
-}
-
-void MainApp::updateViewZoom()
-{
-	if (cell::Mouse::getWheelDelta() < 0)
-	{
-		if (_currentZoom < _maxZoom)
-		{
-			_currentZoom++;
-			view.zoom(1.1);
-		}
-
-	}
-	else if (cell::Mouse::getWheelDelta() > 0)
-	{
-		if (_currentZoom > _minZoom)
-		{
-			_currentZoom--;
-			view.zoom(0.9);
-		}
-	}
-	window->setView(view);
-}
-
-void MainApp::updateViewCenter()
-{
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::LShift))
-	{
-		if (cell::Mouse::wasRigthReleased())
-		{
-			view.setCenter(cell::Mouse::getPosition());
-		}
-
-	}
-	else if (cell::Mouse::isRightPressed())
-	{
-		auto mv = cell::Mouse::getPositionShift();
-		constexpr float moveFactor = -0.9f;
-		view.move(sf::Vector2f{ mv.x*moveFactor, mv.y*moveFactor });
-	}
-}
-
-
