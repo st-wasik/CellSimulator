@@ -263,3 +263,8 @@ __pycache__/
 #SFML docs and examples
 SFML-2.5.1/doc
 SFML-2.5.1/examples
+
+#TGUI docs and examples
+TGUI-0.8/doc
+TGUI-0.8/examples
+TGUI-0.8/gui-builder
