@@ -3,27 +3,35 @@
 #include <vector>
 #include "Random.h"
 
-
-#define PI 3.14159265358979323846
+class CellRoles;
 
 class Cell : public sf::Drawable
 {
+	friend class CellRoles;
+
 public:
-	Cell();
-	Cell(double size, sf::Vector2f position);
+	Cell(float size, sf::Vector2f position);
 	~Cell();
+
 	void update();
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const;
+
 private:
-	void moveForward();
-	void rotateLeft(double angle);
-	void rotateRight(double angle);
+
+	// vector of pointers to role-functions
+	std::vector<void(*)(Cell*)> roles;
+
 	sf::CircleShape cell;
+
+
+	// curent cell stats:
+
 	double currentSpeed;
-	//double currentRotation; Nie potrzebne bo CircleShape przetrzymuje rotation
+
 	double foodLevel;
+
 	double size;
+
 	bool wantToBieszczady;
-	
 };
 
