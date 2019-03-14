@@ -16,6 +16,15 @@ public:
 	void update();
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 
+	float getSize();
+	void setSize(const float&);
+
+	float getRotation();
+	void setRotation(const float&);
+
+	sf::Vector2f getPosition();
+	void setPosition(const sf::Vector2f&);
+
 private:
 
 	// vector of pointers to role-functions
@@ -29,9 +38,5 @@ private:
 	double currentSpeed;
 
 	double foodLevel;
-
-	double size;
-
-	bool wantToBieszczady;
 };
 

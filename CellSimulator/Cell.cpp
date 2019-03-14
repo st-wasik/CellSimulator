@@ -3,10 +3,10 @@
 
 Cell::Cell(float size, sf::Vector2f position)
 {
-	cell.setRadius(size);
-	cell.setPosition(position);
-	cell.setOrigin(size, size);
-	cell.setRotation(static_cast<float>(randomReal(0, 359)));
+	setSize(size);
+	setPosition(position);
+	setRotation(static_cast<float>(randomReal(0, 359)));
+
 	this->currentSpeed = randomReal(0.1, 2);
 	cell.setFillColor(sf::Color::Green);
 
@@ -35,4 +35,35 @@ void Cell::update()
 void Cell::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
 	target.draw(cell, states);
+}
+
+float Cell::getSize()
+{
+	return cell.getRadius();
+}
+
+void Cell::setSize(const float & s)
+{
+	cell.setRadius(s);
+	cell.setOrigin(s, s);
+}
+
+float Cell::getRotation()
+{
+	return cell.getRotation();
+}
+
+void Cell::setRotation(const float & r)
+{
+	cell.setRotation(r);
+}
+
+sf::Vector2f Cell::getPosition()
+{
+	return cell.getPosition();
+}
+
+void Cell::setPosition(const sf::Vector2f & p)
+{
+	cell.setPosition(p);
 }
