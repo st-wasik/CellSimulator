@@ -1,6 +1,6 @@
 #include"Random.h"
 
-int RandomInt(int a, int b)
+int randomInt(int a, int b)
 {
 	static std::random_device rd;
 	static std::mt19937 gen(rd());
@@ -9,7 +9,7 @@ int RandomInt(int a, int b)
 	return dis(gen);
 }
 
-double RandomReal(double a, double b)
+double randomReal(double a, double b)
 {
 	static std::random_device rd;
 	static std::mt19937 gen(rd());

@@ -1,6 +1,6 @@
 #pragma once
 #include<random>
 
-int RandomInt(int a, int b);
+int randomInt(int a, int b);
 
-double RandomReal(double a, double b);
+double randomReal(double a, double b);

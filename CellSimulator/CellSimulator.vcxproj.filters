@@ -42,7 +42,10 @@
     <ClCompile Include="Logger.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Gens.cpp">
+    <ClCompile Include="Genes.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CellRoles.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -71,7 +74,10 @@
     <ClInclude Include="Logger.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Gens.h">
+    <ClInclude Include="Genes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CellRoles.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

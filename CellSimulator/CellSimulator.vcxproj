@@ -128,9 +128,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Cell.cpp" />
+    <ClCompile Include="CellRoles.cpp" />
     <ClCompile Include="Environment.cpp" />
     <ClCompile Include="EnvSettingsApp.cpp" />
-    <ClCompile Include="Gens.cpp" />
+    <ClCompile Include="Genes.cpp" />
     <ClCompile Include="Logger.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="CellSimApp.cpp" />
@@ -140,10 +141,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Cell.h" />
+    <ClInclude Include="CellRoles.h" />
     <ClInclude Include="Environment.h" />
     <ClInclude Include="CellSimApp.h" />
     <ClInclude Include="EnvSettingsApp.h" />
-    <ClInclude Include="Gens.h" />
+    <ClInclude Include="Genes.h" />
     <ClInclude Include="Logger.h" />
     <ClInclude Include="MainApp.h" />
     <ClInclude Include="CellSimMouse.h" />
