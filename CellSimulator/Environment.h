@@ -22,7 +22,9 @@ public:
 	static double getRadiation();
 	static void setRadiation(const double&);
 
-	static sf::Vector2f getEnvironmentSize();
+	static sf::Vector2f getSize();
+
+	static unsigned int getAliveCellsCount();
 
 private:
 	static std::vector<Cell> cells;

@@ -29,8 +29,8 @@ void Environment::configure()
 	//To be positioned elsewhere in future
 	std::random_device dev;
 	std::mt19937 rng(dev());
-	std::uniform_int_distribution<std::mt19937::result_type> distW(0, 800-40);
-	std::uniform_int_distribution<std::mt19937::result_type> distH(0, 600-40);
+	std::uniform_int_distribution<std::mt19937::result_type> distW(50, 800-40);
+	std::uniform_int_distribution<std::mt19937::result_type> distH(50, 600-40);
 
 	for (int i = 0; i < 20; i++) {
 		cells.push_back(Cell(20, sf::Vector2f(distW(rng), distH(rng))));
@@ -78,7 +78,12 @@ void Environment::setRadiation(const double & r)
 	_radiation = r;
 }
 
-sf::Vector2f Environment::getEnvironmentSize()
+sf::Vector2f Environment::getSize()
 {
 	return environmentBackground.getSize();
+}
+
+unsigned int Environment::getAliveCellsCount()
+{
+	return cells.size();
 }

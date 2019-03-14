@@ -18,6 +18,8 @@ public:
 
 	static std::shared_ptr<sf::RenderWindow> getWindowHandle();
 
+	static const float& getDeltaTime();
+
 private:
 	static std::shared_ptr<sf::RenderWindow> window;
 

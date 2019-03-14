@@ -22,7 +22,7 @@ void CellSimApp::run()
 {
 	Environment::configure();
 
-	view.setCenter(sf::Vector2f(Environment::getEnvironmentSize().x / 2, Environment::getEnvironmentSize().y / 2));
+	view.setCenter(sf::Vector2f(Environment::getSize().x / 2, Environment::getSize().y / 2));
 
 
 	sf::Event event;
@@ -86,6 +86,11 @@ void CellSimApp::close()
 std::shared_ptr<sf::RenderWindow> CellSimApp::getWindowHandle()
 {
 	return window;
+}
+
+const float & CellSimApp::getDeltaTime()
+{
+	return deltaTime;
 }
 
 void CellSimApp::updateViewZoom()
