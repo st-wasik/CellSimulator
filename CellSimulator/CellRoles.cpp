@@ -10,7 +10,7 @@ void CellRoles::moveForward(Cell * c)
 
 	c->cell.move(c->currentSpeed * std::sin((PI / 180)*c->getRotation()), c->currentSpeed * -std::cos((PI / 180)*c->getRotation()));
 
-	while (!checkEnvironmentBounds(c))
+	while (checkEnvironmentBounds(c))
 	{
 		c->cell.setPosition(prevPosition);
 		c->cell.setRotation(c->getRotation() + 90);
@@ -42,23 +42,23 @@ bool CellRoles::checkEnvironmentBounds(Cell * c)
 	//check left bound
 	if (c->cell.getPosition().x - c->getSize() <= 0)
 	{
-		return false;
+		return true;
 	}
 	//check right bound
 	else if (c->cell.getPosition().x + c->getSize() >= envSize.x)
 	{
-		return false;
+		return true;
 	}
 	//check top bound
 	else if (c->cell.getPosition().y - c->getSize() <= 0)
 	{
-		return false;
+		return true;
 	}
 	//check bottom bound
 	else if (c->cell.getPosition().y + c->getSize() >= envSize.y)
 	{
-		return false;
+		return true;
 	}
 
-	return true;
+	return false;
 }
