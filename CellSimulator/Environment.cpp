@@ -13,9 +13,9 @@ double getDistance(const sf::Vector2f& a, const sf::Vector2f& b)
 	return sqrt(x * x + y * y);
 }
 
-std::vector<Cell> Environment::cells;
+std::vector<std::shared_ptr<Cell>> Environment::cells;
 
-std::vector<int/*Substance*/> Environment::substances;
+std::vector<std::shared_ptr<int>/*Substance*/> Environment::substances;
 
 sf::RectangleShape Environment::environmentBackground;
 
@@ -58,35 +58,38 @@ void Environment::configure()
 	std::uniform_int_distribution<std::mt19937::result_type> distH(50, 600 - 40);
 
 	for (int i = 0; i < 50; i++) {
-		cells.insert(cells.end(), Cell(20, sf::Vector2f(distW(rng), distH(rng))));
+		cells.push_back(std::make_shared<Cell>(20, sf::Vector2f(distW(rng), distH(rng))));
 	}
 }
 
 void Environment::update()
 {
-	if (_temperature < -30) 
+	if (_temperature < -30)
 		temperatureBackground.setFillColor(sf::Color(0, 0, -_temperature + 155, (_temperature < -30) ? (-_temperature - 30) : 0));
-	else if (_temperature > 30) 
-		temperatureBackground.setFillColor(sf::Color(_temperature + 155, 0, 0, (_temperature > 30) ? (_temperature - 30): 0));
+	else if (_temperature > 30)
+		temperatureBackground.setFillColor(sf::Color(_temperature + 155, 0, 0, (_temperature > 30) ? (_temperature - 30) : 0));
 
 	sf::Vector2f mouse = CellSimMouse::getPosition();
+
 	//cell selection
 	if (CellSimMouse::wasLeftPressed())
 	{
 		CellSelectionController::clearSelectedCell();
-		auto selectedCell = std::find_if(cells.begin(), cells.end(), [&](Cell& c) {return getDistance(c.getPosition(), mouse) < c.getSize(); });
+		auto selectedCell = std::find_if(cells.begin(), cells.end(), [&](std::shared_ptr<Cell> c) {return getDistance(c->getPosition(), mouse) < c->getSize(); });
 		if (selectedCell != cells.end())
 		{
-			CellSelectionController::setSelectedCell(selectedCell);
+			CellSelectionController::setSelectedCell(*selectedCell);
 		}
 	}
 
 	for (auto& cell : cells)
 	{
-		cell.update();
+		cell->update();
 	}
 
 	CellSelectionController::update();
+
+
 	////cell moving
 	//if (CellSimMouse::isLeftPressed() && sf::Keyboard::isKeyPressed(sf::Keyboard::LShift))
 	//{
@@ -117,9 +120,6 @@ void Environment::update()
 	{
 		//subst.update();
 	}
-
-
-
 }
 
 void Environment::draw(sf::RenderWindow & window)
@@ -127,7 +127,7 @@ void Environment::draw(sf::RenderWindow & window)
 	window.draw(environmentBackground);
 	window.draw(temperatureBackground);
 	for (auto & cell : cells) {
-		window.draw(cell);
+		window.draw(*cell);
 	}
 	CellSelectionController::draw(window);
 }
@@ -162,11 +162,13 @@ unsigned int Environment::getAliveCellsCount()
 	return cells.size();
 }
 
-std::vector<Cell>::iterator Environment::getCellAtPosition(const sf::Vector2f & p)
+std::shared_ptr<Cell> Environment::getCellAtPosition(const sf::Vector2f & p)
 {
-	return std::find_if(cells.begin(), cells.end(), [&](Cell& c) {
-		return getDistance(c.getPosition(), p) < c.getSize();
-	});;
+	auto result = std::find_if(cells.begin(), cells.end(), [&](std::shared_ptr<Cell>& c) {
+		return getDistance(c->getPosition(), p) < c->getSize();});
+
+	if (result != cells.end()) return *result;
+	return nullptr;
 }
 
 bool Environment::isCellInEnvironmentBounds(Cell & c)

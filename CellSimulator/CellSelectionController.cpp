@@ -2,18 +2,13 @@
 #include "CellSimMouse.h"
 #include "Environment.h"
 
-std::vector<Cell>::iterator CellSelectionController::selectedCell;
+std::shared_ptr<Cell> CellSelectionController::selectedCell;
 
 sf::CircleShape CellSelectionController::selectionMarker;
 
-std::mutex CellSelectionController::selectionMutex;
-
-bool CellSelectionController::isSelectionValid = false;
-
 void CellSelectionController::update()
 {
-	std::lock_guard<std::mutex> lock(selectionMutex);
-	if (isSelectionValid)
+	if (selectedCell != nullptr)
 	{
 		float size = selectedCell->getSize() + 20;
 		selectionMarker.setRadius(size);
@@ -24,23 +19,19 @@ void CellSelectionController::update()
 
 void CellSelectionController::draw(sf::RenderWindow &w)
 {
-	std::lock_guard<std::mutex> lock(selectionMutex);
-	if (isSelectionValid)
+	if (selectedCell != nullptr)
 		w.draw(selectionMarker);
 }
 
 void CellSelectionController::clearSelectedCell()
 {
-	std::lock_guard<std::mutex> lock(selectionMutex);
-	isSelectionValid = false;
+	selectedCell = nullptr;
 }
 
-void CellSelectionController::setSelectedCell(std::vector<Cell>::iterator &s)
+void CellSelectionController::setSelectedCell(std::shared_ptr<Cell> &s)
 {
-	std::lock_guard<std::mutex> lock(selectionMutex);
-
 	selectedCell = s;
-	isSelectionValid = true;
+
 	float size = selectedCell->getSize() + 20;
 	selectionMarker.setRadius(size);
 	selectionMarker.setOrigin(size, size);
@@ -48,4 +39,9 @@ void CellSelectionController::setSelectedCell(std::vector<Cell>::iterator &s)
 	selectionMarker.setFillColor(sf::Color::Transparent);
 	selectionMarker.setOutlineColor(sf::Color(192, 192, 192, 128));
 	selectionMarker.setOutlineThickness(3);
+}
+
+std::shared_ptr<Cell> CellSelectionController::getSelectedCell()
+{
+	return selectedCell;
 }

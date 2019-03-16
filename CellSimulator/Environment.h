@@ -26,12 +26,12 @@ public:
 
 	static unsigned int getAliveCellsCount();
 
-	std::vector<Cell>::iterator getCellAtPosition(const sf::Vector2f&);
+	std::shared_ptr<Cell> getCellAtPosition(const sf::Vector2f&);
 
 private:
-	static std::vector<Cell> cells;
+	static std::vector<std::shared_ptr<Cell>> cells;
 
-	static std::vector<int/*Substance*/> substances;
+	static std::vector<std::shared_ptr<int>/*Substance*/> substances;
 
 	static sf::RectangleShape environmentBackground;
 	static sf::RectangleShape temperatureBackground;

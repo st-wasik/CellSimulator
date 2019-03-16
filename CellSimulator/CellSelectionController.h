@@ -13,18 +13,13 @@ public:
 
 	static void clearSelectedCell();
 
-	static void setSelectedCell(std::vector<Cell>::iterator&);
+	static void setSelectedCell(std::shared_ptr<Cell>&);
 
-	static void getSelectedCell();
+	static std::shared_ptr<Cell> getSelectedCell();
 
 private:
-	static std::vector<Cell>::iterator selectedCell;
+	static std::shared_ptr<Cell> selectedCell;
 
 	static sf::CircleShape selectionMarker;
-
-	static std::mutex selectionMutex;
-
-	static bool isSelectionValid;
-
 };
 

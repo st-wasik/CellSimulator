@@ -26,11 +26,8 @@ void CellSimApp::run()
 
 	view.setCenter(sf::Vector2f(Environment::getSize().x / 2, Environment::getSize().y / 2));
 
-
 	sf::Event event;
 	sf::Clock deltaTimeClock;
-
-
 
 	while (window->isOpen())
 	{
