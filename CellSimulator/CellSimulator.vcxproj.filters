@@ -5,98 +5,126 @@
       <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
       <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
-    <Filter Include="Header Files">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
+    <Filter Include="Apps">
+      <UniqueIdentifier>{cbbba7da-b445-4c46-9b9c-94b8754f1b58}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resource Files">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    <Filter Include="Cell">
+      <UniqueIdentifier>{bd049697-bb3d-4799-98e2-2a7fad7465ca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Cell\Header">
+      <UniqueIdentifier>{7947aaeb-9754-438c-8461-2d230311b275}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Cell\Source">
+      <UniqueIdentifier>{c4f7901e-609a-453b-a52e-81c7a764d482}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Apps\Header">
+      <UniqueIdentifier>{68dbf8a3-44ce-4ea6-b6b4-bc19b1032d8d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Apps\Source">
+      <UniqueIdentifier>{7ac8dbe6-3bf6-465f-971b-844c55aa6697}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utils">
+      <UniqueIdentifier>{a11de6a1-e641-48a8-85a1-ec96150ee88f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utils\Header">
+      <UniqueIdentifier>{b48b4918-584b-4534-9c22-efd68a6215dd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utils\Source">
+      <UniqueIdentifier>{7ac7f796-ba95-47b8-b53c-87c7fed8123a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Environment">
+      <UniqueIdentifier>{3e35e265-e1a2-4e2d-acf8-1740b980b689}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Environment\Header">
+      <UniqueIdentifier>{72a8971c-1e3e-4976-bbbb-2f7c1b28e585}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Environment\Source">
+      <UniqueIdentifier>{e7efeedf-a1ab-4778-8093-7f5bd1c15200}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Environment.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Cell.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Random.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="CellSimApp.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="MainApp.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="EnvSettingsApp.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="CellSimMouse.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Logger.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Genes.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="CellRoles.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="CellListApp.cpp">
+      <Filter>Apps\Source</Filter>
     </ClCompile>
     <ClCompile Include="CellPreviewApp.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Apps\Source</Filter>
     </ClCompile>
-    <ClCompile Include="CellListApp.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="CellSimApp.cpp">
+      <Filter>Apps\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="EnvSettingsApp.cpp">
+      <Filter>Apps\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="MainApp.cpp">
+      <Filter>Apps\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Cell.cpp">
+      <Filter>Cell\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="CellRoles.cpp">
+      <Filter>Cell\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Genes.cpp">
+      <Filter>Cell\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Random.cpp">
+      <Filter>Utils\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Logger.cpp">
+      <Filter>Utils\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="CellSimMouse.cpp">
+      <Filter>Environment\Source</Filter>
     </ClCompile>
     <ClCompile Include="CellSelectionController.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Environment\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Environment.cpp">
+      <Filter>Environment\Source</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Environment.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Cell.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Random.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="CellSimApp.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="MainApp.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="EnvSettingsApp.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="CellSimMouse.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Logger.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Genes.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="CellRoles.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="CellListApp.h">
+      <Filter>Apps\Header</Filter>
     </ClInclude>
     <ClInclude Include="CellPreviewApp.h">
-      <Filter>Header Files</Filter>
+      <Filter>Apps\Header</Filter>
     </ClInclude>
-    <ClInclude Include="CellListApp.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="CellSimApp.h">
+      <Filter>Apps\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="EnvSettingsApp.h">
+      <Filter>Apps\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Cell.h">
+      <Filter>Cell\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="CellRoles.h">
+      <Filter>Cell\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Genes.h">
+      <Filter>Cell\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="MainApp.h">
+      <Filter>Apps\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Logger.h">
+      <Filter>Utils\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Random.h">
+      <Filter>Utils\Header</Filter>
     </ClInclude>
     <ClInclude Include="CellSelectionController.h">
-      <Filter>Header Files</Filter>
+      <Filter>Environment\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="CellSimMouse.h">
+      <Filter>Environment\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Environment.h">
+      <Filter>Environment\Header</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
