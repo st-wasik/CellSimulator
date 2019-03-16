@@ -1,5 +1,6 @@
 #pragma once
 #include <SFML/Window/Mouse.hpp>
+#include "Cell.h"
 
 /*
 Provides access to Mouse events for CellSimApp
@@ -30,7 +31,6 @@ public:
 	static void setWheelDelta(const float&);
 
 	static float getWheelDelta();
-
 private:
 	static bool _currentIsLeftPressed;
 	static bool _currentIsRightPressed;

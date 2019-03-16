@@ -25,6 +25,13 @@ public:
 	sf::Vector2f getPosition();
 	void setPosition(const sf::Vector2f&);
 
+	std::string toString();
+
+
+	// for moving cell by user
+	void freeze();
+	void unfreeze();
+
 private:
 
 	// vector of pointers to role-functions
@@ -38,5 +45,7 @@ private:
 	double currentSpeed;
 
 	double foodLevel;
+
+	bool freezed;
 };
 

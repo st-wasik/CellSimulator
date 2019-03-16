@@ -11,9 +11,13 @@ public:
 	static void moveForward(Cell* c);
 
 	static void changeDirection(Cell* c);
+
+	static void changeSpeed(Cell* c);
+
+	/// \returns true if collision occured - otherwise false
+	static bool checkEnvironmentBounds(Cell* c);
 private:
 
-	/// \returns false if collision occured - otherwise true
-	static bool checkEnvironmentBounds(Cell* c);
+
 };
 

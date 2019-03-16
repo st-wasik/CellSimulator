@@ -13,7 +13,9 @@ sf::VideoMode CellSimApp::windowVideoMode;
 
 std::string CellSimApp::windowTitle;
 
-int CellSimApp::_currentZoom = 0;
+double CellSimApp::_currentZoom = 0;
+
+int CellSimApp::_expectedZoom = 0;
 
 float CellSimApp::deltaTime = 0;
 
@@ -28,6 +30,8 @@ void CellSimApp::run()
 	sf::Event event;
 	sf::Clock deltaTimeClock;
 
+
+
 	while (window->isOpen())
 	{
 		deltaTimeClock.restart();
@@ -39,10 +43,9 @@ void CellSimApp::run()
 				MainApp::close();
 
 			if (event.type == sf::Event::MouseWheelScrolled)
-			{
 				CellSimMouse::setWheelDelta(event.mouseWheelScroll.delta);
-			}
 		}
+
 
 		//update
 		updateViewCenter();
@@ -56,7 +59,8 @@ void CellSimApp::run()
 		Environment::draw(*window);
 
 		window->display();
-		deltaTime = 0.001 * deltaTimeClock.getElapsedTime().asMicroseconds();
+		deltaTime = 0.0001 * deltaTimeClock.getElapsedTime().asMicroseconds();
+		//Logger::log(std::to_string(deltaTime) + "\r", false);
 	}
 }
 
@@ -72,6 +76,7 @@ void CellSimApp::configure()
 
 	window->create(windowVideoMode, windowTitle, sf::Style::Close);
 	window->setFramerateLimit(60);
+	window->setVerticalSyncEnabled(true);
 
 	view.setSize(sf::Vector2f(windowVideoMode.width, windowVideoMode.height));
 	view.setCenter(sf::Vector2f(windowVideoMode.width / 2, windowVideoMode.height / 2));
@@ -95,23 +100,33 @@ const float & CellSimApp::getDeltaTime()
 
 void CellSimApp::updateViewZoom()
 {
+	//std::cout << "Min: "<<_minZoom << "  Max: " << _maxZoom << "  Exp: " << _expectedZoom << "  Curr: " << _currentZoom << std::endl;
+
 	if (CellSimMouse::getWheelDelta() < 0)
 	{
-		if (_currentZoom < _maxZoom)
-		{
-			_currentZoom++;
-			view.zoom(1.1);
-		}
-
+		if (_expectedZoom < _minZoom)
+			_expectedZoom+=2;
 	}
 	else if (CellSimMouse::getWheelDelta() > 0)
 	{
-		if (_currentZoom > _minZoom)
-		{
-			_currentZoom--;
-			view.zoom(0.9);
-		}
+		if (_expectedZoom >  _maxZoom)
+			_expectedZoom-=2;
 	}
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Numpad0)) _expectedZoom = 0;
+
+	if (_currentZoom < _expectedZoom && abs(_currentZoom - _expectedZoom) > 0.2)
+	{
+		_currentZoom += 0.1;
+		view.zoom(1.025);
+	}
+
+	if (_currentZoom > _expectedZoom && abs(_currentZoom-_expectedZoom) > 0.2)
+	{
+		_currentZoom -= 0.1;
+		view.zoom(0.975);
+	}
+
 	window->setView(view);
 }
 
@@ -123,7 +138,6 @@ void CellSimApp::updateViewCenter()
 		{
 			view.setCenter(CellSimMouse::getPosition());
 		}
-
 	}
 	else if (CellSimMouse::isRightPressed())
 	{

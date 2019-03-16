@@ -26,14 +26,21 @@ public:
 
 	static unsigned int getAliveCellsCount();
 
+	std::vector<Cell>::iterator getCellAtPosition(const sf::Vector2f&);
+
 private:
 	static std::vector<Cell> cells;
 
 	static std::vector<int/*Substance*/> substances;
 
 	static sf::RectangleShape environmentBackground;
+	static sf::RectangleShape temperatureBackground;
 
 	static double _temperature;
 
 	static double _radiation;
+
+	static bool isCellInEnvironmentBounds(Cell& c);
+
+	static sf::Texture backgroundImage;
 };

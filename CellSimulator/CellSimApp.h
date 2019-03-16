@@ -33,9 +33,10 @@ private:
 
 	static void updateViewCenter();
 
-	static int _currentZoom;
-	static constexpr int _maxZoom = 10;
-	static constexpr int _minZoom = -7;
+	static double _currentZoom;
+	static int _expectedZoom;
+	static constexpr int _maxZoom = -7;
+	static constexpr int _minZoom = 3;
 
 	static float deltaTime;
 };

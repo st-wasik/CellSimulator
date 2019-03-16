@@ -128,7 +128,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Cell.cpp" />
+    <ClCompile Include="CellListApp.cpp" />
+    <ClCompile Include="CellPreviewApp.cpp" />
     <ClCompile Include="CellRoles.cpp" />
+    <ClCompile Include="CellSelectionController.cpp" />
     <ClCompile Include="Environment.cpp" />
     <ClCompile Include="EnvSettingsApp.cpp" />
     <ClCompile Include="Genes.cpp" />
@@ -141,7 +144,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Cell.h" />
+    <ClInclude Include="CellListApp.h" />
+    <ClInclude Include="CellPreviewApp.h" />
     <ClInclude Include="CellRoles.h" />
+    <ClInclude Include="CellSelectionController.h" />
     <ClInclude Include="Environment.h" />
     <ClInclude Include="CellSimApp.h" />
     <ClInclude Include="EnvSettingsApp.h" />

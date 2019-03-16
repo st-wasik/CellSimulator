@@ -14,7 +14,7 @@ void CellRoles::moveForward(Cell * c)
 	{
 		c->cell.setPosition(prevPosition);
 		c->cell.setRotation(c->getRotation() + 90);
-		c->cell.move(c->currentSpeed * std::sin((PI / 180)*c->getRotation()), c->currentSpeed * -std::cos((PI / 180)*c->getRotation()));
+		c->cell.move(c->currentSpeed * std::sin((PI / 180)*c->getRotation()) * CellSimApp::getDeltaTime(), c->currentSpeed * -std::cos((PI / 180)*c->getRotation()) * CellSimApp::getDeltaTime());
 	}
 }
 
@@ -30,6 +30,12 @@ void CellRoles::changeDirection(Cell * c)
 		{
 			c->cell.rotate(randomReal(0, 50));
 		}
+}
+
+void CellRoles::changeSpeed(Cell * c)
+{
+	if (randomInt(0, 1000) > 995)
+		c->currentSpeed = randomReal(0.1, 2);
 }
 
 bool CellRoles::checkEnvironmentBounds(Cell * c)

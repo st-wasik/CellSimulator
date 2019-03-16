@@ -1,6 +1,8 @@
 #include "MainApp.h"
 #include "CellSimApp.h"
 #include "EnvSettingsApp.h"
+#include "CellPreviewApp.h"
+#include "CellListApp.h"
 #include <thread>
 #include <atomic>
 
@@ -21,22 +23,38 @@ void MainApp::run()
 
 	CellSimApp::configure();
 	EnvSettingsApp::configure();
+	CellPreviewApp::configure();
+	CellListApp::configure();
 
 	CellSimApp::getWindowHandle()->setActive();
 	EnvSettingsApp::getWindowHandle()->setPosition({ 25, 25 });
 
 	CellSimApp::getWindowHandle()->setPosition(
-		sf::Vector2i{ static_cast<int>(EnvSettingsApp::getWindowHandle()->getPosition().x + EnvSettingsApp::getWindowHandle()->getSize().x + 10), EnvSettingsApp::getWindowHandle()->getPosition().y }
-	);
+		sf::Vector2i(EnvSettingsApp::getWindowHandle()->getPosition().x + EnvSettingsApp::getWindowHandle()->getSize().x + 10,
+			EnvSettingsApp::getWindowHandle()->getPosition().y ));
+
+	CellPreviewApp::getWindowHandle()->setPosition(
+		sf::Vector2i( EnvSettingsApp::getWindowHandle()->getPosition().x,
+			EnvSettingsApp::getWindowHandle()->getPosition().y + EnvSettingsApp::getWindowHandle()->getSize().y + 50));
+
+	CellListApp::getWindowHandle()->setPosition(
+		sf::Vector2i(CellSimApp::getWindowHandle()->getPosition().x,
+			CellSimApp::getWindowHandle()->getPosition().y + CellSimApp::getWindowHandle()->getSize().y + 50));
 
 	std::thread envApp(&EnvSettingsApp::run);
+	std::thread cellPrApp(&CellPreviewApp::run);
+	std::thread cellLtApp(&CellListApp::run);
 	CellSimApp::run();
 
+	cellPrApp.join();
 	envApp.join();
+	cellLtApp.join();
 }
 
 void MainApp::close()
 {
 	CellSimApp::close();
 	EnvSettingsApp::close();
+	CellPreviewApp::close();
+	CellListApp::close();
 }

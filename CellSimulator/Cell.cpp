@@ -1,18 +1,19 @@
 #include "Cell.h"
 #include "CellRoles.h"
 
-Cell::Cell(float size, sf::Vector2f position)
+Cell::Cell(float size, sf::Vector2f position) : freezed(false)
 {
 	setSize(size);
 	setPosition(position);
 	setRotation(static_cast<float>(randomReal(0, 359)));
 
 	this->currentSpeed = randomReal(0.1, 2);
-	cell.setFillColor(sf::Color::Green);
+	cell.setFillColor(sf::Color(0, randomInt(96, 192), 0));
 
-	// name of function is it's address
-	// place here all roles-functions that cell should call
+	// name of function is its address
+	// place here all role-functions that cell should call
 	roles.push_back(CellRoles::changeDirection);
+	roles.push_back(CellRoles::changeSpeed);
 
 
 	// make sure that moveForward is always the last role-function
@@ -26,10 +27,11 @@ Cell::~Cell()
 
 void Cell::update()
 {
-	for (auto& fn : roles)
-	{
-		fn(this);
-	}
+	if (!freezed)
+		for (auto& fn : roles)
+		{
+			fn(this);
+		}
 }
 
 void Cell::draw(sf::RenderTarget& target, sf::RenderStates states) const
@@ -66,4 +68,19 @@ sf::Vector2f Cell::getPosition()
 void Cell::setPosition(const sf::Vector2f & p)
 {
 	cell.setPosition(p);
+}
+
+std::string Cell::toString()
+{
+	return "Cell pos: " + (std::to_string(getPosition().x) + ":" + std::to_string(getPosition().y)) + " radius: " + std::to_string(getSize());
+}
+
+void Cell::freeze()
+{
+	freezed = true;
+}
+
+void Cell::unfreeze()
+{
+	freezed = false;
 }
