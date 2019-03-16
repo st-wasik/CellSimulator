@@ -4,6 +4,8 @@
 #include "Logger.h"
 #include "CellSimApp.h"
 
+constexpr double PI = 3.14159265358979323846;
+
 void CellRoles::moveForward(Cell * c)
 {
 	const auto prevPosition = c->getPosition();
@@ -34,6 +36,7 @@ void CellRoles::changeDirection(Cell * c)
 
 void CellRoles::changeSpeed(Cell * c)
 {
+// SPEED CHANGE THRESHOLD SHOULD BE STORED IN GENES
 	if (randomInt(0, 1000) > 995)
 		c->currentSpeed = randomReal(0.1, 2);
 }

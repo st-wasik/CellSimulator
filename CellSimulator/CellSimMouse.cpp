@@ -32,8 +32,7 @@ sf::Vector2f CellSimMouse::getPosition()
 
 sf::Vector2f CellSimMouse::getPositionShift()
 {
-	auto x = _currentPosition - _prevPosition;
-	return x;
+	return _currentPosition - _prevPosition;
 }
 
 bool CellSimMouse::wasLeftPressed()

@@ -1,5 +1,6 @@
 #pragma once
 #include <mutex>
+#include <SFML/Graphics.hpp>
 class Logger
 {
 public:
@@ -20,3 +21,8 @@ private:
 	static std::mutex logMutex;
 };
 
+template <typename T>
+std::ostream& operator<<(std::ostream& s, const sf::Vector2<T>& v)
+{
+	return s << "< " << v.x << "; " << v.y << " >";
+}

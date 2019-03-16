@@ -133,14 +133,23 @@ void CellSimApp::updateViewCenter()
 	{
 		if (CellSimMouse::wasRigthReleased())
 		{
+			auto prev = view.getCenter();
 			view.setCenter(CellSimMouse::getPosition());
+
+			auto envs = Environment::getSize();
+			if (!sf::FloatRect(0, 0, envs.x, envs.y).contains(view.getCenter()))
+				view.setCenter(prev);
 		}
 	}
 	else if (CellSimMouse::isRightPressed())
 	{
-		auto mv = CellSimMouse::getPositionShift();
-		constexpr float moveFactor = -0.8f;
-		view.move(sf::Vector2f{ mv.x*moveFactor, mv.y*moveFactor });
+		auto mv = CellSimMouse::getPositionShift()*(-0.5f);
+		auto prev = view.getCenter();
+		view.move(static_cast<sf::Vector2f>(mv));
+
+		auto envs = Environment::getSize();
+		if (!sf::FloatRect(0, 0, envs.x, envs.y).contains(view.getCenter()))
+			view.setCenter(prev);
 	}
 }
 
