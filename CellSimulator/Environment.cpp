@@ -17,6 +17,8 @@ std::vector<std::shared_ptr<Cell>> Environment::cells;
 
 std::vector<std::shared_ptr<int>/*Substance*/> Environment::substances;
 
+std::vector<std::shared_ptr<Food>> Environment::food;
+
 sf::RectangleShape Environment::environmentBackground;
 
 sf::RectangleShape Environment::temperatureBackground;
@@ -31,6 +33,7 @@ void Environment::clear()
 {
 	cells.clear();
 	substances.clear();
+	food.clear();
 }
 
 void Environment::configure()
@@ -60,6 +63,10 @@ void Environment::configure()
 	for (int i = 0; i < 50; i++) {
 		cells.push_back(std::make_shared<Cell>(20, sf::Vector2f(distW(rng), distH(rng))));
 	}
+
+	for (int i = 0; i < 100; i++) {
+		food.push_back(std::make_shared<Food>(4, sf::Vector2f(distW(rng), distH(rng)), sf::Color(0, randomInt(64, 128), randomInt(192, 255))));
+	}
 }
 
 void Environment::update()
@@ -86,6 +93,11 @@ void Environment::update()
 	{
 		cell->update();
 	}
+
+	/*for (auto& food : food)
+	{
+		food->update();
+	}*/
 
 	CellSelectionController::update();
 
@@ -126,6 +138,9 @@ void Environment::draw(sf::RenderWindow & window)
 {
 	window.draw(environmentBackground);
 	window.draw(temperatureBackground);
+	for (auto & food : food) {
+		window.draw(*food);
+	}
 	for (auto & cell : cells) {
 		window.draw(*cell);
 	}

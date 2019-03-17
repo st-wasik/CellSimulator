@@ -2,6 +2,7 @@
 #include <SFML/Graphics.hpp>
 #include <vector>
 #include "Cell.h"
+#include "Food.h"
 
 class Environment final
 {
@@ -32,6 +33,8 @@ private:
 	static std::vector<std::shared_ptr<Cell>> cells;
 
 	static std::vector<std::shared_ptr<int>/*Substance*/> substances;
+
+	static std::vector<std::shared_ptr<Food>> food;
 
 	static sf::RectangleShape environmentBackground;
 	static sf::RectangleShape temperatureBackground;

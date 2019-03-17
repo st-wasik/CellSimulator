@@ -85,6 +85,9 @@
     <ClCompile Include="Environment.cpp">
       <Filter>Environment\Source</Filter>
     </ClCompile>
+    <ClCompile Include="Food.cpp">
+      <Filter>Environment\Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CellListApp.h">
@@ -124,6 +127,9 @@
       <Filter>Environment\Header</Filter>
     </ClInclude>
     <ClInclude Include="Environment.h">
+      <Filter>Environment\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Food.h">
       <Filter>Environment\Header</Filter>
     </ClInclude>
   </ItemGroup>
