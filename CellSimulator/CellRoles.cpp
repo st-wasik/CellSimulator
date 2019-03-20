@@ -9,14 +9,16 @@ constexpr double PI = 3.14159265358979323846;
 void CellRoles::moveForward(Cell * c)
 {
 	const auto prevPosition = c->getPosition();
+	auto moveSpeed = (Environment::getTemperature() + 100) / 100 * c->currentSpeed;
+	c->cell.move(moveSpeed * std::sin((PI / 180)*c->getRotation()), moveSpeed * -std::cos((PI / 180)*c->getRotation()));
 
-	c->cell.move(c->currentSpeed * std::sin((PI / 180)*c->getRotation()), c->currentSpeed * -std::cos((PI / 180)*c->getRotation()));
-
-	while (checkEnvironmentBounds(c))
+	for (int attempt = 0; checkEnvironmentBounds(c); ++attempt)
 	{
 		c->cell.setPosition(prevPosition);
 		c->cell.setRotation(c->getRotation() + 90);
-		c->cell.move(c->currentSpeed * std::sin((PI / 180)*c->getRotation()) * CellSimApp::getDeltaTime(), c->currentSpeed * -std::cos((PI / 180)*c->getRotation()) * CellSimApp::getDeltaTime());
+		c->cell.move(moveSpeed * std::sin((PI / 180)*c->getRotation()) * CellSimApp::getDeltaTime(), moveSpeed * -std::cos((PI / 180)*c->getRotation()) * CellSimApp::getDeltaTime());
+		
+		if (attempt > 5) { c->setPosition(Environment::getSize() / 2.f); break; }
 	}
 }
 
