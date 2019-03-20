@@ -24,7 +24,7 @@ void CellListApp::configure()
 
 void CellListApp::run()
 {
-	tgui::Gui gui{ *window };
+	//tgui::Gui gui{ *window };
 	sf::Event event;
 	while (window->isOpen())
 	{
@@ -33,11 +33,11 @@ void CellListApp::run()
 			if (event.type == sf::Event::Closed)
 				MainApp::close();
 
-			gui.handleEvent(event); // Pass the event to the widgets
+			//gui.handleEvent(event); // Pass the event to the widgets
 		}
 
 		window->clear(sf::Color(140, 140, 60));
-		gui.draw(); // Draw all widgets
+		//gui.draw(); // Draw all widgets
 		window->display();
 	}
 }
