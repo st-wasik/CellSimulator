@@ -3,6 +3,7 @@
 #include <vector>
 #include "Cell.h"
 #include "Food.h"
+#include <atomic>
 
 class Environment final
 {
@@ -17,10 +18,10 @@ public:
 
 	static void draw(sf::RenderWindow & window);
 
-	static double getTemperature();
+	static std::atomic<double>& getTemperature();
 	static void setTemperature(const double&);
 
-	static double getRadiation();
+	static std::atomic<double>& getRadiation();
 	static void setRadiation(const double&);
 
 	static sf::Vector2f getSize();
@@ -39,11 +40,11 @@ private:
 	static sf::RectangleShape environmentBackground;
 	static sf::RectangleShape temperatureBackground;
 
-	static double _temperature;
+	static std::atomic<double> _temperature;
 
-	static double _radiation;
+	static std::atomic<double> _radiation;
 
 	static bool isCellInEnvironmentBounds(Cell& c);
 
-	static sf::Texture backgroundImage;
+	//static sf::Texture backgroundImage;
 };

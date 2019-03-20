@@ -5,6 +5,7 @@
 #include <math.h>
 #include <random>
 #include <algorithm>
+#include <atomic>
 
 double getDistance(const sf::Vector2f& a, const sf::Vector2f& b)
 {
@@ -23,9 +24,9 @@ sf::RectangleShape Environment::environmentBackground;
 
 sf::RectangleShape Environment::temperatureBackground;
 
-double Environment::_temperature;
+std::atomic<double> Environment::_temperature;
 
-double Environment::_radiation;
+std::atomic<double> Environment::_radiation;
 
 //sf::Texture Environment::backgroundImage;
 
@@ -38,8 +39,8 @@ void Environment::clear()
 
 void Environment::configure()
 {
-	backgroundImage.loadFromFile("./Images/background.png");
-	backgroundImage.setRepeated(true);
+	//backgroundImage.loadFromFile("./Images/background.png");
+	//backgroundImage.setRepeated(true);
 
 	auto& eb = environmentBackground;
 	eb.setSize(sf::Vector2f{ 2000,1000 });
@@ -48,7 +49,7 @@ void Environment::configure()
 	eb.setOutlineThickness(5);
 	eb.setPosition(sf::Vector2f{ 0,0 });
 	eb.setTextureRect(sf::IntRect(0, 0, eb.getSize().x, eb.getSize().y));
-	eb.setTexture(&backgroundImage);
+	//eb.setTexture(&backgroundImage);
 
 	temperatureBackground.setSize(eb.getSize());
 	temperatureBackground.setPosition(eb.getPosition());
@@ -148,17 +149,17 @@ void Environment::draw(sf::RenderWindow & window)
 	CellSelectionController::draw(window);
 }
 
-double Environment::getTemperature()
+std::atomic<double>& Environment::getTemperature()
 {
 	return _temperature;
 }
 
-void Environment::setTemperature(const double & t)
+void Environment::setTemperature(const double& t)
 {
 	_temperature = t;
 }
 
-double Environment::getRadiation()
+std::atomic<double>& Environment::getRadiation()
 {
 	return _radiation;
 }
