@@ -110,7 +110,7 @@ void CellSimApp::updateViewZoom()
 			_expectedZoom-=2;
 	}
 
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Numpad0)) _expectedZoom = 0;
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Numpad0) && window->hasFocus()) _expectedZoom = 0;
 
 	if (_currentZoom < _expectedZoom && abs(_currentZoom - _expectedZoom) > 0.2)
 	{
