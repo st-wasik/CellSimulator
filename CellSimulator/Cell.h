@@ -27,6 +27,8 @@ public:
 
 	std::string toString();
 
+	void simulateHunger();
+
 
 	// for moving cell by user
 	void freeze();

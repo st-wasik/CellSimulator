@@ -57,15 +57,16 @@ void Environment::configure()
 	//To be positioned elsewhere in future
 	std::random_device dev;
 	std::mt19937 rng(dev());
-	std::uniform_int_distribution<std::mt19937::result_type> distW(50, 800 - 40);
-	std::uniform_int_distribution<std::mt19937::result_type> distH(50, 600 - 40);
+	
+	std::uniform_int_distribution<std::mt19937::result_type> distW(40, static_cast<int>(Environment::getSize().x - 40));
+	std::uniform_int_distribution<std::mt19937::result_type> distH(40, static_cast<int>(Environment::getSize().y - 40));
 
 	for (int i = 0; i < 50; i++) {
 		cells.push_back(std::make_shared<Cell>(20, sf::Vector2f(distW(rng), distH(rng))));
 	}
 
 	for (int i = 0; i < 100; i++) {
-		food.push_back(std::make_shared<Food>(4, sf::Vector2f(distW(rng), distH(rng)), sf::Color(0, randomInt(64, 128), randomInt(192, 255))));
+		food.push_back(std::make_shared<Food>(randomInt(3, 6), sf::Vector2f(distW(rng), distH(rng)), sf::Color(0, randomInt(64, 128), randomInt(192, 255))));
 	}
 }
 

@@ -1,11 +1,13 @@
 #include "Cell.h"
 #include "CellRoles.h"
+#include "CellSimApp.h"
 
 Cell::Cell(float size, sf::Vector2f position) : freezed(false)
 {
 	setSize(size);
 	setPosition(position);
 	setRotation(static_cast<float>(randomReal(0, 359)));
+	this->foodLevel = 100;
 
 	this->currentSpeed = randomReal(0.1, 2);
 	cell.setFillColor(sf::Color(0, randomInt(96, 192), 0));
@@ -32,6 +34,7 @@ void Cell::update()
 		{
 			fn(this);
 		}
+	simulateHunger();
 }
 
 void Cell::draw(sf::RenderTarget& target, sf::RenderStates states) const
@@ -73,6 +76,10 @@ void Cell::setPosition(const sf::Vector2f & p)
 std::string Cell::toString()
 {
 	return "Cell pos: " + (std::to_string(getPosition().x) + ":" + std::to_string(getPosition().y)) + " radius: " + std::to_string(getSize());
+}
+
+void Cell::simulateHunger() {
+	this->foodLevel -= 0.01 * CellSimApp::getDeltaTime();
 }
 
 void Cell::freeze()
