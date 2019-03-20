@@ -25,7 +25,7 @@ double Environment::_temperature;
 
 double Environment::_radiation;
 
-sf::Texture Environment::backgroundImage;
+//sf::Texture Environment::backgroundImage;
 
 void Environment::clear()
 {
