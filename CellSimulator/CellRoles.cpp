@@ -10,7 +10,7 @@ void CellRoles::moveForward(Cell * c)
 {
 	const auto prevPosition = c->getPosition();
 	auto moveSpeed = (Environment::getTemperature() + 100) / 100 * c->currentSpeed;
-	c->cell.move(moveSpeed * std::sin((PI / 180)*c->getRotation()), moveSpeed * -std::cos((PI / 180)*c->getRotation()));
+	c->cell.move(moveSpeed * std::sin((PI / 180)*c->getRotation()) * CellSimApp::getDeltaTime(), moveSpeed * -std::cos((PI / 180)*c->getRotation()) * CellSimApp::getDeltaTime());
 
 	for (int attempt = 0; checkEnvironmentBounds(c); ++attempt)
 	{
