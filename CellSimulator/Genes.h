@@ -9,4 +9,3 @@ public:
 private:
 	double maxSpeed, aggresion, radarRange, divisionThreshold, foodLimit, maxSize, age, _default;
 };
-

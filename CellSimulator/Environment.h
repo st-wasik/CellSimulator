@@ -27,7 +27,9 @@ public:
 
 	sf::Vector2f getSize();
 
-	unsigned int getAliveCellsCount();
+	int getAliveCellsCount();
+	int getFoodCount();
+
 
 	std::shared_ptr<Cell> getCellAtPosition(const sf::Vector2f&);
 
@@ -49,6 +51,8 @@ private:
 
 	std::atomic<double> _temperature;
 	std::atomic<double> _radiation;
+	std::atomic<int> _aliveCellsCount;
+	std::atomic<int> _foodCount;
 
 	bool isCellInEnvironmentBounds(Cell& c);
 

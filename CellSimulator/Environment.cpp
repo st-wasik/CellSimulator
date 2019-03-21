@@ -9,9 +9,8 @@
 
 double getDistance(const sf::Vector2f& a, const sf::Vector2f& b)
 {
-	double x = abs(a.x - b.x);
-	double y = abs(a.y - b.y);
-	return sqrt(x * x + y * y);
+	auto v = a - b;
+	return sqrt(v.x*v.x + v.y*v.y);
 }
 
 Environment::~Environment()
@@ -42,7 +41,7 @@ void Environment::configure()
 	eb.setOutlineColor(sf::Color::Red);
 	eb.setOutlineThickness(5);
 	eb.setPosition(sf::Vector2f{ 0,0 });
-	eb.setTextureRect(sf::IntRect(0, 0, eb.getSize().x, eb.getSize().y));
+	eb.setTextureRect(sf::IntRect(0, 0, eb.getSize().x/10, eb.getSize().y/10));
 	eb.setTexture(&backgroundImage);
 
 	temperatureBackground.setSize(eb.getSize());
@@ -84,6 +83,9 @@ void Environment::update()
 			CellSelectionController::setSelectedCell(*selectedCell);
 		}
 	}
+
+	_aliveCellsCount = cells.size();
+	_foodCount = food.size();
 
 	for (auto& cell : cells)
 	{
@@ -168,9 +170,14 @@ sf::Vector2f Environment::getSize()
 	return environmentBackground.getSize();
 }
 
-unsigned int Environment::getAliveCellsCount()
+int Environment::getAliveCellsCount()
 {
-	return cells.size();
+	return _aliveCellsCount;
+}
+
+int Environment::getFoodCount()
+{
+	return _foodCount;
 }
 
 std::shared_ptr<Cell> Environment::getCellAtPosition(const sf::Vector2f & p)
