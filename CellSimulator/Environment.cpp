@@ -61,7 +61,7 @@ void Environment::configure()
 	}
 
 	for (int i = 0; i < 100; i++) {
-		food.push_back(std::make_shared<Food>(randomInt(3, 12), sf::Vector2f(distW(rng), distH(rng)), sf::Color(0, randomInt(64, 128), randomInt(192, 255))));
+		food.push_back(std::make_shared<Food>(randomInt(3, 12), sf::Vector2f(distW(rng), distH(rng)), sf::Color(0, randomInt(128, 255), randomInt(0, 64))));
 	}
 }
 

@@ -10,7 +10,7 @@ Cell::Cell(float size, sf::Vector2f position) : freezed(false)
 	this->foodLevel = 100;
 
 	this->currentSpeed = randomReal(0.1, 2);
-	cell.setFillColor(sf::Color(0, randomInt(96, 192), 0));
+	cell.setFillColor(sf::Color(randomInt(64, 255), randomInt(0, 64), randomInt(64, 255)));
 
 	// name of function is its address
 	// place here all role-functions that cell should call
