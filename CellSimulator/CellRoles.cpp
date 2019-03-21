@@ -9,7 +9,7 @@ constexpr double PI = 3.14159265358979323846;
 void CellRoles::moveForward(Cell * c)
 {
 	const auto prevPosition = c->getPosition();
-	auto moveSpeed = (Environment::getTemperature() + 100) / 100 * c->currentSpeed;
+	auto moveSpeed = (Environment::getInstance().getTemperature() + 100) / 100 * c->currentSpeed;
 	c->cell.move(moveSpeed * std::sin((PI / 180)*c->getRotation()) * CellSimApp::getDeltaTime(), moveSpeed * -std::cos((PI / 180)*c->getRotation()) * CellSimApp::getDeltaTime());
 
 	for (int attempt = 0; checkEnvironmentBounds(c); ++attempt)
@@ -18,7 +18,7 @@ void CellRoles::moveForward(Cell * c)
 		c->cell.setRotation(c->getRotation() + 90);
 		c->cell.move(moveSpeed * std::sin((PI / 180)*c->getRotation()) * CellSimApp::getDeltaTime(), moveSpeed * -std::cos((PI / 180)*c->getRotation()) * CellSimApp::getDeltaTime());
 		
-		if (attempt > 5) { c->setPosition(Environment::getSize() / 2.f); break; }
+		if (attempt > 5) { c->setPosition(Environment::getInstance().getSize() / 2.f); break; }
 	}
 }
 
@@ -45,7 +45,7 @@ void CellRoles::changeSpeed(Cell * c)
 
 bool CellRoles::checkEnvironmentBounds(Cell * c)
 {
-	const auto& envSize = Environment::getSize();
+	const auto& envSize = Environment::getInstance().getSize();
 	const auto& cellPos = c->cell.getPosition();
 
 	// if-else structure for future improvements - return collision bound
