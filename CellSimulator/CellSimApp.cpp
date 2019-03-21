@@ -22,9 +22,11 @@ float CellSimApp::deltaTime = 0;
 
 void CellSimApp::run()
 {
-	Environment::configure();
 
-	view.setCenter(sf::Vector2f(Environment::getSize().x / 2, Environment::getSize().y / 2));
+	//getting instance configures environment for first use
+	Environment::getInstance();
+
+	view.setCenter(sf::Vector2f(Environment::getInstance().getSize().x / 2, Environment::getInstance().getSize().y / 2));
 
 	sf::Event event;
 	sf::Clock deltaTimeClock;
@@ -48,12 +50,12 @@ void CellSimApp::run()
 		updateViewCenter();
 		updateViewZoom();
 
-		Environment::update();
+		Environment::getInstance().update();
 
 		window->clear();
 
 		//draw
-		Environment::draw(*window);
+		Environment::getInstance().draw(*window);
 
 		window->display();
 		deltaTime = 0.0001 * deltaTimeClock.getElapsedTime().asMicroseconds();
@@ -136,7 +138,7 @@ void CellSimApp::updateViewCenter()
 			auto prev = view.getCenter();
 			view.setCenter(CellSimMouse::getPosition());
 
-			auto envs = Environment::getSize();
+			auto envs = Environment::getInstance().getSize();
 			if (!sf::FloatRect(0, 0, envs.x, envs.y).contains(view.getCenter()))
 				view.setCenter(prev);
 		}
@@ -147,7 +149,7 @@ void CellSimApp::updateViewCenter()
 		auto prev = view.getCenter();
 		view.move(static_cast<sf::Vector2f>(mv));
 
-		auto envs = Environment::getSize();
+		auto envs = Environment::getInstance().getSize();
 		if (!sf::FloatRect(0, 0, envs.x, envs.y).contains(view.getCenter()))
 			view.setCenter(prev);
 	}

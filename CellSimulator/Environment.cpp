@@ -14,21 +14,15 @@ double getDistance(const sf::Vector2f& a, const sf::Vector2f& b)
 	return sqrt(x * x + y * y);
 }
 
-std::vector<std::shared_ptr<Cell>> Environment::cells;
+Environment::~Environment()
+{
+}
 
-std::vector<std::shared_ptr<int>/*Substance*/> Environment::substances;
-
-std::vector<std::shared_ptr<Food>> Environment::food;
-
-sf::RectangleShape Environment::environmentBackground;
-
-sf::RectangleShape Environment::temperatureBackground;
-
-std::atomic<double> Environment::_temperature;
-
-std::atomic<double> Environment::_radiation;
-
-//sf::Texture Environment::backgroundImage;
+Environment& Environment::getInstance()
+{
+	static Environment instance;
+	return instance;
+}
 
 void Environment::clear()
 {
@@ -39,8 +33,8 @@ void Environment::clear()
 
 void Environment::configure()
 {
-	//backgroundImage.loadFromFile("./Images/background.png");
-	//backgroundImage.setRepeated(true);
+	backgroundImage.loadFromFile("./Images/background.png");
+	backgroundImage.setRepeated(true);
 
 	auto& eb = environmentBackground;
 	eb.setSize(sf::Vector2f{ 2000,1000 });
@@ -49,7 +43,7 @@ void Environment::configure()
 	eb.setOutlineThickness(5);
 	eb.setPosition(sf::Vector2f{ 0,0 });
 	eb.setTextureRect(sf::IntRect(0, 0, eb.getSize().x, eb.getSize().y));
-	//eb.setTexture(&backgroundImage);
+	eb.setTexture(&backgroundImage);
 
 	temperatureBackground.setSize(eb.getSize());
 	temperatureBackground.setPosition(eb.getPosition());
@@ -67,7 +61,7 @@ void Environment::configure()
 	}
 
 	for (int i = 0; i < 100; i++) {
-		food.push_back(std::make_shared<Food>(randomInt(3, 6), sf::Vector2f(distW(rng), distH(rng)), sf::Color(0, randomInt(64, 128), randomInt(192, 255))));
+		food.push_back(std::make_shared<Food>(randomInt(3, 12), sf::Vector2f(distW(rng), distH(rng)), sf::Color(0, randomInt(64, 128), randomInt(192, 255))));
 	}
 }
 
@@ -104,7 +98,7 @@ void Environment::update()
 	CellSelectionController::update();
 
 
-	////cell moving
+	////cell moving by user
 	//if (CellSimMouse::isLeftPressed() && sf::Keyboard::isKeyPressed(sf::Keyboard::LShift))
 	//{
 	//	if (cellSelectionValid)
@@ -186,6 +180,11 @@ std::shared_ptr<Cell> Environment::getCellAtPosition(const sf::Vector2f & p)
 
 	if (result != cells.end()) return *result;
 	return nullptr;
+}
+
+Environment::Environment()
+{
+	configure();
 }
 
 bool Environment::isCellInEnvironmentBounds(Cell & c)

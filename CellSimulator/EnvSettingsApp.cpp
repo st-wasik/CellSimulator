@@ -43,7 +43,7 @@ void EnvSettingsApp::run()
 	editBoxTemp->setSize(60, 25);
 	editBoxTemp->setTextSize(18);
 	editBoxTemp->setPosition(220, 52);
-	editBoxTemp->setDefaultText(std::to_string((int)Environment::getTemperature()));
+	editBoxTemp->setDefaultText(std::to_string((int)Environment::getInstance().getTemperature()));
 	gui.add(editBoxTemp);
 
 	auto sliderTemp = tgui::Slider::create();
@@ -52,7 +52,7 @@ void EnvSettingsApp::run()
 	sliderTemp->setSize(200, 9);
 	sliderTemp->setMaximum(100);
 	sliderTemp->setMinimum(-100);
-	sliderTemp->setValue(Environment::getTemperature());
+	sliderTemp->setValue(Environment::getInstance().getTemperature());
 	gui.add(sliderTemp);
 
 	auto buttonTemp = tgui::Button::create();
@@ -74,7 +74,7 @@ void EnvSettingsApp::run()
 	editBoxRad->setSize(60, 25);
 	editBoxRad->setTextSize(18);
 	editBoxRad->setPosition(220, 127);
-	editBoxRad->setDefaultText(std::to_string((int)Environment::getRadiation()));
+	editBoxRad->setDefaultText(std::to_string((int)Environment::getInstance().getRadiation()));
 	gui.add(editBoxRad);
 
 	auto sliderRad = tgui::Slider::create();
@@ -83,7 +83,7 @@ void EnvSettingsApp::run()
 	sliderRad->setSize(200, 9);
 	sliderRad->setMaximum(100);
 	sliderRad->setMinimum(0);
-	sliderRad->setValue(Environment::getRadiation());
+	sliderRad->setValue(Environment::getInstance().getRadiation());
 	gui.add(sliderRad);
 
 	auto buttonRad = tgui::Button::create();
@@ -127,7 +127,7 @@ void EnvSettingsApp::run()
 	//wywo³anie eventów
 	sliderTemp->connect("ValueChanged", [&]()
 	{
-		Environment::setTemperature(sliderTemp->getValue());
+		Environment::getInstance().setTemperature(sliderTemp->getValue());
 		if (editBoxTemp->getText() != "")
 			editBoxTemp->setText("");
 		editBoxTemp->setDefaultText(std::to_string((int)sliderTemp->getValue()));
@@ -145,7 +145,7 @@ void EnvSettingsApp::run()
 
 	sliderRad->connect("ValueChanged", [&]()
 	{
-		Environment::setRadiation(sliderRad->getValue());
+		Environment::getInstance().setRadiation(sliderRad->getValue());
 		if (editBoxRad->getText() != "")
 			editBoxRad->setText("");
 		editBoxRad->setDefaultText(std::to_string((int)sliderRad->getValue()));

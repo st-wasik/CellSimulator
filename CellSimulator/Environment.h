@@ -8,43 +8,49 @@
 class Environment final
 {
 public:
-	Environment() = delete;
+	~Environment();
 
-	static void clear();
+	static Environment& getInstance();
 
-	static void configure();
 
-	static void update();
+	void clear();
 
-	static void draw(sf::RenderWindow & window);
+	void update();
 
-	static std::atomic<double>& getTemperature();
-	static void setTemperature(const double&);
+	void draw(sf::RenderWindow & window);
 
-	static std::atomic<double>& getRadiation();
-	static void setRadiation(const double&);
+	std::atomic<double>& getTemperature();
+	void setTemperature(const double&);
 
-	static sf::Vector2f getSize();
+	std::atomic<double>& getRadiation();
+	void setRadiation(const double&);
 
-	static unsigned int getAliveCellsCount();
+	sf::Vector2f getSize();
+
+	unsigned int getAliveCellsCount();
 
 	std::shared_ptr<Cell> getCellAtPosition(const sf::Vector2f&);
 
 private:
-	static std::vector<std::shared_ptr<Cell>> cells;
+	Environment();
+	Environment(Environment const&) = delete;
+	void operator=(Environment const&) = delete;
 
-	static std::vector<std::shared_ptr<int>/*Substance*/> substances;
+	void configure();
 
-	static std::vector<std::shared_ptr<Food>> food;
 
-	static sf::RectangleShape environmentBackground;
-	static sf::RectangleShape temperatureBackground;
+	std::vector<std::shared_ptr<Cell>> cells;
+	std::vector<std::shared_ptr<int>/*Substance*/> substances;
+	std::vector<std::shared_ptr<Food>> food;
 
-	static std::atomic<double> _temperature;
 
-	static std::atomic<double> _radiation;
+	sf::RectangleShape environmentBackground;
+	sf::RectangleShape temperatureBackground;
 
-	static bool isCellInEnvironmentBounds(Cell& c);
+	std::atomic<double> _temperature;
+	std::atomic<double> _radiation;
 
-	//static sf::Texture backgroundImage;
+	bool isCellInEnvironmentBounds(Cell& c);
+
+	sf::Texture backgroundImage;
 };
