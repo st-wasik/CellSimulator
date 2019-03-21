@@ -18,6 +18,11 @@ Food::~Food()
 {
 }
 
+sf::Vector2f Food::getPosition()
+{
+	return shape.getPosition();
+}
+
 void Food::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
 	target.draw(shape, states);
