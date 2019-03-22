@@ -1,6 +1,8 @@
 #include "Cell.h"
 #include "CellRoles.h"
 #include "CellSimApp.h"
+#include "Environment.h"
+#include "BaseObj.h"
 
 Cell::Cell(float size, sf::Vector2f position, sf::Color color) : BaseObj(size,position,color)
 {
@@ -28,6 +30,25 @@ Cell::~Cell()
 
 void Cell::update()
 {
+	std::vector<std::shared_ptr<Food>> foods = Environment::getInstance().getFoodsVector();
+
+	foods.erase(
+		std::remove_if(
+			foods.begin(),
+			foods.end(),
+			[this](auto food) -> bool
+			{
+				if (this->collision(food))
+				{
+					this->foodLevel += static_cast<int>(food->getSize());
+					return true;
+				}
+				return false;
+			}
+		),
+		foods.end()
+	);
+
 	if (!freezed)
 		for (auto& fn : roles)
 		{
@@ -48,4 +69,15 @@ void Cell::freeze()
 void Cell::unfreeze()
 {
 	freezed = false;
+}
+
+bool Cell::collision(std::shared_ptr<BaseObj> obj)
+{
+	auto sizes = this->getSize() + obj->getSize();
+	auto distance = this->getPosition() - obj->getPosition();
+	if (distance.x * distance.x + distance.y*distance.y <= sizes * sizes)
+	{
+		return true;
+	}
+	return false;
 }

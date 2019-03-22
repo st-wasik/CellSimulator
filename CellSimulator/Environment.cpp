@@ -48,19 +48,18 @@ void Environment::configure()
 	temperatureBackground.setPosition(eb.getPosition());
 	temperatureBackground.setFillColor(sf::Color::Transparent);
 
-	//To be positioned elsewhere in future
-	std::random_device dev;
-	std::mt19937 rng(dev());
-	
-	std::uniform_int_distribution<std::mt19937::result_type> distW(40, static_cast<int>(Environment::getSize().x - 40));
-	std::uniform_int_distribution<std::mt19937::result_type> distH(40, static_cast<int>(Environment::getSize().y - 40));
-
 	for (int i = 0; i < 50; i++) {
-		cells.push_back(std::make_shared<Cell>(20, sf::Vector2f(distW(rng), distH(rng)), sf::Color(randomInt(0,255), randomInt(0,64), randomInt(0, 255))));
+		cells.push_back(std::make_shared<Cell>(
+			20, 
+			sf::Vector2f(randomInt(40, static_cast<int>(Environment::getSize().x - 40)), randomInt(40, static_cast<int>(Environment::getSize().y - 40))), 
+			sf::Color(randomInt(0,255), randomInt(0,64), randomInt(0, 255))));
 	}
 
 	for (int i = 0; i < 100; i++) {
-		food.push_back(std::make_shared<Food>(randomInt(3, 12), sf::Vector2f(distW(rng), distH(rng)), sf::Color(0, randomInt(128, 255), randomInt(0, 64))));
+		food.push_back(std::make_shared<Food>(
+			randomInt(3, 12), 
+			sf::Vector2f(randomInt(40, static_cast<int>(Environment::getSize().x - 40)), randomInt(40, static_cast<int>(Environment::getSize().y - 40))), 
+			sf::Color(0, randomInt(128, 255), randomInt(0, 64))));
 	}
 }
 
@@ -187,6 +186,16 @@ std::shared_ptr<Cell> Environment::getCellAtPosition(const sf::Vector2f & p)
 
 	if (result != cells.end()) return *result;
 	return nullptr;
+}
+
+std::vector<std::shared_ptr<Food>>& Environment::getFoodsVector()
+{
+	return food;
+}
+
+std::vector<std::shared_ptr<Cell>>& Environment::getCellsVector()
+{
+	return cells;
 }
 
 Environment::Environment()

@@ -33,6 +33,9 @@ public:
 
 	std::shared_ptr<Cell> getCellAtPosition(const sf::Vector2f&);
 
+	std::vector<std::shared_ptr<Food>>& getFoodsVector();
+	std::vector<std::shared_ptr<Cell>>& getCellsVector();
+
 private:
 	Environment();
 	Environment(Environment const&) = delete;

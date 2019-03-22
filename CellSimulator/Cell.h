@@ -3,6 +3,10 @@
 #include <vector>
 #include "Random.h"
 #include "BaseObj.h"
+#include <memory>
+#include <algorithm>
+#include "Logger.h"
+#include "Food.h"
 
 class CellRoles;
 
@@ -28,6 +32,7 @@ private:
 	// vector of pointers to role-functions
 	std::vector<void(*)(Cell*)> roles;
 
+	bool collision(std::shared_ptr<BaseObj> obj);
 
 	// curent cell stats:
 
