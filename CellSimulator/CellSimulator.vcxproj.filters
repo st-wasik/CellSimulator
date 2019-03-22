@@ -91,6 +91,9 @@
     <ClCompile Include="BaseObj.cpp">
       <Filter>Utils\Source</Filter>
     </ClCompile>
+    <ClCompile Include="TextureProvider.cpp">
+      <Filter>Utils\Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CellListApp.h">
@@ -136,6 +139,9 @@
       <Filter>Environment\Header</Filter>
     </ClInclude>
     <ClInclude Include="BaseObj.h">
+      <Filter>Utils\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="TextureProvider.h">
       <Filter>Utils\Header</Filter>
     </ClInclude>
   </ItemGroup>

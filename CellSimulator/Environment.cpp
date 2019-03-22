@@ -6,7 +6,7 @@
 #include <random>
 #include <algorithm>
 #include <atomic>
-
+#include "TextureProvider.h"
 double getDistance(const sf::Vector2f& a, const sf::Vector2f& b)
 {
 	auto v = a - b;
@@ -32,9 +32,6 @@ void Environment::clear()
 
 void Environment::configure()
 {
-	backgroundImage.loadFromFile("./Images/background.png");
-	backgroundImage.setRepeated(true);
-
 	auto& eb = environmentBackground;
 	eb.setSize(sf::Vector2f{ 2000,1000 });
 	eb.setFillColor(sf::Color{ 170, 135, 200 });
@@ -42,7 +39,7 @@ void Environment::configure()
 	eb.setOutlineThickness(5);
 	eb.setPosition(sf::Vector2f{ 0,0 });
 	eb.setTextureRect(sf::IntRect(0, 0, eb.getSize().x / 10, eb.getSize().y / 10));
-	eb.setTexture(&backgroundImage);
+	eb.setTexture(TextureProvider::getInstance().getTexture("background").get());
 
 	temperatureBackground.setSize(eb.getSize());
 	temperatureBackground.setPosition(eb.getPosition());

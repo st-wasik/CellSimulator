@@ -143,6 +143,7 @@
     <ClCompile Include="MainApp.cpp" />
     <ClCompile Include="CellSimMouse.cpp" />
     <ClCompile Include="Random.cpp" />
+    <ClCompile Include="TextureProvider.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BaseObj.h" />
@@ -160,6 +161,7 @@
     <ClInclude Include="MainApp.h" />
     <ClInclude Include="CellSimMouse.h" />
     <ClInclude Include="Random.h" />
+    <ClInclude Include="TextureProvider.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

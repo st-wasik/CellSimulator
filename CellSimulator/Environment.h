@@ -58,6 +58,4 @@ private:
 	std::atomic<int> _foodCount;
 
 	bool isCellInEnvironmentBounds(Cell& c);
-
-	sf::Texture backgroundImage;
 };
