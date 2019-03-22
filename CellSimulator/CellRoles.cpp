@@ -95,6 +95,22 @@ void CellRoles::updateColor(Cell * c)
 	c->shape.setFillColor(newColor);
 }
 
+void CellRoles::beDead(Cell * c)
+{
+	auto color = c->shape.getFillColor();
+	if (color.a > 0)
+	{
+		double a = static_cast<double>(color.a) - 0.075*CellSimApp::getDeltaTime();
+		if (0 > a) a = 0;
+		color.a = a;
+		c->shape.setFillColor(color);
+	}
+	else
+	{
+		c->toDelete = true;
+	}
+}
+
 bool CellRoles::checkEnvironmentBounds(Cell * c)
 {
 	const auto& envSize = Environment::getInstance().getSize();

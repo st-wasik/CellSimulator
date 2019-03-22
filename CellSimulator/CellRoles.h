@@ -16,6 +16,8 @@ public:
 
 	static void updateColor(Cell* c);
 
+	static void beDead(Cell* c);
+
 	/// \returns true if collision occured - otherwise false
 	static bool checkEnvironmentBounds(Cell* c);
 private:

@@ -118,51 +118,35 @@ void Environment::update()
 		}
 	}
 
-	for (auto& cell : cells)
-	{
-		cell->update();
-	}
-
 	CellSelectionTool::update();
 	CellMovementTool::update();
 	updateBackground();
+
+	for (auto& cell : cells)
+	{
+		cell->update();
+
+		if (cell->isDead())
+			deadCells.push_back(cell);
+	}
+
+	for (auto& cell : deadCells)
+	{
+		cell->update();
+	}
 
 	//remove food marked to delete
 	auto newFoodEnd = std::remove_if(food.begin(), food.end(), [](auto f) {return f->toDelete; });
 	food.erase(newFoodEnd, food.end());
 
+	//remove dead cells marked to delete
+	auto newDeadCellsEnd = std::remove_if(deadCells.begin(), deadCells.end(), [](auto c) {return c->toDelete; });
+	deadCells.erase(newDeadCellsEnd, deadCells.end());
+
 	//remove cells marked to delete
-	auto newCellsEnd = std::remove_if(cells.begin(), cells.end(), [](auto c) {return c->toDelete; });
+	auto newCellsEnd = std::remove_if(cells.begin(), cells.end(), [](auto c) {return c->isDead(); });
 	cells.erase(newCellsEnd, cells.end());
 
-
-
-
-	////cell moving by user
-	//if (CellSimMouse::isLeftPressed() && sf::Keyboard::isKeyPressed(sf::Keyboard::LShift))
-	//{
-	//	if (cellSelectionValid)
-	//	{
-	//		selectedCell->freeze();
-	//		auto cellPos = selectedCell->getPosition();
-	//		selectedCell->setPosition(CellSimMouse::getPosition());
-
-	//		if (!isCellInEnvironmentBounds(*selectedCell))
-	//		{
-	//			selectedCell->setPosition(cellPos);
-	//		}
-	//	}
-	//}
-	//else
-	//{
-	//	if (cellSelectionValid)
-	//	{
-	//		selectedCell->unfreeze();
-	//	}
-	//}
-
-	//if (cellSelectionValid)
-	//	Logger::log(selectedCell->toString());
 
 }
 
@@ -174,6 +158,9 @@ void Environment::draw(sf::RenderWindow & window)
 		window.draw(*f);
 	}
 	for (auto & cell : cells) {
+		window.draw(*cell);
+	}
+	for (auto & cell : deadCells) {
 		window.draw(*cell);
 	}
 	CellSelectionTool::draw(window);

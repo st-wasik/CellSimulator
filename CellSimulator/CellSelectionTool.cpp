@@ -17,7 +17,7 @@ void CellSelectionTool::update()
 
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Delete))
 		{
-			selectedCell->toDelete = true;
+			selectedCell->kill();
 		}
 		if (selectedCell->toDelete) selectedCell = nullptr;
 	}

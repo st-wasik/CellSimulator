@@ -49,6 +49,7 @@ private:
 	std::vector<std::shared_ptr<Cell>> cells;
 	std::vector<std::shared_ptr<int>/*Substance*/> substances;
 	std::vector<std::shared_ptr<Food>> food;
+	std::vector<std::shared_ptr<Cell>> deadCells;
 
 
 	sf::RectangleShape environmentBackground;

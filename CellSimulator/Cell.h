@@ -27,6 +27,9 @@ public:
 	void freeze();
 	void unfreeze();
 
+	void kill();
+	bool isDead();
+
 private:
 
 	// vector of pointers to role-functions
@@ -41,5 +44,7 @@ private:
 	double foodLevel;
 
 	bool freezed = false;
+
+	bool dead = false;
 };
 

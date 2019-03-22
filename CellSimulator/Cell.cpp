@@ -62,6 +62,21 @@ void Cell::unfreeze()
 	freezed = false;
 }
 
+void Cell::kill()
+{
+	dead = true;
+	roles.clear();
+	roles.push_back(CellRoles::beDead);
+
+	auto color = randomInt(0, 32);
+	shape.setFillColor(sf::Color(color, color, color, 255));
+}
+
+bool Cell::isDead()
+{
+	return dead;
+}
+
 bool Cell::collision(std::shared_ptr<BaseObj> obj)
 {
 	auto sizes = this->getSize() + obj->getSize();
