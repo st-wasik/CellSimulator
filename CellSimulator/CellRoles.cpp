@@ -17,15 +17,15 @@ void CellRoles::moveForward(Cell * c)
 		c->shape.setPosition(prevPosition);
 		c->shape.setRotation(c->getRotation() + 90);
 		c->shape.move(moveSpeed * std::sin((PI / 180)*c->getRotation()) * CellSimApp::getDeltaTime(), moveSpeed * -std::cos((PI / 180)*c->getRotation()) * CellSimApp::getDeltaTime());
-		
+
 		if (attempt > 5) { c->setPosition(Environment::getInstance().getSize() / 2.f); break; }
 	}
 }
 
 void CellRoles::changeDirection(Cell * c)
 {
-// DIRECTION CHANGE THRESHOLD SHOULD BE STORED IN GENES
-	if(randomInt(0,100)>97)
+	// DIRECTION CHANGE THRESHOLD SHOULD BE STORED IN GENES
+	if (randomInt(0, 100) > 97)
 		if (randomInt(0, 100) <= 50)
 		{
 			c->shape.rotate(randomReal(-50, 0));
@@ -38,9 +38,24 @@ void CellRoles::changeDirection(Cell * c)
 
 void CellRoles::changeSpeed(Cell * c)
 {
-// SPEED CHANGE THRESHOLD SHOULD BE STORED IN GENES
+	// SPEED CHANGE THRESHOLD SHOULD BE STORED IN GENES
 	if (randomInt(0, 1000) > 995)
 		c->currentSpeed = randomReal(0.1, 2);
+}
+
+void CellRoles::eat(Cell * c)
+{
+	std::vector<std::shared_ptr<Food>> foods = Environment::getInstance().getFoodsVector();
+
+	for (auto& f : foods)
+	{
+		if (c->collision(f) && !f->toDelete)
+		{
+			c->foodLevel += static_cast<int>(f->getSize());
+			c->setSize(c->getSize() + f->getSize());
+			f->toDelete = true;
+		}
+	}
 }
 
 bool CellRoles::checkEnvironmentBounds(Cell * c)

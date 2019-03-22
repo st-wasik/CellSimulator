@@ -1,6 +1,7 @@
 #pragma once
 #include <mutex>
 #include <SFML/Graphics.hpp>
+#include <iostream>
 class Logger
 {
 public:

@@ -22,6 +22,8 @@ public:
 
 	std::string toString();
 
+	bool toDelete;
+
 protected:
 	sf::CircleShape shape;
 };

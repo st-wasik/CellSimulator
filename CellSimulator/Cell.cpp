@@ -17,6 +17,7 @@ Cell::Cell(float size, sf::Vector2f position, sf::Color color) : BaseObj(size,po
 	// place here all role-functions that cell should call
 	roles.push_back(CellRoles::changeDirection);
 	roles.push_back(CellRoles::changeSpeed);
+	roles.push_back(CellRoles::eat);
 
 
 	// make sure that moveForward is always the last role-function
@@ -30,25 +31,6 @@ Cell::~Cell()
 
 void Cell::update()
 {
-	std::vector<std::shared_ptr<Food>> foods = Environment::getInstance().getFoodsVector();
-
-	foods.erase(
-		std::remove_if(
-			foods.begin(),
-			foods.end(),
-			[this](auto food) -> bool
-			{
-				if (this->collision(food))
-				{
-					this->foodLevel += static_cast<int>(food->getSize());
-					return true;
-				}
-				return false;
-			}
-		),
-		foods.end()
-	);
-
 	if (!freezed)
 		for (auto& fn : roles)
 		{
@@ -58,6 +40,7 @@ void Cell::update()
 }
 
 void Cell::simulateHunger() {
+	// SHOULD BE IMPLEMENTED AS CELL ROLE
 	this->foodLevel -= 0.01 * CellSimApp::getDeltaTime();
 }
 
@@ -77,6 +60,7 @@ bool Cell::collision(std::shared_ptr<BaseObj> obj)
 	auto distance = this->getPosition() - obj->getPosition();
 	if (distance.x * distance.x + distance.y*distance.y <= sizes * sizes)
 	{
+
 		return true;
 	}
 	return false;

@@ -41,7 +41,7 @@ void Environment::configure()
 	eb.setOutlineColor(sf::Color::Red);
 	eb.setOutlineThickness(5);
 	eb.setPosition(sf::Vector2f{ 0,0 });
-	eb.setTextureRect(sf::IntRect(0, 0, eb.getSize().x/10, eb.getSize().y/10));
+	eb.setTextureRect(sf::IntRect(0, 0, eb.getSize().x / 10, eb.getSize().y / 10));
 	eb.setTexture(&backgroundImage);
 
 	temperatureBackground.setSize(eb.getSize());
@@ -50,15 +50,15 @@ void Environment::configure()
 
 	for (int i = 0; i < 50; i++) {
 		cells.push_back(std::make_shared<Cell>(
-			20, 
-			sf::Vector2f(randomInt(40, static_cast<int>(Environment::getSize().x - 40)), randomInt(40, static_cast<int>(Environment::getSize().y - 40))), 
-			sf::Color(randomInt(0,255), randomInt(0,64), randomInt(0, 255))));
+			20,
+			sf::Vector2f(randomInt(40, static_cast<int>(Environment::getSize().x - 40)), randomInt(40, static_cast<int>(Environment::getSize().y - 40))),
+			sf::Color(randomInt(0, 255), randomInt(0, 64), randomInt(0, 255))));
 	}
 
 	for (int i = 0; i < 100; i++) {
 		food.push_back(std::make_shared<Food>(
-			randomInt(3, 12), 
-			sf::Vector2f(randomInt(40, static_cast<int>(Environment::getSize().x - 40)), randomInt(40, static_cast<int>(Environment::getSize().y - 40))), 
+			randomInt(3, 12),
+			sf::Vector2f(randomInt(40, static_cast<int>(Environment::getSize().x - 40)), randomInt(40, static_cast<int>(Environment::getSize().y - 40))),
 			sf::Color(0, randomInt(128, 255), randomInt(0, 64))));
 	}
 }
@@ -95,6 +95,15 @@ void Environment::update()
 	{
 		food->update();
 	}*/
+
+	//remove food marked to delete
+	auto newFoodEnd = std::remove_if(food.begin(), food.end(), [](auto f) {return f->toDelete; });
+	food.erase(newFoodEnd, food.end());
+
+	//remove cells marked to delete
+	auto newCellsEnd = std::remove_if(cells.begin(), cells.end(), [](auto c) {return c->toDelete; });
+	cells.erase(newCellsEnd, cells.end());
+
 
 	CellSelectionController::update();
 
@@ -135,8 +144,8 @@ void Environment::draw(sf::RenderWindow & window)
 {
 	window.draw(environmentBackground);
 	window.draw(temperatureBackground);
-	for (auto & food : food) {
-		window.draw(*food);
+	for (auto & f : food) {
+		window.draw(*f);
 	}
 	for (auto & cell : cells) {
 		window.draw(*cell);
@@ -182,7 +191,7 @@ int Environment::getFoodCount()
 std::shared_ptr<Cell> Environment::getCellAtPosition(const sf::Vector2f & p)
 {
 	auto result = std::find_if(cells.begin(), cells.end(), [&](std::shared_ptr<Cell>& c) {
-		return getDistance(c->getPosition(), p) < c->getSize();});
+		return getDistance(c->getPosition(), p) < c->getSize(); });
 
 	if (result != cells.end()) return *result;
 	return nullptr;

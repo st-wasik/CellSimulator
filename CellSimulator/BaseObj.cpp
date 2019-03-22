@@ -2,7 +2,7 @@
 
 
 
-BaseObj::BaseObj(float size, sf::Vector2f position, sf::Color color)
+BaseObj::BaseObj(float size, sf::Vector2f position, sf::Color color) : toDelete(false)
 {
 	setSize(size);
 	setPosition(position);
