@@ -14,6 +14,12 @@ void CellSelectionController::update()
 		selectionMarker.setRadius(size);
 		selectionMarker.setOrigin(size, size);
 		selectionMarker.setPosition(selectedCell->getPosition());
+
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Delete))
+		{
+			selectedCell->toDelete = true;
+		}
+		if (selectedCell->toDelete) selectedCell = nullptr;
 	}
 }
 
