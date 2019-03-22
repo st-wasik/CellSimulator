@@ -14,6 +14,8 @@ public:
 
 	static void eat(Cell* c);
 
+	static void updateColor(Cell* c);
+
 	/// \returns true if collision occured - otherwise false
 	static bool checkEnvironmentBounds(Cell* c);
 private:

@@ -52,10 +52,49 @@ void CellRoles::eat(Cell * c)
 		if (c->collision(f) && !f->toDelete)
 		{
 			c->foodLevel += static_cast<int>(f->getSize());
+
 			c->setSize(c->getSize() + f->getSize());
+
+			// ONLY FOR TEST - DELETE LATER
+			c->setSize(c->getSize() + f->getSize() / 10);
 			f->toDelete = true;
 		}
 	}
+}
+
+void CellRoles::updateColor(Cell * c)
+{
+	static double threshold = 30;
+
+	int newR, newG, newB;
+
+	auto newColor = c->baseColor;
+
+	//temperature
+	auto& envTemp = Environment::getInstance().getTemperature();
+	auto& envRad = Environment::getInstance().getRadiation();
+	if (envTemp > threshold)
+	{
+		newR = 2 * abs(envTemp - threshold) + c->baseColor.r;
+		if (newR > 255) newR = 255;
+		newColor.r = newR;
+	}
+	else if (envTemp < -threshold)
+	{
+		newB = 2 * abs(envTemp + threshold) + c->baseColor.b;
+		if (newB > 255) newB = 255;
+		newColor.b = newB;
+	}
+
+	//radiation
+	if (envRad > threshold)
+	{
+		newG = 3 * abs(envRad - threshold) + c->baseColor.g;
+		if (newG > 255) newG = 255;
+		newColor.g = newG;
+	}
+
+	c->shape.setFillColor(newColor);
 }
 
 bool CellRoles::checkEnvironmentBounds(Cell * c)

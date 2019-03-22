@@ -26,5 +26,6 @@ public:
 
 protected:
 	sf::CircleShape shape;
+	sf::Color baseColor;
 };
 

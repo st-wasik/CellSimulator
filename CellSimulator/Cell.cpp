@@ -3,14 +3,20 @@
 #include "CellSimApp.h"
 #include "Environment.h"
 #include "BaseObj.h"
+#include "TextureProvider.h"
 
-Cell::Cell(float size, sf::Vector2f position, sf::Color color) : BaseObj(size,position,color)
+Cell::Cell(float size, sf::Vector2f position, sf::Color color) : BaseObj(size, position, color)
 {
 	this->foodLevel = 100;
 
 	this->currentSpeed = randomReal(0.1, 2);
 
 	shape.setOutlineColor(sf::Color::Yellow);
+
+
+	int textureSize = getSize()/2;
+	shape.setTextureRect({ 0,0,textureSize, textureSize });
+	shape.setTexture(TextureProvider::getInstance().getTexture("whiteNoise").get());
 	//cell.setOutlineThickness(-1);
 
 	// name of function is its address
@@ -18,6 +24,7 @@ Cell::Cell(float size, sf::Vector2f position, sf::Color color) : BaseObj(size,po
 	roles.push_back(CellRoles::changeDirection);
 	roles.push_back(CellRoles::changeSpeed);
 	roles.push_back(CellRoles::eat);
+	roles.push_back(CellRoles::updateColor);
 
 
 	// make sure that moveForward is always the last role-function
@@ -60,7 +67,6 @@ bool Cell::collision(std::shared_ptr<BaseObj> obj)
 	auto distance = this->getPosition() - obj->getPosition();
 	if (distance.x * distance.x + distance.y*distance.y <= sizes * sizes)
 	{
-
 		return true;
 	}
 	return false;
