@@ -130,9 +130,10 @@
     <ClCompile Include="BaseObj.cpp" />
     <ClCompile Include="Cell.cpp" />
     <ClCompile Include="CellListApp.cpp" />
+    <ClCompile Include="CellMovementTool.cpp" />
     <ClCompile Include="CellPreviewApp.cpp" />
     <ClCompile Include="CellRoles.cpp" />
-    <ClCompile Include="CellSelectionController.cpp" />
+    <ClCompile Include="CellSelectionTool.cpp" />
     <ClCompile Include="Environment.cpp" />
     <ClCompile Include="EnvSettingsApp.cpp" />
     <ClCompile Include="Food.cpp" />
@@ -149,9 +150,10 @@
     <ClInclude Include="BaseObj.h" />
     <ClInclude Include="Cell.h" />
     <ClInclude Include="CellListApp.h" />
+    <ClInclude Include="CellMovementTool.h" />
     <ClInclude Include="CellPreviewApp.h" />
     <ClInclude Include="CellRoles.h" />
-    <ClInclude Include="CellSelectionController.h" />
+    <ClInclude Include="CellSelectionTool.h" />
     <ClInclude Include="Environment.h" />
     <ClInclude Include="CellSimApp.h" />
     <ClInclude Include="EnvSettingsApp.h" />

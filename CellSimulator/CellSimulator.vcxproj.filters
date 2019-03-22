@@ -79,9 +79,6 @@
     <ClCompile Include="CellSimMouse.cpp">
       <Filter>Environment\Source</Filter>
     </ClCompile>
-    <ClCompile Include="CellSelectionController.cpp">
-      <Filter>Environment\Source</Filter>
-    </ClCompile>
     <ClCompile Include="Environment.cpp">
       <Filter>Environment\Source</Filter>
     </ClCompile>
@@ -93,6 +90,12 @@
     </ClCompile>
     <ClCompile Include="TextureProvider.cpp">
       <Filter>Utils\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="CellSelectionTool.cpp">
+      <Filter>Environment\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="CellMovementTool.cpp">
+      <Filter>Environment\Source</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -126,9 +129,6 @@
     <ClInclude Include="Random.h">
       <Filter>Utils\Header</Filter>
     </ClInclude>
-    <ClInclude Include="CellSelectionController.h">
-      <Filter>Environment\Header</Filter>
-    </ClInclude>
     <ClInclude Include="CellSimMouse.h">
       <Filter>Environment\Header</Filter>
     </ClInclude>
@@ -143,6 +143,12 @@
     </ClInclude>
     <ClInclude Include="TextureProvider.h">
       <Filter>Utils\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="CellSelectionTool.h">
+      <Filter>Environment\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="CellMovementTool.h">
+      <Filter>Environment\Header</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

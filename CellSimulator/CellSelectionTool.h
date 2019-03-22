@@ -2,10 +2,10 @@
 #include<vector>
 #include<mutex>
 #include"Cell.h"
-class CellSelectionController
+class CellSelectionTool
 {
 public:
-	CellSelectionController() = delete;
+	CellSelectionTool() = delete;
 
 	static void update();
 

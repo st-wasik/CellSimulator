@@ -1,12 +1,14 @@
 #include "Environment.h"
 #include "Logger.h"
 #include "CellSimMouse.h"
-#include "CellSelectionController.h"
+#include "CellSelectionTool.h"
 #include <math.h>
 #include <random>
 #include <algorithm>
 #include <atomic>
 #include "TextureProvider.h"
+#include "CellMovementTool.h"
+
 double getDistance(const sf::Vector2f& a, const sf::Vector2f& b)
 {
 	auto v = a - b;
@@ -108,11 +110,11 @@ void Environment::update()
 	//cell selection
 	if (CellSimMouse::wasLeftPressed())
 	{
-		CellSelectionController::clearSelectedCell();
+		CellSelectionTool::clearSelectedCell();
 		auto selectedCell = std::find_if(cells.begin(), cells.end(), [&](std::shared_ptr<Cell> c) {return getDistance(c->getPosition(), mouse) < c->getSize(); });
 		if (selectedCell != cells.end())
 		{
-			CellSelectionController::setSelectedCell(*selectedCell);
+			CellSelectionTool::setSelectedCell(*selectedCell);
 		}
 	}
 
@@ -121,7 +123,8 @@ void Environment::update()
 		cell->update();
 	}
 
-	CellSelectionController::update();
+	CellSelectionTool::update();
+	CellMovementTool::update();
 	updateBackground();
 
 	//remove food marked to delete
@@ -173,7 +176,8 @@ void Environment::draw(sf::RenderWindow & window)
 	for (auto & cell : cells) {
 		window.draw(*cell);
 	}
-	CellSelectionController::draw(window);
+	CellSelectionTool::draw(window);
+	CellMovementTool::draw(window);
 }
 
 std::atomic<double>& Environment::getTemperature()

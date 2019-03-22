@@ -53,10 +53,8 @@ void CellRoles::eat(Cell * c)
 		{
 			c->foodLevel += static_cast<int>(f->getSize());
 
-			c->setSize(c->getSize() + f->getSize());
-
 			// ONLY FOR TEST - DELETE LATER
-			c->setSize(c->getSize() + f->getSize() / 10);
+			c->setSize(c->getSize() + 1);
 			f->toDelete = true;
 		}
 	}
