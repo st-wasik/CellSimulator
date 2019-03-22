@@ -56,7 +56,7 @@ void Environment::configure()
 	std::uniform_int_distribution<std::mt19937::result_type> distH(40, static_cast<int>(Environment::getSize().y - 40));
 
 	for (int i = 0; i < 50; i++) {
-		cells.push_back(std::make_shared<Cell>(20, sf::Vector2f(distW(rng), distH(rng))));
+		cells.push_back(std::make_shared<Cell>(20, sf::Vector2f(distW(rng), distH(rng)), sf::Color(randomInt(0,255), randomInt(0,64), randomInt(0, 255))));
 	}
 
 	for (int i = 0; i < 100; i++) {

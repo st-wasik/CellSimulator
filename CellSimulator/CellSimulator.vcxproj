@@ -127,6 +127,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="BaseObj.cpp" />
     <ClCompile Include="Cell.cpp" />
     <ClCompile Include="CellListApp.cpp" />
     <ClCompile Include="CellPreviewApp.cpp" />
@@ -144,6 +145,7 @@
     <ClCompile Include="Random.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BaseObj.h" />
     <ClInclude Include="Cell.h" />
     <ClInclude Include="CellListApp.h" />
     <ClInclude Include="CellPreviewApp.h" />

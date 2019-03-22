@@ -2,30 +2,19 @@
 #include <SFML/Graphics.hpp>
 #include <vector>
 #include "Random.h"
+#include "BaseObj.h"
 
 class CellRoles;
 
-class Cell : public sf::Drawable
+class Cell : public BaseObj
 {
 	friend class CellRoles;
 
 public:
-	Cell(float size, sf::Vector2f position);
+	Cell(float size, sf::Vector2f position, sf::Color color);
 	~Cell();
 
 	void update();
-	void draw(sf::RenderTarget& target, sf::RenderStates states) const;
-
-	float getSize();
-	void setSize(const float&);
-
-	float getRotation();
-	void setRotation(const float&);
-
-	sf::Vector2f getPosition();
-	void setPosition(const sf::Vector2f&);
-
-	std::string toString();
 
 	void simulateHunger();
 
@@ -39,8 +28,6 @@ private:
 	// vector of pointers to role-functions
 	std::vector<void(*)(Cell*)> roles;
 
-	sf::CircleShape cell;
-
 
 	// curent cell stats:
 
@@ -48,6 +35,6 @@ private:
 
 	double foodLevel;
 
-	bool freezed;
+	bool freezed = false;
 };
 

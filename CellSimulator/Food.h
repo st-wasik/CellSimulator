@@ -1,16 +1,13 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include "BaseObj.h"
 
-class Food : public sf::Drawable
+class Food : public BaseObj
 {
 public:
-	Food();
-	Food(int radius, sf::Vector2f position, sf::Color color);
-	~Food();
-	void draw(sf::RenderTarget& target, sf::RenderStates states) const;
+	Food(float size, sf::Vector2f position, sf::Color color);
 
-	sf::Vector2f getPosition();
-private:
-	sf::CircleShape shape;
+	~Food();
+
 };
 

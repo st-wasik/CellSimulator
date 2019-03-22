@@ -2,16 +2,13 @@
 #include "CellRoles.h"
 #include "CellSimApp.h"
 
-Cell::Cell(float size, sf::Vector2f position) : freezed(false)
+Cell::Cell(float size, sf::Vector2f position, sf::Color color) : BaseObj(size,position,color)
 {
-	setSize(size);
-	setPosition(position);
-	setRotation(static_cast<float>(randomReal(0, 359)));
 	this->foodLevel = 100;
 
 	this->currentSpeed = randomReal(0.1, 2);
-	cell.setFillColor(sf::Color(randomInt(64, 255), randomInt(0, 64), randomInt(64, 255)));
-	cell.setOutlineColor(sf::Color::Yellow);
+
+	shape.setOutlineColor(sf::Color::Yellow);
 	//cell.setOutlineThickness(-1);
 
 	// name of function is its address
@@ -37,47 +34,6 @@ void Cell::update()
 			fn(this);
 		}
 	simulateHunger();
-}
-
-void Cell::draw(sf::RenderTarget& target, sf::RenderStates states) const
-{
-	target.draw(cell, states);
-}
-
-float Cell::getSize()
-{
-	return cell.getRadius();
-}
-
-void Cell::setSize(const float & s)
-{
-	cell.setRadius(s);
-	cell.setOrigin(s, s);
-}
-
-float Cell::getRotation()
-{
-	return cell.getRotation();
-}
-
-void Cell::setRotation(const float & r)
-{
-	cell.setRotation(r);
-}
-
-sf::Vector2f Cell::getPosition()
-{
-	return cell.getPosition();
-}
-
-void Cell::setPosition(const sf::Vector2f & p)
-{
-	cell.setPosition(p);
-}
-
-std::string Cell::toString()
-{
-	return "Cell pos: " + (std::to_string(getPosition().x) + ":" + std::to_string(getPosition().y)) + " radius: " + std::to_string(getSize());
 }
 
 void Cell::simulateHunger() {

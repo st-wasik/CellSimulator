@@ -10,13 +10,13 @@ void CellRoles::moveForward(Cell * c)
 {
 	const auto prevPosition = c->getPosition();
 	auto moveSpeed = (Environment::getInstance().getTemperature() + 100) / 100 * c->currentSpeed;
-	c->cell.move(moveSpeed * std::sin((PI / 180)*c->getRotation()) * CellSimApp::getDeltaTime(), moveSpeed * -std::cos((PI / 180)*c->getRotation()) * CellSimApp::getDeltaTime());
+	c->shape.move(moveSpeed * std::sin((PI / 180)*c->getRotation()) * CellSimApp::getDeltaTime(), moveSpeed * -std::cos((PI / 180)*c->getRotation()) * CellSimApp::getDeltaTime());
 
 	for (int attempt = 0; checkEnvironmentBounds(c); ++attempt)
 	{
-		c->cell.setPosition(prevPosition);
-		c->cell.setRotation(c->getRotation() + 90);
-		c->cell.move(moveSpeed * std::sin((PI / 180)*c->getRotation()) * CellSimApp::getDeltaTime(), moveSpeed * -std::cos((PI / 180)*c->getRotation()) * CellSimApp::getDeltaTime());
+		c->shape.setPosition(prevPosition);
+		c->shape.setRotation(c->getRotation() + 90);
+		c->shape.move(moveSpeed * std::sin((PI / 180)*c->getRotation()) * CellSimApp::getDeltaTime(), moveSpeed * -std::cos((PI / 180)*c->getRotation()) * CellSimApp::getDeltaTime());
 		
 		if (attempt > 5) { c->setPosition(Environment::getInstance().getSize() / 2.f); break; }
 	}
@@ -28,11 +28,11 @@ void CellRoles::changeDirection(Cell * c)
 	if(randomInt(0,100)>97)
 		if (randomInt(0, 100) <= 50)
 		{
-			c->cell.rotate(randomReal(-50, 0));
+			c->shape.rotate(randomReal(-50, 0));
 		}
 		else
 		{
-			c->cell.rotate(randomReal(0, 50));
+			c->shape.rotate(randomReal(0, 50));
 		}
 }
 
@@ -46,27 +46,27 @@ void CellRoles::changeSpeed(Cell * c)
 bool CellRoles::checkEnvironmentBounds(Cell * c)
 {
 	const auto& envSize = Environment::getInstance().getSize();
-	const auto& cellPos = c->cell.getPosition();
+	const auto& cellPos = c->shape.getPosition();
 
 	// if-else structure for future improvements - return collision bound
 
 	//check left bound
-	if (c->cell.getPosition().x - c->getSize() <= 0)
+	if (c->shape.getPosition().x - c->getSize() <= 0)
 	{
 		return true;
 	}
 	//check right bound
-	else if (c->cell.getPosition().x + c->getSize() >= envSize.x)
+	else if (c->shape.getPosition().x + c->getSize() >= envSize.x)
 	{
 		return true;
 	}
 	//check top bound
-	else if (c->cell.getPosition().y - c->getSize() <= 0)
+	else if (c->shape.getPosition().y - c->getSize() <= 0)
 	{
 		return true;
 	}
 	//check bottom bound
-	else if (c->cell.getPosition().y + c->getSize() >= envSize.y)
+	else if (c->shape.getPosition().y + c->getSize() >= envSize.y)
 	{
 		return true;
 	}
