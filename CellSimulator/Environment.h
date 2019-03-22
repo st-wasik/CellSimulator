@@ -43,6 +43,8 @@ private:
 
 	void configure();
 
+	void updateBackground();
+
 
 	std::vector<std::shared_ptr<Cell>> cells;
 	std::vector<std::shared_ptr<int>/*Substance*/> substances;
@@ -56,6 +58,8 @@ private:
 	std::atomic<double> _radiation;
 	std::atomic<int> _aliveCellsCount;
 	std::atomic<int> _foodCount;
+
+	sf::Color backgroundDefaultColor;
 
 	bool isCellInEnvironmentBounds(Cell& c);
 };

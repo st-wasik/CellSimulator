@@ -59,7 +59,7 @@ void CellSimApp::run()
 
 		window->display();
 		deltaTime = 0.0001 * deltaTimeClock.getElapsedTime().asMicroseconds();
-		Logger::log("FPS " + std::to_string(1/deltaTime*100) + "\r", false);
+		//Logger::log("FPS " + std::to_string(1/deltaTime*100) + "\r", false);
 		//Logger::log(std::to_string(deltaTime) + "\r", false);
 	}
 }

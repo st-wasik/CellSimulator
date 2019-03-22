@@ -14,10 +14,12 @@ Cell::Cell(float size, sf::Vector2f position, sf::Color color) : BaseObj(size, p
 	shape.setOutlineColor(sf::Color::Yellow);
 
 
-	int textureSize = getSize()/2;
+	int textureSize = getSize() / 2;
 	shape.setTextureRect({ 0,0,textureSize, textureSize });
 	shape.setTexture(TextureProvider::getInstance().getTexture("whiteNoise").get());
-	//cell.setOutlineThickness(-1);
+
+	shape.setOutlineThickness(-5);
+	shape.setOutlineColor(sf::Color(128, 64, 0, 75));
 
 	// name of function is its address
 	// place here all role-functions that cell should call
@@ -25,7 +27,6 @@ Cell::Cell(float size, sf::Vector2f position, sf::Color color) : BaseObj(size, p
 	roles.push_back(CellRoles::changeSpeed);
 	roles.push_back(CellRoles::eat);
 	roles.push_back(CellRoles::updateColor);
-
 
 	// make sure that moveForward is always the last role-function
 	// cell should be moved after all updates

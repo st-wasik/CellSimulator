@@ -32,9 +32,11 @@ void Environment::clear()
 
 void Environment::configure()
 {
+	backgroundDefaultColor = sf::Color{ 170, 135, 200 };
+
 	auto& eb = environmentBackground;
 	eb.setSize(sf::Vector2f{ 2000,1000 });
-	eb.setFillColor(sf::Color{ 170, 135, 200 });
+	eb.setFillColor(backgroundDefaultColor);
 	eb.setOutlineColor(sf::Color::Red);
 	eb.setOutlineThickness(5);
 	eb.setPosition(sf::Vector2f{ 0,0 });
@@ -58,16 +60,50 @@ void Environment::configure()
 			sf::Vector2f(randomInt(40, static_cast<int>(Environment::getSize().x - 40)), randomInt(40, static_cast<int>(Environment::getSize().y - 40))),
 			sf::Color(0, randomInt(128, 255), randomInt(0, 64))));
 	}
+
+	TextureProvider::getInstance().getTexture("whiteNoise")->setSmooth(true);
+}
+
+void Environment::updateBackground()
+{
+	static double threshold = 30;
+	int newR, newG, newB;
+
+	auto newColor = backgroundDefaultColor;
+
+	//temperature
+	auto& envTemp = _temperature;
+	auto& envRad = _radiation;
+	if (envTemp > threshold)
+	{
+		newR = 2 * abs(envTemp - threshold) + backgroundDefaultColor.r;
+		if (newR > 255) newR = 255;
+		newColor.r = newR;
+	}
+	else if (envTemp < -threshold)
+	{
+		newB = 2 * abs(envTemp + threshold) + backgroundDefaultColor.b;
+		if (newB > 255) newB = 255;
+		newColor.b = newB;
+	}
+
+	//radiation
+	if (envRad > threshold)
+	{
+		newG = 3 * abs(envRad - threshold) + backgroundDefaultColor.g;
+		if (newG > 255) newG = 255;
+		newColor.g = newG;
+	}
+
+	environmentBackground.setFillColor(newColor);
 }
 
 void Environment::update()
 {
-	if (_temperature < -30)
-		temperatureBackground.setFillColor(sf::Color(0, 0, -_temperature + 155, (_temperature < -30) ? (-_temperature - 30) : 0));
-	else if (_temperature > 30)
-		temperatureBackground.setFillColor(sf::Color(_temperature + 155, 0, 0, (_temperature > 30) ? (_temperature - 30) : 0));
-
 	sf::Vector2f mouse = CellSimMouse::getPosition();
+
+	_aliveCellsCount = cells.size();
+	_foodCount = food.size();
 
 	//cell selection
 	if (CellSimMouse::wasLeftPressed())
@@ -80,18 +116,13 @@ void Environment::update()
 		}
 	}
 
-	_aliveCellsCount = cells.size();
-	_foodCount = food.size();
-
 	for (auto& cell : cells)
 	{
 		cell->update();
 	}
 
-	/*for (auto& food : food)
-	{
-		food->update();
-	}*/
+	CellSelectionController::update();
+	updateBackground();
 
 	//remove food marked to delete
 	auto newFoodEnd = std::remove_if(food.begin(), food.end(), [](auto f) {return f->toDelete; });
@@ -102,7 +133,6 @@ void Environment::update()
 	cells.erase(newCellsEnd, cells.end());
 
 
-	CellSelectionController::update();
 
 
 	////cell moving by user
@@ -131,10 +161,6 @@ void Environment::update()
 	//if (cellSelectionValid)
 	//	Logger::log(selectedCell->toString());
 
-	for (auto & subst : substances)
-	{
-		//subst.update();
-	}
 }
 
 void Environment::draw(sf::RenderWindow & window)
