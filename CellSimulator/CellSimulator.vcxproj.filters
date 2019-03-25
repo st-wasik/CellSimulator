@@ -150,5 +150,8 @@
     <ClInclude Include="CellMovementTool.h">
       <Filter>Environment\Header</Filter>
     </ClInclude>
+    <ClInclude Include="Ranged.h">
+      <Filter>Utils\Header</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
