@@ -12,6 +12,7 @@ public:
 
 	static Environment& getInstance();
 
+	void configure();
 
 	void clear();
 
@@ -41,15 +42,14 @@ private:
 	Environment(Environment const&) = delete;
 	void operator=(Environment const&) = delete;
 
-	void configure();
 
 	void updateBackground();
 
 
 	std::vector<std::shared_ptr<Cell>> cells;
 	std::vector<std::shared_ptr<int>/*Substance*/> substances;
-	std::vector<std::shared_ptr<Food>> food;
 	std::vector<std::shared_ptr<Cell>> deadCells;
+	std::vector<std::shared_ptr<Food>> food;
 
 
 	sf::RectangleShape environmentBackground;

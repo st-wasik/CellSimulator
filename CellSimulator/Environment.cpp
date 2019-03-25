@@ -8,6 +8,8 @@
 #include <atomic>
 #include "TextureProvider.h"
 #include "CellMovementTool.h"
+#include "FoodController.h"
+#include "AutoFeederTool.h"
 
 double getDistance(const sf::Vector2f& a, const sf::Vector2f& b)
 {
@@ -56,12 +58,14 @@ void Environment::configure()
 			sf::Color(randomInt(0, 255), randomInt(0, 64), randomInt(0, 255))));
 	}
 
-	for (int i = 0; i < 100; i++) {
-		food.push_back(std::make_shared<Food>(
-			randomInt(3, 12),
-			sf::Vector2f(randomInt(40, static_cast<int>(Environment::getSize().x - 40)), randomInt(40, static_cast<int>(Environment::getSize().y - 40))),
-			sf::Color(0, randomInt(128, 255), randomInt(0, 64))));
-	}
+	FoodController::generateFood(sf::Vector2f(3,12), 100);
+
+	/*for (int i = 0; i < 100; i++) {
+		food.push_back(std::make_shared<food>(
+			randomint(3, 12),
+			sf::vector2f(randomint(40, static_cast<int>(environment::getsize().x - 40)), randomint(40, static_cast<int>(environment::getsize().y - 40))),
+			sf::color(0, randomint(128, 255), randomint(0, 64))));
+	}*/
 
 	TextureProvider::getInstance().getTexture("whiteNoise")->setSmooth(true);
 }
@@ -120,6 +124,8 @@ void Environment::update()
 
 	CellSelectionTool::update();
 	CellMovementTool::update();
+	AutoFeederTool::getInstance().update();
+	
 	updateBackground();
 
 	for (auto& cell : cells)
@@ -157,10 +163,10 @@ void Environment::draw(sf::RenderWindow & window)
 	for (auto & f : food) {
 		window.draw(*f);
 	}
-	for (auto & cell : cells) {
+	for (auto & cell : deadCells) {
 		window.draw(*cell);
 	}
-	for (auto & cell : deadCells) {
+	for (auto & cell : cells) {
 		window.draw(*cell);
 	}
 	CellSelectionTool::draw(window);
@@ -223,7 +229,6 @@ std::vector<std::shared_ptr<Cell>>& Environment::getCellsVector()
 
 Environment::Environment()
 {
-	configure();
 }
 
 bool Environment::isCellInEnvironmentBounds(Cell & c)

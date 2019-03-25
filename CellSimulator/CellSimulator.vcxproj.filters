@@ -97,6 +97,12 @@
     <ClCompile Include="CellMovementTool.cpp">
       <Filter>Environment\Source</Filter>
     </ClCompile>
+    <ClCompile Include="AutoFeederTool.cpp">
+      <Filter>Environment\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="FoodController.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CellListApp.h">
@@ -150,5 +156,9 @@
     <ClInclude Include="CellMovementTool.h">
       <Filter>Environment\Header</Filter>
     </ClInclude>
+    <ClInclude Include="AutoFeederTool.h">
+      <Filter>Environment\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="FoodController.h" />
   </ItemGroup>
 </Project>

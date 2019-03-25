@@ -24,7 +24,8 @@ void CellSimApp::run()
 {
 
 	//getting instance configures environment for first use
-	Environment::getInstance();
+	Environment::getInstance().configure();
+
 
 	view.setCenter(sf::Vector2f(Environment::getInstance().getSize().x / 2, Environment::getInstance().getSize().y / 2));
 
