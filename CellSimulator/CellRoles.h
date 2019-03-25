@@ -18,6 +18,8 @@ public:
 
 	static void beDead(Cell* c);
 
+	void simulateHunger(Cell * c);
+
 	/// \returns true if collision occured - otherwise false
 	static bool checkEnvironmentBounds(Cell* c);
 private:

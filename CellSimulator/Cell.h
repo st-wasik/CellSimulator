@@ -20,8 +20,6 @@ public:
 
 	void update();
 
-	void simulateHunger();
-
 
 	// for moving cell by user
 	void freeze();

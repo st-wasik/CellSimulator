@@ -111,6 +111,11 @@ void CellRoles::beDead(Cell * c)
 	}
 }
 
+
+void CellRoles::simulateHunger(Cell * c) {
+	c->foodLevel -= 0.01 * CellSimApp::getDeltaTime();
+}
+
 bool CellRoles::checkEnvironmentBounds(Cell * c)
 {
 	const auto& envSize = Environment::getInstance().getSize();

@@ -27,6 +27,7 @@ Cell::Cell(float size, sf::Vector2f position, sf::Color color) : BaseObj(size, p
 	roles.push_back(CellRoles::changeSpeed);
 	roles.push_back(CellRoles::eat);
 	roles.push_back(CellRoles::updateColor);
+	roles.push_back(CellRoles::simulateHunger);
 
 	// make sure that moveForward is always the last role-function
 	// cell should be moved after all updates
@@ -44,12 +45,6 @@ void Cell::update()
 		{
 			fn(this);
 		}
-	simulateHunger();
-}
-
-void Cell::simulateHunger() {
-	// SHOULD BE IMPLEMENTED AS CELL ROLE
-	this->foodLevel -= 0.01 * CellSimApp::getDeltaTime();
 }
 
 void Cell::freeze()
