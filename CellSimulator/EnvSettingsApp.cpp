@@ -93,17 +93,17 @@ void EnvSettingsApp::run()
 	buttonRad->setSize(60, 25);
 	gui.add(buttonRad);
 
-	auto labelFeed = tgui::Label::create();
-	labelFeed->setRenderer(theme.getRenderer("Label"));
-	labelFeed->setText("Feed");
-	labelFeed->setPosition(147, 190);
-	labelFeed->setTextSize(24);
-	gui.add(labelFeed);
+	//auto labelFeed = tgui::Label::create();
+	//labelFeed->setRenderer(theme.getRenderer("Label"));
+	//labelFeed->setText("Feed");
+	//labelFeed->setPosition(147, 190);
+	//labelFeed->setTextSize(24);
+	//gui.add(labelFeed);
 
 	auto buttonFeedStart = tgui::Button::create();
 	buttonFeedStart->setRenderer(theme.getRenderer("Button"));
 	buttonFeedStart->setPosition(75, 220);
-	buttonFeedStart->setText("START");
+	buttonFeedStart->setText("Feed");
 	buttonFeedStart->setSize(100, 40);
 	buttonFeedStart->setInheritedOpacity(1);
 	gui.add(buttonFeedStart);
@@ -111,7 +111,7 @@ void EnvSettingsApp::run()
 	auto buttonFeedStop = tgui::Button::create();
 	buttonFeedStop->setRenderer(theme.getRenderer("Button"));
 	buttonFeedStop->setPosition(180, 220);
-	buttonFeedStop->setText("STOP");
+	buttonFeedStop->setText("Select");
 	buttonFeedStop->setSize(100, 40);
 	buttonFeedStop->setInheritedOpacity(0.5);
 	buttonFeedStop->setEnabled(0);
