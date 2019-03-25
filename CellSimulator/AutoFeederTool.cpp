@@ -18,7 +18,7 @@ AutoFeederTool::AutoFeederTool() {
 
 AutoFeederTool & AutoFeederTool::getInstance()
 {
-	AutoFeederTool instance;
+	static AutoFeederTool instance;
 	return instance;
 }
 
@@ -29,18 +29,15 @@ void AutoFeederTool::configure(int maxThresholdValue)
 
 void AutoFeederTool::update()
 {
-	//std::cout << clock.getElapsedTime().asMilliseconds() << "\t";
-	//clock.restart();
-	//std::cout << clock.getElapsedTime().asMilliseconds() << std::endl;
 	auto& foodVector = Environment::getInstance().getFoodsVector();
 
-	if (foodVector.size() < maxThresholdValue) {
+	if (foodVector.size() < maxThresholdValue && currentFoodInSecondCount < maxFoodPerSec) {
 		FoodController::getInstance().generateFood(sf::Vector2f(3,12), 1);
 		currentFoodInSecondCount++;
 	}
-	/*if (clock.getElapsedTime().asSeconds() >= 10) {
+	if (clock.getElapsedTime().asSeconds() >= 1) {
 		currentFoodInSecondCount = 0;
 		clock.restart();
-	}*/
+	}
 	
 }
