@@ -28,7 +28,7 @@ public:
 	bool operator>(const Ranged& v);
 	bool operator<(const Ranged& v);
 
-	T raw();
+	T get();
 private:
 
 	T value;
@@ -50,7 +50,7 @@ inline Ranged<T, min, max>::Ranged(T r)
 template<typename T, int min, int max>
 inline Ranged<T, min, max> & Ranged<T, min, max>::operator=(const Ranged & v)
 {
-	this->value = check(v.value).raw();
+	this->value = check(v.value).get();
 	return *this;
 }
 
@@ -152,7 +152,7 @@ inline bool Ranged<T, min, max>::operator<(const Ranged & v)
 }
 
 template<typename T, int min, int max>
-inline T Ranged<T, min, max>::raw()
+inline T Ranged<T, min, max>::get()
 {
 	return value;
 }
@@ -160,7 +160,7 @@ inline T Ranged<T, min, max>::raw()
 template<typename T, int min, int max>
 std::ostream& operator<<(std::ostream& stream, const Ranged<T, min, max>& v)
 {
-	return stream << v.raw();
+	return stream << v.get();
 }
 
 bool rangedTest()
@@ -171,25 +171,25 @@ bool rangedTest()
 	Ranged<int, 1, 50> c(40);
 
 	a = 5;
-	result.push_back(a.raw() == 5);
+	result.push_back(a.get() == 5);
 
-	result.push_back((a + b).raw() == 8);
-	result.push_back((b - a).raw() == 1);
-	result.push_back((a - b).raw() == 2);
-	result.push_back((a * b).raw() == 10);
-	result.push_back((a / b).raw() == 1);
+	result.push_back((a + b).get() == 8);
+	result.push_back((b - a).get() == 1);
+	result.push_back((a - b).get() == 2);
+	result.push_back((a * b).get() == 10);
+	result.push_back((a / b).get() == 1);
 
 	c++;
-	result.push_back(c.raw() == 41);
+	result.push_back(c.get() == 41);
 
 	c--;
-	result.push_back(c.raw() == 40);
+	result.push_back(c.get() == 40);
 
 	++c;
-	result.push_back(c.raw() == 41);
+	result.push_back(c.get() == 41);
 
 	--c;
-	result.push_back(c.raw() == 40);
+	result.push_back(c.get() == 40);
 
 	result.push_back(c == 40);
 	result.push_back(c > 39);
