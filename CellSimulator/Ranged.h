@@ -10,6 +10,7 @@ public:
 	Ranged(T r);
 	Ranged(const Ranged& v);
 	Ranged& operator=(const Ranged& v);
+	//operator T();
 
 	Ranged operator+(const Ranged& v);
 	Ranged operator-(const Ranged& v);
@@ -21,6 +22,11 @@ public:
 
 	Ranged& operator--(const int);
 	Ranged& operator--();
+
+	bool operator==(const Ranged& v);
+	bool operator!=(const Ranged& v);
+	bool operator>(const Ranged& v);
+	bool operator<(const Ranged& v);
 
 	T raw();
 private:
@@ -48,6 +54,11 @@ inline Ranged<T, min, max> & Ranged<T, min, max>::operator=(const Ranged & v)
 	return *this;
 }
 
+//template<typename T, int min, int max>
+//inline Ranged<T, min, max>::operator T()
+//{
+//	return T(value);
+//}
 
 template<typename T, int min, int max>
 inline Ranged<T, min, max> Ranged<T, min, max>::operator+(const Ranged & v)
@@ -117,6 +128,30 @@ inline Ranged<T, min, max> & Ranged<T, min, max>::operator--()
 }
 
 template<typename T, int min, int max>
+inline bool Ranged<T, min, max>::operator==(const Ranged & v)
+{
+	return this->value == v.value;
+}
+
+template<typename T, int min, int max>
+inline bool Ranged<T, min, max>::operator!=(const Ranged & v)
+{
+	return this->value != v.value;
+}
+
+template<typename T, int min, int max>
+inline bool Ranged<T, min, max>::operator>(const Ranged & v)
+{
+	return this->value > v.value;
+}
+
+template<typename T, int min, int max>
+inline bool Ranged<T, min, max>::operator<(const Ranged & v)
+{
+	return this->value < v.value;
+}
+
+template<typename T, int min, int max>
 inline T Ranged<T, min, max>::raw()
 {
 	return value;
@@ -156,5 +191,10 @@ bool rangedTest()
 	--c;
 	result.push_back(c.raw() == 40);
 
-	return std::all_of(result.begin(), result.end(), [](auto a) {return a == true; });
+	result.push_back(c == 40);
+	result.push_back(c > 39);
+	result.push_back(c < 49);
+	result.push_back(c != 1);
+
+	if (std::all_of(result.begin(), result.end(), [](auto a) {return a == true; })) return true; else terminate();
 }
