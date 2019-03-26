@@ -332,6 +332,7 @@ void EnvSettingsApp::run()
 		sliderFreq->setInheritedOpacity(1);
 		buttonFreq->setEnabled(1);
 		buttonFreq->setInheritedOpacity(1);
+		AutoFeederTool::getInstance().setIsActive(true);
 	});
 
 	checkBoxFeed->connect("unchecked", [=]()
@@ -352,6 +353,7 @@ void EnvSettingsApp::run()
 		sliderFreq->setInheritedOpacity(0.5);
 		buttonFreq->setEnabled(0);
 		buttonFreq->setInheritedOpacity(0.5);
+		AutoFeederTool::getInstance().setIsActive(false);
 	});
 
 	sf::Event event;
