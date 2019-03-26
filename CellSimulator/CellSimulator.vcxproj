@@ -163,6 +163,7 @@
     <ClInclude Include="MainApp.h" />
     <ClInclude Include="CellSimMouse.h" />
     <ClInclude Include="Random.h" />
+    <ClInclude Include="Ranged.h" />
     <ClInclude Include="TextureProvider.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
