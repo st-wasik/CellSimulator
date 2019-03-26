@@ -40,7 +40,7 @@ void CellRoles::changeSpeed(Cell * c)
 {
 	// SPEED CHANGE THRESHOLD SHOULD BE STORED IN GENES
 	if (randomInt(0, 1000) > 995)
-		c->currentSpeed = randomReal(0.1, 2);
+		c->currentSpeed = randomReal(0.1, static_cast<float>(c->genes.maxSpeed.get()));
 }
 
 void CellRoles::eat(Cell * c)
@@ -49,12 +49,14 @@ void CellRoles::eat(Cell * c)
 
 	for (auto& f : foods)
 	{
-		if (c->collision(f) && !f->toDelete)
+		if (c->collision(f) && !f->toDelete && c->foodLevel<c->genes.foodLimit.get())
 		{
 			c->foodLevel += static_cast<int>(f->getSize());
 
-			// ONLY FOR TEST - DELETE LATER
-			c->setSize(c->getSize() + 1);
+			if (c->getSize() < c->genes.maxSize.get())
+			{
+				c->setSize(c->getSize() + 1);
+			}
 			f->toDelete = true;
 		}
 	}
@@ -114,6 +116,22 @@ void CellRoles::beDead(Cell * c)
 
 void CellRoles::simulateHunger(Cell * c) {
 	c->foodLevel -= 0.01 * CellSimApp::getDeltaTime();
+	if (c->foodLevel <= 0)
+	{
+		c->kill();
+	}
+}
+
+void CellRoles::divideAndConquer(Cell * c)
+{
+	auto& cells = Environment::getInstance().getCellsVector();
+	if (c->foodLevel >= c->genes.foodLimit.get() && c->getSize() >= c->genes.maxSize.get() && randomInt(0, 100) <= c->genes.divisionThreshold.get())
+	{
+		c->foodLevel = 50;
+		c->setSize(20);
+		cells.push_back(std::make_shared<Cell>(*c));
+		c->setRotation(c->getRotation() + 180);
+	}
 }
 
 bool CellRoles::checkEnvironmentBounds(Cell * c)

@@ -20,6 +20,8 @@ public:
 
 	static void simulateHunger(Cell * c);
 
+	static void divideAndConquer(Cell * c);
+
 	/// \returns true if collision occured - otherwise false
 	static bool checkEnvironmentBounds(Cell* c);
 private:

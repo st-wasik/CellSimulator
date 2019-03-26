@@ -7,6 +7,7 @@
 #include <algorithm>
 #include "Logger.h"
 #include "Food.h"
+#include "Genes.h"
 
 class CellRoles;
 
@@ -44,5 +45,7 @@ private:
 	bool freezed = false;
 
 	bool dead = false;
+
+	Genes genes;
 };
 

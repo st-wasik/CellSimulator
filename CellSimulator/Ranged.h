@@ -2,6 +2,7 @@
 #include <iostream>
 #include <algorithm>
 #include <vector>
+#include "Random.h"
 
 template <typename T, int min, int max>
 class Ranged
@@ -9,9 +10,9 @@ class Ranged
 public:
 	Ranged();
 	Ranged(T r);
+	Ranged(bool rng);
 	Ranged(const Ranged& v);
 	Ranged& operator=(const Ranged& v);
-	//operator T();
 
 	Ranged operator+(const Ranged& v);
 	Ranged operator-(const Ranged& v);
@@ -49,17 +50,27 @@ inline Ranged<T, min, max>::Ranged(T r)
 }
 
 template<typename T, int min, int max>
+inline Ranged<T, min, max>::Ranged(bool rng)
+{
+	if (rng)
+	{
+		if (std::is_same<T, int>::value)
+		{
+			value = randomInt(min, max);
+		}
+		else
+		{
+			value = randomReal(min, max);
+		}
+	}
+}
+
+template<typename T, int min, int max>
 inline Ranged<T, min, max> & Ranged<T, min, max>::operator=(const Ranged & v)
 {
 	this->value = check(v.value).get();
 	return *this;
 }
-
-//template<typename T, int min, int max>
-//inline Ranged<T, min, max>::operator T()
-//{
-//	return T(value);
-//}
 
 template<typename T, int min, int max>
 inline Ranged<T, min, max> Ranged<T, min, max>::operator+(const Ranged & v)
@@ -164,7 +175,7 @@ std::ostream& operator<<(std::ostream& stream, const Ranged<T, min, max>& v)
 	return stream << v.get();
 }
 
-bool rangedTest()
+/*bool rangedTest()
 {
 	std::vector<bool> result;
 
@@ -198,4 +209,4 @@ bool rangedTest()
 	result.push_back(c != 1);
 
 	if (std::all_of(result.begin(), result.end(), [](auto a) {return a == true; })) return true; else terminate();
-}
+}*/

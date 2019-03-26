@@ -7,7 +7,7 @@
 
 Cell::Cell(float size, sf::Vector2f position, sf::Color color) : BaseObj(size, position, color)
 {
-	this->foodLevel = 100;
+	this->foodLevel = 50;
 
 	this->currentSpeed = randomReal(0.1, 2);
 
@@ -28,6 +28,7 @@ Cell::Cell(float size, sf::Vector2f position, sf::Color color) : BaseObj(size, p
 	roles.push_back(CellRoles::eat);
 	roles.push_back(CellRoles::updateColor);
 	roles.push_back(CellRoles::simulateHunger);
+	roles.push_back(CellRoles::divideAndConquer);
 
 	// make sure that moveForward is always the last role-function
 	// cell should be moved after all updates
@@ -59,12 +60,15 @@ void Cell::unfreeze()
 
 void Cell::kill()
 {
-	dead = true;
-	roles.clear();
-	roles.push_back(CellRoles::beDead);
+	if (!dead)
+	{
+		dead = true;
+		roles.clear();
+		roles.push_back(CellRoles::beDead);
 
-	auto color = randomInt(0, 32);
-	shape.setFillColor(sf::Color(color, color, color, 255));
+		auto color = randomInt(0, 32);
+		shape.setFillColor(sf::Color(color, color, color, 255));
+	}
 }
 
 bool Cell::isDead()
