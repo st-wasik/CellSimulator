@@ -4,27 +4,31 @@
 class CellMovementTool
 {
 public:
-	CellMovementTool() = delete;
+	static CellMovementTool& getInstance();
 
-	static void update();
+	void update();
 
-	static void draw(sf::RenderWindow&);
+	void draw(sf::RenderWindow&);
 
-	static void detachCell();
+	void detachCell();
 
-	static void attachCell(std::shared_ptr<Cell>&);
+	void attachCell(std::shared_ptr<Cell>&);
 
-	static std::shared_ptr<Cell> getAttachedCell();
+	std::shared_ptr<Cell> getAttachedCell();
 
 private:
-	static std::shared_ptr<Cell> selectedCell;
+	CellMovementTool();
+	CellMovementTool(const CellMovementTool&) = delete;
+	CellMovementTool& operator=(const CellMovementTool&) = delete;
 
-	static sf::CircleShape selectionMarker;
+	std::shared_ptr<Cell> selectedCell;
 
-	static double getDistance(const sf::Vector2f& a, const sf::Vector2f& b);
+	sf::CircleShape selectionMarker;
 
-	void static pickCellFromEnvironment();
+	double getDistance(const sf::Vector2f& a, const sf::Vector2f& b);
 
-	void static placeCellToEnvironment();
+	void  pickCellFromEnvironment();
+
+	void  placeCellToEnvironment();
 };
 

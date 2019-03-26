@@ -4,9 +4,11 @@
 #include "CellSelectionTool.h"
 #include "CellSimApp.h"
 
-std::shared_ptr<Cell> CellMovementTool::selectedCell;
-
-sf::CircleShape CellMovementTool::selectionMarker;
+CellMovementTool & CellMovementTool::getInstance()
+{
+	static CellMovementTool instance;
+	return instance;
+}
 
 void CellMovementTool::update()
 {
@@ -80,7 +82,7 @@ void CellMovementTool::detachCell()
 {
 	if (selectedCell != nullptr)
 	{
-		CellSelectionTool::setSelectedCell(selectedCell);
+		CellSelectionTool::getInstance().setSelectedCell(selectedCell);
 
 		placeCellToEnvironment();
 		selectedCell->unfreeze();
@@ -94,7 +96,7 @@ void CellMovementTool::attachCell(std::shared_ptr<Cell>&s)
 	selectedCell->freeze();
 	pickCellFromEnvironment();
 
-	CellSelectionTool::clearSelectedCell();
+	CellSelectionTool::getInstance().clearSelectedCell();
 
 	selectionMarker.setFillColor(sf::Color(255, 255, 255, 0));
 	selectionMarker.setOutlineColor(sf::Color(192, 192, 192, 128));
@@ -105,6 +107,10 @@ void CellMovementTool::attachCell(std::shared_ptr<Cell>&s)
 std::shared_ptr<Cell> CellMovementTool::getAttachedCell()
 {
 	return selectedCell;
+}
+
+CellMovementTool::CellMovementTool()
+{
 }
 
 double CellMovementTool::getDistance(const sf::Vector2f & a, const sf::Vector2f & b)

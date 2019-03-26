@@ -103,6 +103,9 @@
     <ClCompile Include="FoodController.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Distance.cpp">
+      <Filter>Utils\Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CellListApp.h">
@@ -163,5 +166,8 @@
       <Filter>Environment\Header</Filter>
     </ClInclude>
     <ClInclude Include="FoodController.h" />
+    <ClInclude Include="Distance.h">
+      <Filter>Utils\Header</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

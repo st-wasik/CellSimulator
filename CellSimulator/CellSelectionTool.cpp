@@ -1,13 +1,28 @@
 #include "CellSelectionTool.h"
 #include "CellSimMouse.h"
 #include "Environment.h"
+#include "Distance.h"
 
-std::shared_ptr<Cell> CellSelectionTool::selectedCell;
-
-sf::CircleShape CellSelectionTool::selectionMarker;
+CellSelectionTool & CellSelectionTool::getInstance()
+{
+	static CellSelectionTool instance;
+	return instance;
+}
 
 void CellSelectionTool::update()
 {
+	if (CellSimMouse::wasLeftPressed())
+	{
+		CellSelectionTool::clearSelectedCell();
+		auto& cells = Environment::getInstance().getCellsVector();
+		auto selectedCell = std::find_if(cells.begin(), cells.end(), [&](std::shared_ptr<Cell> c) {return getDistance(c->getPosition(), CellSimMouse::getPosition()) < c->getSize(); });
+		if (selectedCell != cells.end())
+		{
+			setSelectedCell(*selectedCell);
+		}
+	}
+
+
 	if (selectedCell != nullptr)
 	{
 		float size = selectedCell->getSize() + 30;
@@ -47,4 +62,8 @@ void CellSelectionTool::setSelectedCell(std::shared_ptr<Cell> &s)
 std::shared_ptr<Cell> CellSelectionTool::getSelectedCell()
 {
 	return selectedCell;
+}
+
+CellSelectionTool::CellSelectionTool()
+{
 }

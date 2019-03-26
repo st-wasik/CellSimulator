@@ -10,12 +10,7 @@
 #include "CellMovementTool.h"
 #include "FoodController.h"
 #include "AutoFeederTool.h"
-
-double getDistance(const sf::Vector2f& a, const sf::Vector2f& b)
-{
-	auto v = a - b;
-	return sqrt(v.x*v.x + v.y*v.y);
-}
+#include "Distance.h"
 
 Environment::~Environment()
 {
@@ -100,19 +95,8 @@ void Environment::update()
 	_aliveCellsCount = cells.size();
 	_foodCount = food.size();
 
-	//cell selection
-	if (CellSimMouse::wasLeftPressed())
-	{
-		CellSelectionTool::clearSelectedCell();
-		auto selectedCell = std::find_if(cells.begin(), cells.end(), [&](std::shared_ptr<Cell> c) {return getDistance(c->getPosition(), mouse) < c->getSize(); });
-		if (selectedCell != cells.end())
-		{
-			CellSelectionTool::setSelectedCell(*selectedCell);
-		}
-	}
-
-	CellSelectionTool::update();
-	CellMovementTool::update();
+	CellSelectionTool::getInstance().update();
+	CellMovementTool::getInstance().update();
 	AutoFeederTool::getInstance().update();
 
 	updateBackground();
@@ -162,8 +146,8 @@ void Environment::draw(sf::RenderWindow & window)
 	for (auto & cell : cells) {
 		window.draw(*cell);
 	}
-	CellSelectionTool::draw(window);
-	CellMovementTool::draw(window);
+	CellSelectionTool::getInstance().draw(window);
+	CellMovementTool::getInstance().draw(window);
 }
 
 std::atomic<double>& Environment::getTemperature()

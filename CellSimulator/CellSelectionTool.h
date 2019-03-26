@@ -5,21 +5,25 @@
 class CellSelectionTool
 {
 public:
-	CellSelectionTool() = delete;
+	static CellSelectionTool& getInstance();
 
-	static void update();
+	void update();
 
-	static void draw(sf::RenderWindow&);
+	void draw(sf::RenderWindow&);
 
-	static void clearSelectedCell();
+	void clearSelectedCell();
 
-	static void setSelectedCell(std::shared_ptr<Cell>&);
+	void setSelectedCell(std::shared_ptr<Cell>&);
 
-	static std::shared_ptr<Cell> getSelectedCell();
+	std::shared_ptr<Cell> getSelectedCell();
 
 private:
-	static std::shared_ptr<Cell> selectedCell;
+	CellSelectionTool();
+	CellSelectionTool(const CellSelectionTool&) = delete;
+	CellSelectionTool& operator=(const CellSelectionTool&) = delete;
 
-	static sf::CircleShape selectionMarker;
+	std::shared_ptr<Cell> selectedCell;
+
+	sf::CircleShape selectionMarker;
 };
 
