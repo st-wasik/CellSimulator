@@ -51,7 +51,8 @@ void CellRoles::eat(Cell * c)
 	{
 		if (c->collision(f) && !f->isMarkedToDelete() && c->foodLevel<c->genes.foodLimit.get())
 		{
-			c->foodLevel += static_cast<int>(f->getSize());
+			auto foodArea = f->getSize()*f->getSize()*PI;
+			c->foodLevel += static_cast<int>(foodArea/10);
 			f->markToDelete();
 		}
 	}
@@ -107,11 +108,12 @@ void CellRoles::beDead(Cell * c)
 
 
 void CellRoles::simulateHunger(Cell * c) {
-	c->foodLevel -= 0.01 * CellSimApp::getDeltaTime();
+	c->foodLevel -= randomReal(0.005, 0.02) * CellSimApp::getDeltaTime();
 	if (c->foodLevel <= 0)
 	{
 		c->kill();
 	}
+
 }
 
 void CellRoles::divideAndConquer(Cell * c)
@@ -128,9 +130,16 @@ void CellRoles::divideAndConquer(Cell * c)
 
 void CellRoles::grow(Cell * c)
 {
+	auto rand = randomReal(0.025, 0.06);
+
 	if (c->getSize() < c->genes.maxSize.get() && c->foodLevel > 50)
 	{
-		c->setSize(c->getSize() + 0.05 * CellSimApp::getDeltaTime());
+		c->setSize(c->getSize() + rand * CellSimApp::getDeltaTime());
+	}
+
+	if (c->getSize() > 10 && c->foodLevel < 20)
+	{
+		c->setSize(c->getSize() - rand * CellSimApp::getDeltaTime());
 	}
 }
 
