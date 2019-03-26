@@ -1,5 +1,6 @@
 #include "EnvSettingsApp.h"
 #include "Environment.h"
+#include "AutoFeederTool.h"
 #include "MainApp.h"
 #include "Logger.h"
 #include <TGUI/TGUI.hpp>
@@ -107,7 +108,7 @@ void EnvSettingsApp::run()
 	editBoxQuan->setSize(60, 25);
 	editBoxQuan->setTextSize(18);
 	editBoxQuan->setPosition(220, 142);
-	//editBoxQuan->setDefaultText(std::to_string((int)Environment::getInstance().getTemperature()));
+	editBoxQuan->setDefaultText(std::to_string((int)AutoFeederTool::getInstance().getMaxThresholdValue()));
 	editBoxQuan->setEnabled(0);
 	editBoxQuan->setInheritedOpacity(0.5);
 	gui.add(editBoxQuan);
@@ -118,7 +119,7 @@ void EnvSettingsApp::run()
 	sliderQuan->setSize(200, 9);
 	sliderQuan->setMaximum(100);
 	sliderQuan->setMinimum(1);
-	//sliderQuan->setValue(Environment::getInstance().getRadiation());
+	sliderQuan->setValue(AutoFeederTool::getInstance().getMaxThresholdValue());
 	sliderQuan->setEnabled(0);
 	sliderQuan->setInheritedOpacity(0.5);
 	gui.add(sliderQuan);
@@ -146,7 +147,7 @@ void EnvSettingsApp::run()
 	editBoxFreq->setSize(60, 25);
 	editBoxFreq->setTextSize(18);
 	editBoxFreq->setPosition(220, 187);
-	//editBoxFreq->setDefaultText(std::to_string((int)Environment::getInstance().getTemperature()));
+	editBoxFreq->setDefaultText(std::to_string((int)AutoFeederTool::getInstance().getMaxFoodPerSec()));
 	editBoxFreq->setEnabled(0);
 	editBoxFreq->setInheritedOpacity(0.5);
 	gui.add(editBoxFreq);
@@ -157,7 +158,7 @@ void EnvSettingsApp::run()
 	sliderFreq->setSize(200, 9);
 	sliderFreq->setMaximum(100);
 	sliderFreq->setMinimum(1);
-	//sliderFreq->setValue(Environment::getInstance().getRadiation());
+	sliderFreq->setValue(AutoFeederTool::getInstance().getMaxFoodPerSec());
 	sliderFreq->setEnabled(0);
 	sliderFreq->setInheritedOpacity(0.5);
 	gui.add(sliderFreq);
@@ -258,6 +259,42 @@ void EnvSettingsApp::run()
 			sliderRad->setValue(std::stoi(editBoxRad->getText().toAnsiString()));
 			editBoxRad->setDefaultText(std::to_string((int)sliderRad->getValue()));
 			editBoxRad->setText("");
+		}
+	});
+
+	sliderQuan->connect("ValueChanged", [&]()
+	{
+		AutoFeederTool::getInstance().setMaxThresholdValue(sliderQuan->getValue());
+		if (editBoxQuan->getText() != "")
+			editBoxQuan->setText("");
+		editBoxQuan->setDefaultText(std::to_string((int)sliderQuan->getValue()));
+	});
+
+	buttonQuan->connect("pressed", [=]()
+	{
+		if (editBoxQuan->getText() != "")
+		{
+			sliderQuan->setValue(std::stoi(editBoxQuan->getText().toAnsiString()));
+			editBoxQuan->setDefaultText(std::to_string((int)sliderQuan->getValue()));
+			editBoxQuan->setText("");
+		}
+	});
+
+	sliderFreq->connect("ValueChanged", [&]()
+	{
+		AutoFeederTool::getInstance().setMaxFoodPerSec(sliderFreq->getValue());
+		if (editBoxFreq->getText() != "")
+			editBoxFreq->setText("");
+		editBoxFreq->setDefaultText(std::to_string((int)sliderFreq->getValue()));
+	});
+
+	buttonFreq->connect("pressed", [=]()
+	{
+		if (editBoxFreq->getText() != "")
+		{
+			sliderFreq->setValue(std::stoi(editBoxFreq->getText().toAnsiString()));
+			editBoxFreq->setDefaultText(std::to_string((int)sliderFreq->getValue()));
+			editBoxFreq->setText("");
 		}
 	});
 
