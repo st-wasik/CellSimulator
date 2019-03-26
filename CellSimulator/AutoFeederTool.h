@@ -13,8 +13,11 @@ public:
 	void update();
 	void setMaxThresholdValue(int value);
 	void setMaxFoodPerSec(int value);
+	void setIsActive(bool value);
 	std::atomic<int>& getMaxThresholdValue();
 	std::atomic<int>& getMaxFoodPerSec();
+	std::atomic<bool>& getIsActive();
+
 	
 private:
 	AutoFeederTool();
@@ -27,5 +30,6 @@ private:
 	static std::mutex mutex;
 	std::atomic<int> maxThresholdValue;
 	std::atomic<int> maxFoodPerSec;
+	std::atomic<bool> isActive;
 };
 

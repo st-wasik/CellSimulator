@@ -13,6 +13,7 @@ AutoFeederTool::AutoFeederTool() {
 	maxThresholdValue = 50;
 	maxFoodPerSec = 5;
 	spawnTime = 1000 / maxFoodPerSec;
+	isActive = false;
 	clock.restart();
 }
 
@@ -32,7 +33,7 @@ void AutoFeederTool::update()
 {
 	auto& foodVector = Environment::getInstance().getFoodsVector();
 	int deltaTime = clock.getElapsedTime().asMilliseconds();
-	if (foodVector.size() < maxThresholdValue && deltaTime > spawnTime) {
+	if (foodVector.size() < maxThresholdValue && deltaTime > spawnTime && isActive) {
 		FoodController::getInstance().generateFood(sf::Vector2f(3,12), deltaTime/spawnTime);
 		clock.restart();
 	}
@@ -49,6 +50,14 @@ void AutoFeederTool::setMaxThresholdValue(int value)
 void AutoFeederTool::setMaxFoodPerSec(int value)
 {
 	this->maxFoodPerSec = value;
+	if (value != 0) {
+		spawnTime = 1000 / maxFoodPerSec;
+	}
+}
+
+void AutoFeederTool::setIsActive(bool value)
+{
+	this->isActive = value;
 }
 
 std::atomic<int>& AutoFeederTool::getMaxThresholdValue()
@@ -59,4 +68,9 @@ std::atomic<int>& AutoFeederTool::getMaxThresholdValue()
 std::atomic<int>& AutoFeederTool::getMaxFoodPerSec()
 {
 	return this->maxFoodPerSec;
+}
+
+std::atomic<bool>& AutoFeederTool::getIsActive()
+{
+	return this->isActive;
 }
