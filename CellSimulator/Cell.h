@@ -21,14 +21,13 @@ public:
 
 	void update();
 
-
 	// for moving cell by user
 	void freeze();
 	void unfreeze();
 
+	// Marks cell as killed. It will be moved to dead cells vector in next loop turn.
 	void kill();
 	bool isDead();
-
 private:
 
 	// vector of pointers to role-functions

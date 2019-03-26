@@ -36,6 +36,10 @@ public:
 
 	std::vector<std::shared_ptr<Food>>& getFoodsVector();
 	std::vector<std::shared_ptr<Cell>>& getCellsVector();
+	std::vector<std::shared_ptr<Cell>>& getNewCellsVector();
+
+	// inserts new cell to environment
+	void insertNewCell(std::shared_ptr<Cell>);
 
 private:
 	Environment();
@@ -46,13 +50,11 @@ private:
 	void updateBackground();
 
 	std::vector<std::shared_ptr<Cell>> cells;
-	std::vector<std::shared_ptr<int>/*Substance*/> substances;
 	std::vector<std::shared_ptr<Cell>> deadCells;
+	std::vector<std::shared_ptr<Cell>> newCells;
 	std::vector<std::shared_ptr<Food>> food;
 
-
 	sf::RectangleShape environmentBackground;
-	sf::RectangleShape temperatureBackground;
 
 	std::atomic<double> _temperature;
 	std::atomic<double> _radiation;

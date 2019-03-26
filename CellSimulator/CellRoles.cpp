@@ -49,15 +49,10 @@ void CellRoles::eat(Cell * c)
 
 	for (auto& f : foods)
 	{
-		if (c->collision(f) && !f->toDelete && c->foodLevel<c->genes.foodLimit.get())
+		if (c->collision(f) && !f->isMarkedToDelete() && c->foodLevel<c->genes.foodLimit.get())
 		{
 			c->foodLevel += static_cast<int>(f->getSize());
-
-			if (c->getSize() < c->genes.maxSize.get())
-			{
-				c->setSize(c->getSize() + 1);
-			}
-			f->toDelete = true;
+			f->markToDelete();
 		}
 	}
 }
@@ -66,7 +61,7 @@ void CellRoles::updateColor(Cell * c)
 {
 	static double threshold = 30;
 
-	int newR, newG, newB;
+	Ranged<int, 0, 255> newR, newG, newB;
 
 	auto newColor = c->baseColor;
 
@@ -75,23 +70,20 @@ void CellRoles::updateColor(Cell * c)
 	auto& envRad = Environment::getInstance().getRadiation();
 	if (envTemp > threshold)
 	{
-		newR = 2 * abs(envTemp - threshold) + c->baseColor.r;
-		if (newR > 255) newR = 255;
-		newColor.r = newR;
+		newR = 2 * abs(envTemp - threshold)  + c->baseColor.r;
+		newColor.r = newR.get();
 	}
 	else if (envTemp < -threshold)
 	{
 		newB = 2 * abs(envTemp + threshold) + c->baseColor.b;
-		if (newB > 255) newB = 255;
-		newColor.b = newB;
+		newColor.b = newB.get();
 	}
 
 	//radiation
 	if (envRad > threshold)
 	{
 		newG = 3 * abs(envRad - threshold) + c->baseColor.g;
-		if (newG > 255) newG = 255;
-		newColor.g = newG;
+		newColor.g = newG.get();
 	}
 
 	c->shape.setFillColor(newColor);
@@ -109,7 +101,7 @@ void CellRoles::beDead(Cell * c)
 	}
 	else
 	{
-		c->toDelete = true;
+		c->markToDelete();
 	}
 }
 
@@ -129,8 +121,16 @@ void CellRoles::divideAndConquer(Cell * c)
 	{
 		c->foodLevel = 50;
 		c->setSize(20);
-		cells.push_back(std::make_shared<Cell>(*c));
+		Environment::getInstance().insertNewCell(std::make_shared<Cell>(*c));
 		c->setRotation(c->getRotation() + 180);
+	}
+}
+
+void CellRoles::grow(Cell * c)
+{
+	if (c->getSize() < c->genes.maxSize.get() && c->foodLevel > 50)
+	{
+		c->setSize(c->getSize() + 0.05 * CellSimApp::getDeltaTime());
 	}
 }
 

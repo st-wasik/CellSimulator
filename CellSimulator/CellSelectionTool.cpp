@@ -19,7 +19,7 @@ void CellSelectionTool::update()
 		{
 			selectedCell->kill();
 		}
-		if (selectedCell->toDelete || selectedCell->isDead()) selectedCell = nullptr;
+		if (selectedCell->isMarkedToDelete() || selectedCell->isDead()) selectedCell = nullptr;
 	}
 }
 

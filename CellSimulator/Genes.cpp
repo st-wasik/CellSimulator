@@ -2,6 +2,7 @@
 
 Genes::Genes()
 {
+	randomize();
 }
 
 Genes::Genes(double maxSpeed, double aggresion, double radarRange, double divisionThreshold, double foodLimit, double maxSize, double age)
@@ -12,5 +13,16 @@ Genes::Genes(double maxSpeed, double aggresion, double radarRange, double divisi
 	this->divisionThreshold = divisionThreshold;
 	this->foodLimit = foodLimit;
 	this->maxSize = maxSize;
-	this->age = age;
+	this->maxAge = age;
+}
+
+void Genes::randomize()
+{
+	maxSize.randomize();
+	aggresion.randomize();
+	radarRange.randomize();
+	divisionThreshold.randomize();
+	foodLimit.randomize();
+	maxSize.randomize();
+	maxAge.randomize();
 }

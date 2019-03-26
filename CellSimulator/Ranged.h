@@ -4,13 +4,15 @@
 #include <vector>
 #include "Random.h"
 
+
+
 template <typename T, int min, int max>
 class Ranged
 {
 public:
 	Ranged();
-	Ranged(T r);
-	Ranged(bool rng);
+	Ranged(T v);
+	//Ranged(bool rng);
 	Ranged(const Ranged& v);
 	Ranged& operator=(const Ranged& v);
 
@@ -31,6 +33,7 @@ public:
 	bool operator<(const Ranged& v);
 
 	T get();
+	void randomize();
 private:
 
 	T value;
@@ -49,21 +52,21 @@ inline Ranged<T, min, max>::Ranged(T r)
 	value = r;
 }
 
-template<typename T, int min, int max>
-inline Ranged<T, min, max>::Ranged(bool rng)
-{
-	if (rng)
-	{
-		if (std::is_same<T, int>::value)
-		{
-			value = randomInt(min, max);
-		}
-		else
-		{
-			value = randomReal(min, max);
-		}
-	}
-}
+//template<typename T, int min, int max>
+//inline Ranged<T, min, max>::Ranged(bool rng)
+//{
+//	if (rng)
+//	{
+//		if (std::is_same<T, int>::value)
+//		{
+//			value = randomInt(min, max);
+//		}
+//		else
+//		{
+//			value = randomReal(min, max);
+//		}
+//	}
+//}
 
 template<typename T, int min, int max>
 inline Ranged<T, min, max> & Ranged<T, min, max>::operator=(const Ranged & v)
@@ -167,6 +170,19 @@ template<typename T, int min, int max>
 inline T Ranged<T, min, max>::get()
 {
 	return value;
+}
+
+template<typename T, int min, int max>
+inline void Ranged<T, min, max>::randomize()
+{
+	if (std::is_same<T, int>::value)
+	{
+		value = randomInt(min, max);
+	}
+	else
+	{
+		value = randomReal(min, max);
+	}
 }
 
 template<typename T, int min, int max>

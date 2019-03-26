@@ -30,7 +30,7 @@ Environment& Environment::getInstance()
 void Environment::clear()
 {
 	cells.clear();
-	substances.clear();
+	deadCells.clear();
 	food.clear();
 }
 
@@ -47,10 +47,6 @@ void Environment::configure()
 	eb.setTextureRect(sf::IntRect(0, 0, eb.getSize().x / 10, eb.getSize().y / 10));
 	eb.setTexture(TextureProvider::getInstance().getTexture("background").get());
 
-	temperatureBackground.setSize(eb.getSize());
-	temperatureBackground.setPosition(eb.getPosition());
-	temperatureBackground.setFillColor(sf::Color::Transparent);
-
 	for (int i = 0; i < 50; i++) {
 		cells.push_back(std::make_shared<Cell>(
 			20,
@@ -58,14 +54,7 @@ void Environment::configure()
 			sf::Color(randomInt(0, 255), randomInt(0, 64), randomInt(0, 255))));
 	}
 
-	FoodController::generateFood(sf::Vector2f(3,12), 100);
-
-	/*for (int i = 0; i < 100; i++) {
-		food.push_back(std::make_shared<food>(
-			randomint(3, 12),
-			sf::vector2f(randomint(40, static_cast<int>(environment::getsize().x - 40)), randomint(40, static_cast<int>(environment::getsize().y - 40))),
-			sf::color(0, randomint(128, 255), randomint(0, 64))));
-	}*/
+	FoodController::generateFood(sf::Vector2f(3, 12), 100);
 
 	TextureProvider::getInstance().getTexture("whiteNoise")->setSmooth(true);
 }
@@ -125,9 +114,16 @@ void Environment::update()
 	CellSelectionTool::update();
 	CellMovementTool::update();
 	AutoFeederTool::getInstance().update();
-	
+
 	updateBackground();
 
+	for (auto& newCell : newCells)
+	{
+		cells.push_back(newCell);
+	}
+	newCells.clear();
+
+	// call role-functions for all cells
 	for (auto& cell : cells)
 	{
 		cell->update();
@@ -141,25 +137,22 @@ void Environment::update()
 		cell->update();
 	}
 
-	//remove food marked to delete
-	auto newFoodEnd = std::remove_if(food.begin(), food.end(), [](auto f) {return f->toDelete; });
+	//remove food marked to delete in role-functions
+	auto newFoodEnd = std::remove_if(food.begin(), food.end(), [](auto f) {return f->isMarkedToDelete(); });
 	food.erase(newFoodEnd, food.end());
 
-	//remove dead cells marked to delete
-	auto newDeadCellsEnd = std::remove_if(deadCells.begin(), deadCells.end(), [](auto c) {return c->toDelete; });
-	deadCells.erase(newDeadCellsEnd, deadCells.end());
-
-	//remove cells marked to delete
+	//remove cells marked as dead
 	auto newCellsEnd = std::remove_if(cells.begin(), cells.end(), [](auto c) {return c->isDead(); });
 	cells.erase(newCellsEnd, cells.end());
 
-
+	//remove dead cells marked to delete
+	auto newDeadCellsEnd = std::remove_if(deadCells.begin(), deadCells.end(), [](auto c) {return c->isMarkedToDelete(); });
+	deadCells.erase(newDeadCellsEnd, deadCells.end());
 }
 
 void Environment::draw(sf::RenderWindow & window)
 {
 	window.draw(environmentBackground);
-	window.draw(temperatureBackground);
 	for (auto & f : food) {
 		window.draw(*f);
 	}
@@ -225,6 +218,16 @@ std::vector<std::shared_ptr<Food>>& Environment::getFoodsVector()
 std::vector<std::shared_ptr<Cell>>& Environment::getCellsVector()
 {
 	return cells;
+}
+
+std::vector<std::shared_ptr<Cell>>& Environment::getNewCellsVector()
+{
+	return newCells;
+}
+
+void Environment::insertNewCell(std::shared_ptr<Cell> c)
+{
+	newCells.push_back(c);
 }
 
 Environment::Environment()

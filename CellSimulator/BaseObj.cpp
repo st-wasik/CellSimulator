@@ -56,3 +56,13 @@ std::string BaseObj::toString()
 {
 	return "Object pos: " + (std::to_string(getPosition().x) + ":" + std::to_string(getPosition().y)) + " radius: " + std::to_string(getSize());
 }
+
+void BaseObj::markToDelete()
+{
+	toDelete = true;
+}
+
+bool BaseObj::isMarkedToDelete()
+{
+	return toDelete;
+}

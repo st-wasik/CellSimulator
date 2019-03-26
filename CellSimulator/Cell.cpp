@@ -29,6 +29,7 @@ Cell::Cell(float size, sf::Vector2f position, sf::Color color) : BaseObj(size, p
 	roles.push_back(CellRoles::updateColor);
 	roles.push_back(CellRoles::simulateHunger);
 	roles.push_back(CellRoles::divideAndConquer);
+	roles.push_back(CellRoles::grow);
 
 	// make sure that moveForward is always the last role-function
 	// cell should be moved after all updates
@@ -73,7 +74,7 @@ void Cell::kill()
 
 bool Cell::isDead()
 {
-	return dead;
+	return this->dead;
 }
 
 bool Cell::collision(std::shared_ptr<BaseObj> obj)

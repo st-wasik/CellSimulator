@@ -12,3 +12,7 @@ Food::Food(float size, sf::Vector2f position, sf::Color color): BaseObj(size, po
 Food::~Food()
 {
 }
+
+void Food::update()
+{
+}
