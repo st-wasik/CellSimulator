@@ -39,7 +39,7 @@ void Environment::configure()
 	backgroundDefaultColor = sf::Color{ 170, 135, 200 };
 
 	auto& eb = environmentBackground;
-	eb.setSize(sf::Vector2f{ 2000,1000 });
+	eb.setSize(sf::Vector2f{ 2500,1250 });
 	eb.setFillColor(backgroundDefaultColor);
 	eb.setOutlineColor(sf::Color::Red);
 	eb.setOutlineThickness(5);
