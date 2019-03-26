@@ -127,6 +127,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AutoFeederTool.cpp" />
     <ClCompile Include="BaseObj.cpp" />
     <ClCompile Include="Cell.cpp" />
     <ClCompile Include="CellListApp.cpp" />
@@ -137,6 +138,7 @@
     <ClCompile Include="Environment.cpp" />
     <ClCompile Include="EnvSettingsApp.cpp" />
     <ClCompile Include="Food.cpp" />
+    <ClCompile Include="FoodController.cpp" />
     <ClCompile Include="Genes.cpp" />
     <ClCompile Include="Logger.cpp" />
     <ClCompile Include="main.cpp" />
@@ -147,6 +149,7 @@
     <ClCompile Include="TextureProvider.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AutoFeederTool.h" />
     <ClInclude Include="BaseObj.h" />
     <ClInclude Include="Cell.h" />
     <ClInclude Include="CellListApp.h" />
@@ -158,6 +161,7 @@
     <ClInclude Include="CellSimApp.h" />
     <ClInclude Include="EnvSettingsApp.h" />
     <ClInclude Include="Food.h" />
+    <ClInclude Include="FoodController.h" />
     <ClInclude Include="Genes.h" />
     <ClInclude Include="Logger.h" />
     <ClInclude Include="MainApp.h" />
