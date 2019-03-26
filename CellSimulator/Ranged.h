@@ -1,6 +1,7 @@
 #pragma once
 #include <iostream>
 #include <algorithm>
+#include <vector>
 
 template <typename T, int min, int max>
 class Ranged

@@ -1,5 +1,5 @@
 #pragma once
-
+#include "Ranged.h"
 struct Genes
 {
 	Genes();
@@ -12,11 +12,11 @@ struct Genes
 		double maxSize,
 		double age);
 
-	double maxSpeed = 0;
-	double aggresion = 0;
-	double radarRange = 0;
-	double divisionThreshold = 0;
-	double foodLimit = 0;
-	double maxSize = 0;
-	double age = 0;
+	Ranged<double,0,2> maxSpeed;
+	Ranged<double,0,100> aggresion;
+	Ranged<double,0,10> radarRange;
+	Ranged<double,0,100> divisionThreshold;
+	Ranged<double,0,150> foodLimit;
+	Ranged<double,20,50> maxSize;
+	Ranged<double,1,100> age;
 };
