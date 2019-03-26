@@ -18,6 +18,7 @@ private:
 	int maxThresholdValue;
 	int maxFoodPerSec;
 	int currentFoodInSecondCount;
+	int spawnTime;
 	sf::Time deltaTime;
 };
 

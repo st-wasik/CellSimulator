@@ -11,8 +11,9 @@ AutoFeederTool::~AutoFeederTool()
 
 AutoFeederTool::AutoFeederTool() {
 	maxThresholdValue = 50;
-	maxFoodPerSec = 2;
+	maxFoodPerSec = 5;
 	currentFoodInSecondCount = 0;
+	spawnTime = 1000 / maxFoodPerSec;
 	clock.restart();
 }
 
@@ -30,14 +31,9 @@ void AutoFeederTool::configure(int maxThresholdValue)
 void AutoFeederTool::update()
 {
 	auto& foodVector = Environment::getInstance().getFoodsVector();
-
-	if (foodVector.size() < maxThresholdValue && currentFoodInSecondCount < maxFoodPerSec) {
-		FoodController::getInstance().generateFood(sf::Vector2f(3,12), 1);
-		currentFoodInSecondCount++;
-	}
-	if (clock.getElapsedTime().asSeconds() >= 1) {
-		currentFoodInSecondCount = 0;
+	int deltaTime = clock.getElapsedTime().asMilliseconds();
+	if (foodVector.size() < maxThresholdValue && deltaTime > spawnTime) {
+		FoodController::getInstance().generateFood(sf::Vector2f(3,12), deltaTime/spawnTime);
 		clock.restart();
 	}
-	
 }
