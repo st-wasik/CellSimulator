@@ -1,5 +1,7 @@
 #pragma once
 #include "Ranged.h"
+#include <string>
+#include <iostream>
 
 struct Genes
 {
@@ -22,4 +24,5 @@ struct Genes
 	Ranged<double, 1, 100> maxAge;
 
 	void randomize();
+	std::string toString();
 };
