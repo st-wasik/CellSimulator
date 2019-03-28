@@ -1,24 +1,38 @@
 #pragma once
 #include <string>
 #include<SFML/Graphics.hpp>
+#include<TGUI/TGUI.hpp>
+#include<atomic>
 class CellPreviewApp
 {
-	public:
-		CellPreviewApp() = delete;
+public:
+	~CellPreviewApp();
 
-		static void configure();
+	static CellPreviewApp& getInstance();
 
-		static void run();
+	void update();
 
-		static void close();
+	void close();
 
-		static std::shared_ptr<sf::RenderWindow> getWindowHandle();
+	void configure();
 
-	private:
-		static std::shared_ptr<sf::RenderWindow> window;
+	std::shared_ptr<sf::RenderWindow> getWindowHandle();
 
-		static sf::VideoMode windowVideoMode;
+private:
+	CellPreviewApp();
+	CellPreviewApp(const CellPreviewApp&) = delete;
+	CellPreviewApp& operator=(const CellPreviewApp&) = delete;
 
-		static std::string windowTitle;
+	std::shared_ptr<sf::RenderWindow> window;
+
+	sf::VideoMode windowVideoMode;
+
+	std::string windowTitle;
+
+	std::shared_ptr<tgui::Gui> gui;
+
+	tgui::Theme theme;
+
+	//gui elements
 };
 

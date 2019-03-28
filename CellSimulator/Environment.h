@@ -12,11 +12,11 @@ public:
 
 	static Environment& getInstance();
 
-	void configure();
-
 	void clear();
 
 	void update();
+
+	void configure();
 
 	void draw(sf::RenderWindow & window);
 
@@ -45,7 +45,6 @@ private:
 	Environment();
 	Environment(Environment const&) = delete;
 	Environment& operator=(Environment const&) = delete;
-
 
 	void updateBackground();
 

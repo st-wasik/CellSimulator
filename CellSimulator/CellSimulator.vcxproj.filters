@@ -106,6 +106,9 @@
     <ClCompile Include="Distance.cpp">
       <Filter>Utils\Source</Filter>
     </ClCompile>
+    <ClCompile Include="GUIManager.cpp">
+      <Filter>Apps\Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CellListApp.h">
@@ -168,6 +171,9 @@
     <ClInclude Include="FoodController.h" />
     <ClInclude Include="Distance.h">
       <Filter>Utils\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="GUIManager.h">
+      <Filter>Apps\Header</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

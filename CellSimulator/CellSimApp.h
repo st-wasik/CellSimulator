@@ -8,36 +8,41 @@ class CellSimApp final
 public:
 	friend class CellSimMouse;
 
-	CellSimApp() = delete;
+	static CellSimApp& getInstance();
 
-	static void run();
+	~CellSimApp();
 
-	static void configure();
+	 void run();
 
-	static void close();
+	 void configure();
 
-	static std::shared_ptr<sf::RenderWindow> getWindowHandle();
+	 void close();
 
-	static const float& getDeltaTime();
+	 std::shared_ptr<sf::RenderWindow> getWindowHandle();
+
+	 const float& getDeltaTime();
 
 private:
-	static std::shared_ptr<sf::RenderWindow> window;
+	CellSimApp();
+	CellSimApp(const CellSimApp&) = delete;
+	CellSimApp& operator=(const CellSimApp&) = delete;
 
-	static sf::View view;
+	std::shared_ptr<sf::RenderWindow> window;
 
-	static sf::VideoMode windowVideoMode;
+	sf::View view;
+	sf::VideoMode windowVideoMode;
 
-	static std::string windowTitle;
+	std::string windowTitle;
 
-	static void updateViewZoom();
+	void updateViewZoom();
 
-	static void updateViewCenter();
+	void updateViewCenter();
 
-	static double _currentZoom;
-	static int _expectedZoom;
+	double _currentZoom;
+	int _expectedZoom;
 	static constexpr int _maxZoom = -7;
 	static constexpr int _minZoom = 7;
 
-	static float deltaTime;
+	float deltaTime;
 };
 

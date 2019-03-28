@@ -4,13 +4,7 @@
 #include <TGUI/TGUI.hpp>
 #include <iostream>
 
-std::shared_ptr<sf::RenderWindow> CellPreviewApp::window;
-
-sf::VideoMode CellPreviewApp::windowVideoMode;
-
-std::string CellPreviewApp::windowTitle;
-
-void CellPreviewApp::configure()
+CellPreviewApp::CellPreviewApp()
 {
 	window = std::make_shared<sf::RenderWindow>();
 	windowVideoMode = sf::VideoMode(350, 768 / 2 - 5);
@@ -20,24 +14,47 @@ void CellPreviewApp::configure()
 
 	window->create(windowVideoMode, windowTitle, sf::Style::Titlebar);
 	window->setFramerateLimit(60);
+
+	gui = std::make_shared<tgui::Gui>(*window);
+
+	theme.load("../../CellSimulator/TGUI-0.8/themes/TransparentGrey.txt");
 }
 
-void CellPreviewApp::run()
+
+CellPreviewApp::~CellPreviewApp()
 {
-	//tgui::Gui gui{ *window };
+}
+
+CellPreviewApp & CellPreviewApp::getInstance()
+{
+	static CellPreviewApp instance;
+	return instance;
+}
+
+void CellPreviewApp::configure()
+{
+
+}
+
+void CellPreviewApp::update()
+{
 	sf::Event event;
-	while (window->isOpen())
+	if (window->isOpen())
 	{
+		if (!MainApp::appRun)
+		{
+			window->close();
+		}
 		while (window->pollEvent(event))
 		{
 			if (event.type == sf::Event::Closed)
 				MainApp::close();
 
-			//gui.handleEvent(event); // Pass the event to the widgets
+			gui->handleEvent(event); // Pass the event to the widgets
 		}
 
 		window->clear(sf::Color(140, 140, 60));
-		//gui.draw(); // Draw all widgets
+		gui->draw(); // Draw all widgets
 		window->display();
 	}
 }

@@ -45,7 +45,7 @@ void CellMovementTool::update()
 				selectionMarker.setOrigin(size, size);
 				selectionMarker.setPosition(newPos);
 				selectionMarker.setPointCount(7);
-				selectionMarker.rotate(0.75*CellSimApp::getDeltaTime());
+				selectionMarker.rotate(0.75*CellSimApp::getInstance().getDeltaTime());
 			}
 			else
 			{

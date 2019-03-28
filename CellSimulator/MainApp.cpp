@@ -3,8 +3,11 @@
 #include "EnvSettingsApp.h"
 #include "CellPreviewApp.h"
 #include "CellListApp.h"
+#include "GUIManager.h"
 #include <thread>
 #include <atomic>
+
+std::atomic_bool MainApp::appRun(true);
 
 void MainApp::run()
 {
@@ -21,40 +24,35 @@ void MainApp::run()
 	//separate thread instead. This configuration will also be 
 	//compatible with the other limitation described below.
 
-	CellSimApp::configure();
-	EnvSettingsApp::configure();
-	CellPreviewApp::configure();
-	CellListApp::configure();
+	CellSimApp::getInstance().configure();
 
-	CellSimApp::getWindowHandle()->setActive();
-	EnvSettingsApp::getWindowHandle()->setPosition({ 25, 25 });
+	std::thread gui([]() {
+		GUIManager::configure();
 
-	CellSimApp::getWindowHandle()->setPosition(
-		sf::Vector2i(EnvSettingsApp::getWindowHandle()->getPosition().x + EnvSettingsApp::getWindowHandle()->getSize().x + 10,
-			EnvSettingsApp::getWindowHandle()->getPosition().y ));
+		auto envW = EnvSettingsApp::getInstance().getWindowHandle();
 
-	CellPreviewApp::getWindowHandle()->setPosition(
-		sf::Vector2i( EnvSettingsApp::getWindowHandle()->getPosition().x,
-			EnvSettingsApp::getWindowHandle()->getPosition().y + EnvSettingsApp::getWindowHandle()->getSize().y + 50));
+		//set in c-tor
+		//envW->setPosition({ 10,10 });
 
-	CellListApp::getWindowHandle()->setPosition(
-		sf::Vector2i(CellSimApp::getWindowHandle()->getPosition().x,
-			CellSimApp::getWindowHandle()->getPosition().y + CellSimApp::getWindowHandle()->getSize().y + 50));
+		auto preW = CellPreviewApp::getInstance().getWindowHandle();
+		preW->setPosition(envW->getPosition()+ sf::Vector2i(0, envW->getSize().y + 45));
 
-	std::thread envApp(&EnvSettingsApp::run);
-	std::thread cellPrApp(&CellPreviewApp::run);
-	std::thread cellLtApp(&CellListApp::run);
-	CellSimApp::run();
+		auto lstW = CellListApp::getInstance().getWindowHandle();
+		lstW->setPosition(preW->getPosition() + sf::Vector2i(0, preW->getSize().y + 45));
 
-	cellPrApp.join();
-	envApp.join();
-	cellLtApp.join();
+		GUIManager::run();
+	});
+
+	auto envPos = EnvSettingsApp::getInstance().getWindowHandle()->getPosition();
+	auto envSize = EnvSettingsApp::getInstance().getWindowHandle()->getSize();
+	CellSimApp::getInstance().getWindowHandle()->setPosition(envPos + sf::Vector2i(envSize.x + 10, 0));
+
+	CellSimApp::getInstance().run();
+
+	gui.join();
 }
 
 void MainApp::close()
 {
-	CellSimApp::close();
-	EnvSettingsApp::close();
-	CellPreviewApp::close();
-	CellListApp::close();
+	appRun = false;
 }

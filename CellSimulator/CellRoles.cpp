@@ -10,13 +10,13 @@ void CellRoles::moveForward(Cell * c)
 {
 	const auto prevPosition = c->getPosition();
 	auto moveSpeed = (Environment::getInstance().getTemperature() + 100) / 100 * c->currentSpeed;
-	c->shape.move(moveSpeed * std::sin((PI / 180)*c->getRotation()) * CellSimApp::getDeltaTime(), moveSpeed * -std::cos((PI / 180)*c->getRotation()) * CellSimApp::getDeltaTime());
+	c->shape.move(moveSpeed * std::sin((PI / 180)*c->getRotation()) * CellSimApp::getInstance().getDeltaTime(), moveSpeed * -std::cos((PI / 180)*c->getRotation()) * CellSimApp::getInstance().getDeltaTime());
 
 	for (int attempt = 0; checkEnvironmentBounds(c); ++attempt)
 	{
 		c->shape.setPosition(prevPosition);
 		c->shape.setRotation(c->getRotation() + 90);
-		c->shape.move(moveSpeed * std::sin((PI / 180)*c->getRotation()) * CellSimApp::getDeltaTime(), moveSpeed * -std::cos((PI / 180)*c->getRotation()) * CellSimApp::getDeltaTime());
+		c->shape.move(moveSpeed * std::sin((PI / 180)*c->getRotation()) * CellSimApp::getInstance().getDeltaTime(), moveSpeed * -std::cos((PI / 180)*c->getRotation()) * CellSimApp::getInstance().getDeltaTime());
 
 		if (attempt > 5) { c->setPosition(Environment::getInstance().getSize() / 2.f); break; }
 	}
@@ -98,7 +98,7 @@ void CellRoles::beDead(Cell * c)
 	auto color = c->shape.getFillColor();
 	if (color.a > 0)
 	{
-		double a = static_cast<double>(color.a) - 0.075*CellSimApp::getDeltaTime();
+		double a = static_cast<double>(color.a) - 0.075*CellSimApp::getInstance().getDeltaTime();
 		if (0 > a) a = 0;
 		color.a = a;
 		c->shape.setFillColor(color);
@@ -111,7 +111,7 @@ void CellRoles::beDead(Cell * c)
 
 
 void CellRoles::simulateHunger(Cell * c) {
-	c->foodLevel -= randomReal(0.005, 0.02) * CellSimApp::getDeltaTime();
+	c->foodLevel -= randomReal(0.005, 0.02) * CellSimApp::getInstance().getDeltaTime();
 	if (c->foodLevel <= 0)
 	{
 		c->kill();
@@ -137,12 +137,12 @@ void CellRoles::divideAndConquer(Cell * c)
 //
 //	if (c->getSize() < c->genes.maxSize.get() && c->foodLevel > 50)
 //	{
-//		c->setSize(c->getSize() + rand * CellSimApp::getDeltaTime());
+//		c->setSize(c->getSize() + rand * CellSimApp::getInstance().getDeltaTime());
 //	}
 //
 //	if (c->getSize() > 10 && c->foodLevel < 20)
 //	{
-//		c->setSize(c->getSize() - rand * CellSimApp::getDeltaTime());
+//		c->setSize(c->getSize() - rand * CellSimApp::getInstance().getDeltaTime());
 //	}
 //}
 

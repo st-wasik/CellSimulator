@@ -12,13 +12,13 @@ float CellSimMouse::_wheelDelta = 0.f;
 
 void CellSimMouse::update()
 {
-	auto m = sf::Mouse::getPosition(*CellSimApp::getWindowHandle());
-	if ((m.x < 0 || m.x > CellSimApp::getWindowHandle()->getSize().x) || (m.y < 0 || m.y > CellSimApp::getWindowHandle()->getSize().y))
+	auto m = sf::Mouse::getPosition(*CellSimApp::getInstance().getWindowHandle());
+	if ((m.x < 0 || m.x > CellSimApp::getInstance().getWindowHandle()->getSize().x) || (m.y < 0 || m.y > CellSimApp::getInstance().getWindowHandle()->getSize().y))
 		return;
 
 	_wheelDelta = 0;
 	_prevPosition = _currentPosition;
-	_currentPosition = CellSimApp::window->mapPixelToCoords(sf::Mouse::getPosition(*CellSimApp::window), CellSimApp::view);
+	_currentPosition = CellSimApp::getInstance().window->mapPixelToCoords(sf::Mouse::getPosition(*CellSimApp::getInstance().window), CellSimApp::getInstance().view);
 	_prevIsLeftPressed = _currentIsLeftPressed;
 	_prevIsRightPressed = _currentIsRightPressed;
 	_currentIsLeftPressed = sf::Mouse::isButtonPressed(sf::Mouse::Button::Left);

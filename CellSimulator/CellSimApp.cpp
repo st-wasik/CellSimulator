@@ -4,28 +4,21 @@
 #include "MainApp.h"
 #include "Logger.h"
 #include <iostream>
+#include <atomic>
 
-std::shared_ptr<sf::RenderWindow> CellSimApp::window;
+CellSimApp& CellSimApp::getInstance()
+{
+	static CellSimApp instance;
+	return instance;
+}
 
-sf::View CellSimApp::view;
-
-sf::VideoMode CellSimApp::windowVideoMode;
-
-std::string CellSimApp::windowTitle;
-
-double CellSimApp::_currentZoom = 0;
-
-int CellSimApp::_expectedZoom = 0;
-
-float CellSimApp::deltaTime = 0;
-
+CellSimApp::~CellSimApp()
+{
+}
 
 void CellSimApp::run()
 {
-
-	//getting instance configures environment for first use
 	Environment::getInstance().configure();
-
 
 	view.setCenter(sf::Vector2f(Environment::getInstance().getSize().x / 2, Environment::getInstance().getSize().y / 2));
 
@@ -34,6 +27,12 @@ void CellSimApp::run()
 
 	while (window->isOpen())
 	{
+		if (!MainApp::appRun)
+		{
+			window->close();
+			break;
+		}
+
 		deltaTimeClock.restart();
 		CellSimMouse::update();
 
@@ -77,11 +76,13 @@ void CellSimApp::configure()
 
 	window->create(windowVideoMode, windowTitle, sf::Style::Close);
 	window->setFramerateLimit(60);
+	window->setPosition({ 300,20 });
 	//window->setVerticalSyncEnabled(true);
 
 	view.setSize(sf::Vector2f(windowVideoMode.width, windowVideoMode.height));
 	view.setCenter(sf::Vector2f(windowVideoMode.width / 2, windowVideoMode.height / 2));
 	window->setView(view);
+	window->setActive();
 }
 
 void CellSimApp::close()
@@ -97,6 +98,10 @@ std::shared_ptr<sf::RenderWindow> CellSimApp::getWindowHandle()
 const float & CellSimApp::getDeltaTime()
 {
 	return deltaTime;
+}
+
+CellSimApp::CellSimApp()
+{
 }
 
 void CellSimApp::updateViewZoom()

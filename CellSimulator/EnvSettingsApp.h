@@ -1,23 +1,71 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include <TGUI/TGUI.hpp>
+#include <map>
+#include <atomic>
 class EnvSettingsApp
 {
 public:
-	EnvSettingsApp() = delete;
+	~EnvSettingsApp();
 
-	static void configure();
+	static EnvSettingsApp& getInstance();
 
-	static void run();
+	void update();
 
-	static void close();
+	void close();
 
-	static std::shared_ptr<sf::RenderWindow> getWindowHandle();
+	void configure();
+
+	std::shared_ptr<sf::RenderWindow> getWindowHandle();
 
 private:
-	static std::shared_ptr<sf::RenderWindow> window;
+	EnvSettingsApp();
+	EnvSettingsApp(const EnvSettingsApp&) = delete;
+	EnvSettingsApp& operator=(const EnvSettingsApp&) = delete;
 
-	static sf::VideoMode windowVideoMode;
 
-	static std::string windowTitle;
+	std::shared_ptr<sf::RenderWindow> window;
+
+	sf::VideoMode windowVideoMode;
+
+	std::string windowTitle;
+
+	std::shared_ptr<tgui::Gui> gui;
+
+	tgui::Theme theme;
+
+	//gui elements
+	std::shared_ptr<tgui::Label> 
+		labelTemp, 
+		labelRad,
+		labelQuan,
+		labelFreq,
+		labelCells,
+		labelFood,
+		labelCellsVar,
+		labelFoodVar;
+
+	std::shared_ptr<tgui::Slider> 
+		sliderTemp,
+		sliderRad,
+		sliderQuan,
+		sliderFreq;
+
+	std::shared_ptr<tgui::Button> 
+		buttonTemp,
+		buttonRad,
+		buttonQuan,
+		buttonFreq,
+		buttonFeed,
+		buttonSelect;
+
+	std::shared_ptr<tgui::EditBox>
+		editBoxTemp,
+		editBoxRad,
+		editBoxQuan,
+		editBoxFreq;
+
+	std::shared_ptr<tgui::CheckBox>
+		checkBoxFeed;
 };
 

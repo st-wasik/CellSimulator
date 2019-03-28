@@ -1,23 +1,40 @@
 #pragma once
 #include <string>
 #include<SFML/Graphics.hpp>
+#include<TGUI/TGUI.hpp>
+#include<atomic>
+#include<mutex>
 class CellListApp
 {
 public:
-	CellListApp() = delete;
+	~CellListApp();
 
-	static void configure();
+	static CellListApp& getInstance();
 
-	static void run();
+	void update();
 
-	static void close();
+	void close();
 
-	static std::shared_ptr<sf::RenderWindow> getWindowHandle();
+	void configure();
+
+	std::shared_ptr<sf::RenderWindow> getWindowHandle();
 
 private:
-	static std::shared_ptr<sf::RenderWindow> window;
+	CellListApp();
+	CellListApp(const CellListApp&) = delete;
+	CellListApp& operator=(const CellListApp&) = delete;
 
-	static sf::VideoMode windowVideoMode;
+	std::shared_ptr<sf::RenderWindow> window;
 
-	static std::string windowTitle;
+	sf::VideoMode windowVideoMode;
+
+	std::string windowTitle;
+
+	std::shared_ptr<tgui::Gui> gui;
+
+	tgui::Theme theme;
+
+	static std::mutex mutex;
+
+	//gui elements
 };

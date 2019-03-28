@@ -1,5 +1,6 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include <atomic>
 class MainApp final
 {
 public:
@@ -8,5 +9,7 @@ public:
 	static void run();
 
 	static void close();
+
+	static std::atomic_bool appRun;
 };
 
