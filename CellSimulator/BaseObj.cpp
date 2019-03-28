@@ -54,7 +54,7 @@ void BaseObj::setPosition(const sf::Vector2f & p)
 
 std::string BaseObj::toString()
 {
-	return "Object pos: " + (std::to_string(getPosition().x) + ":" + std::to_string(getPosition().y)) + " radius: " + std::to_string(getSize());
+	return "Object pos: " + (std::to_string(getPosition().x) + ":" + std::to_string(getPosition().y)) + " radius: " + std::to_string(getSize()) + " rotation:" + std::to_string(getRotation());
 }
 
 void BaseObj::markToDelete()
