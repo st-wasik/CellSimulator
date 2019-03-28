@@ -28,6 +28,11 @@ public:
 	// Marks cell as killed. It will be moved to dead cells vector in next loop turn.
 	void kill();
 	bool isDead();
+
+	Genes getGenes();
+	double getFoodLevel();
+	double getCurrentSpeed();
+
 private:
 
 	// vector of pointers to role-functions
