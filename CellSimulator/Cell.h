@@ -40,6 +40,9 @@ public:
 	double getFoodLevel();
 	double getCurrentSpeed();
 
+	void dropRole(void(*role)(Cell*));
+	void addRole(void(*role)(Cell*));
+
 private:
 
 	// vector of pointers to role-functions

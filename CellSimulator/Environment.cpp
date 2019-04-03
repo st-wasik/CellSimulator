@@ -11,6 +11,7 @@
 #include "FoodController.h"
 #include "AutoFeederTool.h"
 #include "Distance.h"
+#include "CellFactory.h"
 
 Environment::~Environment()
 {
@@ -42,11 +43,28 @@ void Environment::configure()
 	eb.setTextureRect(sf::IntRect(0, 0, eb.getSize().x / 10, eb.getSize().y / 10));
 	eb.setTexture(TextureProvider::getInstance().getTexture("background").get());
 
-	for (int i = 0; i < 50; i++) {
-		cells.push_back(std::make_shared<Cell>(
-			20,
-			sf::Vector2f(randomInt(40, static_cast<int>(Environment::getSize().x - 40)), randomInt(40, static_cast<int>(Environment::getSize().y - 40))),
-			sf::Color(randomInt(0, 255), randomInt(0, 64), randomInt(0, 255))));
+	for (int i = 0; i < 10; i++) {
+		auto cell = CellFactory::getCell(Cell::Type::Aggressive);
+		cell->setPosition(sf::Vector2f(randomInt(40, static_cast<int>(Environment::getSize().x - 40)), randomInt(40, static_cast<int>(Environment::getSize().y - 40))));
+		cells.push_back(cell);
+	}
+
+	for (int i = 0; i < 10; i++) {
+		auto cell = CellFactory::getCell(Cell::Type::Passive);
+		cell->setPosition(sf::Vector2f(randomInt(40, static_cast<int>(Environment::getSize().x - 40)), randomInt(40, static_cast<int>(Environment::getSize().y - 40))));
+		cells.push_back(cell);
+	}
+
+	for (int i = 0; i < 10; i++) {
+		auto cell = CellFactory::getCell(Cell::Type::Random);
+		cell->setPosition(sf::Vector2f(randomInt(40, static_cast<int>(Environment::getSize().x - 40)), randomInt(40, static_cast<int>(Environment::getSize().y - 40))));
+		cells.push_back(cell);
+	}
+
+	for (int i = 0; i < 3; i++) {
+		auto cell = CellFactory::getCell(Cell::Type::GreenLettuce);
+		cell->setPosition(sf::Vector2f(randomInt(40, static_cast<int>(Environment::getSize().x - 40)), randomInt(40, static_cast<int>(Environment::getSize().y - 40))));
+		cells.push_back(cell);
 	}
 
 	FoodController::generateFood(sf::Vector2f(3, 12), 100);

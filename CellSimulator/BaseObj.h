@@ -21,6 +21,9 @@ public:
 	virtual sf::Vector2f getPosition();
 	virtual void setPosition(const sf::Vector2f&);
 
+	virtual sf::Color getBaseColor();
+	virtual void setBaseColor(sf::Color);
+
 	virtual std::string toString();
 
 	// Marks obj to delete. Object will be deleted from vector in next loop turn.
