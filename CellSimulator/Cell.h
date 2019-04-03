@@ -15,7 +15,14 @@ class Cell : public BaseObj
 {
 	friend class CellRoles;
 
+	friend class CellFactory;
+
 public:
+	enum class Type
+	{
+		Passive, Aggressive, Random, GreenLettuce
+	};
+
 	Cell(float size, sf::Vector2f position, sf::Color color);
 	~Cell();
 
