@@ -43,6 +43,16 @@ void CellSimApp::run()
 
 			if (event.type == sf::Event::MouseWheelScrolled)
 				CellSimMouse::setWheelDelta(event.mouseWheelScroll.delta);
+
+			if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Subtract)
+				if (_expectedZoom < _minZoom)
+					_expectedZoom += 2;
+
+			if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Add)
+				if (_expectedZoom > _maxZoom)
+					_expectedZoom -= 2;
+
+
 		}
 
 
@@ -111,12 +121,12 @@ void CellSimApp::updateViewZoom()
 	if (CellSimMouse::getWheelDelta() < 0)
 	{
 		if (_expectedZoom < _minZoom)
-			_expectedZoom+=2;
+			_expectedZoom += 2;
 	}
 	else if (CellSimMouse::getWheelDelta() > 0)
 	{
-		if (_expectedZoom >  _maxZoom)
-			_expectedZoom-=2;
+		if (_expectedZoom > _maxZoom)
+			_expectedZoom -= 2;
 	}
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Numpad0) && window->hasFocus()) _expectedZoom = 0;
@@ -127,7 +137,7 @@ void CellSimApp::updateViewZoom()
 		view.zoom(1.025);
 	}
 
-	if (_currentZoom > _expectedZoom && abs(_currentZoom-_expectedZoom) > 0.2)
+	if (_currentZoom > _expectedZoom && abs(_currentZoom - _expectedZoom) > 0.2)
 	{
 		_currentZoom -= 0.1;
 		view.zoom(0.975);
