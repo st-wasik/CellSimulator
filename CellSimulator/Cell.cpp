@@ -1,4 +1,5 @@
 #include "Cell.h"
+#include "Food.h"
 #include "CellRoles.h"
 #include "CellSimApp.h"
 #include "Environment.h"
@@ -69,6 +70,23 @@ void Cell::kill()
 
 		auto color = randomInt(0, 32);
 		shape.setFillColor(sf::Color(color, color, color, 255));
+		auto size = getSize();
+
+		int foods = size / 10;
+		auto foodSize = 0.75 * size / foods;
+		auto& foodsVect = Environment::getInstance().getNewFoodsVector();
+
+		for (int i = 0; i < foods; ++i)
+		{
+			float xDeviation = randomInt(-size/2, size/2);
+			float yDeviation = randomInt(-size/2, size/2);
+
+			auto position = getPosition() + sf::Vector2f{xDeviation, yDeviation};
+
+			auto food = std::make_shared<Food>(Food(foodSize, position, getBaseColor()));
+			foodsVect.push_back(food);
+		}
+
 	}
 }
 

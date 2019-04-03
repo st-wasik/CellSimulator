@@ -43,6 +43,8 @@ void Environment::configure()
 	eb.setTextureRect(sf::IntRect(0, 0, eb.getSize().x / 10, eb.getSize().y / 10));
 	eb.setTexture(TextureProvider::getInstance().getTexture("background").get());
 
+	TextureProvider::getInstance().getTexture("whiteNoise")->setSmooth(true);
+
 	for (int i = 0; i < 10; i++) {
 		auto cell = CellFactory::getCell(Cell::Type::Aggressive);
 		cell->setPosition(sf::Vector2f(randomInt(40, static_cast<int>(Environment::getSize().x - 40)), randomInt(40, static_cast<int>(Environment::getSize().y - 40))));
@@ -68,8 +70,6 @@ void Environment::configure()
 	}
 
 	FoodController::generateFood(sf::Vector2f(3, 12), 100);
-
-	TextureProvider::getInstance().getTexture("whiteNoise")->setSmooth(true);
 }
 
 void Environment::updateBackground()
@@ -124,6 +124,12 @@ void Environment::update()
 		cells.push_back(newCell);
 	}
 	newCells.clear();
+
+	for (auto& f : newFood)
+	{
+		food.push_back(f);
+	}
+	newFood.clear();
 
 	// call role-functions for all cells
 	for (auto& cell : cells)
@@ -225,6 +231,11 @@ std::vector<std::shared_ptr<Cell>>& Environment::getCellsVector()
 std::vector<std::shared_ptr<Cell>>& Environment::getNewCellsVector()
 {
 	return newCells;
+}
+
+std::vector<std::shared_ptr<Food>>& Environment::getNewFoodsVector()
+{
+	return newFood;
 }
 
 void Environment::insertNewCell(std::shared_ptr<Cell> c)
