@@ -52,6 +52,16 @@ void BaseObj::setPosition(const sf::Vector2f & p)
 	shape.setPosition(p);
 }
 
+sf::Color BaseObj::getBaseColor()
+{
+	return baseColor;
+}
+
+void BaseObj::setBaseColor(sf::Color c)
+{
+	baseColor = c;
+}
+
 std::string BaseObj::toString()
 {
 	return "Object pos: " + (std::to_string(getPosition().x) + ":" + std::to_string(getPosition().y)) + " radius: " + std::to_string(getSize()) + " rotation:" + std::to_string(getRotation());

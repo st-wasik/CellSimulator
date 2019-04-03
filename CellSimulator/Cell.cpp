@@ -92,6 +92,17 @@ double Cell::getCurrentSpeed()
 	return this->currentSpeed;
 }
 
+void Cell::dropRole(void(*role)(Cell *))
+{
+	auto newRolesEnd = std::remove_if(roles.begin(), roles.end(), [role](auto r) {return r == role; });
+	roles.erase(newRolesEnd, roles.end());
+}
+
+void Cell::addRole(void(*role)(Cell *))
+{
+	roles.push_back(role);
+}
+
 bool Cell::collision(std::shared_ptr<BaseObj> obj)
 {
 	auto sizes = this->getSize() + obj->getSize();
