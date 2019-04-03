@@ -39,7 +39,7 @@ std::shared_ptr<Cell> CellFactory::getCell(Cell::Type type)
 	case Cell::Type::GreenLettuce:
 		result->genes.aggresion = 0;
 		result->genes.divisionThreshold = 45;
-		result->genes.foodLimit = 150;
+		result->genes.foodLimit = 0;
 		result->genes.maxAge = 100;
 		result->genes.maxSize = 25;
 		result->genes.maxSpeed = 0.75;
@@ -47,6 +47,7 @@ std::shared_ptr<Cell> CellFactory::getCell(Cell::Type type)
 		result->setBaseColor(sf::Color::Green);
 		result->dropRole(CellRoles::eat);
 		result->dropRole(CellRoles::simulateHunger);
+		result->addRole(CellRoles::makeFood);
 		break;
 	}
 

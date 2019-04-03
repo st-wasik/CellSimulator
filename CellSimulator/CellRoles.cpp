@@ -49,7 +49,7 @@ void CellRoles::eat(Cell * c)
 
 	for (auto& f : foods)
 	{
-		if (c->collision(f) && !f->isMarkedToDelete() && c->foodLevel<c->genes.foodLimit.get())
+		if (c->collision(f) && !f->isMarkedToDelete() && c->foodLevel < c->genes.foodLimit.get())
 		{
 			c->foodLevel += static_cast<float>(f->getSize());
 			if (c->getSize() < c->genes.maxSize.get())
@@ -74,7 +74,7 @@ void CellRoles::updateColor(Cell * c)
 	auto& envRad = Environment::getInstance().getRadiation();
 	if (envTemp > threshold)
 	{
-		newR = 2 * abs(envTemp - threshold)  + c->baseColor.r;
+		newR = 2 * abs(envTemp - threshold) + c->baseColor.r;
 		newColor.r = newR.get();
 	}
 	else if (envTemp < -threshold)
@@ -98,7 +98,7 @@ void CellRoles::beDead(Cell * c)
 	auto color = c->shape.getFillColor();
 	if (color.a > 0)
 	{
-		double a = static_cast<double>(color.a) - 0.075*CellSimApp::getInstance().getDeltaTime();
+		double a = static_cast<double>(color.a) - CellSimApp::getInstance().getDeltaTime();
 		if (0 > a) a = 0;
 		color.a = a;
 		c->shape.setFillColor(color);
@@ -145,6 +145,30 @@ void CellRoles::divideAndConquer(Cell * c)
 //		c->setSize(c->getSize() - rand * CellSimApp::getInstance().getDeltaTime());
 //	}
 //}
+
+void CellRoles::makeFood(Cell * c)
+{
+	if (randomInt(0, 1000) > 998)
+	{
+		auto size = c->getSize();
+
+		int foods = randomInt(0, 100) > 70 ? 2 : 1;
+		auto foodSize = 0.4 * size;
+		auto& foodsVect = Environment::getInstance().getNewFoodsVector();
+
+		for (int i = 0; i < foods; ++i)
+		{
+			float xDeviation = randomInt(-size / 2, size / 2);
+			float yDeviation = randomInt(-size / 2, size / 2);
+
+			auto position = c->getPosition() + sf::Vector2f{ xDeviation, yDeviation };
+
+			auto food = std::make_shared<Food>(Food(foodSize, position, c->getBaseColor()));
+			foodsVect.push_back(food);
+		}
+	}
+
+}
 
 bool CellRoles::checkEnvironmentBounds(Cell * c)
 {

@@ -70,6 +70,7 @@ void Cell::kill()
 
 		auto color = randomInt(0, 32);
 		shape.setFillColor(sf::Color(color, color, color, 255));
+		
 		auto size = getSize();
 
 		int foods = size / 10;
