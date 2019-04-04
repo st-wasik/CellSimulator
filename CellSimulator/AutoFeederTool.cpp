@@ -33,7 +33,14 @@ void AutoFeederTool::update()
 {
 	auto& foodVector = Environment::getInstance().getFoodsVector();
 	int deltaTime = clock.getElapsedTime().asMilliseconds();
-	if (foodVector.size() < maxThresholdValue && deltaTime > spawnTime && isActive) {
+	auto env = Environment::getInstance().getSize();
+	//Logger::log(env);
+	auto area = env.x*env.y;
+	//Logger::log(area);
+
+	auto p = 0.000001*2 * maxThresholdValue * area;
+	//Logger::log(p);
+	if (foodVector.size() < p && deltaTime > spawnTime && isActive) {
 		FoodController::getInstance().generateFood(sf::Vector2f(3,12), deltaTime/spawnTime);
 		clock.restart();
 	}

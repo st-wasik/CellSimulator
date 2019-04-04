@@ -45,7 +45,7 @@ void CellRoles::changeSpeed(Cell * c)
 
 void CellRoles::eat(Cell * c)
 {
-	std::vector<std::shared_ptr<Food>> foods = Environment::getInstance().getFoodsVector();
+	auto& foods = Environment::getInstance().getFoodsVector();
 
 	for (auto& f : foods)
 	{
@@ -202,14 +202,17 @@ void CellRoles::fight(Cell * c)
 		{
 			float cSize = c->getSize();
 			float cellSize = cell->getSize();
+			int sizeDelta = 2;
 			
 			if (cSize > cellSize) {
-				c->setSize(cSize - 2);
-				cell->setSize(cellSize + 2);
+				c->setSize(cSize - sizeDelta);
+				cell->setSize(cellSize + sizeDelta);
+				cell->foodLevel += sizeDelta;
 			}
 			else if (cSize < cellSize) {
-				c->setSize(cSize + 2);
-				cell->setSize(cellSize - 2);
+				c->setSize(cSize + sizeDelta);
+				c->foodLevel += sizeDelta;
+				cell->setSize(cellSize - sizeDelta);
 			}
 
 			double cCurrentSpeed = c->getCurrentSpeed();
@@ -221,6 +224,16 @@ void CellRoles::fight(Cell * c)
 			cell->shape.move(cellCurrentSpeed * std::sin((PI / 180)*cell->getRotation()) * CellSimApp::getInstance().getDeltaTime(), cellCurrentSpeed * -std::cos((PI / 180)*cell->getRotation()) * CellSimApp::getInstance().getDeltaTime());
 		}
 	}
+}
+
+void CellRoles::makeOlder(Cell * c)
+{
+	if (c->age >= c->genes.maxAge.get())
+	{
+		c->kill();
+		return;
+	}
+	c->age += CellSimApp::getInstance().getDeltaTime();
 }
 
 bool CellRoles::checkEnvironmentBounds(Cell * c)

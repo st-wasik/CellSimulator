@@ -4,6 +4,7 @@
 #include "Cell.h"
 #include "Food.h"
 #include <atomic>
+#include <list>
 
 class Environment final
 {
@@ -34,10 +35,10 @@ public:
 
 	std::shared_ptr<Cell> getCellAtPosition(const sf::Vector2f&);
 
-	std::vector<std::shared_ptr<Food>>& getFoodsVector();
+	std::list<std::shared_ptr<Food>>& getFoodsVector();
 	std::vector<std::shared_ptr<Cell>>& getCellsVector();
 	std::vector<std::shared_ptr<Cell>>& getNewCellsVector();
-	std::vector<std::shared_ptr<Food>>& getNewFoodsVector();
+	std::list<std::shared_ptr<Food>>& getNewFoodsVector();
 
 	// inserts new cell to environment
 	void insertNewCell(std::shared_ptr<Cell>);
@@ -52,8 +53,8 @@ private:
 	std::vector<std::shared_ptr<Cell>> cells;
 	std::vector<std::shared_ptr<Cell>> deadCells;
 	std::vector<std::shared_ptr<Cell>> newCells;
-	std::vector<std::shared_ptr<Food>> food;
-	std::vector<std::shared_ptr<Food>> newFood;
+	std::list<std::shared_ptr<Food>> food;
+	std::list<std::shared_ptr<Food>> newFood;
 
 	sf::RectangleShape environmentBackground;
 
