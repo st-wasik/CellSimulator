@@ -26,6 +26,7 @@ public:
 	};
 
 	Cell(float size, sf::Vector2f position, sf::Color color);
+	Cell(Cell a, Cell b);
 	~Cell();
 
 	void update();

@@ -45,6 +45,7 @@ private:
 		foodLevel,
 		currentSpeed,
 		size,
+		horniness,
 		maxSpeedVal,
 		aggresionVal,
 		radarRangeVal,
@@ -54,7 +55,8 @@ private:
 		ageVal,
 		foodLevelVal,
 		currentSpeedVal,
-		sizeVal;
+		sizeVal,
+		horninessVal;
 
 };
 

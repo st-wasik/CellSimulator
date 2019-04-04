@@ -157,10 +157,12 @@ void CellRoles::getingHot(Cell * c)
 		auto & cells = Environment::getInstance().getCellsVector();
 		for (auto & cell : cells)
 		{
-			if (cell->getHorniness().isMax() && c->genes.type.get()==cell->genes.type.get() &&c->collision(cell))
+			if (cell->getHorniness().isMax() && c->genes.type.get()==cell->genes.type.get() && c->collision(cell))
 			{
 				c->setHorniness(0);
 				cell->setHorniness(0);
+				std::shared_ptr<Cell> tmp = std::make_shared<Cell>(*c, *cell);
+				Environment::getInstance().insertNewCell(tmp);
 			}
 		}
 	}

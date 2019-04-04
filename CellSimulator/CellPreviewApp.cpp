@@ -163,6 +163,19 @@ void CellPreviewApp::configure()
 	sizeVal->setPosition(200, 190);
 	sizeVal->setTextSize(18);
 	gui->add(sizeVal);
+
+	horniness = tgui::Label::create();
+	horniness->setRenderer(theme.getRenderer("Label"));
+	horniness->setText("Horniness");
+	horniness->setPosition(10, 210);
+	horniness->setTextSize(18);
+	gui->add(horniness);
+
+	horninessVal = tgui::Label::create();
+	horninessVal->setRenderer(theme.getRenderer("Label"));
+	horninessVal->setPosition(200, 210);
+	horninessVal->setTextSize(18);
+	gui->add(horninessVal);
 }
 
 void CellPreviewApp::update()
@@ -182,6 +195,7 @@ void CellPreviewApp::update()
 			foodLevelVal->setText(std::to_string(CellSelectionTool::getInstance().getSelectedCell()->getFoodLevel()));
 			currentSpeedVal->setText(std::to_string(CellSelectionTool::getInstance().getSelectedCell()->getCurrentSpeed()));
 			sizeVal->setText(std::to_string(CellSelectionTool::getInstance().getSelectedCell()->getSize()));
+			horninessVal->setText(std::to_string(CellSelectionTool::getInstance().getSelectedCell()->getHorniness().get()));
 		}
 		if (!MainApp::appRun)
 		{
