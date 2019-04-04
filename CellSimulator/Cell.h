@@ -8,6 +8,8 @@
 #include "Logger.h"
 #include "Food.h"
 #include "Genes.h"
+#include "Ranged.h"
+
 
 class CellRoles;
 
@@ -36,9 +38,12 @@ public:
 	void kill();
 	bool isDead();
 
-	Genes getGenes();
+	Genes& getGenes();
 	double getFoodLevel();
 	double getCurrentSpeed();
+
+	void setHorniness(double horniness);
+	Ranged<double, 0, 100>& getHorniness();
 
 	void dropRole(void(*role)(Cell*));
 	void addRole(void(*role)(Cell*));
@@ -61,5 +66,7 @@ private:
 	bool dead = false;
 
 	Genes genes;
+
+	Ranged<double, 0, 100> horniness;
 };
 

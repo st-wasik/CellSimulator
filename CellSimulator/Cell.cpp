@@ -12,6 +12,8 @@ Cell::Cell(float size, sf::Vector2f position, sf::Color color) : BaseObj(size, p
 
 	this->currentSpeed = randomReal(0.1, 2);
 
+	this->horniness.randomize();
+
 	shape.setOutlineColor(sf::Color::Yellow);
 
 
@@ -30,6 +32,7 @@ Cell::Cell(float size, sf::Vector2f position, sf::Color color) : BaseObj(size, p
 	roles.push_back(CellRoles::updateColor);
 	roles.push_back(CellRoles::simulateHunger);
 	roles.push_back(CellRoles::divideAndConquer);
+	roles.push_back(CellRoles::getingHot);
 	//roles.push_back(CellRoles::grow);
 	roles.push_back(CellRoles::fight);
 
@@ -97,7 +100,7 @@ bool Cell::isDead()
 	return this->dead;
 }
 
-Genes Cell::getGenes()
+Genes& Cell::getGenes()
 {
 	return this->genes;
 }
@@ -112,6 +115,14 @@ double Cell::getCurrentSpeed()
 	return this->currentSpeed;
 }
 
+void Cell::setHorniness(double horniness)
+{
+	this->horniness = horniness;
+}
+Ranged<double, 0, 100>& Cell::getHorniness()
+{
+	return this->horniness;
+}
 void Cell::dropRole(void(*role)(Cell *))
 {
 	auto newRolesEnd = std::remove_if(roles.begin(), roles.end(), [role](auto r) {return r == role; });

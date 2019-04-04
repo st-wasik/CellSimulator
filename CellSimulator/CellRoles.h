@@ -1,6 +1,7 @@
 #pragma once
 #include "Cell.h"
 
+
 // WARNING
 // MAKE SURE YOU FOLLOW THESE RULES IN YOUR CellRoles FUNCTIONS
 //
@@ -36,6 +37,8 @@ public:
 	static void divideAndConquer(Cell * c);
 
 	static void grow(Cell * c);
+
+	static void getingHot(Cell * c);
 
 	static void makeFood(Cell * c);
 

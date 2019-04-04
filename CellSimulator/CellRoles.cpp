@@ -3,7 +3,7 @@
 #include "Environment.h"
 #include "Logger.h"
 #include "CellSimApp.h"
-
+#include "CellSelectionTool.h"
 constexpr double PI = 3.14159265358979323846;
 
 void CellRoles::moveForward(Cell * c)
@@ -52,6 +52,10 @@ void CellRoles::eat(Cell * c)
 		if (c->collision(f) && !f->isMarkedToDelete() && c->foodLevel < c->genes.foodLimit.get())
 		{
 			c->foodLevel += static_cast<float>(f->getSize());
+			if (!c->horniness.isMax())
+			{
+				c->horniness = c->horniness.get() +  randomReal(0, 10);
+			}
 			if (c->getSize() < c->genes.maxSize.get())
 			{
 				c->setSize(c->getSize() + 1);
@@ -131,20 +135,36 @@ void CellRoles::divideAndConquer(Cell * c)
 	}
 }
 
-//void CellRoles::grow(Cell * c)
-//{
-//	auto rand = randomReal(0.025, 0.06);
-//
-//	if (c->getSize() < c->genes.maxSize.get() && c->foodLevel > 50)
-//	{
-//		c->setSize(c->getSize() + rand * CellSimApp::getInstance().getDeltaTime());
-//	}
-//
-//	if (c->getSize() > 10 && c->foodLevel < 20)
-//	{
-//		c->setSize(c->getSize() - rand * CellSimApp::getInstance().getDeltaTime());
-//	}
-//}
+void CellRoles::grow(Cell * c)
+{
+	auto rand = randomReal(0.025, 0.06);
+
+	if (c->getSize() < c->genes.maxSize.get() && c->foodLevel > 50)
+	{
+		c->setSize(c->getSize() + rand * CellSimApp::getInstance().getDeltaTime());
+	}
+
+	if (c->getSize() > 10 && c->foodLevel < 20)
+	{
+		c->setSize(c->getSize() - rand * CellSimApp::getInstance().getDeltaTime());
+	}
+}
+
+void CellRoles::getingHot(Cell * c)
+{
+	if (c->horniness.isMax())
+	{
+		auto & cells = Environment::getInstance().getCellsVector();
+		for (auto & cell : cells)
+		{
+			if (cell->getHorniness().isMax() && c->genes.type.get()==cell->genes.type.get() &&c->collision(cell))
+			{
+				c->setHorniness(0);
+				cell->setHorniness(0);
+			}
+		}
+	}
+}
 
 void CellRoles::makeFood(Cell * c)
 {
