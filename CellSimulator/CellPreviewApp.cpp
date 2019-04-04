@@ -205,10 +205,6 @@ void CellPreviewApp::update()
 			cell->setRotation(0);
 			window->draw(*cell);
 		}
-		else
-		{
-			Logger::log("NULL " + std::to_string(i));
-		}
 		gui->draw(); // Draw all widgets
 		window->display();
 	}
