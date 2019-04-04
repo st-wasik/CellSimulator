@@ -1,10 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Source Files">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
     <Filter Include="Apps">
       <UniqueIdentifier>{cbbba7da-b445-4c46-9b9c-94b8754f1b58}</UniqueIdentifier>
     </Filter>
@@ -41,11 +37,11 @@
     <Filter Include="Environment\Source">
       <UniqueIdentifier>{e7efeedf-a1ab-4778-8093-7f5bd1c15200}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Others">
+      <UniqueIdentifier>{a786b3a2-a720-4255-ae90-729a9c60eada}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="CellListApp.cpp">
       <Filter>Apps\Source</Filter>
     </ClCompile>
@@ -100,9 +96,6 @@
     <ClCompile Include="AutoFeederTool.cpp">
       <Filter>Environment\Source</Filter>
     </ClCompile>
-    <ClCompile Include="FoodController.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Distance.cpp">
       <Filter>Utils\Source</Filter>
     </ClCompile>
@@ -110,7 +103,13 @@
       <Filter>Apps\Source</Filter>
     </ClCompile>
     <ClCompile Include="CellFactory.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Utils\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="FoodController.cpp">
+      <Filter>Utils\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>Others</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -171,13 +170,17 @@
     <ClInclude Include="AutoFeederTool.h">
       <Filter>Environment\Header</Filter>
     </ClInclude>
-    <ClInclude Include="FoodController.h" />
     <ClInclude Include="Distance.h">
       <Filter>Utils\Header</Filter>
     </ClInclude>
     <ClInclude Include="GUIManager.h">
       <Filter>Apps\Header</Filter>
     </ClInclude>
-    <ClInclude Include="CellFactory.h" />
+    <ClInclude Include="CellFactory.h">
+      <Filter>Utils\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="FoodController.h">
+      <Filter>Utils\Header</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
