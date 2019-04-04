@@ -8,6 +8,8 @@
 
 Cell::Cell(float size, sf::Vector2f position, sf::Color color) : BaseObj(size, position, color)
 {
+	this->age = 0;
+
 	this->foodLevel = 50;
 
 	this->currentSpeed = randomReal(0.1, 2);

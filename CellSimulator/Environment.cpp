@@ -45,23 +45,23 @@ void Environment::configure()
 
 	TextureProvider::getInstance().getTexture("whiteNoise")->setSmooth(true);
 
-	for (int i = 0; i < 10; i++) {
+	for (int i = 0; i < 50; i++) {
 		auto cell = CellFactory::getCell(Cell::Type::Aggressive);
 		cell->setPosition(sf::Vector2f(randomInt(40, static_cast<int>(Environment::getSize().x - 40)), randomInt(40, static_cast<int>(Environment::getSize().y - 40))));
 		cells.push_back(cell);
 	}
 
-	for (int i = 0; i < 10; i++) {
+	for (int i = 0; i < 20; i++) {
 		auto cell = CellFactory::getCell(Cell::Type::Passive);
 		cell->setPosition(sf::Vector2f(randomInt(40, static_cast<int>(Environment::getSize().x - 40)), randomInt(40, static_cast<int>(Environment::getSize().y - 40))));
 		cells.push_back(cell);
 	}
 
-	for (int i = 0; i < 10; i++) {
-		auto cell = CellFactory::getCell(Cell::Type::Random);
-		cell->setPosition(sf::Vector2f(randomInt(40, static_cast<int>(Environment::getSize().x - 40)), randomInt(40, static_cast<int>(Environment::getSize().y - 40))));
-		cells.push_back(cell);
-	}
+	//for (int i = 0; i < 10; i++) {
+	//	auto cell = CellFactory::getCell(Cell::Type::Random);
+	//	cell->setPosition(sf::Vector2f(randomInt(40, static_cast<int>(Environment::getSize().x - 40)), randomInt(40, static_cast<int>(Environment::getSize().y - 40))));
+	//	cells.push_back(cell);
+	//}
 
 	for (int i = 0; i < 3; i++) {
 		auto cell = CellFactory::getCell(Cell::Type::GreenLettuce);
@@ -218,7 +218,7 @@ std::shared_ptr<Cell> Environment::getCellAtPosition(const sf::Vector2f & p)
 	return nullptr;
 }
 
-std::vector<std::shared_ptr<Food>>& Environment::getFoodsVector()
+std::list<std::shared_ptr<Food>>& Environment::getFoodsVector()
 {
 	return food;
 }
@@ -233,7 +233,7 @@ std::vector<std::shared_ptr<Cell>>& Environment::getNewCellsVector()
 	return newCells;
 }
 
-std::vector<std::shared_ptr<Food>>& Environment::getNewFoodsVector()
+std::list<std::shared_ptr<Food>>& Environment::getNewFoodsVector()
 {
 	return newFood;
 }

@@ -170,18 +170,21 @@ void CellPreviewApp::update()
 	sf::Event event;
 	if (window->isOpen())
 	{
-		if (CellSelectionTool::getInstance().getSelectedCell() != nullptr)
+		auto cell = CellSelectionTool::getInstance().getSelectedCellCopy();
+		if (cell != nullptr)
 		{
-			maxSpeedVal->setText(std::to_string(CellSelectionTool::getInstance().getSelectedCell()->getGenes().maxSpeed.get()));
-			aggresionVal->setText(std::to_string(CellSelectionTool::getInstance().getSelectedCell()->getGenes().aggresion.get()));
-			radarRangeVal->setText(std::to_string(CellSelectionTool::getInstance().getSelectedCell()->getGenes().radarRange.get()));
-			divisionThresholdVal->setText(std::to_string(CellSelectionTool::getInstance().getSelectedCell()->getGenes().divisionThreshold.get()));
-			foodLimitVal->setText(std::to_string(CellSelectionTool::getInstance().getSelectedCell()->getGenes().foodLimit.get()));
-			maxSizeVal->setText(std::to_string(CellSelectionTool::getInstance().getSelectedCell()->getGenes().maxSize.get()));
-			ageVal->setText(std::to_string(CellSelectionTool::getInstance().getSelectedCell()->getGenes().maxAge.get()));
-			foodLevelVal->setText(std::to_string(CellSelectionTool::getInstance().getSelectedCell()->getFoodLevel()));
-			currentSpeedVal->setText(std::to_string(CellSelectionTool::getInstance().getSelectedCell()->getCurrentSpeed()));
-			sizeVal->setText(std::to_string(CellSelectionTool::getInstance().getSelectedCell()->getSize()));
+			maxSpeedVal->setText(std::to_string(cell->getGenes().maxSpeed.get()));
+			aggresionVal->setText(std::to_string(cell->getGenes().aggresion.get()));
+			radarRangeVal->setText(std::to_string(cell->getGenes().radarRange.get()));
+			divisionThresholdVal->setText(std::to_string(cell->getGenes().divisionThreshold.get()));
+			foodLimitVal->setText(std::to_string(cell->getGenes().foodLimit.get()));
+			maxSizeVal->setText(std::to_string(cell->getGenes().maxSize.get()));
+			ageVal->setText(std::to_string(cell->age));
+			foodLevelVal->setText(std::to_string(cell->getFoodLevel()));
+			currentSpeedVal->setText(std::to_string(cell->getCurrentSpeed()));
+			sizeVal->setText(std::to_string(cell->getSize()));
+
+			cell->setPosition(sf::Vector2f( 175, window->getSize().y  - 100 ));
 		}
 		if (!MainApp::appRun)
 		{
@@ -196,6 +199,16 @@ void CellPreviewApp::update()
 		}
 
 		window->clear(sf::Color(0, 0, 0));
+		if (cell != nullptr)
+		{
+			cell->setSize(50);
+			cell->setRotation(0);
+			window->draw(*cell);
+		}
+		else
+		{
+			Logger::log("NULL " + std::to_string(i));
+		}
 		gui->draw(); // Draw all widgets
 		window->display();
 	}

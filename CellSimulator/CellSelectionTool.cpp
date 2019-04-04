@@ -78,7 +78,7 @@ std::shared_ptr<Cell> CellSelectionTool::getSelectedCell()
 std::shared_ptr<Cell> CellSelectionTool::getSelectedCellCopy()
 {
 	if (selectedCellCopyValid)
-		return selectedCellCopy;
+		return std::make_shared<Cell>(*selectedCellCopy);
 	return nullptr;
 }
 

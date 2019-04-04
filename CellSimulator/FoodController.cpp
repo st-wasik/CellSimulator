@@ -21,7 +21,7 @@ FoodController & FoodController::getInstance()
 
 void FoodController::generateFood(sf::Vector2f size, int amount)
 {
-	std::vector<std::shared_ptr<Food>>& foodVector = Environment::getInstance().getFoodsVector();
+	auto& foodVector = Environment::getInstance().getFoodsVector();
 	for (int i = 0; i < amount; i++) {
 		foodVector.push_back(std::make_shared<Food>(
 			randomInt(size.x, size.y),

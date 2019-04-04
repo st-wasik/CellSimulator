@@ -48,6 +48,8 @@ public:
 	void dropRole(void(*role)(Cell*));
 	void addRole(void(*role)(Cell*));
 
+	double age;
+
 private:
 
 	// vector of pointers to role-functions
@@ -68,5 +70,6 @@ private:
 	Genes genes;
 
 	Ranged<double, 0, 100> horniness;
+
 };
 

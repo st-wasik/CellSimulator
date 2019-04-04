@@ -44,6 +44,8 @@ public:
 
 	static void fight(Cell * c);
 
+	static void makeOlder(Cell * c);
+
 	/// \returns true if collision occured - otherwise false
 	static bool checkEnvironmentBounds(Cell* c);
 private:
