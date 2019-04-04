@@ -109,6 +109,9 @@
     <ClCompile Include="GUIManager.cpp">
       <Filter>Apps\Source</Filter>
     </ClCompile>
+    <ClCompile Include="CellFactory.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CellListApp.h">
@@ -175,5 +178,6 @@
     <ClInclude Include="GUIManager.h">
       <Filter>Apps\Header</Filter>
     </ClInclude>
+    <ClInclude Include="CellFactory.h" />
   </ItemGroup>
 </Project>

@@ -130,6 +130,7 @@
     <ClCompile Include="AutoFeederTool.cpp" />
     <ClCompile Include="BaseObj.cpp" />
     <ClCompile Include="Cell.cpp" />
+    <ClCompile Include="CellFactory.cpp" />
     <ClCompile Include="CellListApp.cpp" />
     <ClCompile Include="CellMovementTool.cpp" />
     <ClCompile Include="CellPreviewApp.cpp" />
@@ -154,6 +155,7 @@
     <ClInclude Include="AutoFeederTool.h" />
     <ClInclude Include="BaseObj.h" />
     <ClInclude Include="Cell.h" />
+    <ClInclude Include="CellFactory.h" />
     <ClInclude Include="CellListApp.h" />
     <ClInclude Include="CellMovementTool.h" />
     <ClInclude Include="CellPreviewApp.h" />

@@ -49,7 +49,7 @@ void CellRoles::eat(Cell * c)
 
 	for (auto& f : foods)
 	{
-		if (c->collision(f) && !f->isMarkedToDelete() && c->foodLevel<c->genes.foodLimit.get())
+		if (c->collision(f) && !f->isMarkedToDelete() && c->foodLevel < c->genes.foodLimit.get())
 		{
 			c->foodLevel += static_cast<float>(f->getSize());
 			if (!c->horniness.isMax())
@@ -78,7 +78,7 @@ void CellRoles::updateColor(Cell * c)
 	auto& envRad = Environment::getInstance().getRadiation();
 	if (envTemp > threshold)
 	{
-		newR = 2 * abs(envTemp - threshold)  + c->baseColor.r;
+		newR = 2 * abs(envTemp - threshold) + c->baseColor.r;
 		newColor.r = newR.get();
 	}
 	else if (envTemp < -threshold)
@@ -102,7 +102,7 @@ void CellRoles::beDead(Cell * c)
 	auto color = c->shape.getFillColor();
 	if (color.a > 0)
 	{
-		double a = static_cast<double>(color.a) - 0.075*CellSimApp::getInstance().getDeltaTime();
+		double a = static_cast<double>(color.a) - CellSimApp::getInstance().getDeltaTime();
 		if (0 > a) a = 0;
 		color.a = a;
 		c->shape.setFillColor(color);
@@ -162,6 +162,61 @@ void CellRoles::getingHot(Cell * c)
 				c->setHorniness(0);
 				cell->setHorniness(0);
 			}
+		}
+	}
+}
+
+void CellRoles::makeFood(Cell * c)
+{
+	if (randomInt(0, 1000) > 998)
+	{
+		auto size = c->getSize();
+
+		int foods = randomInt(0, 100) > 70 ? 2 : 1;
+		auto foodSize = 0.4 * size;
+		auto& foodsVect = Environment::getInstance().getNewFoodsVector();
+
+		for (int i = 0; i < foods; ++i)
+		{
+			float xDeviation = randomInt(-size / 2, size / 2);
+			float yDeviation = randomInt(-size / 2, size / 2);
+
+			auto position = c->getPosition() + sf::Vector2f{ xDeviation, yDeviation };
+
+			auto food = std::make_shared<Food>(Food(foodSize, position, c->getBaseColor()));
+			foodsVect.push_back(food);
+		}
+	}
+
+}
+
+void CellRoles::fight(Cell * c)
+{
+	std::vector<std::shared_ptr<Cell>> cells = Environment::getInstance().getCellsVector();
+
+	for (auto& cell : cells)
+	{
+		if (c->collision(cell) && c != cell.get())
+		{
+			float cSize = c->getSize();
+			float cellSize = cell->getSize();
+			
+			if (cSize > cellSize) {
+				c->setSize(cSize - 2);
+				cell->setSize(cellSize + 2);
+			}
+			else if (cSize < cellSize) {
+				c->setSize(cSize + 2);
+				cell->setSize(cellSize - 2);
+			}
+
+			double cCurrentSpeed = c->getCurrentSpeed();
+			double cellCurrentSpeed = cell->getCurrentSpeed();
+			
+			c->setRotation(c->getRotation() + 180);
+			c->shape.move(cCurrentSpeed * std::sin((PI / 180)*c->getRotation()) * CellSimApp::getInstance().getDeltaTime(), cCurrentSpeed * -std::cos((PI / 180)*c->getRotation()) * CellSimApp::getInstance().getDeltaTime());
+			cell->setRotation(c->getRotation() + 180);
+			cell->shape.move(cellCurrentSpeed * std::sin((PI / 180)*cell->getRotation()) * CellSimApp::getInstance().getDeltaTime(), cellCurrentSpeed * -std::cos((PI / 180)*cell->getRotation()) * CellSimApp::getInstance().getDeltaTime());
 		}
 	}
 }

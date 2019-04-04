@@ -25,6 +25,9 @@ void CellSelectionTool::update()
 
 	if (selectedCell != nullptr)
 	{
+		*selectedCellCopy = *selectedCell;
+		selectedCellCopyValid = true;
+
 		float size = selectedCell->getSize() + 30;
 		selectionMarker.setRadius(size);
 		selectionMarker.setOrigin(size, size);
@@ -34,7 +37,15 @@ void CellSelectionTool::update()
 		{
 			selectedCell->kill();
 		}
-		if (selectedCell->isMarkedToDelete() || selectedCell->isDead()) selectedCell = nullptr;
+		if (selectedCell->isMarkedToDelete() || selectedCell->isDead())
+		{
+			selectedCell = nullptr;
+			selectedCellCopyValid = false;
+		}
+	}
+	else
+	{
+		selectedCellCopyValid = false;
 	}
 }
 
@@ -64,6 +75,14 @@ std::shared_ptr<Cell> CellSelectionTool::getSelectedCell()
 	return selectedCell;
 }
 
-CellSelectionTool::CellSelectionTool()
+std::shared_ptr<Cell> CellSelectionTool::getSelectedCellCopy()
 {
+	if (selectedCellCopyValid)
+		return selectedCellCopy;
+	return nullptr;
+}
+
+CellSelectionTool::CellSelectionTool() : selectedCellCopyValid(false)
+{
+	selectedCellCopy = std::make_shared<Cell>(Cell{ 0.0, { 0.0f, 0.0f }, sf::Color::Transparent });
 }

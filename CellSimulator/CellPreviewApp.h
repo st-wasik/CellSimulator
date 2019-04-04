@@ -34,5 +34,27 @@ private:
 	tgui::Theme theme;
 
 	//gui elements
+	std::shared_ptr<tgui::Label>
+		maxSpeed,
+		aggresion,
+		radarRange,
+		divisionThreshold,
+		foodLimit,
+		maxSize,
+		age,
+		foodLevel,
+		currentSpeed,
+		size,
+		maxSpeedVal,
+		aggresionVal,
+		radarRangeVal,
+		divisionThresholdVal,
+		foodLimitVal,
+		maxSizeVal,
+		ageVal,
+		foodLevelVal,
+		currentSpeedVal,
+		sizeVal;
+
 };
 

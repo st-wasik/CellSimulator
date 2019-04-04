@@ -1,4 +1,5 @@
 #include "Cell.h"
+#include "Food.h"
 #include "CellRoles.h"
 #include "CellSimApp.h"
 #include "Environment.h"
@@ -33,6 +34,7 @@ Cell::Cell(float size, sf::Vector2f position, sf::Color color) : BaseObj(size, p
 	roles.push_back(CellRoles::divideAndConquer);
 	roles.push_back(CellRoles::getingHot);
 	//roles.push_back(CellRoles::grow);
+	roles.push_back(CellRoles::fight);
 
 	// make sure that moveForward is always the last role-function
 	// cell should be moved after all updates
@@ -72,6 +74,24 @@ void Cell::kill()
 
 		auto color = randomInt(0, 32);
 		shape.setFillColor(sf::Color(color, color, color, 255));
+		
+		auto size = getSize();
+
+		int foods = size / 10;
+		auto foodSize = 0.75 * size / foods;
+		auto& foodsVect = Environment::getInstance().getNewFoodsVector();
+
+		for (int i = 0; i < foods; ++i)
+		{
+			float xDeviation = randomInt(-size/2, size/2);
+			float yDeviation = randomInt(-size/2, size/2);
+
+			auto position = getPosition() + sf::Vector2f{xDeviation, yDeviation};
+
+			auto food = std::make_shared<Food>(Food(foodSize, position, getBaseColor()));
+			foodsVect.push_back(food);
+		}
+
 	}
 }
 
@@ -103,6 +123,17 @@ Ranged<double, 0, 100>& Cell::getHorniness()
 {
 	return this->horniness;
 }
+void Cell::dropRole(void(*role)(Cell *))
+{
+	auto newRolesEnd = std::remove_if(roles.begin(), roles.end(), [role](auto r) {return r == role; });
+	roles.erase(newRolesEnd, roles.end());
+}
+
+void Cell::addRole(void(*role)(Cell *))
+{
+	roles.push_back(role);
+}
+
 bool Cell::collision(std::shared_ptr<BaseObj> obj)
 {
 	auto sizes = this->getSize() + obj->getSize();

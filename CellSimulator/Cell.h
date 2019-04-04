@@ -17,7 +17,14 @@ class Cell : public BaseObj
 {
 	friend class CellRoles;
 
+	friend class CellFactory;
+
 public:
+	enum class Type
+	{
+		Passive, Aggressive, Random, GreenLettuce
+	};
+
 	Cell(float size, sf::Vector2f position, sf::Color color);
 	~Cell();
 
@@ -37,6 +44,9 @@ public:
 
 	void setHorniness(double horniness);
 	Ranged<double, 0, 100>& getHorniness();
+
+	void dropRole(void(*role)(Cell*));
+	void addRole(void(*role)(Cell*));
 
 private:
 
