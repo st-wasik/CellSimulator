@@ -180,14 +180,17 @@ void CellRoles::fight(Cell * c)
 		{
 			float cSize = c->getSize();
 			float cellSize = cell->getSize();
+			int sizeDelta = 2;
 			
 			if (cSize > cellSize) {
-				c->setSize(cSize - 2);
-				cell->setSize(cellSize + 2);
+				c->setSize(cSize - sizeDelta);
+				cell->setSize(cellSize + sizeDelta);
+				cell->foodLevel += sizeDelta;
 			}
 			else if (cSize < cellSize) {
-				c->setSize(cSize + 2);
-				cell->setSize(cellSize - 2);
+				c->setSize(cSize + sizeDelta);
+				c->foodLevel += sizeDelta;
+				cell->setSize(cellSize - sizeDelta);
 			}
 
 			double cCurrentSpeed = c->getCurrentSpeed();
