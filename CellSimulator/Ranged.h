@@ -34,6 +34,8 @@ public:
 
 	T get();
 	void randomize();
+	bool isMax();
+	bool isMin();
 private:
 
 	T value;
@@ -183,6 +185,26 @@ inline void Ranged<T, min, max>::randomize()
 	{
 		value = randomReal(min, max);
 	}
+}
+
+template<typename T, int min, int max>
+inline bool Ranged<T, min, max>::isMax()
+{
+	if (this->value >= max)
+	{
+		return true;
+	}
+	return false;
+}
+
+template<typename T, int min, int max>
+inline bool Ranged<T, min, max>::isMin()
+{
+	if (this->value <= min)
+	{
+		return true;
+	}
+	return false;
 }
 
 template<typename T, int min, int max>

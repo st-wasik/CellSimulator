@@ -11,6 +11,8 @@ Cell::Cell(float size, sf::Vector2f position, sf::Color color) : BaseObj(size, p
 
 	this->currentSpeed = randomReal(0.1, 2);
 
+	this->horniness.randomize();
+
 	shape.setOutlineColor(sf::Color::Yellow);
 
 
@@ -29,6 +31,7 @@ Cell::Cell(float size, sf::Vector2f position, sf::Color color) : BaseObj(size, p
 	roles.push_back(CellRoles::updateColor);
 	roles.push_back(CellRoles::simulateHunger);
 	roles.push_back(CellRoles::divideAndConquer);
+	roles.push_back(CellRoles::getingHot);
 	//roles.push_back(CellRoles::grow);
 
 	// make sure that moveForward is always the last role-function
@@ -77,7 +80,7 @@ bool Cell::isDead()
 	return this->dead;
 }
 
-Genes Cell::getGenes()
+Genes& Cell::getGenes()
 {
 	return this->genes;
 }
@@ -92,6 +95,14 @@ double Cell::getCurrentSpeed()
 	return this->currentSpeed;
 }
 
+void Cell::setHorniness(double horniness)
+{
+	this->horniness = horniness;
+}
+Ranged<double, 0, 100>& Cell::getHorniness()
+{
+	return this->horniness;
+}
 bool Cell::collision(std::shared_ptr<BaseObj> obj)
 {
 	auto sizes = this->getSize() + obj->getSize();

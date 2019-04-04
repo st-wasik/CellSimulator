@@ -3,6 +3,7 @@
 #include <string>
 #include <iostream>
 
+
 struct Genes
 {
 	Genes();
@@ -13,7 +14,8 @@ struct Genes
 		double divisionThreshold,
 		double foodLimit,
 		double maxSize,
-		double age);
+		double age,
+		int type);
 
 	Ranged<double, 0, 2> maxSpeed;
 	Ranged<double, 0, 100> aggresion;
@@ -22,6 +24,7 @@ struct Genes
 	Ranged<double, 0, 150> foodLimit;
 	Ranged<double, 20, 50> maxSize;
 	Ranged<double, 1, 100> maxAge;
+	Ranged<int, 0, 2> type;
 
 	void randomize();
 	std::string toString();
