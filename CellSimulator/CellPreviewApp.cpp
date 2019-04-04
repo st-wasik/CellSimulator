@@ -196,6 +196,7 @@ void CellPreviewApp::update()
 			foodLevelVal->setText(std::to_string(cell->getFoodLevel()));
 			currentSpeedVal->setText(std::to_string(cell->getCurrentSpeed()));
 			sizeVal->setText(std::to_string(cell->getSize()));
+			horninessVal->setText(std::to_string(cell->getHorniness().get()));
 
 			cell->setPosition(sf::Vector2f( 175, window->getSize().y  - 100 ));
 		}
