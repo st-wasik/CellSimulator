@@ -39,6 +39,8 @@ public:
 
 	static void makeFood(Cell * c);
 
+	static void fight(Cell * c);
+
 	/// \returns true if collision occured - otherwise false
 	static bool checkEnvironmentBounds(Cell* c);
 private:

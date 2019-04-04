@@ -170,6 +170,37 @@ void CellRoles::makeFood(Cell * c)
 
 }
 
+void CellRoles::fight(Cell * c)
+{
+	std::vector<std::shared_ptr<Cell>> cells = Environment::getInstance().getCellsVector();
+
+	for (auto& cell : cells)
+	{
+		if (c->collision(cell) && c != cell.get())
+		{
+			float cSize = c->getSize();
+			float cellSize = cell->getSize();
+			
+			if (cSize > cellSize) {
+				c->setSize(cSize - 2);
+				cell->setSize(cellSize + 2);
+			}
+			else if (cSize < cellSize) {
+				c->setSize(cSize + 2);
+				cell->setSize(cellSize - 2);
+			}
+
+			double cCurrentSpeed = c->getCurrentSpeed();
+			double cellCurrentSpeed = cell->getCurrentSpeed();
+			
+			c->setRotation(c->getRotation() + 180);
+			c->shape.move(cCurrentSpeed * std::sin((PI / 180)*c->getRotation()) * CellSimApp::getInstance().getDeltaTime(), cCurrentSpeed * -std::cos((PI / 180)*c->getRotation()) * CellSimApp::getInstance().getDeltaTime());
+			cell->setRotation(c->getRotation() + 180);
+			cell->shape.move(cellCurrentSpeed * std::sin((PI / 180)*cell->getRotation()) * CellSimApp::getInstance().getDeltaTime(), cellCurrentSpeed * -std::cos((PI / 180)*cell->getRotation()) * CellSimApp::getInstance().getDeltaTime());
+		}
+	}
+}
+
 bool CellRoles::checkEnvironmentBounds(Cell * c)
 {
 	const auto& envSize = Environment::getInstance().getSize();

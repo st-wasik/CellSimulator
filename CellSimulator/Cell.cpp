@@ -31,6 +31,7 @@ Cell::Cell(float size, sf::Vector2f position, sf::Color color) : BaseObj(size, p
 	roles.push_back(CellRoles::simulateHunger);
 	roles.push_back(CellRoles::divideAndConquer);
 	//roles.push_back(CellRoles::grow);
+	roles.push_back(CellRoles::fight);
 
 	// make sure that moveForward is always the last role-function
 	// cell should be moved after all updates
