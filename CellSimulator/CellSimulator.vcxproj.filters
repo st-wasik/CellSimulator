@@ -111,6 +111,9 @@
     <ClCompile Include="main.cpp">
       <Filter>Others</Filter>
     </ClCompile>
+    <ClCompile Include="MixDouble.cpp">
+      <Filter>Utils\Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CellListApp.h">
@@ -180,6 +183,9 @@
       <Filter>Utils\Header</Filter>
     </ClInclude>
     <ClInclude Include="FoodController.h">
+      <Filter>Utils\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="MixDouble.h">
       <Filter>Utils\Header</Filter>
     </ClInclude>
   </ItemGroup>

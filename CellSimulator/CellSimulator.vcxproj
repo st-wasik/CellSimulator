@@ -148,6 +148,7 @@
     <ClCompile Include="CellSimApp.cpp" />
     <ClCompile Include="MainApp.cpp" />
     <ClCompile Include="CellSimMouse.cpp" />
+    <ClCompile Include="MixDouble.cpp" />
     <ClCompile Include="Random.cpp" />
     <ClCompile Include="TextureProvider.cpp" />
   </ItemGroup>
@@ -172,6 +173,7 @@
     <ClInclude Include="Logger.h" />
     <ClInclude Include="MainApp.h" />
     <ClInclude Include="CellSimMouse.h" />
+    <ClInclude Include="MixDouble.h" />
     <ClInclude Include="Random.h" />
     <ClInclude Include="Ranged.h" />
     <ClInclude Include="TextureProvider.h" />

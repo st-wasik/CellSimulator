@@ -33,52 +33,30 @@ Cell::Cell(float size, sf::Vector2f position, sf::Color color) : BaseObj(size, p
 	roles.push_back(CellRoles::eat);
 	roles.push_back(CellRoles::updateColor);
 	roles.push_back(CellRoles::simulateHunger);
-	roles.push_back(CellRoles::divideAndConquer);
+	//roles.push_back(CellRoles::divideAndConquer);
 	roles.push_back(CellRoles::getingHot);
 	//roles.push_back(CellRoles::grow);
-	roles.push_back(CellRoles::fight);
-
+	//roles.push_back(CellRoles::fight);
+	roles.push_back(CellRoles::makeOlder);
 	// make sure that moveForward is always the last role-function
 	// cell should be moved after all updates
 	roles.push_back(CellRoles::moveForward);
 }
 
-Cell::Cell(Cell a, Cell b) : BaseObj(10,(a.getPosition()+b.getPosition())/2.0f, a.baseColor*b.baseColor)
+Cell::Cell(Cell a, Cell b) : Cell(10,(a.getPosition()+b.getPosition())/2.0f, a.baseColor*b.baseColor)
 {
 
 
 
-	this->foodLevel = 50;
+	double mutationRatio = Environment::getInstance().getRadiation();
+	genes.aggresion = mutationRatio <= randomReal(0, 100) ? MixDouble(a.genes.aggresion.get(), b.genes.divisionThreshold.get()) : (a.genes.aggresion.get() + b.genes.divisionThreshold.get()) / 2;
+	genes.divisionThreshold = mutationRatio <= randomReal(0, 100) ? MixDouble(a.genes.divisionThreshold.get(), b.genes.divisionThreshold.get()) : (a.genes.divisionThreshold.get() + b.genes.divisionThreshold.get()) / 2;
+	genes.foodLimit = mutationRatio <= randomReal(0, 100) ? MixDouble(a.genes.foodLimit.get(), b.genes.foodLimit.get()) : (a.genes.foodLimit.get() + b.genes.foodLimit.get()) / 2;
+	genes.maxAge = mutationRatio <= randomReal(0, 100) ? MixDouble(a.genes.maxAge.get(), b.genes.maxAge.get()) : (a.genes.maxAge.get() + b.genes.maxAge.get()) / 2;
+	genes.maxSize = mutationRatio <= randomReal(0, 100) ? MixDouble(a.genes.maxSize.get(), b.genes.maxSize.get()) : (a.genes.maxSize.get() + b.genes.maxSize.get()) / 2;
+	genes.maxSpeed = mutationRatio <= randomReal(0, 100) ? MixDouble(a.genes.maxSpeed.get(), b.genes.maxSpeed.get()) : (a.genes.maxSpeed.get() + b.genes.maxSpeed.get()) / 2;
+	genes.radarRange = mutationRatio <= randomReal(0, 100) ? MixDouble(a.genes.radarRange.get(), b.genes.radarRange.get()) : (a.genes.radarRange.get() + b.genes.radarRange.get()) / 2;
 
-	this->currentSpeed = randomReal(0.1, 2);
-
-	this->horniness.randomize();
-
-	shape.setOutlineColor(sf::Color::Yellow);
-
-
-	int textureSize = getSize() / 2;
-	shape.setTextureRect({ 0,0,textureSize, textureSize });
-	shape.setTexture(TextureProvider::getInstance().getTexture("whiteNoise").get());
-
-	shape.setOutlineThickness(-5);
-	shape.setOutlineColor(sf::Color(128, 64, 0, 75));
-
-	// name of function is its address
-	// place here all role-functions that cell should call
-	roles.push_back(CellRoles::changeDirection);
-	roles.push_back(CellRoles::changeSpeed);
-	roles.push_back(CellRoles::eat);
-	roles.push_back(CellRoles::updateColor);
-	roles.push_back(CellRoles::simulateHunger);
-	roles.push_back(CellRoles::divideAndConquer);
-	roles.push_back(CellRoles::getingHot);
-	//roles.push_back(CellRoles::grow);
-	roles.push_back(CellRoles::fight);
-
-	// make sure that moveForward is always the last role-function
-	// cell should be moved after all updates
-	roles.push_back(CellRoles::moveForward);
 
 }
 

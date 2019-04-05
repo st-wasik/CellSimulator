@@ -9,6 +9,7 @@
 #include "Food.h"
 #include "Genes.h"
 #include "Ranged.h"
+#include "MixDouble.h"
 
 
 class CellRoles;
