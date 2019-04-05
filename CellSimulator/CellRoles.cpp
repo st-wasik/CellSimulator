@@ -233,7 +233,7 @@ void CellRoles::makeOlder(Cell * c)
 		c->kill();
 		return;
 	}
-	c->age += CellSimApp::getInstance().getDeltaTime();
+	c->age += CellSimApp::getInstance().getDeltaTime()*0.01;
 }
 
 bool CellRoles::checkEnvironmentBounds(Cell * c)

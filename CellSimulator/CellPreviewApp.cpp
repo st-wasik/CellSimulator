@@ -166,7 +166,7 @@ void CellPreviewApp::configure()
 
 	horniness = tgui::Label::create();
 	horniness->setRenderer(theme.getRenderer("Label"));
-	horniness->setText("Horniness");
+	horniness->setText("Horniness:");
 	horniness->setPosition(10, 210);
 	horniness->setTextSize(18);
 	gui->add(horniness);
