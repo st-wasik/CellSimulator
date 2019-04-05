@@ -57,11 +57,11 @@ void Environment::configure()
 		cells.push_back(cell);
 	}
 
-	//for (int i = 0; i < 10; i++) {
-	//	auto cell = CellFactory::getCell(Cell::Type::Random);
-	//	cell->setPosition(sf::Vector2f(randomInt(40, static_cast<int>(Environment::getSize().x - 40)), randomInt(40, static_cast<int>(Environment::getSize().y - 40))));
-	//	cells.push_back(cell);
-	//}
+	for (int i = 0; i < 10; i++) {
+		auto cell = CellFactory::getCell(Cell::Type::Random);
+		cell->setPosition(sf::Vector2f(randomInt(40, static_cast<int>(Environment::getSize().x - 40)), randomInt(40, static_cast<int>(Environment::getSize().y - 40))));
+		cells.push_back(cell);
+	}
 
 	for (int i = 0; i < 3; i++) {
 		auto cell = CellFactory::getCell(Cell::Type::GreenLettuce);

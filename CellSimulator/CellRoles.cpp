@@ -4,6 +4,7 @@
 #include "Logger.h"
 #include "CellSimApp.h"
 #include "CellSelectionTool.h"
+#include "Distance.h"
 constexpr double PI = 3.14159265358979323846;
 
 void CellRoles::moveForward(Cell * c)
@@ -24,8 +25,35 @@ void CellRoles::moveForward(Cell * c)
 
 void CellRoles::changeDirection(Cell * c)
 {
-	// DIRECTION CHANGE THRESHOLD SHOULD BE STORED IN GENES
-	if (randomInt(0, 100) > 97)
+	auto & foods = Environment::getInstance().getFoodsVector();
+	std::shared_ptr<Food> closestFood=nullptr;
+	double distance=1000;
+	if (c->foodLevel < c->genes.foodLimit.get())
+	{
+		for (auto & food : foods)
+		{
+			if (getDistance(c->getPosition(), food->getPosition()) <= distance)
+			{
+				distance = getDistance(c->getPosition(), food->getPosition());
+				closestFood = food;
+			}
+		}
+	}
+	if (closestFood != nullptr & distance <= c->genes.radarRange.get()*50+c->getSize())
+	{
+		auto v = closestFood->getPosition() - c->getPosition();
+		auto angle = atan2(v.y, v.x);
+		angle = angle * (180 / PI);
+		if (angle < 0)
+		{
+			angle = 360 - (-angle);
+		}
+		angle += 90;
+
+		c->setRotation(angle);
+	}
+	else if (randomInt(0, 100) > 97)
+	{
 		if (randomInt(0, 100) <= 50)
 		{
 			c->shape.rotate(randomReal(-50, 0));
@@ -34,6 +62,7 @@ void CellRoles::changeDirection(Cell * c)
 		{
 			c->shape.rotate(randomReal(0, 50));
 		}
+	}
 }
 
 void CellRoles::changeSpeed(Cell * c)
