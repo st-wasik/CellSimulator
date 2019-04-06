@@ -39,28 +39,51 @@ void CellRoles::changeDirection(Cell * c)
 			}
 		}
 	}
-	if (closestFood != nullptr & distance <= c->genes.radarRange.get()*50+c->getSize())
+	if (closestFood != nullptr && distance <= c->genes.radarRange.get()*50+c->getSize())
 	{
 		auto v = closestFood->getPosition() - c->getPosition();
 		auto angle = atan2(v.y, v.x);
+		double angle_change = 5 * CellSimApp::getInstance().getDeltaTime();
 		angle = angle * (180 / PI);
 		if (angle < 0)
 		{
 			angle = 360 - (-angle);
 		}
-		angle += 90;
-
-		c->setRotation(angle);
+		angle += 90; //Remove this for some magic
+		double cfDiffrence = c->getRotation() - angle;
+		double abscfDiffrence = abs(cfDiffrence);
+		if (abscfDiffrence > 180)
+		{
+			if (360 - abscfDiffrence < angle_change)
+			{
+				c->shape.rotate(cfDiffrence <= 0 ? -(360 - abscfDiffrence)*CellSimApp::getInstance().getDeltaTime() : (360 - abscfDiffrence)*CellSimApp::getInstance().getDeltaTime());
+			}
+			else
+			{
+				c->shape.rotate(cfDiffrence <= 0 ? -angle_change : angle_change);
+			}
+		}
+		else
+		{
+			if (abscfDiffrence < angle_change)
+			{
+				c->shape.rotate(cfDiffrence >= 0 ? -abscfDiffrence * CellSimApp::getInstance().getDeltaTime() : abscfDiffrence * CellSimApp::getInstance().getDeltaTime());
+			}
+			else
+			{
+				c->shape.rotate(cfDiffrence >= 0 ? -angle_change : angle_change);
+			}
+		}
 	}
 	else if (randomInt(0, 100) > 97)
 	{
 		if (randomInt(0, 100) <= 50)
 		{
-			c->shape.rotate(randomReal(-50, 0));
+			c->shape.rotate(randomReal(-25, 0));
 		}
 		else
 		{
-			c->shape.rotate(randomReal(0, 50));
+			c->shape.rotate(randomReal(0, 25));
 		}
 	}
 }
