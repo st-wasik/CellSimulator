@@ -1,6 +1,7 @@
 #include "CellSimApp.h"
 #include "CellSimMouse.h"
 #include "Environment.h"
+#include "CellSelectionTool.h"
 #include "MainApp.h"
 #include "Logger.h"
 #include <iostream>
@@ -52,6 +53,8 @@ void CellSimApp::run()
 				if (_expectedZoom > _maxZoom)
 					_expectedZoom -= 2;
 
+			if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Space)
+				CellSelectionTool::getInstance().setFollowSelectedCell(true);
 
 		}
 
@@ -148,10 +151,21 @@ void CellSimApp::updateViewZoom()
 
 void CellSimApp::updateViewCenter()
 {
+	if (CellSelectionTool::getInstance().getFollowSelectedCell())
+	{
+		auto cell = CellSelectionTool::getInstance().getSelectedCell();
+		if (cell != nullptr)
+		{
+			view.setCenter(cell->getPosition());
+		}
+	}
+
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::LShift))
 	{
 		if (CellSimMouse::wasRigthReleased())
 		{
+			CellSelectionTool::getInstance().setFollowSelectedCell(false);
+
 			auto prev = view.getCenter();
 			view.setCenter(CellSimMouse::getPosition());
 
@@ -162,6 +176,8 @@ void CellSimApp::updateViewCenter()
 	}
 	else if (CellSimMouse::isRightPressed())
 	{
+		CellSelectionTool::getInstance().setFollowSelectedCell(false);
+
 		auto mv = CellSimMouse::getPositionShift()*(-0.5f);
 		auto prev = view.getCenter();
 		view.move(static_cast<sf::Vector2f>(mv));

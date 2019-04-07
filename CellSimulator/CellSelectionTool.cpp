@@ -57,6 +57,7 @@ void CellSelectionTool::draw(sf::RenderWindow &w)
 
 void CellSelectionTool::clearSelectedCell()
 {
+	setFollowSelectedCell(false);
 	selectedCell = nullptr;
 }
 
@@ -80,6 +81,19 @@ std::shared_ptr<Cell> CellSelectionTool::getSelectedCellCopy()
 	if (selectedCellCopyValid)
 		return std::make_shared<Cell>(*selectedCellCopy);
 	return nullptr;
+}
+
+std::atomic_bool& CellSelectionTool::getFollowSelectedCell()
+{
+	return followSelectedCell;
+}
+
+void CellSelectionTool::setFollowSelectedCell(bool f)
+{
+	if (selectedCell != nullptr && f == true)
+		followSelectedCell = f;
+	if (f == false)
+		followSelectedCell = f;
 }
 
 CellSelectionTool::CellSelectionTool() : selectedCellCopyValid(false)

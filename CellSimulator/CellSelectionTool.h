@@ -21,6 +21,9 @@ public:
 	// returns ptr to copy of cell - this solution is thread-safe
 	std::shared_ptr<Cell> getSelectedCellCopy();
 
+	std::atomic_bool& getFollowSelectedCell();
+	void setFollowSelectedCell(bool f);
+
 private:
 	CellSelectionTool();
 	CellSelectionTool(const CellSelectionTool&) = delete;
@@ -32,5 +35,7 @@ private:
 	std::atomic_bool selectedCellCopyValid;
 
 	sf::CircleShape selectionMarker;
+
+	std::atomic_bool followSelectedCell;
 };
 
