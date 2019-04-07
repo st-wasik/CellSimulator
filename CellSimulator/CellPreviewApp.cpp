@@ -112,18 +112,18 @@ void CellPreviewApp::configure()
 	maxSizeVal->setTextSize(18);
 	gui->add(maxSizeVal);
 
-	age = tgui::Label::create();
-	age->setRenderer(theme.getRenderer("Label"));
-	age->setText("Age:");
-	age->setPosition(10, 130);
-	age->setTextSize(18);
-	gui->add(age);
+	maxAge = tgui::Label::create();
+	maxAge->setRenderer(theme.getRenderer("Label"));
+	maxAge->setText("Max Age:");
+	maxAge->setPosition(10, 130);
+	maxAge->setTextSize(18);
+	gui->add(maxAge);
 
-	ageVal = tgui::Label::create();
-	ageVal->setRenderer(theme.getRenderer("Label"));
-	ageVal->setPosition(200, 130);
-	ageVal->setTextSize(18);
-	gui->add(ageVal);
+	maxAgeVal = tgui::Label::create();
+	maxAgeVal->setRenderer(theme.getRenderer("Label"));
+	maxAgeVal->setPosition(200, 130);
+	maxAgeVal->setTextSize(18);
+	gui->add(maxAgeVal);
 
 	foodLevel = tgui::Label::create();
 	foodLevel->setRenderer(theme.getRenderer("Label"));
@@ -176,6 +176,19 @@ void CellPreviewApp::configure()
 	horninessVal->setPosition(200, 210);
 	horninessVal->setTextSize(18);
 	gui->add(horninessVal);
+
+	currentAge = tgui::Label::create();
+	currentAge->setRenderer(theme.getRenderer("Label"));
+	currentAge->setText("Current Age:");
+	currentAge->setPosition(10, 230);
+	currentAge->setTextSize(18);
+	gui->add(currentAge);
+
+	currentAgeVal = tgui::Label::create();
+	currentAgeVal->setRenderer(theme.getRenderer("Label"));
+	currentAgeVal->setPosition(200, 230);
+	currentAgeVal->setTextSize(18);
+	gui->add(currentAgeVal);
 }
 
 void CellPreviewApp::update()
@@ -192,13 +205,14 @@ void CellPreviewApp::update()
 			divisionThresholdVal->setText(std::to_string(cell->getGenes().divisionThreshold.get()));
 			foodLimitVal->setText(std::to_string(cell->getGenes().foodLimit.get()));
 			maxSizeVal->setText(std::to_string(cell->getGenes().maxSize.get()));
-			ageVal->setText(std::to_string(cell->age));
+			maxAgeVal->setText(std::to_string(cell->getGenes().maxAge.get()));
 			foodLevelVal->setText(std::to_string(cell->getFoodLevel()));
 			currentSpeedVal->setText(std::to_string(cell->getCurrentSpeed()));
 			sizeVal->setText(std::to_string(cell->getSize()));
 			horninessVal->setText(std::to_string(cell->getHorniness().get()));
+			currentAgeVal->setText(std::to_string(cell->age));
 
-			cell->setPosition(sf::Vector2f( 175, window->getSize().y  - 100 ));
+			cell->setPosition(sf::Vector2f( 175, window->getSize().y  - 75 ));
 		}
 		if (!MainApp::appRun)
 		{
