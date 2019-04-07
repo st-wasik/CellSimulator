@@ -154,7 +154,7 @@ void CellRoles::beDead(Cell * c)
 	auto color = c->shape.getFillColor();
 	if (color.a > 0)
 	{
-		double a = static_cast<double>(color.a) - CellSimApp::getInstance().getDeltaTime();
+		double a = static_cast<double>(color.a) - ((Environment::getInstance().getTemperature()+100 + 1)*0.01*CellSimApp::getInstance().getDeltaTime());
 		if (0 > a) a = 0;
 		color.a = a;
 		c->shape.setFillColor(color);
