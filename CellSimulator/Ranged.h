@@ -39,6 +39,7 @@ public:
 
 	T getMin();
 	T getMax();
+	T getRange();
 
 private:
 
@@ -221,6 +222,12 @@ template<typename T, int min, int max>
 inline T Ranged<T, min, max>::getMax()
 {
 	return max;
+}
+
+template<typename T, int min, int max>
+inline T Ranged<T, min, max>::getRange()
+{
+	return max - min;
 }
 
 template<typename T, int min, int max>

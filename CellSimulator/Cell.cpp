@@ -38,6 +38,7 @@ Cell::Cell(float size, sf::Vector2f position, sf::Color color) : BaseObj(size, p
 	//roles.push_back(CellRoles::grow);
 	//roles.push_back(CellRoles::fight);
 	roles.push_back(CellRoles::makeOlder);
+	roles.push_back(CellRoles::mutate);
 
 
 	// make sure that moveForward is always the last role-function
