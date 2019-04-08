@@ -137,6 +137,7 @@
     <ClCompile Include="CellRoles.cpp" />
     <ClCompile Include="CellSelectionTool.cpp" />
     <ClCompile Include="Distance.cpp" />
+    <ClCompile Include="DoubleToString.cpp" />
     <ClCompile Include="Environment.cpp" />
     <ClCompile Include="EnvSettingsApp.cpp" />
     <ClCompile Include="Food.cpp" />
@@ -163,6 +164,7 @@
     <ClInclude Include="CellRoles.h" />
     <ClInclude Include="CellSelectionTool.h" />
     <ClInclude Include="Distance.h" />
+    <ClInclude Include="DoubleToString.h" />
     <ClInclude Include="Environment.h" />
     <ClInclude Include="CellSimApp.h" />
     <ClInclude Include="EnvSettingsApp.h" />
