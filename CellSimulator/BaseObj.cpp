@@ -76,3 +76,24 @@ bool BaseObj::isMarkedToDelete()
 {
 	return toDelete;
 }
+
+bool BaseObj::collision(std::shared_ptr<BaseObj> obj)
+{
+	auto sizes = this->getSize() + obj->getSize();
+	auto distance = this->getPosition() - obj->getPosition();
+	if (distance.x * distance.x + distance.y*distance.y <= sizes * sizes)
+	{
+		return true;
+	}
+	return false;
+}
+
+void BaseObj::setSelfPtr(std::shared_ptr<BaseObj> s)
+{
+	self = s;
+}
+
+std::shared_ptr<BaseObj> BaseObj::getSelfPtr()
+{
+	return self;
+}

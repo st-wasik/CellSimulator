@@ -29,10 +29,17 @@ public:
 	// Marks obj to delete. Object will be deleted from vector in next loop turn.
 	void markToDelete();
 	bool isMarkedToDelete();
+
+	bool collision(std::shared_ptr<BaseObj> obj);
+
+	void setSelfPtr(std::shared_ptr<BaseObj> s);
+	std::shared_ptr<BaseObj> getSelfPtr();
+
 protected:
 	sf::CircleShape shape;
 	sf::Color baseColor;
 private:
 	bool toDelete;
+	std::shared_ptr<BaseObj> self;
 };
 
