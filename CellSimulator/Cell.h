@@ -49,7 +49,6 @@ public:
 
 	void setCurrentSpeed(double speed);
 	void setFoodLevel(double foodLevel);
-	void setSize(double size);
 	void setAge(double age);
 	void setHorniness(double horniness);
 	Ranged<double, 0, 100>& getHorniness();

@@ -145,11 +145,6 @@ void Cell::setFoodLevel(double foodLevel)
 	this->foodLevel = foodLevel;
 }
 
-void Cell::setSize(double size)
-{
-	this->shape.setRadius(size);
-}
-
 void Cell::setAge(double age)
 {
 	this->age = age;
