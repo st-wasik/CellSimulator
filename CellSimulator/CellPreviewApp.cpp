@@ -2,6 +2,7 @@
 #include "CellSelectionTool.h"
 #include "MainApp.h"
 #include "Logger.h"
+#include "DoubleToString.h"
 #include <TGUI/TGUI.hpp>
 #include <iostream>
 
@@ -166,19 +167,53 @@ void CellPreviewApp::configure()
 	foodLevelVal->setToolTip(foodLevelValTT);
 	gui->add(foodLevelVal);
 
+	divisionThresholdTT = tgui::Label::create();
+	divisionThresholdTT->setRenderer(theme.getRenderer("ToolTip"));
+	divisionThresholdTT->setText("Division Threshold");
+	divisionThresholdTT->setPosition(0, 0);
+	divisionThresholdTT->setTextSize(18);
+
 	divisionThreshold = tgui::Label::create();
 	divisionThreshold->setRenderer(theme.getRenderer("Label"));
 	divisionThreshold->setText("Div. th");
 	divisionThreshold->setPosition(10, 190);
 	divisionThreshold->setTextSize(18);
+	divisionThreshold->setToolTip(divisionThresholdTT);
 	gui->add(divisionThreshold);
+
+	divisionThresholdVal = tgui::TextBox::create();
+	divisionThresholdVal->setRenderer(theme.getRenderer("TextBox"));
+	divisionThresholdVal->setPosition(210, 189);
+	divisionThresholdVal->setSize(50, 20);
+	divisionThresholdVal->setTextSize(16);
+	divisionThresholdVal->setVisible(0);
+	divisionThresholdVal->setReadOnly(1);
+	divisionThresholdVal->setVerticalScrollbarPolicy(tgui::Scrollbar::Policy::Never);
+	gui->add(divisionThresholdVal);
+
+	radarRangeTT = tgui::Label::create();
+	radarRangeTT->setRenderer(theme.getRenderer("ToolTip"));
+	radarRangeTT->setText("Detection Range");
+	radarRangeTT->setPosition(0, 0);
+	radarRangeTT->setTextSize(18);
 
 	radarRange = tgui::Label::create();
 	radarRange->setRenderer(theme.getRenderer("Label"));
 	radarRange->setText("Detec. rg");
 	radarRange->setPosition(10, 220);
 	radarRange->setTextSize(18);
+	radarRange->setToolTip(radarRangeTT);
 	gui->add(radarRange);
+
+	radarRangeVal = tgui::TextBox::create();
+	radarRangeVal->setRenderer(theme.getRenderer("TextBox"));
+	radarRangeVal->setPosition(210, 219);
+	radarRangeVal->setSize(50, 20);
+	radarRangeVal->setTextSize(16);
+	radarRangeVal->setVisible(0);
+	radarRangeVal->setReadOnly(1);
+	radarRangeVal->setVerticalScrollbarPolicy(tgui::Scrollbar::Policy::Never);
+	gui->add(radarRangeVal);
 
 }
 
@@ -191,46 +226,66 @@ void CellPreviewApp::update()
 		if (cell != nullptr)
 		{
 			//size
-			sizeValTT->setText("Min: " + std::to_string((int)cell->getGenes().maxSize.getMin()) + "\nMax: " + std::to_string((int)cell->getGenes().maxSize.get()));
+			sizeValTT->setText("Min: " + doubleToString(cell->getGenes().maxSize.getMin(),0) + "\nMax: " + doubleToString(cell->getGenes().maxSize.get(),0));
 			sizeVal->setVisible(1);
-			sizeVal->setText(std::to_string((int)cell->getSize()));
+			sizeVal->setText(doubleToString(cell->getSize(),0));
 			sizeVal->setMaximum(cell->getGenes().maxSize.get());
 			sizeVal->setMinimum(cell->getGenes().maxSize.getMin());
 			sizeVal->setValue(cell->getSize());
 			//speed
-			speedValTT->setText("Min: " + std::to_string(cell->getGenes().maxSpeed.getMin()) + "\nMax: " + std::to_string(cell->getGenes().maxSpeed.get()));
+			speedValTT->setText("Min: " + doubleToString(cell->getGenes().maxSpeed.getMin(),2) + "\nMax: " + doubleToString(cell->getGenes().maxSpeed.get(),2));
 			speedVal->setVisible(1);
-			speedVal->setText(std::to_string(cell->getCurrentSpeed()));
+			speedVal->setText(doubleToString(cell->getCurrentSpeed(),2));
 			speedVal->setMaximum(cell->getGenes().maxSpeed.get()*100);
 			speedVal->setMinimum(cell->getGenes().maxSpeed.getMin()*100);
 			speedVal->setValue(cell->getCurrentSpeed()*100);
 			//age
-			ageValTT->setText("Min: " + std::to_string(cell->getGenes().maxAge.getMin()) + "\nMax: " + std::to_string(cell->getGenes().maxAge.get()));
+			ageValTT->setText("Min: " + doubleToString(cell->getGenes().maxAge.getMin(),2) + "\nMax: " + doubleToString(cell->getGenes().maxAge.get(),2));
 			ageVal->setVisible(1);
-			ageVal->setText(std::to_string(cell->age));
+			ageVal->setText(doubleToString(cell->age,2));
 			ageVal->setMaximum(cell->getGenes().maxAge.get() * 100);
 			ageVal->setMinimum(cell->getGenes().maxAge.getMin() * 100);
 			ageVal->setValue(cell->age * 100);
 			//horniness
-			horninessValTT->setText("Min: " + std::to_string(cell->getHorniness().getMin()) + "\nMax: " + std::to_string(cell->getHorniness().getMax()));
+			horninessValTT->setText("Min: " + doubleToString(cell->getHorniness().getMin(),2) + "\nMax: " + doubleToString(cell->getHorniness().getMax(),2));
 			horninessVal->setVisible(1);
-			horninessVal->setText(std::to_string(cell->getHorniness().get()));
+			horninessVal->setText(doubleToString(cell->getHorniness().get(),2));
 			horninessVal->setMaximum(cell->getHorniness().getMax() * 100);
 			horninessVal->setMinimum(cell->getHorniness().getMin() * 100);
 			horninessVal->setValue(cell->getHorniness().get() * 100);
-			//AgeVal->setText(std::to_string(cell->age));
-			//horninessVal->setText(std::to_string(cell->getHorniness().get()));
-			//aggresionVal->setText(std::to_string(cell->getGenes().aggresion.get()));
-			//foodLevelVal->setText(std::to_string(cell->getFoodLevel()));
-			//divisionThresholdVal->setText(std::to_string(cell->getGenes().divisionThreshold.get()));
-			//radarRangeVal->setText(std::to_string(cell->getGenes().radarRange.get()));
+			//aggresion
+			aggresionValTT->setText("Min: " + doubleToString(cell->getGenes().aggresion.getMin(),2) + "\nMax: " + doubleToString(cell->getGenes().aggresion.getMax(),2));
+			aggresionVal->setVisible(1);
+			aggresionVal->setText(doubleToString(cell->getGenes().aggresion.get(),2));
+			aggresionVal->setMaximum(cell->getGenes().aggresion.getMax() * 100);
+			aggresionVal->setMinimum(cell->getGenes().aggresion.getMin() * 100);
+			aggresionVal->setValue(cell->getGenes().aggresion.get() * 100);
+			//food level
+			foodLevelValTT->setText("Min: " + doubleToString(cell->getGenes().foodLimit.getMin(), 2) + "\nMax: " + doubleToString(cell->getGenes().foodLimit.getMax(), 2));
+			foodLevelVal->setVisible(1);
+			foodLevelVal->setText(doubleToString(cell->getFoodLevel(), 2));
+			foodLevelVal->setMaximum(cell->getGenes().foodLimit.getMax() * 100);
+			foodLevelVal->setMinimum(cell->getGenes().foodLimit.getMin() * 100);
+			foodLevelVal->setValue(cell->getFoodLevel() * 100);
+			//divisionThreshold
+			divisionThresholdVal->setVisible(1);
+			divisionThresholdVal->setText(" " + doubleToString(cell->getGenes().divisionThreshold.get(), 2));
+			//radarRange
+			radarRangeVal->setVisible(1);
+			radarRangeVal->setText(" " + doubleToString(cell->getGenes().radarRange.get(), 2));
 
-			cell->setPosition(sf::Vector2f( 175, window->getSize().y  - 75 ));
+			cell->setPosition(sf::Vector2f( 175, window->getSize().y  - 60 ));
 		}
 		else
 		{
 			sizeVal->setVisible(0);
 			speedVal->setVisible(0);
+			ageVal->setVisible(0);
+			horninessVal->setVisible(0);
+			aggresionVal->setVisible(0);
+			foodLevelVal->setVisible(0);
+			divisionThresholdVal->setVisible(0);
+			radarRangeVal->setVisible(0);
 		}
 		if (!MainApp::appRun)
 		{
