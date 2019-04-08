@@ -26,8 +26,11 @@ public:
 		Passive, Aggressive, Random, GreenLettuce
 	};
 
-	Cell(float size, sf::Vector2f position, sf::Color color);
-	Cell(Cell a, Cell b);
+
+	template <typename ... Types>
+	static std::shared_ptr<Cell> create(Types ... values);
+
+
 	~Cell();
 
 	void update();
@@ -53,11 +56,13 @@ public:
 	double age;
 
 private:
-
+	Cell(float size, sf::Vector2f position, sf::Color color);
+	Cell(Cell a, Cell b);
 	// vector of pointers to role-functions
 	std::vector<void(*)(Cell*)> roles;
 
-	bool collision(std::shared_ptr<BaseObj> obj);
+	// returns vector of all objects colliding with cell
+	std::shared_ptr<std::vector<std::shared_ptr<BaseObj>>> getFoodCollisionVector();
 
 	// curent cell stats:
 
@@ -75,3 +80,10 @@ private:
 
 };
 
+template<typename ...Types>
+inline std::shared_ptr<Cell> Cell::create(Types ...values)
+{
+	auto result = std::make_shared<Cell>(Cell(values...));
+	result->setSelfPtr(result);
+	return result;
+}

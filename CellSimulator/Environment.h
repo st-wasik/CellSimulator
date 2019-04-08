@@ -6,6 +6,8 @@
 #include <atomic>
 #include <list>
 
+using baseObjMatrix = std::vector<std::vector< std::vector<std::shared_ptr<BaseObj> >>>;
+
 class Environment final
 {
 public:
@@ -35,13 +37,20 @@ public:
 
 	std::shared_ptr<Cell> getCellAtPosition(const sf::Vector2f&);
 
-	std::list<std::shared_ptr<Food>>& getFoodsVector();
+	const std::list<std::shared_ptr<Food>>& getFoodsVector();
 	std::vector<std::shared_ptr<Cell>>& getCellsVector();
 	std::vector<std::shared_ptr<Cell>>& getNewCellsVector();
 	std::list<std::shared_ptr<Food>>& getNewFoodsVector();
+	baseObjMatrix& getCellCollisionSectors();
+	baseObjMatrix& getFoodCollisionSectors();
 
 	// inserts new cell to environment
 	void insertNewCell(std::shared_ptr<Cell>);
+
+	// inserts new food to environment
+	void insertNewFood(std::shared_ptr<Food>);
+
+	static sf::Vector2i getCollisionSectorCoords(std::shared_ptr<BaseObj> o);
 
 private:
 	Environment();
@@ -56,6 +65,9 @@ private:
 	std::list<std::shared_ptr<Food>> food;
 	std::list<std::shared_ptr<Food>> newFood;
 
+	baseObjMatrix cellCollisionSectors;
+	baseObjMatrix foodCollisionSectors;
+
 	sf::RectangleShape environmentBackground;
 
 	std::atomic<double> _temperature;
@@ -66,4 +78,7 @@ private:
 	sf::Color backgroundDefaultColor;
 
 	bool isCellInEnvironmentBounds(Cell& c);
+
+
+	static constexpr int sectorSize = 50 * 2 + 30; //cell max radius + margin
 };

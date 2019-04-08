@@ -12,7 +12,7 @@ Cell::Cell(float size, sf::Vector2f position, sf::Color color) : BaseObj(size, p
 
 	this->foodLevel = 50;
 
-	this->currentSpeed = randomReal(0.1, 2);
+	this->currentSpeed = randomReal(0.1, genes.maxSpeed.get());
 
 	this->horniness.randomize();
 
@@ -100,7 +100,6 @@ void Cell::kill()
 
 		int foods = size / 10;
 		auto foodSize = 0.75 * size / foods;
-		auto& foodsVect = Environment::getInstance().getNewFoodsVector();
 
 		for (int i = 0; i < foods; ++i)
 		{
@@ -109,10 +108,9 @@ void Cell::kill()
 
 			auto position = getPosition() + sf::Vector2f{xDeviation, yDeviation};
 
-			auto food = std::make_shared<Food>(Food(foodSize, position, getBaseColor()));
-			foodsVect.push_back(food);
+			auto food = Food::create(foodSize, position, sf::Color::Black);
+			Environment::getInstance().insertNewFood(food);
 		}
-
 	}
 }
 
@@ -155,13 +153,43 @@ void Cell::addRole(void(*role)(Cell *))
 	roles.push_back(role);
 }
 
-bool Cell::collision(std::shared_ptr<BaseObj> obj)
+std::shared_ptr<std::vector<std::shared_ptr<BaseObj>>> Cell::getFoodCollisionVector()
 {
-	auto sizes = this->getSize() + obj->getSize();
-	auto distance = this->getPosition() - obj->getPosition();
-	if (distance.x * distance.x + distance.y*distance.y <= sizes * sizes)
+	auto& foodSectors = Environment::getInstance().getFoodCollisionSectors();
+	const auto sectorsX = foodSectors.size();
+	const auto sectorsY = foodSectors[0].size();
+
+	auto cellPtr = this->getSelfPtr();
+	auto cellPosition = Environment::getCollisionSectorCoords(cellPtr);
+
+	auto minX = cellPosition.x - 1;
+	if (minX < 0) minX = 0;
+
+	auto minY = cellPosition.y - 1;
+	if (minY < 0) minY = 0;
+
+	auto maxX = cellPosition.x + 1;
+	if (maxX >= sectorsX) maxX = sectorsX - 1;
+
+	auto maxY = cellPosition.y + 1;
+	if (maxY >= sectorsY) maxY = sectorsY - 1;
+
+	//std::clog << minX << " " << minY << "   " << maxX << " " << maxY << std::endl;
+
+	std::shared_ptr<std::vector<std::shared_ptr<BaseObj>>> result = std::make_shared<std::vector<std::shared_ptr<BaseObj>>>();
+
+	for (int i = minX; i <= maxX; ++i)
 	{
-		return true;
+		for (int j = minY; j <= maxY; ++j)
+		{
+			for (auto& f : foodSectors[i][j])
+			{
+				if (cellPtr->collision(f) && !f->isMarkedToDelete())
+				{
+					result->push_back(f);
+				}
+			}
+		}
 	}
-	return false;
+	return result;
 }

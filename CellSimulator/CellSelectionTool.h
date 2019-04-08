@@ -10,6 +10,8 @@ public:
 
 	void update();
 
+	void updateSelectionMarker();
+
 	void draw(sf::RenderWindow&);
 
 	void clearSelectedCell();
@@ -35,6 +37,7 @@ private:
 	std::atomic_bool selectedCellCopyValid;
 
 	sf::CircleShape selectionMarker;
+	sf::CircleShape cellRadarRange;
 
 	std::atomic_bool followSelectedCell;
 };

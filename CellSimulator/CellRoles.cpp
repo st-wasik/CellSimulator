@@ -9,7 +9,10 @@ constexpr double PI = 3.14159265358979323846;
 
 void CellRoles::moveForward(Cell * c)
 {
+	auto cellPtr = c->getSelfPtr();
 	const auto prevPosition = c->getPosition();
+	const auto prevCollisionSectorCoords = Environment::getCollisionSectorCoords(cellPtr);
+
 	auto moveSpeed = (Environment::getInstance().getTemperature() + 100) / 100 * c->currentSpeed;
 	c->shape.move(moveSpeed * std::sin((PI / 180)*c->getRotation()) * CellSimApp::getInstance().getDeltaTime(), moveSpeed * -std::cos((PI / 180)*c->getRotation()) * CellSimApp::getInstance().getDeltaTime());
 
@@ -20,6 +23,18 @@ void CellRoles::moveForward(Cell * c)
 		c->shape.move(moveSpeed * std::sin((PI / 180)*c->getRotation()) * CellSimApp::getInstance().getDeltaTime(), moveSpeed * -std::cos((PI / 180)*c->getRotation()) * CellSimApp::getInstance().getDeltaTime());
 
 		if (attempt > 5) { c->setPosition(Environment::getInstance().getSize() / 2.f); break; }
+	}
+
+	// update collision sectors
+	const auto currentCollisionSectorCoords = Environment::getCollisionSectorCoords(c->getSelfPtr());
+	if (prevCollisionSectorCoords != currentCollisionSectorCoords)
+	{
+		auto& sectors = Environment::getInstance().getCellCollisionSectors();
+		auto& prevCVect = sectors[prevCollisionSectorCoords.x][prevCollisionSectorCoords.y];
+		auto& currCVect = sectors[currentCollisionSectorCoords.x][currentCollisionSectorCoords.y];
+
+		prevCVect.erase(std::remove(prevCVect.begin(), prevCVect.end(), cellPtr), prevCVect.end());
+		currCVect.push_back(cellPtr);
 	}
 }
 
@@ -98,10 +113,14 @@ void CellRoles::changeSpeed(Cell * c)
 void CellRoles::eat(Cell * c)
 {
 	auto& foods = Environment::getInstance().getFoodsVector();
+	auto collisions = c->getFoodCollisionVector();
 
-	for (auto& f : foods)
+	
+	auto& sectors = Environment::getInstance().getFoodCollisionSectors();
+
+	for (auto& f : *collisions)
 	{
-		if (c->collision(f) && !f->isMarkedToDelete() && c->foodLevel < c->genes.foodLimit.get())
+		if (c->foodLevel < c->genes.foodLimit.get())
 		{
 			c->foodLevel += static_cast<float>(f->getSize());
 			if (!c->horniness.isMax())
@@ -182,7 +201,8 @@ void CellRoles::divideAndConquer(Cell * c)
 	{
 		c->foodLevel = 50;
 		c->setSize(20);
-		Environment::getInstance().insertNewCell(std::make_shared<Cell>(*c));
+		auto ptr = std::dynamic_pointer_cast<Cell>(c->getSelfPtr());
+		Environment::getInstance().insertNewCell(ptr);
 		c->setRotation(c->getRotation() + 180);
 	}
 }
@@ -213,7 +233,7 @@ void CellRoles::getingHot(Cell * c)
 			{
 				c->setHorniness(0);
 				cell->setHorniness(0);
-				std::shared_ptr<Cell> tmp = std::make_shared<Cell>(*c, *cell);
+				std::shared_ptr<Cell> tmp = Cell::create(*c, *cell);
 				Environment::getInstance().insertNewCell(tmp);
 			}
 		}
@@ -228,7 +248,6 @@ void CellRoles::makeFood(Cell * c)
 
 		int foods = randomInt(0, 100) > 70 ? 2 : 1;
 		auto foodSize = 0.4 * size;
-		auto& foodsVect = Environment::getInstance().getNewFoodsVector();
 
 		for (int i = 0; i < foods; ++i)
 		{
@@ -237,8 +256,8 @@ void CellRoles::makeFood(Cell * c)
 
 			auto position = c->getPosition() + sf::Vector2f{ xDeviation, yDeviation };
 
-			auto food = std::make_shared<Food>(Food(foodSize, position, c->getBaseColor()));
-			foodsVect.push_back(food);
+			auto food = Food::create(foodSize, position, c->getBaseColor());
+			Environment::getInstance().insertNewFood(food);
 		}
 	}
 

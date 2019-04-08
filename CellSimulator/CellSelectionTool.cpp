@@ -28,10 +28,7 @@ void CellSelectionTool::update()
 		*selectedCellCopy = *selectedCell;
 		selectedCellCopyValid = true;
 
-		float size = selectedCell->getSize() + 30;
-		selectionMarker.setRadius(size);
-		selectionMarker.setOrigin(size, size);
-		selectionMarker.setPosition(selectedCell->getPosition());
+		updateSelectionMarker();
 
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Delete))
 		{
@@ -49,10 +46,28 @@ void CellSelectionTool::update()
 	}
 }
 
+void CellSelectionTool::updateSelectionMarker()
+{
+	if (selectedCell != nullptr)
+	{
+		float size = selectedCell->getSize() + 30;
+		selectionMarker.setRadius(size);
+		selectionMarker.setOrigin(size, size);
+		selectionMarker.setPosition(selectedCell->getPosition());
+		auto radius = selectedCell->getGenes().radarRange.get() * 50;
+		cellRadarRange.setOrigin(sf::Vector2f(radius, radius));
+		cellRadarRange.setRadius(radius);
+		cellRadarRange.setPosition(selectedCell->getPosition());
+	}
+}
+
 void CellSelectionTool::draw(sf::RenderWindow &w)
 {
 	if (selectedCell != nullptr)
+	{
 		w.draw(selectionMarker);
+		w.draw(cellRadarRange);
+	}
 }
 
 void CellSelectionTool::clearSelectedCell()
@@ -69,6 +84,12 @@ void CellSelectionTool::setSelectedCell(std::shared_ptr<Cell> &s)
 	selectionMarker.setOutlineColor(sf::Color(192, 192, 192, 128));
 	selectionMarker.setOutlineThickness(5);
 	selectionMarker.setPosition(selectedCell->getPosition());
+
+	cellRadarRange.setFillColor(sf::Color(0, 0, 0, 16));
+	auto radius = selectedCell->getGenes().radarRange.get() * 50;
+	cellRadarRange.setPosition(selectedCell->getPosition());
+	cellRadarRange.setOrigin(sf::Vector2f(radius, radius));
+	cellRadarRange.setRadius(radius);
 }
 
 std::shared_ptr<Cell> CellSelectionTool::getSelectedCell()
@@ -79,7 +100,10 @@ std::shared_ptr<Cell> CellSelectionTool::getSelectedCell()
 std::shared_ptr<Cell> CellSelectionTool::getSelectedCellCopy()
 {
 	if (selectedCellCopyValid)
-		return std::make_shared<Cell>(*selectedCellCopy);
+	{
+		auto result = Cell::create(*selectedCellCopy);
+		return std::dynamic_pointer_cast<Cell>(result);
+	}
 	return nullptr;
 }
 
@@ -98,5 +122,5 @@ void CellSelectionTool::setFollowSelectedCell(bool f)
 
 CellSelectionTool::CellSelectionTool() : selectedCellCopyValid(false)
 {
-	selectedCellCopy = std::make_shared<Cell>(Cell{ 0.0, { 0.0f, 0.0f }, sf::Color::Transparent });
+	selectedCellCopy = Cell::create(0.0, sf::Vector2f{ 0.0f, 0.0f }, sf::Color::Transparent);
 }

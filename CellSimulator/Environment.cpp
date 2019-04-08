@@ -28,6 +28,16 @@ void Environment::clear()
 	cells.clear();
 	deadCells.clear();
 	food.clear();
+	for (auto& c : cellCollisionSectors)
+	{
+		for (auto& cc : c)
+			cc.clear();
+	}
+	for (auto& f : foodCollisionSectors)
+	{
+		for (auto& ff : f)
+			ff.clear();
+	}
 }
 
 void Environment::configure()
@@ -35,38 +45,56 @@ void Environment::configure()
 	backgroundDefaultColor = sf::Color{ 170, 135, 200 };
 
 	auto& eb = environmentBackground;
-	eb.setSize(sf::Vector2f{ 2500,1250 });
+	eb.setSize(sf::Vector2f{ 5000,2500 });
 	eb.setFillColor(backgroundDefaultColor);
 	eb.setOutlineColor(sf::Color::Red);
 	eb.setOutlineThickness(5);
 	eb.setPosition(sf::Vector2f{ 0,0 });
 	eb.setTextureRect(sf::IntRect(0, 0, eb.getSize().x / 10, eb.getSize().y / 10));
+	TextureProvider::getInstance().getTexture("background")->setSmooth(true);
 	eb.setTexture(TextureProvider::getInstance().getTexture("background").get());
 
 	TextureProvider::getInstance().getTexture("whiteNoise")->setSmooth(true);
 
+
+	int sectorsX = getSize().x / sectorSize + 1;
+	int sectorsY = getSize().y / sectorSize + 1;
+
+	cellCollisionSectors.resize(sectorsX);
+	for (int i = 0; i < sectorsX; ++i)
+	{
+		cellCollisionSectors[i].resize(sectorsY);
+	}
+
+	foodCollisionSectors.resize(sectorsX);
+	for (int i = 0; i < sectorsX; ++i)
+	{
+		foodCollisionSectors[i].resize(sectorsY);
+	}
+
+
 	for (int i = 0; i < 50; i++) {
 		auto cell = CellFactory::getCell(Cell::Type::Aggressive);
 		cell->setPosition(sf::Vector2f(randomInt(40, static_cast<int>(Environment::getSize().x - 40)), randomInt(40, static_cast<int>(Environment::getSize().y - 40))));
-		cells.push_back(cell);
+		insertNewCell(cell);
 	}
 
 	for (int i = 0; i < 20; i++) {
 		auto cell = CellFactory::getCell(Cell::Type::Passive);
 		cell->setPosition(sf::Vector2f(randomInt(40, static_cast<int>(Environment::getSize().x - 40)), randomInt(40, static_cast<int>(Environment::getSize().y - 40))));
-		cells.push_back(cell);
+		insertNewCell(cell);
 	}
 
 	for (int i = 0; i < 10; i++) {
 		auto cell = CellFactory::getCell(Cell::Type::Random);
 		cell->setPosition(sf::Vector2f(randomInt(40, static_cast<int>(Environment::getSize().x - 40)), randomInt(40, static_cast<int>(Environment::getSize().y - 40))));
-		cells.push_back(cell);
+		insertNewCell(cell);
 	}
 
 	for (int i = 0; i < 3; i++) {
 		auto cell = CellFactory::getCell(Cell::Type::GreenLettuce);
 		cell->setPosition(sf::Vector2f(randomInt(40, static_cast<int>(Environment::getSize().x - 40)), randomInt(40, static_cast<int>(Environment::getSize().y - 40))));
-		cells.push_back(cell);
+		insertNewCell(cell);
 	}
 
 	FoodController::generateFood(sf::Vector2f(3, 12), 100);
@@ -113,11 +141,11 @@ void Environment::update()
 	_aliveCellsCount = cells.size();
 	_foodCount = food.size();
 
+	updateBackground();
+
 	CellSelectionTool::getInstance().update();
 	CellMovementTool::getInstance().update();
 	AutoFeederTool::getInstance().update();
-
-	updateBackground();
 
 	for (auto& newCell : newCells)
 	{
@@ -145,13 +173,25 @@ void Environment::update()
 		cell->update();
 	}
 
+	CellSelectionTool::getInstance().updateSelectionMarker();
+
 	//remove food marked to delete in role-functions
 	auto newFoodEnd = std::remove_if(food.begin(), food.end(), [](auto f) {return f->isMarkedToDelete(); });
 	food.erase(newFoodEnd, food.end());
 
+	//remove food from collision sectors
+	for (auto& f : foodCollisionSectors)
+		for (auto& ff : f)
+			ff.erase(std::remove_if(ff.begin(), ff.end(), [](std::shared_ptr<BaseObj> e) {return e->isMarkedToDelete(); }), ff.end());
+
 	//remove cells marked as dead
 	auto newCellsEnd = std::remove_if(cells.begin(), cells.end(), [](auto c) {return c->isDead(); });
 	cells.erase(newCellsEnd, cells.end());
+
+	//remove cells marked as dead from collision sectors
+	for (auto& c : cellCollisionSectors)
+		for (auto& cc : c)
+			cc.erase(std::remove_if(cc.begin(), cc.end(), [](std::shared_ptr<BaseObj> e) {return e->isMarkedToDelete(); }), cc.end());
 
 	//remove dead cells marked to delete
 	auto newDeadCellsEnd = std::remove_if(deadCells.begin(), deadCells.end(), [](auto c) {return c->isMarkedToDelete(); });
@@ -218,7 +258,7 @@ std::shared_ptr<Cell> Environment::getCellAtPosition(const sf::Vector2f & p)
 	return nullptr;
 }
 
-std::list<std::shared_ptr<Food>>& Environment::getFoodsVector()
+const std::list<std::shared_ptr<Food>>& Environment::getFoodsVector()
 {
 	return food;
 }
@@ -238,9 +278,30 @@ std::list<std::shared_ptr<Food>>& Environment::getNewFoodsVector()
 	return newFood;
 }
 
+baseObjMatrix& Environment::getCellCollisionSectors()
+{
+	return cellCollisionSectors;
+}
+
+baseObjMatrix& Environment::getFoodCollisionSectors()
+{
+	return foodCollisionSectors;
+}
+
 void Environment::insertNewCell(std::shared_ptr<Cell> c)
 {
 	newCells.push_back(c);
+
+	auto coords = getCollisionSectorCoords(c);
+	cellCollisionSectors[coords.x][coords.y].push_back(c);
+}
+
+void Environment::insertNewFood(std::shared_ptr<Food> f)
+{
+	newFood.push_back(f);
+
+	auto coords = getCollisionSectorCoords(f);
+	foodCollisionSectors[coords.x][coords.y].push_back(f);
 }
 
 Environment::Environment()
@@ -273,4 +334,9 @@ bool Environment::isCellInEnvironmentBounds(Cell & c)
 		return false;
 	}
 	return true;
+}
+
+sf::Vector2i Environment::getCollisionSectorCoords(std::shared_ptr<BaseObj> o)
+{
+	return sf::Vector2i(o->getPosition().x / sectorSize, o->getPosition().y / sectorSize);
 }
