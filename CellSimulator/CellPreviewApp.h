@@ -44,22 +44,24 @@ private:
 		horniness,
 		age,
 		aggresionValTT,
-		radarRangeValTT,
-		divisionThresholdValTT,
 		foodLevelValTT,
 		speedValTT,
 		sizeValTT,
 		horninessValTT,
-		ageValTT;
+		ageValTT,
+		radarRangeTT,
+		divisionThresholdTT;
 		
 	std::shared_ptr<tgui::ProgressBar>
 		aggresionVal,
-		radarRangeVal,
-		divisionThresholdVal,
 		foodLevelVal,
 		speedVal,
 		sizeVal,
 		horninessVal,
 		ageVal;
+
+	std::shared_ptr<tgui::TextBox>
+		radarRangeVal,
+		divisionThresholdVal;
 
 };
