@@ -114,6 +114,7 @@
     <ClCompile Include="MixDouble.cpp">
       <Filter>Utils\Source</Filter>
     </ClCompile>
+    <ClCompile Include="DoubleToString.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CellListApp.h">
@@ -188,5 +189,6 @@
     <ClInclude Include="MixDouble.h">
       <Filter>Utils\Header</Filter>
     </ClInclude>
+    <ClInclude Include="DoubleToString.h" />
   </ItemGroup>
 </Project>
