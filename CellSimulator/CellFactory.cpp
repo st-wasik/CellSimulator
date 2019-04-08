@@ -3,7 +3,7 @@
 
 std::shared_ptr<Cell> CellFactory::getCell(Cell::Type type)
 {
-	std::shared_ptr<Cell> result = std::make_shared<Cell>(Cell(20.f, {0.f, 0.f}, sf::Color::Red));
+	auto result = Cell::create(20.f, sf::Vector2f{0.f, 0.f}, sf::Color::Red);
 	Genes g;
 
 	switch (type)

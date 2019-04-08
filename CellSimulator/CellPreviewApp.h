@@ -35,31 +35,31 @@ private:
 
 	//gui elements
 	std::shared_ptr<tgui::Label>
-		maxSpeed,
 		aggresion,
 		radarRange,
 		divisionThreshold,
-		foodLimit,
-		maxSize,
-		age,
 		foodLevel,
-		currentSpeed,
+		speed,
 		size,
-		maxAge,
-		maxSpeedVal,
+		horniness,
+		age,
+		aggresionValTT,
+		radarRangeValTT,
+		divisionThresholdValTT,
+		foodLevelValTT,
+		speedValTT,
+		sizeValTT,
+		horninessValTT,
+		ageValTT;
+		
+	std::shared_ptr<tgui::ProgressBar>
 		aggresionVal,
 		radarRangeVal,
 		divisionThresholdVal,
-		foodLimitVal,
-		maxSizeVal,
-		maxAgeVal,
 		foodLevelVal,
-		currentSpeedVal,
+		speedVal,
 		sizeVal,
-		horniness,
 		horninessVal,
-		currentAge, 
-		currentAgeVal;
+		ageVal;
 
 };
-

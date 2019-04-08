@@ -37,14 +37,14 @@ EnvSettingsApp & EnvSettingsApp::getInstance()
 void EnvSettingsApp::configure()
 {
 	//elementy GUI
-	 labelTemp = tgui::Label::create();
+	labelTemp = tgui::Label::create();
 	labelTemp->setRenderer(theme.getRenderer("Label"));
 	labelTemp->setText("Temperature");
 	labelTemp->setPosition(50, 15);
 	labelTemp->setTextSize(18);
 	gui->add(labelTemp);
 
-	 editBoxTemp = tgui::EditBox::create();
+	editBoxTemp = tgui::EditBox::create();
 	editBoxTemp->setRenderer(theme.getRenderer("EditBox"));
 	editBoxTemp->setSize(60, 25);
 	editBoxTemp->setTextSize(18);
@@ -52,7 +52,7 @@ void EnvSettingsApp::configure()
 	editBoxTemp->setDefaultText(std::to_string((int)Environment::getInstance().getTemperature()));
 	gui->add(editBoxTemp);
 
-	 sliderTemp = tgui::Slider::create();
+	sliderTemp = tgui::Slider::create();
 	sliderTemp->setRenderer(theme.getRenderer("Slider"));
 	sliderTemp->setPosition(10, 40);
 	sliderTemp->setSize(200, 9);
@@ -61,21 +61,21 @@ void EnvSettingsApp::configure()
 	sliderTemp->setValue(Environment::getInstance().getTemperature());
 	gui->add(sliderTemp);
 
-	 buttonTemp = tgui::Button::create();
+	buttonTemp = tgui::Button::create();
 	buttonTemp->setRenderer(theme.getRenderer("Button"));
 	buttonTemp->setPosition(285, 32);
 	buttonTemp->setText("SET");
 	buttonTemp->setSize(60, 25);
 	gui->add(buttonTemp);
 
-	 labelRad = tgui::Label::create();
+	labelRad = tgui::Label::create();
 	labelRad->setRenderer(theme.getRenderer("Label"));
 	labelRad->setText("Radiation");
 	labelRad->setPosition(70, 60);
 	labelRad->setTextSize(18);
 	gui->add(labelRad);
 
-	 editBoxRad = tgui::EditBox::create();
+	editBoxRad = tgui::EditBox::create();
 	editBoxRad->setRenderer(theme.getRenderer("EditBox"));
 	editBoxRad->setSize(60, 25);
 	editBoxRad->setTextSize(18);
@@ -83,7 +83,7 @@ void EnvSettingsApp::configure()
 	editBoxRad->setDefaultText(std::to_string((int)Environment::getInstance().getRadiation()));
 	gui->add(editBoxRad);
 
-	 sliderRad = tgui::Slider::create();
+	sliderRad = tgui::Slider::create();
 	sliderRad->setRenderer(theme.getRenderer("Slider"));
 	sliderRad->setPosition(10, 85);
 	sliderRad->setSize(200, 9);
@@ -92,23 +92,23 @@ void EnvSettingsApp::configure()
 	sliderRad->setValue(Environment::getInstance().getRadiation());
 	gui->add(sliderRad);
 
-	 buttonRad = tgui::Button::create();
+	buttonRad = tgui::Button::create();
 	buttonRad->setRenderer(theme.getRenderer("Button"));
 	buttonRad->setPosition(285, 77);
 	buttonRad->setText("SET");
 	buttonRad->setSize(60, 25);
 	gui->add(buttonRad);
 
-	 labelQuan = tgui::Label::create();
+	labelQuan = tgui::Label::create();
 	labelQuan->setRenderer(theme.getRenderer("Label"));
-	labelQuan->setText("Food limit");
-	labelQuan->setPosition(68, 125);
+	labelQuan->setText("Food limit [%]");
+	labelQuan->setPosition(45, 125);
 	labelQuan->setTextSize(18);
 	labelQuan->setEnabled(0);
 	labelQuan->setInheritedOpacity(0.5);
 	gui->add(labelQuan);
 
-	 editBoxQuan = tgui::EditBox::create();
+	editBoxQuan = tgui::EditBox::create();
 	editBoxQuan->setRenderer(theme.getRenderer("EditBox"));
 	editBoxQuan->setSize(60, 25);
 	editBoxQuan->setTextSize(18);
@@ -118,7 +118,7 @@ void EnvSettingsApp::configure()
 	editBoxQuan->setInheritedOpacity(0.5);
 	gui->add(editBoxQuan);
 
-	 sliderQuan = tgui::Slider::create();
+	sliderQuan = tgui::Slider::create();
 	sliderQuan->setRenderer(theme.getRenderer("Slider"));
 	sliderQuan->setPosition(10, 150);
 	sliderQuan->setSize(200, 9);
@@ -129,7 +129,7 @@ void EnvSettingsApp::configure()
 	sliderQuan->setInheritedOpacity(0.5);
 	gui->add(sliderQuan);
 
-	 buttonQuan = tgui::Button::create();
+	buttonQuan = tgui::Button::create();
 	buttonQuan->setRenderer(theme.getRenderer("Button"));
 	buttonQuan->setPosition(285, 142);
 	buttonQuan->setText("SET");
@@ -138,7 +138,7 @@ void EnvSettingsApp::configure()
 	buttonQuan->setInheritedOpacity(0.5);
 	gui->add(buttonQuan);
 
-	 labelFreq = tgui::Label::create();
+	labelFreq = tgui::Label::create();
 	labelFreq->setRenderer(theme.getRenderer("Label"));
 	labelFreq->setText("Feed frequency");
 	labelFreq->setPosition(38, 170);
@@ -147,7 +147,7 @@ void EnvSettingsApp::configure()
 	labelFreq->setInheritedOpacity(0.5);
 	gui->add(labelFreq);
 
-	 editBoxFreq = tgui::EditBox::create();
+	editBoxFreq = tgui::EditBox::create();
 	editBoxFreq->setRenderer(theme.getRenderer("EditBox"));
 	editBoxFreq->setSize(60, 25);
 	editBoxFreq->setTextSize(18);
@@ -157,7 +157,7 @@ void EnvSettingsApp::configure()
 	editBoxFreq->setInheritedOpacity(0.5);
 	gui->add(editBoxFreq);
 
-	 sliderFreq = tgui::Slider::create();
+	sliderFreq = tgui::Slider::create();
 	sliderFreq->setRenderer(theme.getRenderer("Slider"));
 	sliderFreq->setPosition(10, 195);
 	sliderFreq->setSize(200, 9);
@@ -168,7 +168,7 @@ void EnvSettingsApp::configure()
 	sliderFreq->setInheritedOpacity(0.5);
 	gui->add(sliderFreq);
 
-	 buttonFreq = tgui::Button::create();
+	buttonFreq = tgui::Button::create();
 	buttonFreq->setRenderer(theme.getRenderer("Button"));
 	buttonFreq->setPosition(285, 187);
 	buttonFreq->setText("SET");
@@ -177,7 +177,7 @@ void EnvSettingsApp::configure()
 	buttonFreq->setInheritedOpacity(0.5);
 	gui->add(buttonFreq);
 
-	 buttonFeed = tgui::Button::create();
+	buttonFeed = tgui::Button::create();
 	buttonFeed->setRenderer(theme.getRenderer("Button"));
 	buttonFeed->setPosition(75, 230);
 	buttonFeed->setText("Feed");
@@ -185,7 +185,7 @@ void EnvSettingsApp::configure()
 	buttonFeed->setInheritedOpacity(1);
 	gui->add(buttonFeed);
 
-	 buttonSelect = tgui::Button::create();
+	buttonSelect = tgui::Button::create();
 	buttonSelect->setRenderer(theme.getRenderer("Button"));
 	buttonSelect->setPosition(180, 230);
 	buttonSelect->setText("Select");
@@ -194,7 +194,7 @@ void EnvSettingsApp::configure()
 	buttonSelect->setEnabled(0);
 	gui->add(buttonSelect);
 
-	 checkBoxFeed = tgui::CheckBox::create();
+	checkBoxFeed = tgui::CheckBox::create();
 	checkBoxFeed->setRenderer(theme.getRenderer("CheckBox"));
 	checkBoxFeed->setPosition(75, 275);
 	checkBoxFeed->setText("Auto-feed");
@@ -202,28 +202,28 @@ void EnvSettingsApp::configure()
 	checkBoxFeed->setTextSize(14);
 	gui->add(checkBoxFeed);
 
-	 labelCells = tgui::Label::create();
+	labelCells = tgui::Label::create();
 	labelCells->setRenderer(theme.getRenderer("Label"));
 	labelCells->setText("Cells:");
 	labelCells->setPosition(10, 310);
 	labelCells->setTextSize(18);
 	gui->add(labelCells);
 
-	 labelFood = tgui::Label::create();
+	labelFood = tgui::Label::create();
 	labelFood->setRenderer(theme.getRenderer("Label"));
 	labelFood->setText("Food:");
 	labelFood->setPosition(10, 340);
 	labelFood->setTextSize(18);
 	gui->add(labelFood);
 
-	 labelCellsVar = tgui::Label::create();
+	labelCellsVar = tgui::Label::create();
 	labelCellsVar->setRenderer(theme.getRenderer("Label"));
 	labelCellsVar->setText(std::to_string(Environment::getInstance().getAliveCellsCount()));
 	labelCellsVar->setPosition(75, 310);
 	labelCellsVar->setTextSize(18);
 	gui->add(labelCellsVar);
 
-	 labelFoodVar = tgui::Label::create();
+	labelFoodVar = tgui::Label::create();
 	labelFoodVar->setRenderer(theme.getRenderer("Label"));
 	labelFoodVar->setText(std::to_string(Environment::getInstance().getFoodCount()));
 	labelFoodVar->setPosition(75, 340);

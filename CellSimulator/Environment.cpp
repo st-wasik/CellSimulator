@@ -73,7 +73,7 @@ void Environment::configure()
 	}
 
 
-	for (int i = 0; i < 50; i++) {
+	for (int i = 0; i < 2; i++) {
 		auto cell = CellFactory::getCell(Cell::Type::Aggressive);
 		cell->setPosition(sf::Vector2f(randomInt(40, static_cast<int>(Environment::getSize().x - 40)), randomInt(40, static_cast<int>(Environment::getSize().y - 40))));
 		insertNewCell(cell);

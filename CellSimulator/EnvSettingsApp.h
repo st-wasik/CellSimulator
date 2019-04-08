@@ -35,8 +35,8 @@ private:
 	tgui::Theme theme;
 
 	//gui elements
-	std::shared_ptr<tgui::Label> 
-		labelTemp, 
+	std::shared_ptr<tgui::Label>
+		labelTemp,
 		labelRad,
 		labelQuan,
 		labelFreq,
@@ -45,13 +45,13 @@ private:
 		labelCellsVar,
 		labelFoodVar;
 
-	std::shared_ptr<tgui::Slider> 
+	std::shared_ptr<tgui::Slider>
 		sliderTemp,
 		sliderRad,
 		sliderQuan,
 		sliderFreq;
 
-	std::shared_ptr<tgui::Button> 
+	std::shared_ptr<tgui::Button>
 		buttonTemp,
 		buttonRad,
 		buttonQuan,

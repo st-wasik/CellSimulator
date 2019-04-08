@@ -34,161 +34,152 @@ CellPreviewApp & CellPreviewApp::getInstance()
 
 void CellPreviewApp::configure()
 {
-	maxSpeed = tgui::Label::create();
-	maxSpeed->setRenderer(theme.getRenderer("Label"));
-	maxSpeed->setText("Max speed:");
-	maxSpeed->setPosition(10, 10);
-	maxSpeed->setTextSize(18);
-	gui->add(maxSpeed);
-
-	maxSpeedVal = tgui::Label::create();
-	maxSpeedVal->setRenderer(theme.getRenderer("Label"));
-	maxSpeedVal->setPosition(200, 10);
-	maxSpeedVal->setTextSize(18);
-	gui->add(maxSpeedVal);
-
-	aggresion = tgui::Label::create();
-	aggresion->setRenderer(theme.getRenderer("Label"));
-	aggresion->setText("Aggresion:");
-	aggresion->setPosition(10, 30);
-	aggresion->setTextSize(18);
-	gui->add(aggresion);
-
-	aggresionVal = tgui::Label::create();
-	aggresionVal->setRenderer(theme.getRenderer("Label"));
-	aggresionVal->setPosition(200, 30);
-	aggresionVal->setTextSize(18);
-	gui->add(aggresionVal);
-
-	radarRange = tgui::Label::create();
-	radarRange->setRenderer(theme.getRenderer("Label"));
-	radarRange->setText("Radar range:");
-	radarRange->setPosition(10, 50);
-	radarRange->setTextSize(18);
-	gui->add(radarRange);
-
-	radarRangeVal = tgui::Label::create();
-	radarRangeVal->setRenderer(theme.getRenderer("Label"));
-	radarRangeVal->setPosition(200, 50);
-	radarRangeVal->setTextSize(18);
-	gui->add(radarRangeVal);
-
-	divisionThreshold = tgui::Label::create();
-	divisionThreshold->setRenderer(theme.getRenderer("Label"));
-	divisionThreshold->setText("Division threshold:");
-	divisionThreshold->setPosition(10, 70);
-	divisionThreshold->setTextSize(18);
-	gui->add(divisionThreshold);
-
-	divisionThresholdVal = tgui::Label::create();
-	divisionThresholdVal->setRenderer(theme.getRenderer("Label"));
-	divisionThresholdVal->setPosition(200, 70);
-	divisionThresholdVal->setTextSize(18);
-	gui->add(divisionThresholdVal);
-
-	foodLimit = tgui::Label::create();
-	foodLimit->setRenderer(theme.getRenderer("Label"));
-	foodLimit->setText("Food limit:");
-	foodLimit->setPosition(10, 90);
-	foodLimit->setTextSize(18);
-	gui->add(foodLimit);
-
-	foodLimitVal = tgui::Label::create();
-	foodLimitVal->setRenderer(theme.getRenderer("Label"));
-	foodLimitVal->setPosition(200, 90);
-	foodLimitVal->setTextSize(18);
-	gui->add(foodLimitVal);
-
-	maxSize = tgui::Label::create();
-	maxSize->setRenderer(theme.getRenderer("Label"));
-	maxSize->setText("Max size:");
-	maxSize->setPosition(10, 110);
-	maxSize->setTextSize(18);
-	gui->add(maxSize);
-
-	maxSizeVal = tgui::Label::create();
-	maxSizeVal->setRenderer(theme.getRenderer("Label"));
-	maxSizeVal->setPosition(200, 110);
-	maxSizeVal->setTextSize(18);
-	gui->add(maxSizeVal);
-
-	maxAge = tgui::Label::create();
-	maxAge->setRenderer(theme.getRenderer("Label"));
-	maxAge->setText("Max Age:");
-	maxAge->setPosition(10, 130);
-	maxAge->setTextSize(18);
-	gui->add(maxAge);
-
-	maxAgeVal = tgui::Label::create();
-	maxAgeVal->setRenderer(theme.getRenderer("Label"));
-	maxAgeVal->setPosition(200, 130);
-	maxAgeVal->setTextSize(18);
-	gui->add(maxAgeVal);
-
-	foodLevel = tgui::Label::create();
-	foodLevel->setRenderer(theme.getRenderer("Label"));
-	foodLevel->setText("Food level:");
-	foodLevel->setPosition(10, 150);
-	foodLevel->setTextSize(18);
-	gui->add(foodLevel);
-
-	foodLevelVal = tgui::Label::create();
-	foodLevelVal->setRenderer(theme.getRenderer("Label"));
-	foodLevelVal->setPosition(200, 150);
-	foodLevelVal->setTextSize(18);
-	gui->add(foodLevelVal);
-
-	currentSpeed = tgui::Label::create();
-	currentSpeed->setRenderer(theme.getRenderer("Label"));
-	currentSpeed->setText("Current speed:");
-	currentSpeed->setPosition(10, 170);
-	currentSpeed->setTextSize(18);
-	gui->add(currentSpeed);
-
-	currentSpeedVal = tgui::Label::create();
-	currentSpeedVal->setRenderer(theme.getRenderer("Label"));
-	currentSpeedVal->setPosition(200, 170);
-	currentSpeedVal->setTextSize(18);
-	gui->add(currentSpeedVal);
-
 	size = tgui::Label::create();
 	size->setRenderer(theme.getRenderer("Label"));
-	size->setText("Size:");
-	size->setPosition(10, 190);
+	size->setText("Size");
+	size->setPosition(10, 10);
 	size->setTextSize(18);
 	gui->add(size);
 
-	sizeVal = tgui::Label::create();
-	sizeVal->setRenderer(theme.getRenderer("Label"));
-	sizeVal->setPosition(200, 190);
-	sizeVal->setTextSize(18);
+	sizeValTT = tgui::Label::create();
+	sizeValTT->setRenderer(theme.getRenderer("ToolTip"));
+	sizeValTT->setText("");
+	sizeValTT->setPosition(0,0);
+	sizeValTT->setTextSize(18);
+
+	sizeVal = tgui::ProgressBar::create();
+	sizeVal->setRenderer(theme.getRenderer("ProgressBar"));
+	sizeVal->setPosition(150, 9);
+	sizeVal->setSize(170, 20);
+	sizeVal->setTextSize(16);
+	sizeVal->setVisible(0);
+	sizeVal->setToolTip(sizeValTT);
 	gui->add(sizeVal);
+
+	speed = tgui::Label::create();
+	speed->setRenderer(theme.getRenderer("Label"));
+	speed->setText("Speed");
+	speed->setPosition(10, 40);
+	speed->setTextSize(18);
+	gui->add(speed);
+
+	speedValTT = tgui::Label::create();
+	speedValTT->setRenderer(theme.getRenderer("ToolTip"));
+	speedValTT->setText("");
+	speedValTT->setPosition(0, 0);
+	speedValTT->setTextSize(18);
+
+	speedVal = tgui::ProgressBar::create();
+	speedVal->setRenderer(theme.getRenderer("ProgressBar"));
+	speedVal->setPosition(150, 39);
+	speedVal->setSize(170, 20);
+	speedVal->setTextSize(16);
+	speedVal->setVisible(0);
+	speedVal->setToolTip(speedValTT);
+	gui->add(speedVal);
+
+	age = tgui::Label::create();
+	age->setRenderer(theme.getRenderer("Label"));
+	age->setText("Age");
+	age->setPosition(10, 70);
+	age->setTextSize(18);
+	gui->add(age);
+
+	ageValTT = tgui::Label::create();
+	ageValTT->setRenderer(theme.getRenderer("ToolTip"));
+	ageValTT->setText("");
+	ageValTT->setPosition(0, 0);
+	ageValTT->setTextSize(18);
+
+	ageVal = tgui::ProgressBar::create();
+	ageVal->setRenderer(theme.getRenderer("ProgressBar"));
+	ageVal->setPosition(150, 69);
+	ageVal->setSize(170, 20);
+	ageVal->setTextSize(16);
+	ageVal->setVisible(0);
+	ageVal->setToolTip(ageValTT);
+	gui->add(ageVal);
 
 	horniness = tgui::Label::create();
 	horniness->setRenderer(theme.getRenderer("Label"));
-	horniness->setText("Horniness:");
-	horniness->setPosition(10, 210);
+	horniness->setText("Fertility");
+	horniness->setPosition(10, 100);
 	horniness->setTextSize(18);
 	gui->add(horniness);
 
-	horninessVal = tgui::Label::create();
-	horninessVal->setRenderer(theme.getRenderer("Label"));
-	horninessVal->setPosition(200, 210);
-	horninessVal->setTextSize(18);
+	horninessValTT = tgui::Label::create();
+	horninessValTT->setRenderer(theme.getRenderer("ToolTip"));
+	horninessValTT->setText("");
+	horninessValTT->setPosition(0, 0);
+	horninessValTT->setTextSize(18);
+
+	horninessVal = tgui::ProgressBar::create();
+	horninessVal->setRenderer(theme.getRenderer("ProgressBar"));
+	horninessVal->setPosition(150, 99);
+	horninessVal->setSize(170, 20);
+	horninessVal->setTextSize(16);
+	horninessVal->setVisible(0);
+	horninessVal->setToolTip(horninessValTT);
 	gui->add(horninessVal);
 
-	currentAge = tgui::Label::create();
-	currentAge->setRenderer(theme.getRenderer("Label"));
-	currentAge->setText("Current Age:");
-	currentAge->setPosition(10, 230);
-	currentAge->setTextSize(18);
-	gui->add(currentAge);
+	aggresion = tgui::Label::create();
+	aggresion->setRenderer(theme.getRenderer("Label"));
+	aggresion->setText("Aggresion");
+	aggresion->setPosition(10, 130);
+	aggresion->setTextSize(18);
+	gui->add(aggresion);
 
-	currentAgeVal = tgui::Label::create();
-	currentAgeVal->setRenderer(theme.getRenderer("Label"));
-	currentAgeVal->setPosition(200, 230);
-	currentAgeVal->setTextSize(18);
-	gui->add(currentAgeVal);
+	aggresionValTT = tgui::Label::create();
+	aggresionValTT->setRenderer(theme.getRenderer("ToolTip"));
+	aggresionValTT->setText("");
+	aggresionValTT->setPosition(0, 0);
+	aggresionValTT->setTextSize(18);
+
+	aggresionVal = tgui::ProgressBar::create();
+	aggresionVal->setRenderer(theme.getRenderer("ProgressBar"));
+	aggresionVal->setPosition(150, 129);
+	aggresionVal->setSize(170, 20);
+	aggresionVal->setTextSize(16);
+	aggresionVal->setVisible(0);
+	aggresionVal->setToolTip(aggresionValTT);
+	gui->add(aggresionVal);
+
+	foodLevel = tgui::Label::create();
+	foodLevel->setRenderer(theme.getRenderer("Label"));
+	foodLevel->setText("Food level");
+	foodLevel->setPosition(10, 160);
+	foodLevel->setTextSize(18);
+	gui->add(foodLevel);
+
+	foodLevelValTT = tgui::Label::create();
+	foodLevelValTT->setRenderer(theme.getRenderer("ToolTip"));
+	foodLevelValTT->setText("");
+	foodLevelValTT->setPosition(0, 0);
+	foodLevelValTT->setTextSize(18);
+
+	foodLevelVal = tgui::ProgressBar::create();
+	foodLevelVal->setRenderer(theme.getRenderer("ProgressBar"));
+	foodLevelVal->setPosition(150, 159);
+	foodLevelVal->setSize(170, 20);
+	foodLevelVal->setTextSize(16);
+	foodLevelVal->setVisible(0);
+	foodLevelVal->setToolTip(foodLevelValTT);
+	gui->add(foodLevelVal);
+
+	divisionThreshold = tgui::Label::create();
+	divisionThreshold->setRenderer(theme.getRenderer("Label"));
+	divisionThreshold->setText("Div. th");
+	divisionThreshold->setPosition(10, 190);
+	divisionThreshold->setTextSize(18);
+	gui->add(divisionThreshold);
+
+	radarRange = tgui::Label::create();
+	radarRange->setRenderer(theme.getRenderer("Label"));
+	radarRange->setText("Detec. rg");
+	radarRange->setPosition(10, 220);
+	radarRange->setTextSize(18);
+	gui->add(radarRange);
+
 }
 
 void CellPreviewApp::update()
@@ -199,20 +190,47 @@ void CellPreviewApp::update()
 		auto cell = CellSelectionTool::getInstance().getSelectedCellCopy();
 		if (cell != nullptr)
 		{
-			maxSpeedVal->setText(std::to_string(cell->getGenes().maxSpeed.get()));
-			aggresionVal->setText(std::to_string(cell->getGenes().aggresion.get()));
-			radarRangeVal->setText(std::to_string(cell->getGenes().radarRange.get()));
-			divisionThresholdVal->setText(std::to_string(cell->getGenes().divisionThreshold.get()));
-			foodLimitVal->setText(std::to_string(cell->getGenes().foodLimit.get()));
-			maxSizeVal->setText(std::to_string(cell->getGenes().maxSize.get()));
-			maxAgeVal->setText(std::to_string(cell->getGenes().maxAge.get()));
-			foodLevelVal->setText(std::to_string(cell->getFoodLevel()));
-			currentSpeedVal->setText(std::to_string(cell->getCurrentSpeed()));
-			sizeVal->setText(std::to_string(cell->getSize()));
+			//size
+			sizeValTT->setText("Min: " + std::to_string((int)cell->getGenes().maxSize.getMin()) + "\nMax: " + std::to_string((int)cell->getGenes().maxSize.get()));
+			sizeVal->setVisible(1);
+			sizeVal->setText(std::to_string((int)cell->getSize()));
+			sizeVal->setMaximum(cell->getGenes().maxSize.get());
+			sizeVal->setMinimum(cell->getGenes().maxSize.getMin());
+			sizeVal->setValue(cell->getSize());
+			//speed
+			speedValTT->setText("Min: " + std::to_string(cell->getGenes().maxSpeed.getMin()) + "\nMax: " + std::to_string(cell->getGenes().maxSpeed.get()));
+			speedVal->setVisible(1);
+			speedVal->setText(std::to_string(cell->getCurrentSpeed()));
+			speedVal->setMaximum(cell->getGenes().maxSpeed.get()*100);
+			speedVal->setMinimum(cell->getGenes().maxSpeed.getMin()*100);
+			speedVal->setValue(cell->getCurrentSpeed()*100);
+			//age
+			ageValTT->setText("Min: " + std::to_string(cell->getGenes().maxAge.getMin()) + "\nMax: " + std::to_string(cell->getGenes().maxAge.get()));
+			ageVal->setVisible(1);
+			ageVal->setText(std::to_string(cell->age));
+			ageVal->setMaximum(cell->getGenes().maxAge.get() * 100);
+			ageVal->setMinimum(cell->getGenes().maxAge.getMin() * 100);
+			ageVal->setValue(cell->age * 100);
+			//horniness
+			horninessValTT->setText("Min: " + std::to_string(cell->getHorniness().getMin()) + "\nMax: " + std::to_string(cell->getHorniness().getMax()));
+			horninessVal->setVisible(1);
 			horninessVal->setText(std::to_string(cell->getHorniness().get()));
-			currentAgeVal->setText(std::to_string(cell->age));
+			horninessVal->setMaximum(cell->getHorniness().getMax() * 100);
+			horninessVal->setMinimum(cell->getHorniness().getMin() * 100);
+			horninessVal->setValue(cell->getHorniness().get() * 100);
+			//AgeVal->setText(std::to_string(cell->age));
+			//horninessVal->setText(std::to_string(cell->getHorniness().get()));
+			//aggresionVal->setText(std::to_string(cell->getGenes().aggresion.get()));
+			//foodLevelVal->setText(std::to_string(cell->getFoodLevel()));
+			//divisionThresholdVal->setText(std::to_string(cell->getGenes().divisionThreshold.get()));
+			//radarRangeVal->setText(std::to_string(cell->getGenes().radarRange.get()));
 
 			cell->setPosition(sf::Vector2f( 175, window->getSize().y  - 75 ));
+		}
+		else
+		{
+			sizeVal->setVisible(0);
+			speedVal->setVisible(0);
 		}
 		if (!MainApp::appRun)
 		{
