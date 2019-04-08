@@ -135,6 +135,26 @@ double Cell::getCurrentSpeed()
 	return this->currentSpeed;
 }
 
+void Cell::setCurrentSpeed(double speed)
+{
+	this->currentSpeed = speed;
+}
+
+void Cell::setFoodLevel(double foodLevel)
+{
+	this->foodLevel = foodLevel;
+}
+
+void Cell::setSize(double size)
+{
+	this->shape.setRadius(size);
+}
+
+void Cell::setAge(double age)
+{
+	this->age = age;
+}
+
 void Cell::setHorniness(double horniness)
 {
 	this->horniness = horniness;

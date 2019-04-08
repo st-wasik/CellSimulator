@@ -5,6 +5,7 @@
 #include "CellSimApp.h"
 #include "CellSelectionTool.h"
 #include "Distance.h"
+#include "RangeChecker.h"
 constexpr double PI = 3.14159265358979323846;
 
 void CellRoles::moveForward(Cell * c)
@@ -311,7 +312,7 @@ void CellRoles::mutate(Cell * c)
 {
 	if (randomInt(0, 100) > 99) {
 		
-		auto genes = c->getGenes();
+		auto& genes = c->getGenes();
 		genes.aggresion = genes.aggresion + genes.aggresion.getRange() / 10000 * Environment::getInstance().getRadiation() * randomInt(-1, 1);
 		genes.divisionThreshold = genes.divisionThreshold + genes.divisionThreshold.getRange() / 10000 * Environment::getInstance().getRadiation() * randomInt(-1, 1);
 		genes.foodLimit = genes.foodLimit + genes.foodLimit.getRange() / 10000 * Environment::getInstance().getRadiation() * randomInt(-1, 1);
@@ -319,6 +320,11 @@ void CellRoles::mutate(Cell * c)
 		genes.maxSize = genes.maxSize + genes.maxSize.getRange() / 10000 * Environment::getInstance().getRadiation() * randomInt(-1, 1);
 		genes.maxSpeed = genes.maxSpeed + genes.maxSpeed.getRange() / 10000 * Environment::getInstance().getRadiation() * randomInt(-1, 1);
 		genes.radarRange = genes.radarRange + genes.radarRange.getRange() / 10000 * Environment::getInstance().getRadiation() * randomInt(-1, 1);
+
+		c->setFoodLevel(checkRange(c->getFoodLevel(), 0, genes.foodLimit.get()));
+		c->setAge(checkRange(c->age, 0, genes.maxAge.get()));
+		c->setSize(checkRange(c->getSize(), 0, genes.maxSize.get()));
+		c->setCurrentSpeed(checkRange(c->getCurrentSpeed(), 0, genes.maxSpeed.get()));
 	}
 
 }

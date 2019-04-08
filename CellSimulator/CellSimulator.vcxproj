@@ -151,6 +151,7 @@
     <ClCompile Include="CellSimMouse.cpp" />
     <ClCompile Include="MixDouble.cpp" />
     <ClCompile Include="Random.cpp" />
+    <ClCompile Include="RangeChecker.cpp" />
     <ClCompile Include="TextureProvider.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -177,6 +178,7 @@
     <ClInclude Include="CellSimMouse.h" />
     <ClInclude Include="MixDouble.h" />
     <ClInclude Include="Random.h" />
+    <ClInclude Include="RangeChecker.h" />
     <ClInclude Include="Ranged.h" />
     <ClInclude Include="TextureProvider.h" />
   </ItemGroup>
