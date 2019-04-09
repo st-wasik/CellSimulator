@@ -202,7 +202,7 @@ void CellRoles::divideAndConquer(Cell * c)
 	{
 		c->foodLevel = 50;
 		c->setSize(20);
-		auto ptr = std::dynamic_pointer_cast<Cell>(c->getSelfPtr());
+		auto ptr = Cell::create(*c);
 		Environment::getInstance().insertNewCell(ptr);
 		c->setRotation(c->getRotation() + 180);
 	}
