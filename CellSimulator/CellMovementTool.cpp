@@ -12,10 +12,6 @@ CellMovementTool & CellMovementTool::getInstance()
 
 void CellMovementTool::update()
 {
-	static bool keyPrev = false;
-	static bool keyCurr = false;
-	keyCurr = sf::Keyboard::isKeyPressed(sf::Keyboard::LControl);
-
 	constexpr int selectionMargin = 50;
 	constexpr double positioningMargin = 0.5;
 
@@ -23,42 +19,40 @@ void CellMovementTool::update()
 	{
 		if (selectedCell != nullptr)
 		{
-			if (getDistance(CellSimMouse::getPosition(), selectedCell->getPosition()) < (selectedCell->getSize() + selectionMargin))
-			{
-				auto newPos = selectedCell->getPosition() + CellSimMouse::getPositionShift();
-				auto envSize = Environment::getInstance().getSize();
-				auto cellSize = selectedCell->getSize();
 
-				if (newPos.x - cellSize < 0)
-					newPos.x = 0 + positioningMargin + cellSize;
-				else if (newPos.x + cellSize > envSize.x)
-					newPos.x = envSize.x - positioningMargin - cellSize;
-				if (newPos.y - cellSize < 0)
-					newPos.y = 0 + positioningMargin + cellSize;
-				else if (newPos.y + cellSize > envSize.y)
-					newPos.y = envSize.y - positioningMargin - cellSize;
+			auto newPos = selectedCell->getPosition() + CellSimMouse::getPositionShift();
+			auto envSize = Environment::getInstance().getSize();
+			auto cellSize = selectedCell->getSize();
 
-				selectedCell->setPosition(newPos);
+			if (newPos.x - cellSize < 0)
+				newPos.x = 0 + positioningMargin + cellSize;
+			else if (newPos.x + cellSize > envSize.x)
+				newPos.x = envSize.x - positioningMargin - cellSize;
+			if (newPos.y - cellSize < 0)
+				newPos.y = 0 + positioningMargin + cellSize;
+			else if (newPos.y + cellSize > envSize.y)
+				newPos.y = envSize.y - positioningMargin - cellSize;
 
-				float size = selectedCell->getSize() + 30;
-				selectionMarker.setRadius(size);
-				selectionMarker.setOrigin(size, size);
-				selectionMarker.setPosition(newPos);
-				selectionMarker.setPointCount(7);
-				selectionMarker.rotate(0.75*CellSimApp::getInstance().getDeltaTime());
-			}
-			else
-			{
-				detachCell();
-			}
+			selectedCell->setPosition(newPos);
+
+			float size = 0;
+			//float size = selectedCell->getSize() + 30;
+			selectionMarker.setRadius(size);
+			selectionMarker.setOrigin(size, size);
+			selectionMarker.setPosition(newPos);
+			selectionMarker.setPointCount(7);
+			selectionMarker.rotate(0.75*CellSimApp::getInstance().getDeltaTime());
 		}
 		else
 		{
 			// if key pressed once
-			if (CellSimMouse::isLeftPressed() && !keyPrev && keyCurr)
+			if (CellSimMouse::wasLeftPressed() && sf::Keyboard::isKeyPressed(sf::Keyboard::LControl))
 			{
 				auto cell = Environment::getInstance().getCellAtPosition(CellSimMouse::getPosition());
-				if (cell != nullptr) attachCell(cell);
+				if (cell != nullptr)
+				{
+					attachCell(cell);
+				}
 			}
 		}
 	}
@@ -66,7 +60,6 @@ void CellMovementTool::update()
 	{
 		detachCell();
 	}
-	keyPrev = keyCurr;
 }
 
 void CellMovementTool::draw(sf::RenderWindow &w)

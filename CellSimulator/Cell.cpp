@@ -79,6 +79,11 @@ void Cell::update()
 void Cell::freeze()
 {
 	freezed = true;
+
+	// change A to 255 when unfreezing is not nessesery because cell role updates shape's color 
+	auto color = getBaseColor();
+	color.a = 128;
+	shape.setFillColor(color);
 }
 
 void Cell::unfreeze()
