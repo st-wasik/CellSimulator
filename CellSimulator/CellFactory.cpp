@@ -1,5 +1,6 @@
 #include "CellFactory.h"
 #include "CellRoles.h"
+#include "TextureProvider.h"
 
 std::shared_ptr<Cell> CellFactory::getCell(Cell::Type type)
 {
@@ -41,14 +42,19 @@ std::shared_ptr<Cell> CellFactory::getCell(Cell::Type type)
 		result->genes.aggresion = 0;
 		result->genes.divisionThreshold = 45;
 		result->genes.foodLimit = 0;
-		result->genes.maxAge = 100;
+		result->genes.maxAge = 10;
 		result->genes.maxSize = 25;
 		result->genes.maxSpeed = 0.75;
 		result->genes.radarRange = 0;
 		result->setBaseColor(sf::Color::Green);
 		result->dropRole(CellRoles::eat);
 		result->dropRole(CellRoles::simulateHunger);
+		result->dropRole(CellRoles::mutate);
+		result->dropRole(CellRoles::makeOlder);
 		result->addRole(CellRoles::makeFood);
+		result->setBaseColor(sf::Color::White);
+		result->shape.setTextureRect(sf::IntRect{ 0,0,960,960 });
+		result->shape.setTexture(TextureProvider::getInstance().getTexture("greenLettuce").get());
 		break;
 	}
 

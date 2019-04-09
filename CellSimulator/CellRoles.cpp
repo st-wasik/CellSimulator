@@ -243,7 +243,7 @@ void CellRoles::getingHot(Cell * c)
 
 void CellRoles::makeFood(Cell * c)
 {
-	if (randomInt(0, 1000) > 998)
+	if (randomInt(0, 1000) > 996)
 	{
 		auto size = c->getSize();
 
@@ -257,8 +257,10 @@ void CellRoles::makeFood(Cell * c)
 
 			auto position = c->getPosition() + sf::Vector2f{ xDeviation, yDeviation };
 
-			auto food = Food::create(foodSize, position, c->getBaseColor());
+			auto food = Food::create(foodSize, position, sf::Color(8,128,8));
 			Environment::getInstance().insertNewFood(food);
+
+			c->horniness = 0;
 		}
 	}
 
