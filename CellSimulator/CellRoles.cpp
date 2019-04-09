@@ -230,7 +230,7 @@ void CellRoles::getingHot(Cell * c)
 		auto & cells = Environment::getInstance().getCellsVector();
 		for (auto & cell : cells)
 		{
-			if (cell->getHorniness().isMax() && c->genes.type.get()==cell->genes.type.get() && c->collision(cell))
+			if (!cell->isDead() && cell->getHorniness().isMax() && c->genes.type.get()==cell->genes.type.get() && c->collision(cell))
 			{
 				c->setHorniness(0);
 				cell->setHorniness(0);
