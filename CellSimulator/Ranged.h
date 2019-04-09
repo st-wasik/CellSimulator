@@ -16,10 +16,10 @@ public:
 	Ranged(const Ranged& v);
 	Ranged& operator=(const Ranged& v);
 
-	Ranged operator+(const Ranged& v);
-	Ranged operator-(const Ranged& v);
-	Ranged operator*(const Ranged& v);
-	Ranged operator/(const Ranged& v);
+	Ranged operator+(const Ranged& v) const;
+	Ranged operator-(const Ranged& v) const;
+	Ranged operator*(const Ranged& v) const;
+	Ranged operator/(const Ranged& v) const;
 
 	Ranged& operator++(const int);
 	Ranged& operator++();
@@ -32,14 +32,14 @@ public:
 	bool operator>(const Ranged& v);
 	bool operator<(const Ranged& v);
 
-	T get();
+	T get() const;
 	void randomize();
-	bool isMax();
-	bool isMin();
+	bool isMax() const;
+	bool isMin() const;
 
-	T getMin();
-	T getMax();
-	T getRange();
+	T getMin() const;
+	T getMax() const;
+	T getRange() const;
 
 private:
 
@@ -83,25 +83,25 @@ inline Ranged<T, min, max> & Ranged<T, min, max>::operator=(const Ranged & v)
 }
 
 template<typename T, int min, int max>
-inline Ranged<T, min, max> Ranged<T, min, max>::operator+(const Ranged & v)
+inline Ranged<T, min, max> Ranged<T, min, max>::operator+(const Ranged & v) const
 {
 	return check(this->value + v.value);
 }
 
 template<typename T, int min, int max>
-inline Ranged<T, min, max> Ranged<T, min, max>::operator-(const Ranged & v)
+inline Ranged<T, min, max> Ranged<T, min, max>::operator-(const Ranged & v) const
 {
 	return check(this->value - v.value);
 }
 
 template<typename T, int min, int max>
-inline Ranged<T, min, max> Ranged<T, min, max>::operator*(const Ranged & v)
+inline Ranged<T, min, max> Ranged<T, min, max>::operator*(const Ranged & v) const
 {
 	return check(this->value * v.value);
 }
 
 template<typename T, int min, int max>
-inline Ranged<T, min, max> Ranged<T, min, max>::operator/(const Ranged & v)
+inline Ranged<T, min, max> Ranged<T, min, max>::operator/(const Ranged & v) const
 {
 	return check(this->value / v.value);
 }
@@ -174,7 +174,7 @@ inline bool Ranged<T, min, max>::operator<(const Ranged & v)
 }
 
 template<typename T, int min, int max>
-inline T Ranged<T, min, max>::get()
+inline T Ranged<T, min, max>::get() const
 {
 	return value;
 }
@@ -193,7 +193,7 @@ inline void Ranged<T, min, max>::randomize()
 }
 
 template<typename T, int min, int max>
-inline bool Ranged<T, min, max>::isMax()
+inline bool Ranged<T, min, max>::isMax() const
 {
 	if (this->value >= max)
 	{
@@ -202,8 +202,8 @@ inline bool Ranged<T, min, max>::isMax()
 	return false;
 }
 
-template<typename T, int min, int max>
-inline bool Ranged<T, min, max>::isMin()
+template<typename T, int min, int max> 
+inline bool Ranged<T, min, max>::isMin() const
 {
 	if (this->value <= min)
 	{
@@ -213,19 +213,19 @@ inline bool Ranged<T, min, max>::isMin()
 }
 
 template<typename T, int min, int max>
-inline T Ranged<T, min, max>::getMin()
+inline T Ranged<T, min, max>::getMin() const
 {
 	return min;
 }
 
 template<typename T, int min, int max>
-inline T Ranged<T, min, max>::getMax()
+inline T Ranged<T, min, max>::getMax() const
 {
 	return max;
 }
 
 template<typename T, int min, int max>
-inline T Ranged<T, min, max>::getRange()
+inline T Ranged<T, min, max>::getRange() const
 {
 	return max - min;
 }
