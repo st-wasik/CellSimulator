@@ -161,7 +161,7 @@ void EnvSettingsApp::configure()
 	sliderFreq->setRenderer(theme.getRenderer("Slider"));
 	sliderFreq->setPosition(10, 195);
 	sliderFreq->setSize(200, 9);
-	sliderFreq->setMaximum(100);
+	sliderFreq->setMaximum(250);
 	sliderFreq->setMinimum(1);
 	sliderFreq->setValue(AutoFeederTool::getInstance().getMaxFoodPerSec());
 	sliderFreq->setEnabled(0);

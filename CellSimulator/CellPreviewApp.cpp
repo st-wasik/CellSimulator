@@ -226,9 +226,9 @@ void CellPreviewApp::update()
 		if (cell != nullptr)
 		{
 			//size
-			sizeValTT->setText("Min: " + doubleToString(cell->getGenes().maxSize.getMin(),0) + "\nMax: " + doubleToString(cell->getGenes().maxSize.get(),0));
+			sizeValTT->setText("Min: " + doubleToString(cell->getGenes().maxSize.getMin(),2) + "\nMax: " + doubleToString(cell->getGenes().maxSize.get(),2));
 			sizeVal->setVisible(1);
-			sizeVal->setText(doubleToString(cell->getSize(),0));
+			sizeVal->setText(doubleToString(cell->getSize(),2));
 			sizeVal->setMaximum(cell->getGenes().maxSize.get());
 			sizeVal->setMinimum(cell->getGenes().maxSize.getMin());
 			sizeVal->setValue(cell->getSize());
