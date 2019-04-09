@@ -37,9 +37,9 @@ public:
 
 protected:
 	sf::CircleShape shape;
-	sf::Color baseColor;
 private:
 	bool toDelete;
 	std::shared_ptr<BaseObj> self;
+	sf::Color baseColor;
 };
 

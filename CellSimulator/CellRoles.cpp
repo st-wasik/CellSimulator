@@ -143,26 +143,26 @@ void CellRoles::updateColor(Cell * c)
 
 	Ranged<int, 0, 255> newR, newG, newB;
 
-	auto newColor = c->baseColor;
+	auto newColor = c->getBaseColor();
 
 	//temperature
 	auto& envTemp = Environment::getInstance().getTemperature();
 	auto& envRad = Environment::getInstance().getRadiation();
 	if (envTemp > threshold)
 	{
-		newR = 2 * abs(envTemp - threshold) + c->baseColor.r;
+		newR = 2 * abs(envTemp - threshold) + c->getBaseColor().r;
 		newColor.r = newR.get();
 	}
 	else if (envTemp < -threshold)
 	{
-		newB = 2 * abs(envTemp + threshold) + c->baseColor.b;
+		newB = 2 * abs(envTemp + threshold) + c->getBaseColor().b;
 		newColor.b = newB.get();
 	}
 
 	//radiation
 	if (envRad > threshold)
 	{
-		newG = 3 * abs(envRad - threshold) + c->baseColor.g;
+		newG = 3 * abs(envRad - threshold) + c->getBaseColor().g;
 		newColor.g = newG.get();
 	}
 

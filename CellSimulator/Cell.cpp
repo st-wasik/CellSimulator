@@ -46,7 +46,7 @@ Cell::Cell(float size, sf::Vector2f position, sf::Color color) : BaseObj(size, p
 	roles.push_back(CellRoles::moveForward);
 }
 
-Cell::Cell(Cell a, Cell b) : Cell(20,(a.getPosition()+b.getPosition())/2.0f, a.baseColor*b.baseColor)
+Cell::Cell(Cell a, Cell b) : Cell(20, (a.getPosition() + b.getPosition()) / 2.0f, a.getBaseColor()*b.getBaseColor())
 {
 
 
