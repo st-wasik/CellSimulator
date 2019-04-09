@@ -26,10 +26,8 @@ public:
 		Passive, Aggressive, Random, GreenLettuce
 	};
 
-
 	template <typename ... Types>
 	static std::shared_ptr<Cell> create(Types ... values);
-
 
 	~Cell();
 
@@ -58,9 +56,16 @@ public:
 
 	double age;
 
+	// returns string with cell description that can be used to save cell from environment to file (contains current stats, position etc.)
+	std::string getCellSaveString();
+
+	// returns string with cell description that can be used to save cell created in workshop (without stats, position, etc.)
+	std::string getCellBlueprintString();
+
 private:
 	Cell(float size, sf::Vector2f position, sf::Color color);
 	Cell(Cell a, Cell b);
+
 	// vector of pointers to role-functions
 	std::vector<void(*)(Cell*)> roles;
 

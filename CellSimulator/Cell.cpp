@@ -5,6 +5,7 @@
 #include "Environment.h"
 #include "BaseObj.h"
 #include "TextureProvider.h"
+#include <sstream>
 
 Cell::Cell(float size, sf::Vector2f position, sf::Color color) : BaseObj(size, position, color)
 {
@@ -109,10 +110,10 @@ void Cell::kill()
 
 		for (int i = 0; i < foods; ++i)
 		{
-			float xDeviation = randomInt(-size/2, size/2);
-			float yDeviation = randomInt(-size/2, size/2);
+			float xDeviation = randomInt(-size / 2, size / 2);
+			float yDeviation = randomInt(-size / 2, size / 2);
 
-			auto position = getPosition() + sf::Vector2f{xDeviation, yDeviation};
+			auto position = getPosition() + sf::Vector2f{ xDeviation, yDeviation };
 
 			auto food = Food::create(foodSize, position, sf::Color::Black);
 			Environment::getInstance().insertNewFood(food);
@@ -172,6 +173,44 @@ void Cell::dropRole(void(*role)(Cell *))
 void Cell::addRole(void(*role)(Cell *))
 {
 	roles.push_back(role);
+}
+
+std::string Cell::getCellSaveString()
+{
+	std::ostringstream result;
+
+	result << getCellBlueprintString() <<
+		"CRROT:" << this->getRotation() << " " <<
+		"CPOSX:" << this->getPosition().x << " " <<
+		"CPOSY:" << this->getPosition().y << " " <<
+		"COLRR:" << static_cast<int>(this->getBaseColor().r) << " " <<
+		"COLRG:" << static_cast<int>(this->getBaseColor().g) << " " <<
+		"COLRB:" << static_cast<int>(this->getBaseColor().b) << " " <<
+		"COLRA:" << static_cast<int>(this->getBaseColor().a) << " " <<
+		"CRAGE:" << this->age << " " <<
+		"CRSPD:" << this->currentSpeed << " " <<
+		"CDEAD:" << this->dead << " " <<
+		"FDLVL:" << this->foodLevel << " " <<
+		"FRZED:" << this->freezed << " " <<
+		"HRNES:" << this->horniness << " ";
+
+	return result.str();
+}
+
+std::string Cell::getCellBlueprintString()
+{
+	std::ostringstream result;
+
+	result << "CELL-> " <<
+		"AGGRN:" << genes.aggresion << " " <<
+		"DIVTH:" << genes.divisionThreshold << " " <<
+		"FDLIM:" << genes.foodLimit << " " <<
+		"MXAGE:" << genes.maxAge << " " <<
+		"MXSIZ:" << genes.maxSize << " " <<
+		"MXSPD:" << genes.maxSpeed << " " <<
+		"RADRG:" << genes.radarRange << " ";
+
+	return result.str();
 }
 
 std::shared_ptr<std::vector<std::shared_ptr<BaseObj>>> Cell::getFoodCollisionVector()
