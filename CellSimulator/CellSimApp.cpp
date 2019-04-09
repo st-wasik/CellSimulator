@@ -56,6 +56,11 @@ void CellSimApp::run()
 			if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Space)
 				CellSelectionTool::getInstance().setFollowSelectedCell(true);
 
+			if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Return)
+				if (simulationActive)
+					pauseSimulation();
+				else
+					startSimulation();
 		}
 
 
@@ -63,7 +68,14 @@ void CellSimApp::run()
 		updateViewCenter();
 		updateViewZoom();
 
-		Environment::getInstance().update();
+		if (simulationActive)
+		{
+			Environment::getInstance().update();
+		}
+		else
+		{
+			Environment::getInstance().updatePausedSim();
+		}
 
 		window->clear();
 
@@ -113,8 +125,19 @@ const float & CellSimApp::getDeltaTime()
 	return deltaTime;
 }
 
+void CellSimApp::startSimulation()
+{
+	simulationActive = true;
+}
+
+void CellSimApp::pauseSimulation()
+{
+	simulationActive = false;
+}
+
 CellSimApp::CellSimApp()
 {
+	simulationActive = true;
 }
 
 void CellSimApp::updateViewZoom()

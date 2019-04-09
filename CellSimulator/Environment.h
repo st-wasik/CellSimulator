@@ -19,6 +19,8 @@ public:
 
 	void update();
 
+	void updatePausedSim();
+
 	void configure();
 
 	void draw(sf::RenderWindow & window);

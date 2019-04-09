@@ -1,5 +1,6 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include <atomic>
 
 class CellSimMouse;
 
@@ -21,6 +22,10 @@ public:
 	 std::shared_ptr<sf::RenderWindow> getWindowHandle();
 
 	 const float& getDeltaTime();
+
+	 void startSimulation();
+
+	 void pauseSimulation();
 
 private:
 	CellSimApp();
@@ -44,5 +49,7 @@ private:
 	static constexpr int _minZoom = 7;
 
 	float deltaTime;
+
+	std::atomic_bool simulationActive;
 };
 

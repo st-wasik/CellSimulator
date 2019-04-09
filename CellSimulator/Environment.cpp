@@ -198,6 +198,20 @@ void Environment::update()
 	deadCells.erase(newDeadCellsEnd, deadCells.end());
 }
 
+void Environment::updatePausedSim()
+{
+	sf::Vector2f mouse = CellSimMouse::getPosition();
+
+	_aliveCellsCount = cells.size();
+	_foodCount = food.size();
+
+	updateBackground();
+
+	CellSelectionTool::getInstance().update();
+	CellMovementTool::getInstance().update();
+	AutoFeederTool::getInstance().update();
+}
+
 void Environment::draw(sf::RenderWindow & window)
 {
 	window.draw(environmentBackground);
