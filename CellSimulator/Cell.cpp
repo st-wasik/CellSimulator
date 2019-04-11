@@ -6,6 +6,7 @@
 #include "BaseObj.h"
 #include "TextureProvider.h"
 #include <sstream>
+#include <regex>
 
 Cell::Cell(float size, sf::Vector2f position, sf::Color color) : BaseObj(size, position, color)
 {
@@ -64,6 +65,96 @@ Cell::Cell(Cell a, Cell b) : Cell(20, (a.getPosition() + b.getPosition()) / 2.0f
 
 }
 
+Cell::Cell(std::string formattedCellString) : Cell(0, { 0,0 }, sf::Color::Transparent)
+{
+	std::regex cellRegex("CELL->( [A-Z]{5}:[0-9]+\\.?[0-9]*)*");
+	if (!std::regex_match(formattedCellString.begin(), formattedCellString.end(), cellRegex))
+	{
+		throw std::exception("Cell string wrong format!");
+	}
+
+	std::regex settingRegex(" [A-Z]{5}:[0-9]+\\.?[0-9]*");
+
+	auto settingsBegin = std::sregex_iterator(formattedCellString.begin(), formattedCellString.end(), settingRegex);
+	auto settingsEnd = std::sregex_iterator();
+
+	for (auto i = settingsBegin; i != settingsEnd; ++i)
+	{
+		std::string settingStr = i->str();
+		std::regex type("[A-Z]{5}");
+		std::regex value("[0-9]+\\.?[0-9]*");
+
+		auto type_i = std::sregex_iterator(settingStr.begin(), settingStr.end(), type);
+		auto value_i = std::sregex_iterator(settingStr.begin(), settingStr.end(), value);
+
+		std::string type_s;
+		std::string value_s;
+
+		if (type_i != std::sregex_iterator())
+		{
+			type_s = type_i->str();
+		}
+
+		if (value_i != std::sregex_iterator())
+		{
+			value_s = value_i->str();
+		}
+
+		if (!type_s.empty() && !value_s.empty())
+			modifyValueFromString(type_s, value_s);
+	}
+}
+
+void Cell::modifyValueFromString(std::string valueName, std::string value)
+{
+	Logger::log("Setting '" + valueName + "' to " + value);
+	auto& v = valueName;
+
+	if (v == VarAbbrv::currentRotation)			this->setRotation(std::stod(value));
+	else if (v == VarAbbrv::currentPositionX)	this->setPosition(sf::Vector2f(std::stod(value), getPosition().y));
+	else if (v == VarAbbrv::currentPositionY)	this->setPosition(sf::Vector2f(getPosition().x, std::stod(value)));
+	else if (v == VarAbbrv::colorR)
+	{
+		auto c = getBaseColor();
+		c.r = std::stod(value);
+		this->setBaseColor(c);
+	}
+	else if (v == VarAbbrv::colorG)
+	{
+		auto c = getBaseColor();
+		c.g = std::stod(value);
+		this->setBaseColor(c);
+	}
+	else if (v == VarAbbrv::colorB)	
+	{
+		auto c = getBaseColor();
+		c.b = std::stod(value);
+		this->setBaseColor(c);
+	}
+	else if (v == VarAbbrv::colorA)	
+	{
+		auto c = getBaseColor();
+		c.a = std::stod(value);
+		this->setBaseColor(c);
+	}
+	else if (v == VarAbbrv::currentAge)			this->setAge(std::stod(value));
+	else if (v == VarAbbrv::currentSpeed)		this->currentSpeed = (std::stod(value));
+	else if (v == VarAbbrv::currentSize)		this->setSize((std::stod(value)));
+	else if (v == VarAbbrv::isDead)				this->dead = (std::stod(value));
+	else if (v == VarAbbrv::currentFoodLevel)	this->foodLevel = (std::stod(value));
+	else if (v == VarAbbrv::isFreezed)			this->freezed = (std::stod(value));
+	else if (v == VarAbbrv::horniness)			this->horniness = (std::stod(value));
+	else if (v == VarAbbrv::aggression)			this->genes.aggresion = (std::stod(value));
+	else if (v == VarAbbrv::divisionTh)			this->genes.divisionThreshold = (std::stod(value));
+	else if (v == VarAbbrv::foodLimit)			this->genes.foodLimit = (std::stod(value));
+	else if (v == VarAbbrv::maxAge)				this->genes.maxAge = (std::stod(value));
+	else if (v == VarAbbrv::maxSize)			this->genes.maxSize = (std::stod(value));
+	else if (v == VarAbbrv::maxSpeed)			this->genes.maxSpeed = (std::stod(value));
+	else if (v == VarAbbrv::radarRange)			this->genes.radarRange = (std::stod(value));
+
+	else throw std::exception(std::string("Unknown cell var name '" + v + "' with value '" + value + "'!").c_str());
+}
+
 Cell::~Cell()
 {
 }
@@ -102,7 +193,7 @@ void Cell::kill()
 
 		auto color = randomInt(0, 32);
 		shape.setFillColor(sf::Color(color, color, color, 255));
-		
+
 		auto size = getSize();
 
 		int foods = size / 10;
@@ -180,19 +271,20 @@ std::string Cell::getCellSaveString()
 	std::ostringstream result;
 
 	result << getCellBlueprintString() <<
-		"CRROT:" << this->getRotation() << " " <<
-		"CPOSX:" << this->getPosition().x << " " <<
-		"CPOSY:" << this->getPosition().y << " " <<
-		"COLRR:" << static_cast<int>(this->getBaseColor().r) << " " <<
-		"COLRG:" << static_cast<int>(this->getBaseColor().g) << " " <<
-		"COLRB:" << static_cast<int>(this->getBaseColor().b) << " " <<
-		"COLRA:" << static_cast<int>(this->getBaseColor().a) << " " <<
-		"CRAGE:" << this->age << " " <<
-		"CRSPD:" << this->currentSpeed << " " <<
-		"CDEAD:" << this->dead << " " <<
-		"FDLVL:" << this->foodLevel << " " <<
-		"FRZED:" << this->freezed << " " <<
-		"HRNES:" << this->horniness << " ";
+		VarAbbrv::currentRotation << ":" << this->getRotation() << " " <<
+		VarAbbrv::currentPositionX << ":" << this->getPosition().x << " " <<
+		VarAbbrv::currentPositionY << ":" << this->getPosition().y << " " <<
+		VarAbbrv::colorR << ":" << static_cast<int>(this->getBaseColor().r) << " " <<
+		VarAbbrv::colorG << ":" << static_cast<int>(this->getBaseColor().g) << " " <<
+		VarAbbrv::colorB << ":" << static_cast<int>(this->getBaseColor().b) << " " <<
+		VarAbbrv::colorA << ":" << static_cast<int>(this->getBaseColor().a) << " " <<
+		VarAbbrv::currentAge << ":" << this->age << " " <<
+		VarAbbrv::currentSpeed << ":" << this->currentSpeed << " " <<
+		VarAbbrv::currentSize << ":" << this->getSize() << " " <<
+		VarAbbrv::isDead << ":" << this->dead << " " <<
+		VarAbbrv::currentFoodLevel << ":" << this->foodLevel << " " <<
+		VarAbbrv::isFreezed << ":" << this->freezed << " " <<
+		VarAbbrv::horniness << ":" << this->horniness << " ";
 
 	return result.str();
 }
@@ -202,13 +294,13 @@ std::string Cell::getCellBlueprintString()
 	std::ostringstream result;
 
 	result << "CELL-> " <<
-		"AGGRN:" << genes.aggresion << " " <<
-		"DIVTH:" << genes.divisionThreshold << " " <<
-		"FDLIM:" << genes.foodLimit << " " <<
-		"MXAGE:" << genes.maxAge << " " <<
-		"MXSIZ:" << genes.maxSize << " " <<
-		"MXSPD:" << genes.maxSpeed << " " <<
-		"RADRG:" << genes.radarRange << " ";
+		VarAbbrv::aggression << ":" << genes.aggresion << " " <<
+		VarAbbrv::divisionTh << ":" << genes.divisionThreshold << " " <<
+		VarAbbrv::foodLimit << ":" << genes.foodLimit << " " <<
+		VarAbbrv::maxAge << ":" << genes.maxAge << " " <<
+		VarAbbrv::maxSize << ":" << genes.maxSize << " " <<
+		VarAbbrv::maxSpeed << ":" << genes.maxSpeed << " " <<
+		VarAbbrv::radarRange << ":" << genes.radarRange << " ";
 
 	return result.str();
 }

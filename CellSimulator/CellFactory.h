@@ -8,5 +8,6 @@ public:
 	~CellFactory() = delete;
 
 	static std::shared_ptr<Cell> getCell(Cell::Type);
+	static std::shared_ptr<Cell> getCell(std::string formattedCellString);
 };
 

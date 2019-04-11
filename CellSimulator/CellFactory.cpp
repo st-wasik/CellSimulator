@@ -60,3 +60,8 @@ std::shared_ptr<Cell> CellFactory::getCell(Cell::Type type)
 
 	return result;
 }
+
+std::shared_ptr<Cell> CellFactory::getCell(std::string formattedCellString)
+{
+	return Cell::create(formattedCellString);
+}
