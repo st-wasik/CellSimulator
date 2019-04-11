@@ -61,6 +61,9 @@ private:
 
 	void updateBackground();
 
+	void sterilizeEnvironment();
+
+
 	std::vector<std::shared_ptr<Cell>> cells;
 	std::vector<std::shared_ptr<Cell>> deadCells;
 	std::vector<std::shared_ptr<Cell>> newCells;
@@ -76,6 +79,7 @@ private:
 	std::atomic<double> _radiation;
 	std::atomic<int> _aliveCellsCount;
 	std::atomic<int> _foodCount;
+	std::atomic_bool _clearEnvironment;
 
 	sf::Color backgroundDefaultColor;
 

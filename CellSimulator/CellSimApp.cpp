@@ -56,6 +56,9 @@ void CellSimApp::run()
 			if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Space)
 				CellSelectionTool::getInstance().setFollowSelectedCell(true);
 
+			if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::C)
+				Environment::getInstance().clear();
+
 			if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Return)
 				if (simulationActive)
 					pauseSimulation();

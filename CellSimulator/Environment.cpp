@@ -25,9 +25,18 @@ Environment& Environment::getInstance()
 
 void Environment::clear()
 {
+	_clearEnvironment = true;
+}
+
+void Environment::sterilizeEnvironment()
+{
+	for (auto& o : cells) o->markToDelete();
+	for (auto& o : deadCells) o->markToDelete();
+	for (auto& o : food) o->markToDelete();
 	cells.clear();
 	deadCells.clear();
 	food.clear();
+
 	for (auto& c : cellCollisionSectors)
 	{
 		for (auto& cc : c)
@@ -142,6 +151,12 @@ void Environment::update()
 	_foodCount = food.size();
 
 	updateBackground();
+
+	if (_clearEnvironment)
+	{
+		_clearEnvironment = false;
+		sterilizeEnvironment();
+	}
 
 	CellSelectionTool::getInstance().update();
 	CellMovementTool::getInstance().update();
@@ -320,6 +335,7 @@ void Environment::insertNewFood(std::shared_ptr<Food> f)
 
 Environment::Environment()
 {
+	_clearEnvironment = false;
 }
 
 bool Environment::isCellInEnvironmentBounds(Cell & c)
