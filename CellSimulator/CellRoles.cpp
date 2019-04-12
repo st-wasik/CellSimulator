@@ -314,14 +314,16 @@ void CellRoles::mutate(Cell * c)
 {
 	if (randomInt(0, 100) > 99) {
 		
+		constexpr double mutationRatio = 1000;
+
 		auto& genes = c->getGenes();
-		genes.aggresion = genes.aggresion + genes.aggresion.getRange() / 10000 * Environment::getInstance().getRadiation() * randomInt(-1, 1);
-		genes.divisionThreshold = genes.divisionThreshold + genes.divisionThreshold.getRange() / 10000 * Environment::getInstance().getRadiation() * randomInt(-1, 1);
-		genes.foodLimit = genes.foodLimit + genes.foodLimit.getRange() / 10000 * Environment::getInstance().getRadiation() * randomInt(-1, 1);
-		genes.maxAge = genes.maxAge + genes.maxAge.getRange() / 10000 * Environment::getInstance().getRadiation() * randomInt(-1, 1);
-		genes.maxSize = genes.maxSize + genes.maxSize.getRange() / 10000 * Environment::getInstance().getRadiation() * randomInt(-1, 1);
-		genes.maxSpeed = genes.maxSpeed + genes.maxSpeed.getRange() / 10000 * Environment::getInstance().getRadiation() * randomInt(-1, 1);
-		genes.radarRange = genes.radarRange + genes.radarRange.getRange() / 10000 * Environment::getInstance().getRadiation() * randomInt(-1, 1);
+		genes.aggresion = genes.aggresion + genes.aggresion.getRange() / mutationRatio * Environment::getInstance().getRadiation() * randomInt(-1, 1);
+		genes.divisionThreshold = genes.divisionThreshold + genes.divisionThreshold.getRange() / mutationRatio * Environment::getInstance().getRadiation() * randomInt(-1, 1);
+		genes.foodLimit = genes.foodLimit + genes.foodLimit.getRange() / mutationRatio * Environment::getInstance().getRadiation() * randomInt(-1, 1);
+		genes.maxAge = genes.maxAge + genes.maxAge.getRange() / mutationRatio * Environment::getInstance().getRadiation() * randomInt(-1, 1);
+		genes.maxSize = genes.maxSize + genes.maxSize.getRange() / mutationRatio * Environment::getInstance().getRadiation() * randomInt(-1, 1);
+		genes.maxSpeed = genes.maxSpeed + genes.maxSpeed.getRange() / mutationRatio * Environment::getInstance().getRadiation() * randomInt(-1, 1);
+		genes.radarRange = genes.radarRange + genes.radarRange.getRange() / mutationRatio * Environment::getInstance().getRadiation() * randomInt(-1, 1);
 
 		c->setFoodLevel(checkRange(c->getFoodLevel(), 0, genes.foodLimit.get()));
 		c->setAge(checkRange(c->age, 0, genes.maxAge.get()));
