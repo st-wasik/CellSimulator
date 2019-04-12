@@ -93,35 +93,36 @@ private:
 	Ranged<double, 0, 100> horniness;
 
 	// abbreviation used to save cell to file
-	struct VarAbbrv
+	struct VarAbbrv final
 	{
-		static constexpr const char *const currentRotation = "CRROT";
-		static constexpr const char *const currentPositionX = "CPOSX";
-		static constexpr const char *const currentPositionY = "CPOSY";
-		static constexpr const char *const colorR = "COLRR";
-		static constexpr const char *const colorG = "COLRG";
-		static constexpr const char *const colorB = "COLRB";
-		static constexpr const char *const colorA = "COLRA";
-		static constexpr const char *const currentAge = "CRAGE";
-		static constexpr const char *const currentSpeed = "CRSPD";
-		static constexpr const char *const currentSize = "CRSIZ";
-		static constexpr const char *const isDead = "CDEAD";
-		static constexpr const char *const currentFoodLevel = "FDLVL";
-		static constexpr const char *const isFreezed = "FRZED";
-		static constexpr const char *const horniness = "HRNES";
+		static constexpr const char *const currentRotation = "Rotation";
+		static constexpr const char *const currentPositionX = "PositionX";
+		static constexpr const char *const currentPositionY = "PositionY";
+		static constexpr const char *const colorR = "ColorR";
+		static constexpr const char *const colorG = "ColorG";
+		static constexpr const char *const colorB = "ColorB";
+		static constexpr const char *const colorA = "ColorA";
+		static constexpr const char *const currentAge = "Age";
+		static constexpr const char *const currentSpeed = "Speed";
+		static constexpr const char *const currentSize = "Size";
+		static constexpr const char *const isDead = "isDead";
+		static constexpr const char *const currentFoodLevel = "FoodLevel";
+		static constexpr const char *const isFreezed = "isFreezed";
+		static constexpr const char *const horniness = "Fertility";
 
-		static constexpr const char *const aggression = "AGGRN";
-		static constexpr const char *const divisionTh = "DIVTH";
-		static constexpr const char *const foodLimit = "FDLIM";
-		static constexpr const char *const maxAge = "MXAGE";
-		static constexpr const char *const maxSize = "MXSIZ";
-		static constexpr const char *const maxSpeed = "MXSPD";
-		static constexpr const char *const radarRange = "RADRG";
+		static constexpr const char *const aggression = "G_Aggression";
+		static constexpr const char *const divisionTh = "G_DivisionTh";
+		static constexpr const char *const foodLimit = "G_FoodLimit";
+		static constexpr const char *const maxAge = "G_MaxAge";
+		static constexpr const char *const maxSize = "G_MaxSize";
+		static constexpr const char *const maxSpeed = "G_MaxSpeed";
+		static constexpr const char *const radarRange = "G_RadarRg";
 
 	private:
 		VarAbbrv() = delete;
 		VarAbbrv(const VarAbbrv&) = delete;
 		VarAbbrv& operator=(const VarAbbrv&) = delete;
+		virtual ~VarAbbrv() = 0;
 	};
 
 };
