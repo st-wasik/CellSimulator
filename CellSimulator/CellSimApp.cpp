@@ -123,19 +123,8 @@ const float & CellSimApp::getDeltaTime()
 	return deltaTime;
 }
 
-void CellSimApp::startSimulation()
-{
-	simulationActive = true;
-}
-
-void CellSimApp::pauseSimulation()
-{
-	simulationActive = false;
-}
-
 CellSimApp::CellSimApp()
 {
-	simulationActive = true;
 }
 
 void CellSimApp::updateViewZoom()

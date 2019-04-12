@@ -23,10 +23,6 @@ public:
 
 	 const float& getDeltaTime();
 
-	 void startSimulation();
-
-	 void pauseSimulation();
-
 private:
 	CellSimApp();
 	CellSimApp(const CellSimApp&) = delete;
@@ -49,7 +45,5 @@ private:
 	static constexpr int _minZoom = 7;
 
 	float deltaTime;
-
-	std::atomic_bool simulationActive;
 };
 
