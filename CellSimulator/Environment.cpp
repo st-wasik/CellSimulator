@@ -175,18 +175,22 @@ void Environment::update()
 	newFood.clear();
 
 	// call role-functions for all cells
-	for (auto& cell : cells)
+	if (_simulationActive)
 	{
-		cell->update();
+		for (auto& cell : cells)
+		{
+			cell->update();
 
-		if (cell->isDead())
-			deadCells.push_back(cell);
+			if (cell->isDead())
+				deadCells.push_back(cell);
+		}
+
+		for (auto& cell : deadCells)
+		{
+			cell->update();
+		}
 	}
 
-	for (auto& cell : deadCells)
-	{
-		cell->update();
-	}
 
 	CellSelectionTool::getInstance().updateSelectionMarker();
 
@@ -336,6 +340,7 @@ void Environment::insertNewFood(std::shared_ptr<Food> f)
 Environment::Environment()
 {
 	_clearEnvironment = false;
+	_simulationActive = true;
 }
 
 bool Environment::isCellInEnvironmentBounds(Cell & c)
@@ -369,4 +374,21 @@ bool Environment::isCellInEnvironmentBounds(Cell & c)
 sf::Vector2i Environment::getCollisionSectorCoords(std::shared_ptr<BaseObj> o)
 {
 	return sf::Vector2i(o->getPosition().x / sectorSize, o->getPosition().y / sectorSize);
+}
+
+void Environment::pauseSimulation()
+{
+	_simulationActive = false;
+	AutoFeederTool::getInstance().setIsActive(false);
+}
+
+void Environment::startSimualtion()
+{
+	_simulationActive = true;
+	AutoFeederTool::getInstance().setIsActive(true);
+}
+
+std::atomic_bool & Environment::getSimulationState()
+{
+	return _simulationActive;
 }

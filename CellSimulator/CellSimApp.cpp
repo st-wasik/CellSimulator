@@ -60,10 +60,11 @@ void CellSimApp::run()
 				Environment::getInstance().clear();
 
 			if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Return)
-				if (simulationActive)
-					pauseSimulation();
+				if (Environment::getInstance().getSimulationState())
+					Environment::getInstance().pauseSimulation();
 				else
-					startSimulation();
+					Environment::getInstance().startSimualtion();
+
 		}
 
 
@@ -71,14 +72,8 @@ void CellSimApp::run()
 		updateViewCenter();
 		updateViewZoom();
 
-		if (simulationActive)
-		{
-			Environment::getInstance().update();
-		}
-		else
-		{
-			Environment::getInstance().updatePausedSim();
-		}
+		Environment::getInstance().update();
+
 
 		window->clear();
 

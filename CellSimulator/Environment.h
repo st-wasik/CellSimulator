@@ -54,6 +54,12 @@ public:
 
 	static sf::Vector2i getCollisionSectorCoords(std::shared_ptr<BaseObj> o);
 
+	void pauseSimulation();
+
+	void startSimualtion();
+
+	std::atomic_bool& getSimulationState();
+
 private:
 	Environment();
 	Environment(Environment const&) = delete;
@@ -80,6 +86,7 @@ private:
 	std::atomic<int> _aliveCellsCount;
 	std::atomic<int> _foodCount;
 	std::atomic_bool _clearEnvironment;
+	std::atomic_bool _simulationActive;
 
 	sf::Color backgroundDefaultColor;
 
