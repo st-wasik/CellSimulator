@@ -13,6 +13,8 @@ public:
 
 	void update();
 
+	std::string getSaveString();
+
 private:
 	Food(float size, sf::Vector2f position, sf::Color color);
 };

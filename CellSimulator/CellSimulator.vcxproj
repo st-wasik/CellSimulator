@@ -140,6 +140,7 @@
     <ClCompile Include="DoubleToString.cpp" />
     <ClCompile Include="Environment.cpp" />
     <ClCompile Include="EnvSettingsApp.cpp" />
+    <ClCompile Include="FilesManager.cpp" />
     <ClCompile Include="Food.cpp" />
     <ClCompile Include="FoodController.cpp" />
     <ClCompile Include="Genes.cpp" />
@@ -169,6 +170,7 @@
     <ClInclude Include="Environment.h" />
     <ClInclude Include="CellSimApp.h" />
     <ClInclude Include="EnvSettingsApp.h" />
+    <ClInclude Include="FilesManager.h" />
     <ClInclude Include="Food.h" />
     <ClInclude Include="FoodController.h" />
     <ClInclude Include="Genes.h" />

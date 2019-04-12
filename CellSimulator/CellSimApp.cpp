@@ -4,6 +4,7 @@
 #include "CellSelectionTool.h"
 #include "MainApp.h"
 #include "Logger.h"
+#include "FilesManager.h"
 #include <iostream>
 #include <atomic>
 
@@ -60,10 +61,28 @@ void CellSimApp::run()
 				Environment::getInstance().clear();
 
 			if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Return)
-				if (Environment::getInstance().getSimulationState())
+				if (Environment::getInstance().getIsSimulationActive())
 					Environment::getInstance().pauseSimulation();
 				else
 					Environment::getInstance().startSimualtion();
+
+			if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::S)
+			{
+				bool wasSimActive = Environment::getInstance().getIsSimulationActive();
+				Environment::getInstance().pauseSimulation();
+
+				try
+				{
+					FilesManager::getInstance().writeFile("quick_save", Environment::getInstance().getSaveString());
+				}
+				catch (std::exception e)
+				{
+					Logger::log(e.what());
+				}
+
+				if (wasSimActive)
+					Environment::getInstance().startSimualtion();
+			}
 
 		}
 

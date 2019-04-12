@@ -125,13 +125,13 @@ void Cell::modifyValueFromString(std::string valueName, std::string value)
 		c.g = std::stod(value);
 		this->setBaseColor(c);
 	}
-	else if (v == VarAbbrv::colorB)	
+	else if (v == VarAbbrv::colorB)
 	{
 		auto c = getBaseColor();
 		c.b = std::stod(value);
 		this->setBaseColor(c);
 	}
-	else if (v == VarAbbrv::colorA)	
+	else if (v == VarAbbrv::colorA)
 	{
 		auto c = getBaseColor();
 		c.a = std::stod(value);
@@ -151,8 +151,7 @@ void Cell::modifyValueFromString(std::string valueName, std::string value)
 	else if (v == VarAbbrv::maxSize)			this->genes.maxSize = (std::stod(value));
 	else if (v == VarAbbrv::maxSpeed)			this->genes.maxSpeed = (std::stod(value));
 	else if (v == VarAbbrv::radarRange)			this->genes.radarRange = (std::stod(value));
-
-	else throw std::exception(std::string("Unknown cell var name '" + v + "' with value '" + value + "'!").c_str());
+	//else throw std::exception(std::string("Unknown cell var name '" + v + "' with value '" + value + "'!").c_str());
 }
 
 Cell::~Cell()
@@ -266,7 +265,7 @@ void Cell::addRole(void(*role)(Cell *))
 	roles.push_back(role);
 }
 
-std::string Cell::getCellSaveString()
+std::string Cell::getSaveString()
 {
 	std::ostringstream result;
 
@@ -284,7 +283,8 @@ std::string Cell::getCellSaveString()
 		VarAbbrv::isDead << ":" << this->dead << " " <<
 		VarAbbrv::currentFoodLevel << ":" << this->foodLevel << " " <<
 		VarAbbrv::isFreezed << ":" << this->freezed << " " <<
-		VarAbbrv::horniness << ":" << this->horniness << " ";
+		VarAbbrv::horniness << ":" << this->horniness << " " <<
+		BaseObj::VarAbbrv::markedToDelete << ":" << this->isMarkedToDelete() << " ";
 
 	return result.str();
 }

@@ -12,6 +12,7 @@
 #include "AutoFeederTool.h"
 #include "Distance.h"
 #include "CellFactory.h"
+#include <sstream>
 
 Environment::~Environment()
 {
@@ -217,20 +218,6 @@ void Environment::update()
 	deadCells.erase(newDeadCellsEnd, deadCells.end());
 }
 
-void Environment::updatePausedSim()
-{
-	sf::Vector2f mouse = CellSimMouse::getPosition();
-
-	_aliveCellsCount = cells.size();
-	_foodCount = food.size();
-
-	updateBackground();
-
-	CellSelectionTool::getInstance().update();
-	CellMovementTool::getInstance().update();
-	AutoFeederTool::getInstance().update();
-}
-
 void Environment::draw(sf::RenderWindow & window)
 {
 	window.draw(environmentBackground);
@@ -306,7 +293,7 @@ std::vector<std::shared_ptr<Cell>>& Environment::getNewCellsVector()
 	return newCells;
 }
 
-std::list<std::shared_ptr<Food>>& Environment::getNewFoodsVector()
+const std::list<std::shared_ptr<Food>>& Environment::getNewFoodsVector()
 {
 	return newFood;
 }
@@ -335,6 +322,27 @@ void Environment::insertNewFood(std::shared_ptr<Food> f)
 
 	auto coords = getCollisionSectorCoords(f);
 	foodCollisionSectors[coords.x][coords.y].push_back(f);
+}
+
+std::string Environment::getSaveString()
+{
+	std::ostringstream result;
+
+	result << "ENVIRONMENT-> " <<
+		VarAbbrv::envSizeX << ":" << this->environmentBackground.getSize().x << " " <<
+		VarAbbrv::envSizeY << ":" << this->environmentBackground.getSize().y << " " <<
+		VarAbbrv::radiation << ":" << this->getRadiation() << " " <<
+		VarAbbrv::temperature << ":" << this->getTemperature() << " " <<
+		VarAbbrv::isSimualtionActive << ":" << this->getIsSimulationActive() << " " << std::endl << std::endl;
+
+	for (auto& o : newCells) result << o->getSaveString() << std::endl;
+	for (auto& o : cells) result << o->getSaveString() << std::endl;
+	for (auto& o : deadCells) result << o->getSaveString() << std::endl;
+	result << std::endl;
+	for (auto& o : newFood) result << o->getSaveString() << std::endl;
+	for (auto& o : food) result << o->getSaveString() << std::endl;
+
+	return result.str();
 }
 
 Environment::Environment()
@@ -388,7 +396,7 @@ void Environment::startSimualtion()
 	AutoFeederTool::getInstance().setIsActive(true);
 }
 
-std::atomic_bool & Environment::getSimulationState()
+std::atomic_bool & Environment::getIsSimulationActive()
 {
 	return _simulationActive;
 }

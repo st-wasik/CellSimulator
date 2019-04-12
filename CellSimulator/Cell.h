@@ -60,7 +60,7 @@ public:
 	double age;
 
 	// returns string with cell description that can be used to save cell from environment to file (contains current stats, position etc.)
-	std::string getCellSaveString();
+	std::string getSaveString();
 
 	// returns string with cell description that can be used to save cell created in workshop (without stats, position, etc.)
 	std::string getCellBlueprintString();

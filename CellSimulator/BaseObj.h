@@ -26,6 +26,8 @@ public:
 
 	virtual std::string toString();
 
+	virtual std::string getSaveString() = 0;
+
 	// Marks obj to delete. Object will be deleted from vector in next loop turn.
 	void markToDelete();
 	bool isMarkedToDelete();
@@ -37,6 +39,25 @@ public:
 
 protected:
 	sf::CircleShape shape;
+
+	struct VarAbbrv final
+	{
+		static constexpr const char *const currentRotation = "Rotation";
+		static constexpr const char *const currentPositionX = "PositionX";
+		static constexpr const char *const currentPositionY = "PositionY";
+		static constexpr const char *const colorR = "ColorR";
+		static constexpr const char *const colorG = "ColorG";
+		static constexpr const char *const colorB = "ColorB";
+		static constexpr const char *const colorA = "ColorA";
+		static constexpr const char *const currentSize = "Size";
+		static constexpr const char *const markedToDelete = "toDelete";
+	private:
+		VarAbbrv() = delete;
+		VarAbbrv(const VarAbbrv&) = delete;
+		VarAbbrv& operator=(const VarAbbrv&) = delete;
+		virtual ~VarAbbrv() = 0;
+	};
+
 private:
 	bool toDelete;
 	std::shared_ptr<BaseObj> self;

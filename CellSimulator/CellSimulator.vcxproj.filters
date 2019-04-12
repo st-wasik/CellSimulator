@@ -118,6 +118,7 @@
     <ClCompile Include="RangeChecker.cpp">
       <Filter>Utils\Source</Filter>
     </ClCompile>
+    <ClCompile Include="FilesManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CellListApp.h">
@@ -196,5 +197,6 @@
     <ClInclude Include="RangeChecker.h">
       <Filter>Utils\Header</Filter>
     </ClInclude>
+    <ClInclude Include="FilesManager.h" />
   </ItemGroup>
 </Project>

@@ -12,18 +12,17 @@ class Environment final
 {
 public:
 	~Environment();
-
 	static Environment& getInstance();
-
-	void clear();
-
-	void update();
-
-	void updatePausedSim();
+	static sf::Vector2i getCollisionSectorCoords(std::shared_ptr<BaseObj> o);
 
 	void configure();
-
+	void clear();
+	void update();
 	void draw(sf::RenderWindow & window);
+
+	void pauseSimulation();
+	void startSimualtion();
+	std::atomic_bool& getIsSimulationActive();
 
 	std::atomic<double>& getTemperature();
 	void setTemperature(const double&);
@@ -32,17 +31,16 @@ public:
 	void setRadiation(const double&);
 
 	sf::Vector2f getSize();
-
 	int getAliveCellsCount();
 	int getFoodCount();
-
 
 	std::shared_ptr<Cell> getCellAtPosition(const sf::Vector2f&);
 
 	const std::list<std::shared_ptr<Food>>& getFoodsVector();
 	std::vector<std::shared_ptr<Cell>>& getCellsVector();
 	std::vector<std::shared_ptr<Cell>>& getNewCellsVector();
-	std::list<std::shared_ptr<Food>>& getNewFoodsVector();
+	const std::list<std::shared_ptr<Food>>& getNewFoodsVector();
+
 	baseObjMatrix& getCellCollisionSectors();
 	baseObjMatrix& getFoodCollisionSectors();
 
@@ -52,34 +50,32 @@ public:
 	// inserts new food to environment
 	void insertNewFood(std::shared_ptr<Food>);
 
-	static sf::Vector2i getCollisionSectorCoords(std::shared_ptr<BaseObj> o);
-
-	void pauseSimulation();
-
-	void startSimualtion();
-
-	std::atomic_bool& getSimulationState();
-
+	// returns string that can be used to save whole environment to file 
+	std::string getSaveString();
 private:
+	// used to determine collision sector size
+	// value = cell max radius*2 (diameter) + margin
+	static constexpr int sectorSize = 50 * 2 + 30; 
+
 	Environment();
 	Environment(Environment const&) = delete;
 	Environment& operator=(Environment const&) = delete;
 
 	void updateBackground();
-
 	void sterilizeEnvironment();
 
+	bool isCellInEnvironmentBounds(Cell& c);
 
 	std::vector<std::shared_ptr<Cell>> cells;
 	std::vector<std::shared_ptr<Cell>> deadCells;
 	std::vector<std::shared_ptr<Cell>> newCells;
 	std::list<std::shared_ptr<Food>> food;
 	std::list<std::shared_ptr<Food>> newFood;
-
 	baseObjMatrix cellCollisionSectors;
 	baseObjMatrix foodCollisionSectors;
 
 	sf::RectangleShape environmentBackground;
+	sf::Color backgroundDefaultColor;
 
 	std::atomic<double> _temperature;
 	std::atomic<double> _radiation;
@@ -88,10 +84,18 @@ private:
 	std::atomic_bool _clearEnvironment;
 	std::atomic_bool _simulationActive;
 
-	sf::Color backgroundDefaultColor;
+	struct VarAbbrv final
+	{
+		static constexpr const char *const temperature = "Temperature";
+		static constexpr const char *const radiation = "Radiation";
+		static constexpr const char *const isSimualtionActive = "isSimulationActive";
+		static constexpr const char *const envSizeX = "EnvSizeX";
+		static constexpr const char *const envSizeY = "EnvSizeY";
 
-	bool isCellInEnvironmentBounds(Cell& c);
-
-
-	static constexpr int sectorSize = 50 * 2 + 30; //cell max radius + margin
+	private:
+		VarAbbrv() = delete;
+		VarAbbrv(const VarAbbrv&) = delete;
+		VarAbbrv& operator=(const VarAbbrv&) = delete;
+		virtual ~VarAbbrv() = 0;
+	};
 };
