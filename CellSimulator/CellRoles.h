@@ -14,11 +14,22 @@
 //
 // 3.	If you want kill cell use this->kill() [will be moved to dead cells vector],
 //		if you want delete cell from cells vector use this->markAsDeleted() [will be removed from any vector].
+//
+//
+// 4.	REGISTER ALL NEW ADDED ROLES IN CellRoles C-TOR
+//		This is needed to properly save cell to file.
 
 class CellRoles
 {
 public:
-	CellRoles() = delete;
+	using RolePtr = void(*)(Cell*);
+
+	RolePtr getRoleById(int id);
+
+	int getRoleId(RolePtr ptr);
+
+	static CellRoles& getManager();
+
 
 	static void moveForward(Cell* c);
 
@@ -51,5 +62,10 @@ public:
 	/// \returns true if collision occured - otherwise false
 	static bool checkEnvironmentBounds(Cell* c);
 private:
+	CellRoles();
+	inline void registerRole(RolePtr ptr, int id, std::string roleName = "");
+
+	std::map<int, RolePtr> idToRole;
+	std::map<RolePtr, int> roleToId;
 };
 

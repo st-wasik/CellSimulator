@@ -55,6 +55,7 @@ public:
 	Ranged<double, 0, 100>& getHorniness();
 
 	void dropRole(void(*role)(Cell*));
+	void dropRoles();
 	void addRole(void(*role)(Cell*));
 
 	double age;
@@ -96,12 +97,8 @@ private:
 	struct VarAbbrv final
 	{
 		static constexpr const char *const currentRotation = "Rotation";
-		static constexpr const char *const currentPositionX = "PositionX";
-		static constexpr const char *const currentPositionY = "PositionY";
-		static constexpr const char *const colorR = "ColorR";
-		static constexpr const char *const colorG = "ColorG";
-		static constexpr const char *const colorB = "ColorB";
-		static constexpr const char *const colorA = "ColorA";
+		static constexpr const char *const currentPosition = "Position";
+		static constexpr const char *const color = "Color";
 		static constexpr const char *const currentAge = "Age";
 		static constexpr const char *const currentSpeed = "Speed";
 		static constexpr const char *const currentSize = "Size";
@@ -109,6 +106,7 @@ private:
 		static constexpr const char *const currentFoodLevel = "FoodLevel";
 		static constexpr const char *const isFreezed = "isFreezed";
 		static constexpr const char *const horniness = "Fertility";
+		static constexpr const char *const cellRoles = "Roles";
 
 		static constexpr const char *const aggression = "G_Aggression";
 		static constexpr const char *const divisionTh = "G_DivisionTh";

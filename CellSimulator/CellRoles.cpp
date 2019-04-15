@@ -8,6 +8,46 @@
 #include "RangeChecker.h"
 constexpr double PI = 3.14159265358979323846;
 
+#define VAR_NAME(v) #v
+
+CellRoles::RolePtr CellRoles::getRoleById(int id)
+{
+	return idToRole[id];
+}
+
+int CellRoles::getRoleId(RolePtr ptr)
+{
+	return roleToId[ptr];
+}
+
+// REGISTER ALL NEW ADDED ROLES - needed to save cell to file
+CellRoles::CellRoles()
+{
+	// to disable 'registering cellrole' logs simply change #v to "" in #define VAR_NAME(v)
+
+	registerRole(moveForward, 0, VAR_NAME(moveForward));
+	registerRole(changeDirection, 1, VAR_NAME(changeDirection));
+	registerRole(eat, 2, VAR_NAME(eat));
+	registerRole(updateColor, 3, VAR_NAME(updateColor));
+	registerRole(beDead, 4, VAR_NAME(beDead));
+	registerRole(simulateHunger, 5, VAR_NAME(simulateHunger));
+	registerRole(divideAndConquer, 6, VAR_NAME(divideAndConquer));
+	registerRole(grow, 7, VAR_NAME(grow));
+	registerRole(getingHot, 8, VAR_NAME(getingHot));
+	registerRole(makeFood, 9, VAR_NAME(makeFood));
+	registerRole(fight, 10, VAR_NAME(fight));
+	registerRole(makeOlder, 11, VAR_NAME(makeOlder));
+	registerRole(mutate, 12, VAR_NAME(mutate));
+	registerRole(changeSpeed, 13, VAR_NAME(changeSpeed));
+}
+
+CellRoles & CellRoles::getManager()
+{
+	static CellRoles instance;
+	return instance;
+}
+
+
 void CellRoles::moveForward(Cell * c)
 {
 	auto cellPtr = c->getSelfPtr();
@@ -42,8 +82,8 @@ void CellRoles::moveForward(Cell * c)
 void CellRoles::changeDirection(Cell * c)
 {
 	auto & foods = Environment::getInstance().getFoodsVector();
-	std::shared_ptr<Food> closestFood=nullptr;
-	double distance=1000;
+	std::shared_ptr<Food> closestFood = nullptr;
+	double distance = 1000;
 	if (c->foodLevel < c->genes.foodLimit.get())
 	{
 		for (auto & food : foods)
@@ -55,7 +95,7 @@ void CellRoles::changeDirection(Cell * c)
 			}
 		}
 	}
-	if (closestFood != nullptr && distance <= c->genes.radarRange.get()*50+c->getSize())
+	if (closestFood != nullptr && distance <= c->genes.radarRange.get() * 50 + c->getSize())
 	{
 		auto v = closestFood->getPosition() - c->getPosition();
 		auto angle = atan2(v.y, v.x);
@@ -116,7 +156,7 @@ void CellRoles::eat(Cell * c)
 	auto& foods = Environment::getInstance().getFoodsVector();
 	auto collisions = c->getFoodCollisionVector();
 
-	
+
 	auto& sectors = Environment::getInstance().getFoodCollisionSectors();
 
 	for (auto& f : *collisions)
@@ -126,7 +166,7 @@ void CellRoles::eat(Cell * c)
 			c->foodLevel += static_cast<float>(f->getSize());
 			if (!c->horniness.isMax())
 			{
-				c->horniness = c->horniness.get() +  randomReal(0, 10);
+				c->horniness = c->horniness.get() + randomReal(0, 10);
 			}
 			if (c->getSize() < c->genes.maxSize.get())
 			{
@@ -174,7 +214,7 @@ void CellRoles::beDead(Cell * c)
 	auto color = c->shape.getFillColor();
 	if (color.a > 0)
 	{
-		double a = static_cast<double>(color.a) - ((Environment::getInstance().getTemperature()+100 + 1)*0.01*CellSimApp::getInstance().getDeltaTime());
+		double a = static_cast<double>(color.a) - ((Environment::getInstance().getTemperature() + 100 + 1)*0.01*CellSimApp::getInstance().getDeltaTime());
 		if (0 > a) a = 0;
 		color.a = a;
 		c->shape.setFillColor(color);
@@ -184,7 +224,6 @@ void CellRoles::beDead(Cell * c)
 		c->markToDelete();
 	}
 }
-
 
 void CellRoles::simulateHunger(Cell * c) {
 	c->foodLevel -= randomReal(0.005, 0.02) * CellSimApp::getInstance().getDeltaTime();
@@ -230,7 +269,7 @@ void CellRoles::getingHot(Cell * c)
 		auto & cells = Environment::getInstance().getCellsVector();
 		for (auto & cell : cells)
 		{
-			if (!cell->isDead() && cell->getHorniness().isMax() && c->genes.type.get()==cell->genes.type.get() && c->collision(cell))
+			if (!cell->isDead() && cell->getHorniness().isMax() && c->genes.type.get() == cell->genes.type.get() && c->collision(cell))
 			{
 				c->setHorniness(0);
 				cell->setHorniness(0);
@@ -257,7 +296,7 @@ void CellRoles::makeFood(Cell * c)
 
 			auto position = c->getPosition() + sf::Vector2f{ xDeviation, yDeviation };
 
-			auto food = Food::create(foodSize, position, sf::Color(8,128,8));
+			auto food = Food::create(foodSize, position, sf::Color(8, 128, 8));
 			Environment::getInstance().insertNewFood(food);
 
 			c->horniness = 0;
@@ -277,7 +316,7 @@ void CellRoles::fight(Cell * c)
 			float cSize = c->getSize();
 			float cellSize = cell->getSize();
 			int sizeDelta = 2;
-			
+
 			if (cSize > cellSize) {
 				c->setSize(cSize - sizeDelta);
 				cell->setSize(cellSize + sizeDelta);
@@ -291,7 +330,7 @@ void CellRoles::fight(Cell * c)
 
 			double cCurrentSpeed = c->getCurrentSpeed();
 			double cellCurrentSpeed = cell->getCurrentSpeed();
-			
+
 			c->setRotation(c->getRotation() + 180);
 			c->shape.move(cCurrentSpeed * std::sin((PI / 180)*c->getRotation()) * CellSimApp::getInstance().getDeltaTime(), cCurrentSpeed * -std::cos((PI / 180)*c->getRotation()) * CellSimApp::getInstance().getDeltaTime());
 			cell->setRotation(c->getRotation() + 180);
@@ -313,7 +352,7 @@ void CellRoles::makeOlder(Cell * c)
 void CellRoles::mutate(Cell * c)
 {
 	if (randomInt(0, 100) > 99) {
-		
+
 		constexpr double mutationRatio = 1000;
 
 		auto& genes = c->getGenes();
@@ -362,4 +401,13 @@ bool CellRoles::checkEnvironmentBounds(Cell * c)
 	}
 
 	return false;
+}
+
+void CellRoles::registerRole(RolePtr ptr, int id, std::string roleName)
+{
+	roleToId[ptr] = id;
+	idToRole[id] = ptr;
+
+	if (!roleName.empty())
+		Logger::log(std::string("Registering Cell Role " + roleName + " with ID ") + std::to_string(id));
 }

@@ -51,6 +51,8 @@ protected:
 		static constexpr const char *const colorA = "ColorA";
 		static constexpr const char *const currentSize = "Size";
 		static constexpr const char *const markedToDelete = "toDelete";
+		static constexpr const char *const texture = "Texture";
+		static constexpr const char *const textureRect = "TextureRect";
 	private:
 		VarAbbrv() = delete;
 		VarAbbrv(const VarAbbrv&) = delete;

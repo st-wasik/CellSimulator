@@ -13,6 +13,8 @@ void TextureProvider::loadTexture(const std::string &name)
 	texture->loadFromFile("./textures/" + name + ".png");
 	texture->setRepeated(true);
 	textures[name] = texture;
+
+	reverseTextureMap[texture.get()] = name;
 }
 
 TextureProvider::~TextureProvider()
@@ -28,4 +30,9 @@ TextureProvider & TextureProvider::getInstance()
 std::shared_ptr<sf::Texture> TextureProvider::getTexture(const std::string & name)
 {
 	return textures[name];
+}
+
+std::string TextureProvider::getTextureName(const sf::Texture* ptr)
+{
+	return reverseTextureMap[ptr];
 }

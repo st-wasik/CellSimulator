@@ -67,13 +67,15 @@ Cell::Cell(Cell a, Cell b) : Cell(20, (a.getPosition() + b.getPosition()) / 2.0f
 
 Cell::Cell(std::string formattedCellString) : Cell(0, { 0,0 }, sf::Color::Transparent)
 {
-	std::regex cellRegex("CELL->( [A-Z]{5}:[0-9]+\\.?[0-9]*)*");
+	std::string doubleRegex("[0-9]+\\.?[0-9]*");
+	std::string vectorRegex("\\{" + doubleRegex + "(, " + doubleRegex + ")*\\}");
+	std::regex cellRegex("CELL->( [A-Z]+:(" + doubleRegex + "|" + vectorRegex + "))*");
 	if (!std::regex_match(formattedCellString.begin(), formattedCellString.end(), cellRegex))
 	{
 		throw std::exception("Cell string wrong format!");
 	}
 
-	std::regex settingRegex(" [A-Z]{5}:[0-9]+\\.?[0-9]*");
+	std::regex settingRegex(" [A-Z]+:[0-9]+\\.?[0-9]*");
 
 	auto settingsBegin = std::sregex_iterator(formattedCellString.begin(), formattedCellString.end(), settingRegex);
 	auto settingsEnd = std::sregex_iterator();
@@ -81,14 +83,17 @@ Cell::Cell(std::string formattedCellString) : Cell(0, { 0,0 }, sf::Color::Transp
 	for (auto i = settingsBegin; i != settingsEnd; ++i)
 	{
 		std::string settingStr = i->str();
-		std::regex type("[A-Z]{5}");
-		std::regex value("[0-9]+\\.?[0-9]*");
+		std::regex type("[A-Z]+");
+		std::regex value(doubleRegex);
+		std::regex vectorValue(vectorRegex);
 
 		auto type_i = std::sregex_iterator(settingStr.begin(), settingStr.end(), type);
 		auto value_i = std::sregex_iterator(settingStr.begin(), settingStr.end(), value);
+		auto vector_value_i = std::sregex_iterator(settingStr.begin(), settingStr.end(), vectorValue);
 
 		std::string type_s;
 		std::string value_s;
+		std::string vector_value_s;
 
 		if (type_i != std::sregex_iterator())
 		{
@@ -100,7 +105,14 @@ Cell::Cell(std::string formattedCellString) : Cell(0, { 0,0 }, sf::Color::Transp
 			value_s = value_i->str();
 		}
 
+		if (vector_value_i != std::sregex_iterator())
+		{
+			vector_value_s = value_i->str();
+		}
+
 		if (!type_s.empty() && !value_s.empty())
+			modifyValueFromString(type_s, value_s);
+		else if (!type_s.empty() && !vector_value_s.empty())
 			modifyValueFromString(type_s, value_s);
 	}
 }
@@ -111,30 +123,11 @@ void Cell::modifyValueFromString(std::string valueName, std::string value)
 	auto& v = valueName;
 
 	if (v == VarAbbrv::currentRotation)			this->setRotation(std::stod(value));
-	else if (v == VarAbbrv::currentPositionX)	this->setPosition(sf::Vector2f(std::stod(value), getPosition().y));
-	else if (v == VarAbbrv::currentPositionY)	this->setPosition(sf::Vector2f(getPosition().x, std::stod(value)));
-	else if (v == VarAbbrv::colorR)
+	else if (v == VarAbbrv::currentPosition)	this->setPosition(sf::Vector2f(std::stod(value), getPosition().y));
+	else if (v == VarAbbrv::color)
 	{
 		auto c = getBaseColor();
 		c.r = std::stod(value);
-		this->setBaseColor(c);
-	}
-	else if (v == VarAbbrv::colorG)
-	{
-		auto c = getBaseColor();
-		c.g = std::stod(value);
-		this->setBaseColor(c);
-	}
-	else if (v == VarAbbrv::colorB)
-	{
-		auto c = getBaseColor();
-		c.b = std::stod(value);
-		this->setBaseColor(c);
-	}
-	else if (v == VarAbbrv::colorA)
-	{
-		auto c = getBaseColor();
-		c.a = std::stod(value);
 		this->setBaseColor(c);
 	}
 	else if (v == VarAbbrv::currentAge)			this->setAge(std::stod(value));
@@ -260,6 +253,11 @@ void Cell::dropRole(void(*role)(Cell *))
 	roles.erase(newRolesEnd, roles.end());
 }
 
+void Cell::dropRoles()
+{
+	roles.clear();
+}
+
 void Cell::addRole(void(*role)(Cell *))
 {
 	roles.push_back(role);
@@ -271,12 +269,12 @@ std::string Cell::getSaveString()
 
 	result << getCellBlueprintString() <<
 		VarAbbrv::currentRotation << ":" << this->getRotation() << " " <<
-		VarAbbrv::currentPositionX << ":" << this->getPosition().x << " " <<
-		VarAbbrv::currentPositionY << ":" << this->getPosition().y << " " <<
-		VarAbbrv::colorR << ":" << static_cast<int>(this->getBaseColor().r) << " " <<
-		VarAbbrv::colorG << ":" << static_cast<int>(this->getBaseColor().g) << " " <<
-		VarAbbrv::colorB << ":" << static_cast<int>(this->getBaseColor().b) << " " <<
-		VarAbbrv::colorA << ":" << static_cast<int>(this->getBaseColor().a) << " " <<
+		VarAbbrv::currentPosition << ":{" << this->getPosition().x << ", " << this->getPosition().y << "} " <<
+		VarAbbrv::color << ":{" <<
+		static_cast<int>(this->getBaseColor().r) << ", " <<
+		static_cast<int>(this->getBaseColor().g) << ", " <<
+		static_cast<int>(this->getBaseColor().b) << ", " <<
+		static_cast<int>(this->getBaseColor().a) << "} " <<
 		VarAbbrv::currentAge << ":" << this->age << " " <<
 		VarAbbrv::currentSpeed << ":" << this->currentSpeed << " " <<
 		VarAbbrv::currentSize << ":" << this->getSize() << " " <<
@@ -284,7 +282,19 @@ std::string Cell::getSaveString()
 		VarAbbrv::currentFoodLevel << ":" << this->foodLevel << " " <<
 		VarAbbrv::isFreezed << ":" << this->freezed << " " <<
 		VarAbbrv::horniness << ":" << this->horniness << " " <<
-		BaseObj::VarAbbrv::markedToDelete << ":" << this->isMarkedToDelete() << " ";
+		BaseObj::VarAbbrv::markedToDelete << ":" << this->isMarkedToDelete() << " " <<
+		BaseObj::VarAbbrv::texture << ":" << TextureProvider::getInstance().getTextureName(this->shape.getTexture()) << " " <<
+		VarAbbrv::cellRoles << ":{";
+
+	if (roles.size() == 0)
+		result << "0.0} ";
+	else if (roles.size() > 0)
+		result << CellRoles::getManager().getRoleId(roles.at(0));
+
+	for (int i = 1; i < roles.size(); ++i)
+		result << ", " << CellRoles::getManager().getRoleId(roles.at(i));
+	result << "} ";
+
 
 	return result.str();
 }

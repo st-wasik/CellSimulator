@@ -10,6 +10,8 @@ public:
 
 	std::shared_ptr<sf::Texture> getTexture(const std::string& name);
 
+	std::string getTextureName(const sf::Texture*  ptr);
+
 private:
 	TextureProvider();
 	TextureProvider(const TextureProvider&) = delete;
@@ -18,5 +20,6 @@ private:
 	void loadTexture(const std::string&);
 
 	std::map<std::string, std::shared_ptr<sf::Texture>> textures;
+	std::map<const sf::Texture*, std::string> reverseTextureMap;
 };
 
