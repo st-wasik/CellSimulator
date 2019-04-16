@@ -36,9 +36,13 @@ private:
 
 	std::atomic_bool selectedCellCopyValid;
 
+	sf::Text selectedCellName;
 	sf::CircleShape selectionMarker;
 	sf::CircleShape cellRadarRange;
 
 	std::atomic_bool followSelectedCell;
+
+	static constexpr int fontSize = 20;
+	static constexpr int nameMargin = 30;
 };
 

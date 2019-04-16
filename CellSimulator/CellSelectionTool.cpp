@@ -2,6 +2,7 @@
 #include "CellSimMouse.h"
 #include "Environment.h"
 #include "Distance.h"
+#include "CellSimApp.h"
 
 CellSelectionTool & CellSelectionTool::getInstance()
 {
@@ -51,13 +52,19 @@ void CellSelectionTool::updateSelectionMarker()
 	if (selectedCell != nullptr)
 	{
 		float size = selectedCell->getSize() + 30;
+		auto pos = selectedCell->getPosition();
 		selectionMarker.setRadius(size);
 		selectionMarker.setOrigin(size, size);
-		selectionMarker.setPosition(selectedCell->getPosition());
-		auto radius = selectedCell->getGenes().radarRange.get() * 50;
-		cellRadarRange.setOrigin(sf::Vector2f(radius, radius));
-		cellRadarRange.setRadius(radius);
-		cellRadarRange.setPosition(selectedCell->getPosition());
+		selectionMarker.setPosition(pos);
+
+		auto radarRadius = selectedCell->getGenes().radarRange.get() * 50;
+		cellRadarRange.setOrigin(sf::Vector2f(radarRadius, radarRadius));
+		cellRadarRange.setRadius(radarRadius);
+		cellRadarRange.setPosition(pos);
+
+		selectedCellName.setString(selectedCell->getName());
+		selectedCellName.setOrigin({ selectedCellName.getGlobalBounds().width / 2, selectedCellName.getGlobalBounds().height / 2 });
+		selectedCellName.setPosition({ pos.x, pos.y - nameMargin - selectedCell->getSize() });
 	}
 }
 
@@ -67,12 +74,14 @@ void CellSelectionTool::draw(sf::RenderWindow &w)
 	{
 		w.draw(selectionMarker);
 		w.draw(cellRadarRange);
+		w.draw(selectedCellName);
 	}
 }
 
 void CellSelectionTool::clearSelectedCell()
 {
 	setFollowSelectedCell(false);
+	selectedCellName.setString("");
 	selectedCell = nullptr;
 }
 
@@ -123,4 +132,8 @@ void CellSelectionTool::setFollowSelectedCell(bool f)
 CellSelectionTool::CellSelectionTool() : selectedCellCopyValid(false)
 {
 	selectedCellCopy = Cell::create(0.0, sf::Vector2f{ 0.0f, 0.0f }, sf::Color::Transparent);
+
+	selectedCellName.setFont(CellSimApp::getInstance().getFont());
+	selectedCellName.setCharacterSize(fontSize);
+	selectedCellName.setFillColor(sf::Color::White);
 }

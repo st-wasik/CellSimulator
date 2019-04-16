@@ -66,6 +66,9 @@ public:
 	// returns string with cell description that can be used to save cell created in workshop (without stats, position, etc.)
 	std::string getCellBlueprintString();
 
+	std::string getName();
+	void setName(std::string n);
+
 private:
 	Cell(float size, sf::Vector2f position, sf::Color color);
 	Cell(Cell a, Cell b);
@@ -92,6 +95,8 @@ private:
 	Genes genes;
 
 	Ranged<double, 0, 100> horniness;
+
+	std::string name;
 
 	// abbreviation used to save cell to file
 	struct VarAbbrv final

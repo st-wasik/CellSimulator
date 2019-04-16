@@ -315,6 +315,16 @@ std::string Cell::getCellBlueprintString()
 	return result.str();
 }
 
+std::string Cell::getName()
+{
+	return name;
+}
+
+void Cell::setName(std::string n)
+{
+	name = n;
+}
+
 std::shared_ptr<std::vector<std::shared_ptr<BaseObj>>> Cell::getFoodCollisionVector()
 {
 	auto& foodSectors = Environment::getInstance().getFoodCollisionSectors();
