@@ -22,7 +22,7 @@ Cell::Cell(float size, sf::Vector2f position, sf::Color color) : BaseObj(size, p
 	shape.setOutlineColor(sf::Color::Yellow);
 
 
-	int textureSize = getSize() / 2;
+	int textureSize = getSize() / 1.3;
 	shape.setTextureRect({ 0,0,textureSize, textureSize });
 	shape.setTexture(TextureProvider::getInstance().getTexture("whiteNoise").get());
 
@@ -165,7 +165,6 @@ void Cell::freeze()
 {
 	freezed = true;
 
-	// change A to 255 when unfreezing is not nessesery because cell role updates shape's color 
 	auto color = getBaseColor();
 	color.a = 128;
 	shape.setFillColor(color);
@@ -173,6 +172,10 @@ void Cell::freeze()
 
 void Cell::unfreeze()
 {
+	auto color = getBaseColor();
+	color.a = 255;
+	shape.setFillColor(color);
+
 	freezed = false;
 }
 

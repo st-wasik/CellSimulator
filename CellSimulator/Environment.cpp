@@ -2,6 +2,7 @@
 #include "Logger.h"
 #include "CellSimMouse.h"
 #include "CellSelectionTool.h"
+#include "CellInsertionTool.h"
 #include <math.h>
 #include <random>
 #include <algorithm>
@@ -66,7 +67,7 @@ void Environment::configure()
 	TextureProvider::getInstance().getTexture("background")->setSmooth(true);
 	eb.setTexture(TextureProvider::getInstance().getTexture("background").get());
 
-	TextureProvider::getInstance().getTexture("whiteNoise")->setSmooth(true);
+	//TextureProvider::getInstance().getTexture("whiteNoise")->setSmooth(true);
 
 
 	int sectorsX = getSize().x / sectorSize + 1;
@@ -164,6 +165,7 @@ void Environment::update()
 	CellMovementTool::getInstance().update();
 	CellSelectionTool::getInstance().update();
 	AutoFeederTool::getInstance().update();
+	CellInsertionTool::getInstance().update();
 
 	for (auto& newCell : newCells)
 	{
@@ -193,7 +195,6 @@ void Environment::update()
 			cell->update();
 		}
 	}
-
 
 	CellSelectionTool::getInstance().updateSelectionMarker();
 
@@ -234,6 +235,7 @@ void Environment::draw(sf::RenderWindow & window)
 	}
 	CellSelectionTool::getInstance().draw(window);
 	CellMovementTool::getInstance().draw(window);
+	CellInsertionTool::getInstance().draw(window);
 }
 
 std::atomic<double>& Environment::getTemperature()

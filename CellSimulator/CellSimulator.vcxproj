@@ -131,6 +131,7 @@
     <ClCompile Include="BaseObj.cpp" />
     <ClCompile Include="Cell.cpp" />
     <ClCompile Include="CellFactory.cpp" />
+    <ClCompile Include="CellInsertionTool.cpp" />
     <ClCompile Include="CellMovementTool.cpp" />
     <ClCompile Include="CellRoles.cpp" />
     <ClCompile Include="CellSelectionTool.cpp" />
@@ -158,6 +159,7 @@
     <ClInclude Include="BaseObj.h" />
     <ClInclude Include="Cell.h" />
     <ClInclude Include="CellFactory.h" />
+    <ClInclude Include="CellInsertionTool.h" />
     <ClInclude Include="CellMovementTool.h" />
     <ClInclude Include="CellRoles.h" />
     <ClInclude Include="CellSelectionTool.h" />

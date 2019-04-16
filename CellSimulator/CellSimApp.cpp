@@ -8,6 +8,8 @@
 #include "GUIManager.h"
 #include "TextureProvider.h"
 #include "MessagesManager.h"
+#include "CellInsertionTool.h"
+#include "CellFactory.h"
 #include <iostream>
 #include <atomic>
 
@@ -95,8 +97,21 @@ void CellSimApp::run()
 				}
 				MessagesManager::getInstance().append("Simulation saved as quick_save.cell.");
 				if (wasSimActive)
-					Environment::getInstance().startSimualtion();		
+					Environment::getInstance().startSimualtion();
 			}
+
+			if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Tilde)
+				CellInsertionTool::getInstance().setIsActive(!CellInsertionTool::getInstance().getIsActive());
+
+			if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Num1)
+				CellInsertionTool::getInstance().setCellBlueprint(CellFactory::getCell(Cell::Type::Aggressive));
+			if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Num2)
+				CellInsertionTool::getInstance().setCellBlueprint(CellFactory::getCell(Cell::Type::Passive));
+			if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Num3)
+				CellInsertionTool::getInstance().setCellBlueprint(CellFactory::getCell(Cell::Type::Random));
+			if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Num4)
+				CellInsertionTool::getInstance().setCellBlueprint(CellFactory::getCell(Cell::Type::GreenLettuce));
+
 
 			GUIManager::getInstance().handleEvent(event);
 		}

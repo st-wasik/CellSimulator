@@ -52,6 +52,8 @@ public:
 
 	// returns string that can be used to save whole environment to file 
 	std::string getSaveString();
+
+	bool isCellInEnvironmentBounds(Cell& c);
 private:
 	// used to determine collision sector size
 	// value = cell max radius*2 (diameter) + margin
@@ -63,8 +65,6 @@ private:
 
 	void updateBackground();
 	void sterilizeEnvironment();
-
-	bool isCellInEnvironmentBounds(Cell& c);
 
 	std::vector<std::shared_ptr<Cell>> cells;
 	std::vector<std::shared_ptr<Cell>> deadCells;
