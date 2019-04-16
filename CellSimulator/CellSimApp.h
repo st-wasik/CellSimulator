@@ -23,6 +23,8 @@ public:
 
 	 const float& getDeltaTime();
 
+	 const sf::Font& getFont();
+
 private:
 	CellSimApp();
 	CellSimApp(const CellSimApp&) = delete;
@@ -32,6 +34,8 @@ private:
 
 	sf::View view;
 	sf::VideoMode windowVideoMode;
+
+	sf::Font font;
 
 	std::string windowTitle;
 

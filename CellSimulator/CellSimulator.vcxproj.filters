@@ -110,6 +110,7 @@
       <Filter>Utils\Source</Filter>
     </ClCompile>
     <ClCompile Include="FilesManager.cpp" />
+    <ClCompile Include="MessagesManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CellSimApp.h">
@@ -180,5 +181,6 @@
       <Filter>Utils\Header</Filter>
     </ClInclude>
     <ClInclude Include="FilesManager.h" />
+    <ClInclude Include="MessagesManager.h" />
   </ItemGroup>
 </Project>

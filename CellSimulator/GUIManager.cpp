@@ -3,6 +3,7 @@
 #include "AutoFeederTool.h"
 #include "CellSelectionTool.h"
 #include "DoubleToString.h"
+#include "MessagesManager.h"
 
 GUIManager::GUIManager()
 {
@@ -20,6 +21,8 @@ GUIManager & GUIManager::getInstance()
 
 void GUIManager::configure(std::shared_ptr<sf::RenderWindow> window)
 {
+	MessagesManager::getInstance().configure();
+
 	this->window = window;
 	gui = std::make_shared<tgui::Gui>(*window);
 	theme.load("../../CellSimulator/TGUI-0.8/themes/TransparentGrey.txt");
@@ -541,6 +544,8 @@ void GUIManager::handleEvent(sf::Event & e)
 
 void GUIManager::update()
 {
+	MessagesManager::getInstance().update();
+
 	selectedCellPtr = CellSelectionTool::getInstance().getSelectedCellCopy();
 	auto cell = selectedCellPtr;
 
@@ -622,13 +627,15 @@ void GUIManager::draw()
 	if (gui != nullptr)
 		gui->draw();
 
+	auto defaultView = window->getView();
+	window->setView(gui->getView());
+
 	if (selectedCellPtr != nullptr)
 	{
-		auto defaultView = window->getView();
-		window->setView(gui->getView());
 		window->draw(*selectedCellPtr);
-		window->setView(defaultView);
 	}
+	MessagesManager::getInstance().draw(window);
 
+	window->setView(defaultView);
 }
 

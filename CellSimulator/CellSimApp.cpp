@@ -7,6 +7,7 @@
 #include "FilesManager.h"
 #include "GUIManager.h"
 #include "TextureProvider.h"
+#include "MessagesManager.h"
 #include <iostream>
 #include <atomic>
 
@@ -28,6 +29,7 @@ CellSimApp::~CellSimApp()
 
 void CellSimApp::run()
 {
+	MessagesManager::getInstance().configure();
 	Environment::getInstance().configure();
 	GUIManager::getInstance().configure(window);
 
@@ -70,7 +72,10 @@ void CellSimApp::run()
 				CellSelectionTool::getInstance().setFollowSelectedCell(true);
 
 			if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::C)
+			{
+				MessagesManager::getInstance().append("cleared");
 				Environment::getInstance().clear();
+			}
 
 			if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Return)
 				if (Environment::getInstance().getIsSimulationActive())
@@ -80,6 +85,7 @@ void CellSimApp::run()
 
 			if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::S)
 			{
+
 				bool wasSimActive = Environment::getInstance().getIsSimulationActive();
 				Environment::getInstance().pauseSimulation();
 
@@ -94,6 +100,8 @@ void CellSimApp::run()
 
 				if (wasSimActive)
 					Environment::getInstance().startSimualtion();
+
+				MessagesManager::getInstance().append("Saved as quick_save.cell");
 			}
 
 			GUIManager::getInstance().handleEvent(event);
@@ -144,6 +152,16 @@ void CellSimApp::configure()
 	view.setCenter(sf::Vector2f(windowVideoMode.width / 2, windowVideoMode.height / 2));
 	window->setView(view);
 	window->setActive();
+
+	if (!font.loadFromFile("./fonts/Amble/Amble-Bold.ttf"))
+	{
+		Logger::log("Cannot load font.");
+		throw std::exception("Cannot load font.");
+	}
+	else
+	{
+		Logger::log("Font loaded.");
+	}
 }
 
 void CellSimApp::close()
@@ -159,6 +177,11 @@ std::shared_ptr<sf::RenderWindow> CellSimApp::getWindowHandle()
 const float & CellSimApp::getDeltaTime()
 {
 	return deltaTime;
+}
+
+const sf::Font & CellSimApp::getFont()
+{
+	return font;
 }
 
 
