@@ -1,25 +1,25 @@
-#include "FoodController.h"
+#include "FoodManager.h"
 #include "Random.h"
 #include "Environment.h"
 
 
 
-FoodController::FoodController()
+FoodManager::FoodManager()
 {
 }
 
 
-FoodController::~FoodController()
+FoodManager::~FoodManager()
 {
 }
 
-FoodController & FoodController::getInstance()
+FoodManager & FoodManager::getInstance()
 {
-	static FoodController instance;
+	static FoodManager instance;
 	return instance;
 }
 
-void FoodController::generateFood(sf::Vector2f size, int amount)
+void FoodManager::generateFood(sf::Vector2f size, int amount)
 {
 	for (int i = 0; i < amount; i++) {
 		auto food = Food::create(

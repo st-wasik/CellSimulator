@@ -117,9 +117,6 @@
     <ClCompile Include="CellFactory.cpp">
       <Filter>Simulation Control\Source</Filter>
     </ClCompile>
-    <ClCompile Include="FoodController.cpp">
-      <Filter>Simulation Control\Source</Filter>
-    </ClCompile>
     <ClCompile Include="TextureProvider.cpp">
       <Filter>Simulation Control\Source</Filter>
     </ClCompile>
@@ -134,6 +131,9 @@
     </ClCompile>
     <ClCompile Include="BaseObj.cpp">
       <Filter>Environment\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="FoodManager.cpp">
+      <Filter>Simulation Control\Source</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -191,9 +191,6 @@
     <ClInclude Include="CellFactory.h">
       <Filter>Simulation Control\Header</Filter>
     </ClInclude>
-    <ClInclude Include="FoodController.h">
-      <Filter>Simulation Control\Header</Filter>
-    </ClInclude>
     <ClInclude Include="TextureProvider.h">
       <Filter>Simulation Control\Header</Filter>
     </ClInclude>
@@ -211,6 +208,9 @@
     </ClInclude>
     <ClInclude Include="Food.h">
       <Filter>Environment\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="FoodManager.h">
+      <Filter>Simulation Control\Header</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

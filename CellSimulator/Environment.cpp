@@ -8,7 +8,7 @@
 #include <atomic>
 #include "TextureProvider.h"
 #include "CellMovementTool.h"
-#include "FoodController.h"
+#include "FoodManager.h"
 #include "AutoFeederTool.h"
 #include "Distance.h"
 #include "CellFactory.h"
@@ -109,7 +109,7 @@ void Environment::configure()
 		insertNewCell(cell);
 	}
 
-	FoodController::generateFood(sf::Vector2f(3, 12), 100);
+	FoodManager::generateFood(sf::Vector2f(3, 12), 100);
 }
 
 void Environment::updateBackground()

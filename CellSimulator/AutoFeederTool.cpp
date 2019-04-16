@@ -1,6 +1,6 @@
 #include "AutoFeederTool.h"
 #include "Environment.h"
-#include "FoodController.h"
+#include "FoodManager.h"
 #include <iostream>
 
 std::mutex AutoFeederTool::mutex;
@@ -41,7 +41,7 @@ void AutoFeederTool::update()
 	auto p = 0.000001*2 * maxThresholdValue * area;
 	//Logger::log(p);
 	if (foodVector.size() < p && deltaTime > spawnTime && isActive) {
-		FoodController::getInstance().generateFood(sf::Vector2f(3,12), deltaTime/spawnTime);
+		FoodManager::getInstance().generateFood(sf::Vector2f(3,12), deltaTime/spawnTime);
 		clock.restart();
 	}
 	else if (deltaTime > spawnTime) {
