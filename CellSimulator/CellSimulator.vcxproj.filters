@@ -1,9 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Apps">
-      <UniqueIdentifier>{cbbba7da-b445-4c46-9b9c-94b8754f1b58}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Cell">
       <UniqueIdentifier>{bd049697-bb3d-4799-98e2-2a7fad7465ca}</UniqueIdentifier>
     </Filter>
@@ -12,12 +9,6 @@
     </Filter>
     <Filter Include="Cell\Source">
       <UniqueIdentifier>{c4f7901e-609a-453b-a52e-81c7a764d482}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Apps\Header">
-      <UniqueIdentifier>{68dbf8a3-44ce-4ea6-b6b4-bc19b1032d8d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Apps\Source">
-      <UniqueIdentifier>{7ac8dbe6-3bf6-465f-971b-844c55aa6697}</UniqueIdentifier>
     </Filter>
     <Filter Include="Utils">
       <UniqueIdentifier>{a11de6a1-e641-48a8-85a1-ec96150ee88f}</UniqueIdentifier>
@@ -40,13 +31,40 @@
     <Filter Include="Others">
       <UniqueIdentifier>{a786b3a2-a720-4255-ae90-729a9c60eada}</UniqueIdentifier>
     </Filter>
+    <Filter Include="App Control">
+      <UniqueIdentifier>{cbbba7da-b445-4c46-9b9c-94b8754f1b58}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="App Control\Header">
+      <UniqueIdentifier>{68dbf8a3-44ce-4ea6-b6b4-bc19b1032d8d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="App Control\Source">
+      <UniqueIdentifier>{7ac8dbe6-3bf6-465f-971b-844c55aa6697}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Simulation Control">
+      <UniqueIdentifier>{f6229400-08fd-4f66-b842-3d17ae9ac991}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Simulation Control\Header">
+      <UniqueIdentifier>{d3e304af-c812-4dd1-a663-30fd048b5a8d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Simulation Control\Source">
+      <UniqueIdentifier>{c40b7c00-46d9-480e-8027-3a8b24333bb4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Simulation Tools">
+      <UniqueIdentifier>{9be4eb3a-f4ef-4a51-bf43-d437a45c35c5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Simulation Tools\Header">
+      <UniqueIdentifier>{92b20b2c-16d9-4f5c-be21-aab225411b32}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Simulation Tools\Source">
+      <UniqueIdentifier>{de1dc44d-1fb9-4a3a-9bea-07e77ac1bbe3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CellSimApp.cpp">
-      <Filter>Apps\Source</Filter>
+      <Filter>App Control\Source</Filter>
     </ClCompile>
     <ClCompile Include="MainApp.cpp">
-      <Filter>Apps\Source</Filter>
+      <Filter>App Control\Source</Filter>
     </ClCompile>
     <ClCompile Include="Cell.cpp">
       <Filter>Cell\Source</Filter>
@@ -63,41 +81,17 @@
     <ClCompile Include="Logger.cpp">
       <Filter>Utils\Source</Filter>
     </ClCompile>
-    <ClCompile Include="CellSimMouse.cpp">
-      <Filter>Environment\Source</Filter>
-    </ClCompile>
     <ClCompile Include="Environment.cpp">
       <Filter>Environment\Source</Filter>
     </ClCompile>
     <ClCompile Include="Food.cpp">
       <Filter>Environment\Source</Filter>
     </ClCompile>
-    <ClCompile Include="BaseObj.cpp">
-      <Filter>Utils\Source</Filter>
-    </ClCompile>
-    <ClCompile Include="TextureProvider.cpp">
-      <Filter>Utils\Source</Filter>
-    </ClCompile>
-    <ClCompile Include="CellSelectionTool.cpp">
-      <Filter>Environment\Source</Filter>
-    </ClCompile>
-    <ClCompile Include="CellMovementTool.cpp">
-      <Filter>Environment\Source</Filter>
-    </ClCompile>
-    <ClCompile Include="AutoFeederTool.cpp">
-      <Filter>Environment\Source</Filter>
-    </ClCompile>
     <ClCompile Include="Distance.cpp">
       <Filter>Utils\Source</Filter>
     </ClCompile>
     <ClCompile Include="GUIManager.cpp">
-      <Filter>Apps\Source</Filter>
-    </ClCompile>
-    <ClCompile Include="CellFactory.cpp">
-      <Filter>Utils\Source</Filter>
-    </ClCompile>
-    <ClCompile Include="FoodController.cpp">
-      <Filter>Utils\Source</Filter>
+      <Filter>App Control\Source</Filter>
     </ClCompile>
     <ClCompile Include="main.cpp">
       <Filter>Others</Filter>
@@ -105,16 +99,46 @@
     <ClCompile Include="MixDouble.cpp">
       <Filter>Utils\Source</Filter>
     </ClCompile>
-    <ClCompile Include="DoubleToString.cpp" />
     <ClCompile Include="RangeChecker.cpp">
       <Filter>Utils\Source</Filter>
     </ClCompile>
-    <ClCompile Include="FilesManager.cpp" />
-    <ClCompile Include="MessagesManager.cpp" />
+    <ClCompile Include="AutoFeederTool.cpp">
+      <Filter>Simulation Tools\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="CellMovementTool.cpp">
+      <Filter>Simulation Tools\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="CellSelectionTool.cpp">
+      <Filter>Simulation Tools\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="CellSimMouse.cpp">
+      <Filter>App Control\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="CellFactory.cpp">
+      <Filter>Simulation Control\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="FoodController.cpp">
+      <Filter>Simulation Control\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="TextureProvider.cpp">
+      <Filter>Simulation Control\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="DoubleToString.cpp">
+      <Filter>Utils\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="FilesManager.cpp">
+      <Filter>Simulation Control\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="MessagesManager.cpp">
+      <Filter>Simulation Control\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="BaseObj.cpp">
+      <Filter>Environment\Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CellSimApp.h">
-      <Filter>Apps\Header</Filter>
+      <Filter>App Control\Header</Filter>
     </ClInclude>
     <ClInclude Include="Cell.h">
       <Filter>Cell\Header</Filter>
@@ -126,7 +150,7 @@
       <Filter>Cell\Header</Filter>
     </ClInclude>
     <ClInclude Include="MainApp.h">
-      <Filter>Apps\Header</Filter>
+      <Filter>App Control\Header</Filter>
     </ClInclude>
     <ClInclude Include="Logger.h">
       <Filter>Utils\Header</Filter>
@@ -134,53 +158,59 @@
     <ClInclude Include="Random.h">
       <Filter>Utils\Header</Filter>
     </ClInclude>
-    <ClInclude Include="CellSimMouse.h">
-      <Filter>Environment\Header</Filter>
-    </ClInclude>
     <ClInclude Include="Environment.h">
-      <Filter>Environment\Header</Filter>
-    </ClInclude>
-    <ClInclude Include="Food.h">
-      <Filter>Environment\Header</Filter>
-    </ClInclude>
-    <ClInclude Include="BaseObj.h">
-      <Filter>Utils\Header</Filter>
-    </ClInclude>
-    <ClInclude Include="TextureProvider.h">
-      <Filter>Utils\Header</Filter>
-    </ClInclude>
-    <ClInclude Include="CellSelectionTool.h">
-      <Filter>Environment\Header</Filter>
-    </ClInclude>
-    <ClInclude Include="CellMovementTool.h">
       <Filter>Environment\Header</Filter>
     </ClInclude>
     <ClInclude Include="Ranged.h">
       <Filter>Utils\Header</Filter>
     </ClInclude>
-    <ClInclude Include="AutoFeederTool.h">
-      <Filter>Environment\Header</Filter>
-    </ClInclude>
     <ClInclude Include="Distance.h">
       <Filter>Utils\Header</Filter>
     </ClInclude>
     <ClInclude Include="GUIManager.h">
-      <Filter>Apps\Header</Filter>
-    </ClInclude>
-    <ClInclude Include="CellFactory.h">
-      <Filter>Utils\Header</Filter>
-    </ClInclude>
-    <ClInclude Include="FoodController.h">
-      <Filter>Utils\Header</Filter>
+      <Filter>App Control\Header</Filter>
     </ClInclude>
     <ClInclude Include="MixDouble.h">
       <Filter>Utils\Header</Filter>
     </ClInclude>
-    <ClInclude Include="DoubleToString.h" />
     <ClInclude Include="RangeChecker.h">
       <Filter>Utils\Header</Filter>
     </ClInclude>
-    <ClInclude Include="FilesManager.h" />
-    <ClInclude Include="MessagesManager.h" />
+    <ClInclude Include="AutoFeederTool.h">
+      <Filter>Simulation Tools\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="CellMovementTool.h">
+      <Filter>Simulation Tools\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="CellSelectionTool.h">
+      <Filter>Simulation Tools\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="CellSimMouse.h">
+      <Filter>App Control\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="CellFactory.h">
+      <Filter>Simulation Control\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="FoodController.h">
+      <Filter>Simulation Control\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="TextureProvider.h">
+      <Filter>Simulation Control\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="DoubleToString.h">
+      <Filter>Utils\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="FilesManager.h">
+      <Filter>Simulation Control\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="MessagesManager.h">
+      <Filter>Simulation Control\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="BaseObj.h">
+      <Filter>Environment\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Food.h">
+      <Filter>Environment\Header</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
