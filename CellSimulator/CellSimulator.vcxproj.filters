@@ -42,16 +42,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="CellListApp.cpp">
-      <Filter>Apps\Source</Filter>
-    </ClCompile>
-    <ClCompile Include="CellPreviewApp.cpp">
-      <Filter>Apps\Source</Filter>
-    </ClCompile>
     <ClCompile Include="CellSimApp.cpp">
-      <Filter>Apps\Source</Filter>
-    </ClCompile>
-    <ClCompile Include="EnvSettingsApp.cpp">
       <Filter>Apps\Source</Filter>
     </ClCompile>
     <ClCompile Include="MainApp.cpp">
@@ -121,16 +112,7 @@
     <ClCompile Include="FilesManager.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="CellListApp.h">
-      <Filter>Apps\Header</Filter>
-    </ClInclude>
-    <ClInclude Include="CellPreviewApp.h">
-      <Filter>Apps\Header</Filter>
-    </ClInclude>
     <ClInclude Include="CellSimApp.h">
-      <Filter>Apps\Header</Filter>
-    </ClInclude>
-    <ClInclude Include="EnvSettingsApp.h">
       <Filter>Apps\Header</Filter>
     </ClInclude>
     <ClInclude Include="Cell.h">

@@ -45,5 +45,6 @@ private:
 	static constexpr int _minZoom = 7;
 
 	float deltaTime;
+	float fps;
 };
 

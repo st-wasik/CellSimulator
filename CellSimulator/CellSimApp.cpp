@@ -5,6 +5,8 @@
 #include "MainApp.h"
 #include "Logger.h"
 #include "FilesManager.h"
+#include "GUIManager.h"
+#include "TextureProvider.h"
 #include <iostream>
 #include <atomic>
 
@@ -14,6 +16,12 @@ CellSimApp& CellSimApp::getInstance()
 	return instance;
 }
 
+CellSimApp::CellSimApp()
+{
+	deltaTime = 0;
+	fps = 0;
+}
+
 CellSimApp::~CellSimApp()
 {
 }
@@ -21,6 +29,7 @@ CellSimApp::~CellSimApp()
 void CellSimApp::run()
 {
 	Environment::getInstance().configure();
+	GUIManager::getInstance().configure(window);
 
 	view.setCenter(sf::Vector2f(Environment::getInstance().getSize().x / 2, Environment::getInstance().getSize().y / 2));
 
@@ -40,6 +49,9 @@ void CellSimApp::run()
 
 		while (window->pollEvent(event))
 		{
+			if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape)
+				MainApp::close();
+
 			if (event.type == sf::Event::Closed)
 				MainApp::close();
 
@@ -84,42 +96,49 @@ void CellSimApp::run()
 					Environment::getInstance().startSimualtion();
 			}
 
+			GUIManager::getInstance().handleEvent(event);
 		}
-
-
-		//update
+		//UPDATE --->
 		updateViewCenter();
 		updateViewZoom();
 
+		GUIManager::getInstance().update();
 		Environment::getInstance().update();
 
-
+		//DRAW --->
 		window->clear();
 
-		//draw
 		Environment::getInstance().draw(*window);
+		GUIManager::getInstance().draw();
 
 		window->display();
+
+		//OTHER --->
 		deltaTime = 0.0001 * deltaTimeClock.getElapsedTime().asMicroseconds();
-		//Logger::log("FPS " + std::to_string(1/deltaTime*100) + "\r", false);
-		//Logger::log(std::to_string(deltaTime) + "\r", false);
+		fps = 1 / (deltaTime * 100);
 	}
 }
 
 void CellSimApp::configure()
 {
 	window = std::make_shared<sf::RenderWindow>();
-	windowVideoMode = sf::VideoMode(1378, 768);
+	//windowVideoMode = sf::VideoMode(1378, 768);
+	windowVideoMode = sf::VideoMode::getDesktopMode();
 	windowTitle = "Cell Simulator";
 
 	Logger::log(windowTitle + " - build " + __DATE__ + " " + __TIME__);
 
-	//TODO: load textures
+	// first getInstance call loads all textures
+	TextureProvider::getInstance();
 
-	window->create(windowVideoMode, windowTitle, sf::Style::Close);
+	window->create(windowVideoMode, windowTitle, sf::Style::Fullscreen);
 	window->setFramerateLimit(60);
-	window->setPosition({ 300,20 });
+	window->setPosition({ 0,0 });
 	//window->setVerticalSyncEnabled(true);
+
+	//sf::Image icon;
+	//icon.loadFromFile("./textures/icon.png");
+	//window->setIcon(200, 200, icon.getPixelsPtr());
 
 	view.setSize(sf::Vector2f(windowVideoMode.width, windowVideoMode.height));
 	view.setCenter(sf::Vector2f(windowVideoMode.width / 2, windowVideoMode.height / 2));
@@ -142,9 +161,6 @@ const float & CellSimApp::getDeltaTime()
 	return deltaTime;
 }
 
-CellSimApp::CellSimApp()
-{
-}
 
 void CellSimApp::updateViewZoom()
 {
