@@ -27,6 +27,19 @@ void GUIManager::configure(std::shared_ptr<sf::RenderWindow> window)
 	gui = std::make_shared<tgui::Gui>(*window);
 	theme.load("../../CellSimulator/TGUI-0.8/themes/TransparentGrey.txt");
 
+	background.setSize(sf::Vector2f( 360, window->getSize().y ));
+	background.setFillColor(sf::Color(32, 32, 32, 128));
+	background.setPosition({ 0,0 });
+	background.setOutlineColor(sf::Color(32, 32, 16));
+	background.setOutlineThickness(7);
+
+	/*backgroundPanel = tgui::Panel::create();
+	backgroundPanel->setRenderer(theme.getRenderer("Panel"));
+	backgroundPanel->setSize(350, sf::VideoMode::getDesktopMode().height);
+	backgroundPanel->setPosition({ 0,0 });
+	gui->add(backgroundPanel);
+*/
+
 	//ENV SETTINGS
 	labelTemp = tgui::Label::create();
 	labelTemp->setRenderer(theme.getRenderer("Label"));
@@ -624,16 +637,19 @@ void GUIManager::update()
 
 void GUIManager::draw()
 {
-	if (gui != nullptr)
-		gui->draw();
-
 	auto defaultView = window->getView();
 	window->setView(gui->getView());
+
+	window->draw(background);
+
+	if (gui != nullptr)
+		gui->draw();
 
 	if (selectedCellPtr != nullptr)
 	{
 		window->draw(*selectedCellPtr);
 	}
+
 	MessagesManager::getInstance().draw(window);
 
 	window->setView(defaultView);

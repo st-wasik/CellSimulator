@@ -30,6 +30,8 @@ private:
 
 	std::shared_ptr<Cell> selectedCellPtr;
 
+	sf::RectangleShape background;
+
 	//ENV SETTINGS
 	std::shared_ptr<tgui::Label>
 		labelTemp,
