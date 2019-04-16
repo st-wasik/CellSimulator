@@ -42,7 +42,9 @@ private:
 
 	std::atomic_bool followSelectedCell;
 
+	bool selectedMovedCell;
+
 	static constexpr int fontSize = 20;
-	static constexpr int nameMargin = 30;
+	static constexpr int nameMargin = 23;
 };
 

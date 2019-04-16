@@ -12,6 +12,7 @@
 #include "AutoFeederTool.h"
 #include "Distance.h"
 #include "CellFactory.h"
+#include "MessagesManager.h"
 #include <sstream>
 
 Environment::~Environment()
@@ -26,6 +27,7 @@ Environment& Environment::getInstance()
 
 void Environment::clear()
 {
+	MessagesManager::getInstance().append("Environment cleared.");
 	_clearEnvironment = true;
 }
 
@@ -159,8 +161,8 @@ void Environment::update()
 		sterilizeEnvironment();
 	}
 
-	CellSelectionTool::getInstance().update();
 	CellMovementTool::getInstance().update();
+	CellSelectionTool::getInstance().update();
 	AutoFeederTool::getInstance().update();
 
 	for (auto& newCell : newCells)
@@ -386,12 +388,16 @@ sf::Vector2i Environment::getCollisionSectorCoords(std::shared_ptr<BaseObj> o)
 
 void Environment::pauseSimulation()
 {
+	if (_simulationActive)
+		MessagesManager::getInstance().append("Simulation paused.");
 	_simulationActive = false;
 	AutoFeederTool::getInstance().setIsActive(false);
 }
 
 void Environment::startSimualtion()
 {
+	if (!_simulationActive)
+		MessagesManager::getInstance().append("Simulation resumed.");
 	_simulationActive = true;
 	AutoFeederTool::getInstance().setIsActive(true);
 }

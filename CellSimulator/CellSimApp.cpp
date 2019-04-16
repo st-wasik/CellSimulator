@@ -72,10 +72,7 @@ void CellSimApp::run()
 				CellSelectionTool::getInstance().setFollowSelectedCell(true);
 
 			if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::C)
-			{
-				MessagesManager::getInstance().append("cleared");
 				Environment::getInstance().clear();
-			}
 
 			if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Return)
 				if (Environment::getInstance().getIsSimulationActive())
@@ -85,7 +82,6 @@ void CellSimApp::run()
 
 			if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::S)
 			{
-
 				bool wasSimActive = Environment::getInstance().getIsSimulationActive();
 				Environment::getInstance().pauseSimulation();
 
@@ -97,11 +93,9 @@ void CellSimApp::run()
 				{
 					Logger::log(e.what());
 				}
-
+				MessagesManager::getInstance().append("Simulation saved as quick_save.cell.");
 				if (wasSimActive)
-					Environment::getInstance().startSimualtion();
-
-				MessagesManager::getInstance().append("Saved as quick_save.cell");
+					Environment::getInstance().startSimualtion();		
 			}
 
 			GUIManager::getInstance().handleEvent(event);

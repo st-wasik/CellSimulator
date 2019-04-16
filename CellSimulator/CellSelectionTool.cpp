@@ -3,6 +3,7 @@
 #include "Environment.h"
 #include "Distance.h"
 #include "CellSimApp.h"
+#include "CellMovementTool.h"
 
 CellSelectionTool & CellSelectionTool::getInstance()
 {
@@ -15,14 +16,22 @@ void CellSelectionTool::update()
 	if (CellSimMouse::wasLeftPressed())
 	{
 		CellSelectionTool::clearSelectedCell();
-		auto& cells = Environment::getInstance().getCellsVector();
-		auto selectedCell = std::find_if(cells.begin(), cells.end(), [&](std::shared_ptr<Cell> c) {return getDistance(c->getPosition(), CellSimMouse::getPosition()) < c->getSize(); });
-		if (selectedCell != cells.end())
+		auto movedCell = CellMovementTool::getInstance().getAttachedCell();
+		if (movedCell == nullptr)
 		{
-			setSelectedCell(*selectedCell);
+			auto& cells = Environment::getInstance().getCellsVector();
+			auto selectedCell = std::find_if(cells.begin(), cells.end(), [&](std::shared_ptr<Cell> c) {return getDistance(c->getPosition(), CellSimMouse::getPosition()) < c->getSize(); });
+			if (selectedCell != cells.end())
+			{
+				setSelectedCell(*selectedCell);
+			}
+		}
+		else
+		{
+			selectedMovedCell = true;
+			setSelectedCell(movedCell);
 		}
 	}
-
 
 	if (selectedCell != nullptr)
 	{
@@ -39,6 +48,7 @@ void CellSelectionTool::update()
 		{
 			selectedCell = nullptr;
 			selectedCellCopyValid = false;
+			if (selectedMovedCell) selectedMovedCell = false;
 		}
 	}
 	else
@@ -136,4 +146,6 @@ CellSelectionTool::CellSelectionTool() : selectedCellCopyValid(false)
 	selectedCellName.setFont(CellSimApp::getInstance().getFont());
 	selectedCellName.setCharacterSize(fontSize);
 	selectedCellName.setFillColor(sf::Color::White);
+
+	selectedMovedCell = false;
 }

@@ -5,6 +5,7 @@
 #include "Environment.h"
 #include "BaseObj.h"
 #include "TextureProvider.h"
+#include "MessagesManager.h"
 #include <sstream>
 #include <regex>
 
@@ -179,6 +180,8 @@ void Cell::kill()
 {
 	if (!dead)
 	{
+		if (!name.empty()) MessagesManager::getInstance().append(name+" died [*].");
+
 		dead = true;
 		roles.clear();
 		roles.push_back(CellRoles::beDead);

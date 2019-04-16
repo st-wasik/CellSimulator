@@ -31,8 +31,8 @@ private:
 
 	sf::Clock clock;
 
-	static constexpr int messageOffset = 20; //px
+	static constexpr int messageOffset = 25; //px
 	static constexpr int messageSize = 20; //px
-	static constexpr int secBeforeMessageDelete = 3; 
+	static constexpr int secBeforeMessageDelete = 5; 
 };
 
