@@ -75,6 +75,7 @@ private:
 	Cell(std::string formattedCellString);
 
 	void modifyValueFromString(std::string valueName, std::string value);
+	void modifyValueFromVector(std::string valueName,const std::vector<std::string>& value);
 
 	// vector of pointers to role-functions
 	std::vector<void(*)(Cell*)> roles;
@@ -127,7 +128,6 @@ private:
 		VarAbbrv& operator=(const VarAbbrv&) = delete;
 		virtual ~VarAbbrv() = 0;
 	};
-
 };
 
 template<typename ...Types>

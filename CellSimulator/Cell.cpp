@@ -4,6 +4,7 @@
 #include "CellSimApp.h"
 #include "Environment.h"
 #include "BaseObj.h"
+#include "RegexPattern.h"
 #include "TextureProvider.h"
 #include "MessagesManager.h"
 #include <sstream>
@@ -68,15 +69,17 @@ Cell::Cell(Cell a, Cell b) : Cell(20, (a.getPosition() + b.getPosition()) / 2.0f
 
 Cell::Cell(std::string formattedCellString) : Cell(0, { 0,0 }, sf::Color::Transparent)
 {
-	std::string doubleRegex("[0-9]+\\.?[0-9]*");
-	std::string vectorRegex("\\{" + doubleRegex + "(, " + doubleRegex + ")*\\}");
-	std::regex cellRegex("CELL->( [A-Z]+:(" + doubleRegex + "|" + vectorRegex + "))*");
+	std::string doubleRegex(RegexPattern::Double);
+	std::string vectorRegex(RegexPattern::Vector);
+	std::string word(RegexPattern::Word);
+
+	std::regex cellRegex("CELL->( " + word + ":(" + doubleRegex + "|" + vectorRegex + "))*");
 	if (!std::regex_match(formattedCellString.begin(), formattedCellString.end(), cellRegex))
 	{
 		throw std::exception("Cell string wrong format!");
 	}
 
-	std::regex settingRegex(" [A-Z]+:[0-9]+\\.?[0-9]*");
+	std::regex settingRegex(" " + word + ":(" + doubleRegex + "|" + vectorRegex + ")");
 
 	auto settingsBegin = std::sregex_iterator(formattedCellString.begin(), formattedCellString.end(), settingRegex);
 	auto settingsEnd = std::sregex_iterator();
@@ -84,7 +87,7 @@ Cell::Cell(std::string formattedCellString) : Cell(0, { 0,0 }, sf::Color::Transp
 	for (auto i = settingsBegin; i != settingsEnd; ++i)
 	{
 		std::string settingStr = i->str();
-		std::regex type("[A-Z]+");
+		std::regex type(word);
 		std::regex value(doubleRegex);
 		std::regex vectorValue(vectorRegex);
 
@@ -92,29 +95,18 @@ Cell::Cell(std::string formattedCellString) : Cell(0, { 0,0 }, sf::Color::Transp
 		auto value_i = std::sregex_iterator(settingStr.begin(), settingStr.end(), value);
 		auto vector_value_i = std::sregex_iterator(settingStr.begin(), settingStr.end(), vectorValue);
 
-		std::string type_s;
-		std::string value_s;
-		std::string vector_value_s;
-
-		if (type_i != std::sregex_iterator())
+		if (type_i != std::sregex_iterator() && value_i != std::sregex_iterator())
+			modifyValueFromString(type_i->str(), value_i->str());
+		else if (type_i != std::sregex_iterator() && value_i != std::sregex_iterator())
 		{
-			type_s = type_i->str();
+			std::vector<std::string> values_vect;
+			for (auto it = value_i; it != std::sregex_iterator(); it++)
+			{
+				values_vect.push_back(it->str());
+			}
+			modifyValueFromVector(type_i->str(), values_vect);
 		}
-
-		if (value_i != std::sregex_iterator())
-		{
-			value_s = value_i->str();
-		}
-
-		if (vector_value_i != std::sregex_iterator())
-		{
-			vector_value_s = value_i->str();
-		}
-
-		if (!type_s.empty() && !value_s.empty())
-			modifyValueFromString(type_s, value_s);
-		else if (!type_s.empty() && !vector_value_s.empty())
-			modifyValueFromString(type_s, value_s);
+		//TODO: add cell name
 	}
 }
 
@@ -124,13 +116,6 @@ void Cell::modifyValueFromString(std::string valueName, std::string value)
 	auto& v = valueName;
 
 	if (v == VarAbbrv::currentRotation)			this->setRotation(std::stod(value));
-	else if (v == VarAbbrv::currentPosition)	this->setPosition(sf::Vector2f(std::stod(value), getPosition().y));
-	else if (v == VarAbbrv::color)
-	{
-		auto c = getBaseColor();
-		c.r = std::stod(value);
-		this->setBaseColor(c);
-	}
 	else if (v == VarAbbrv::currentAge)			this->setAge(std::stod(value));
 	else if (v == VarAbbrv::currentSpeed)		this->currentSpeed = (std::stod(value));
 	else if (v == VarAbbrv::currentSize)		this->setSize((std::stod(value)));
@@ -145,7 +130,48 @@ void Cell::modifyValueFromString(std::string valueName, std::string value)
 	else if (v == VarAbbrv::maxSize)			this->genes.maxSize = (std::stod(value));
 	else if (v == VarAbbrv::maxSpeed)			this->genes.maxSpeed = (std::stod(value));
 	else if (v == VarAbbrv::radarRange)			this->genes.radarRange = (std::stod(value));
-	//else throw std::exception(std::string("Unknown cell var name '" + v + "' with value '" + value + "'!").c_str());
+	else Logger::log(std::string("Unknown cell var name '" + v + "' with value '" + value + "'!"));
+}
+
+void Cell::modifyValueFromVector(std::string valueName, const std::vector<std::string>& values)
+{
+	Logger::log("Setting '" + valueName + "'.");
+	auto& v = valueName;
+
+	if (v == VarAbbrv::currentPosition)
+	{
+		if (values.size() != 2)
+		{
+			Logger::log("Wrong values count for " + std::string(VarAbbrv::currentPosition) + ".");
+			return;
+		}
+		this->setPosition(sf::Vector2f(std::stod(values[0]), std::stod(values[1])));
+	}
+	else if (v == VarAbbrv::color)
+	{
+		if (values.size() != 4)
+		{
+			Logger::log("Wrong values count for " + std::string(VarAbbrv::color) + ".");
+			return;
+		}
+		this->setBaseColor(sf::Color(std::stod(values[0]), std::stod(values[1]), std::stod(values[2]), std::stod(values[3])));
+	}
+	else if (v == BaseObj::VarAbbrv::textureRect)
+	{
+		if (values.size() != 4)
+		{
+			Logger::log("Wrong values count for " + std::string(BaseObj::VarAbbrv::textureRect) + ".");
+			return;
+		}
+		this->shape.setTextureRect(sf::IntRect(std::stod(values[0]), std::stod(values[1]), std::stod(values[2]), std::stod(values[3])));
+	}
+	else if (v == VarAbbrv::cellRoles)
+	{
+		for (int i = 0; i < values.size(); ++i)
+		{
+			this->addRole(CellRoles::getManager().getRoleById(std::stod(values.at(i))));
+		}
+	}
 }
 
 Cell::~Cell()
@@ -183,7 +209,7 @@ void Cell::kill()
 {
 	if (!dead)
 	{
-		if (!name.empty()) MessagesManager::getInstance().append(name+" died [*].");
+		if (!name.empty()) MessagesManager::getInstance().append(name + " died [*].");
 
 		dead = true;
 		roles.clear();

@@ -43,12 +43,8 @@ protected:
 	struct VarAbbrv final
 	{
 		static constexpr const char *const currentRotation = "Rotation";
-		static constexpr const char *const currentPositionX = "PositionX";
-		static constexpr const char *const currentPositionY = "PositionY";
-		static constexpr const char *const colorR = "ColorR";
-		static constexpr const char *const colorG = "ColorG";
-		static constexpr const char *const colorB = "ColorB";
-		static constexpr const char *const colorA = "ColorA";
+		static constexpr const char *const currentPosition = "Position";
+		static constexpr const char *const color = "Color";
 		static constexpr const char *const currentSize = "Size";
 		static constexpr const char *const markedToDelete = "toDelete";
 		static constexpr const char *const texture = "Texture";

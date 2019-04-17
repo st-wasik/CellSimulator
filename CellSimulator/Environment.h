@@ -15,7 +15,8 @@ public:
 	static Environment& getInstance();
 	static sf::Vector2i getCollisionSectorCoords(std::shared_ptr<BaseObj> o);
 
-	void configure();
+	void configure(sf::Vector2f envSize = {1000,500});
+	void configure(std::string formattedEnvString);
 	void clear();
 	void update();
 	void draw(sf::RenderWindow & window);
@@ -89,8 +90,7 @@ private:
 		static constexpr const char *const temperature = "Temperature";
 		static constexpr const char *const radiation = "Radiation";
 		static constexpr const char *const isSimualtionActive = "isSimulationActive";
-		static constexpr const char *const envSizeX = "EnvSizeX";
-		static constexpr const char *const envSizeY = "EnvSizeY";
+		static constexpr const char *const envSize = "EnvSize";
 
 	private:
 		VarAbbrv() = delete;

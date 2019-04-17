@@ -1,0 +1,136 @@
+ENVIRONMENT-> EnvSize:{5000, 2500} Radiation:0 Temperature:0 isSimulationActive:0 
+
+CELL-> G_Aggression:90 G_DivisionTh:30 G_FoodLimit:120 G_MaxAge:90 G_MaxSize:35 G_MaxSpeed:2 G_RadarRg:7 Rotation:198.046 Position:{4807.14, 92.5633} Color:{255, 0, 0, 255} Age:1.09492 Speed:0.260145 Size:20 isDead:0 FoodLevel:48.5533 isFreezed:0 Fertility:5.74439 toDelete:0 Texture:whiteNoise Roles:{1, 13, 2, 3, 5, 6, 8, 11, 12, 0} 
+CELL-> G_Aggression:90 G_DivisionTh:30 G_FoodLimit:120 G_MaxAge:90 G_MaxSize:35 G_MaxSpeed:2 G_RadarRg:7 Rotation:326.46 Position:{2054.35, 1473.92} Color:{255, 0, 0, 255} Age:1.09492 Speed:0.0589113 Size:20 isDead:0 FoodLevel:48.7606 isFreezed:0 Fertility:3.59392 toDelete:0 Texture:whiteNoise Roles:{1, 13, 2, 3, 5, 6, 8, 11, 12, 0} 
+CELL-> G_Aggression:10 G_DivisionTh:25 G_FoodLimit:90 G_MaxAge:95 G_MaxSize:45 G_MaxSpeed:1 G_RadarRg:4 Rotation:246.731 Position:{1677.61, 2392.42} Color:{0, 0, 255, 255} Age:1.09492 Speed:0.540519 Size:20 isDead:0 FoodLevel:48.6369 isFreezed:0 Fertility:30.3565 toDelete:0 Texture:whiteNoise Roles:{1, 13, 2, 3, 5, 6, 8, 11, 12, 0} 
+CELL-> G_Aggression:10 G_DivisionTh:25 G_FoodLimit:90 G_MaxAge:95 G_MaxSize:45 G_MaxSpeed:1 G_RadarRg:4 Rotation:76.7409 Position:{3425.64, 2419.64} Color:{0, 0, 255, 255} Age:1.09492 Speed:0.156348 Size:20 isDead:0 FoodLevel:48.6421 isFreezed:0 Fertility:98.2331 toDelete:0 Texture:whiteNoise Roles:{1, 13, 2, 3, 5, 6, 8, 11, 12, 0} 
+CELL-> G_Aggression:10 G_DivisionTh:25 G_FoodLimit:90 G_MaxAge:95 G_MaxSize:45 G_MaxSpeed:1 G_RadarRg:4 Rotation:62.5114 Position:{478.489, 971.552} Color:{0, 0, 255, 255} Age:1.09492 Speed:0.909598 Size:20 isDead:0 FoodLevel:48.7065 isFreezed:0 Fertility:15.5453 toDelete:0 Texture:whiteNoise Roles:{1, 13, 2, 3, 5, 6, 8, 11, 12, 0} 
+CELL-> G_Aggression:10 G_DivisionTh:25 G_FoodLimit:90 G_MaxAge:95 G_MaxSize:45 G_MaxSpeed:1 G_RadarRg:4 Rotation:255.745 Position:{141.604, 1395.22} Color:{0, 0, 255, 255} Age:1.09492 Speed:0.794279 Size:20 isDead:0 FoodLevel:48.6196 isFreezed:0 Fertility:66.5904 toDelete:0 Texture:whiteNoise Roles:{1, 13, 2, 3, 5, 6, 8, 11, 12, 0} 
+CELL-> G_Aggression:10 G_DivisionTh:25 G_FoodLimit:90 G_MaxAge:95 G_MaxSize:45 G_MaxSpeed:1 G_RadarRg:4 Rotation:353.654 Position:{343.089, 1502.9} Color:{0, 0, 255, 255} Age:1.09492 Speed:1.62802 Size:20 isDead:0 FoodLevel:48.7447 isFreezed:0 Fertility:3.66001 toDelete:0 Texture:whiteNoise Roles:{1, 13, 2, 3, 5, 6, 8, 11, 12, 0} 
+CELL-> G_Aggression:10 G_DivisionTh:25 G_FoodLimit:90 G_MaxAge:95 G_MaxSize:45 G_MaxSpeed:1 G_RadarRg:4 Rotation:110.197 Position:{2567.64, 854.104} Color:{0, 0, 255, 255} Age:1.09492 Speed:0.857578 Size:21 isDead:0 FoodLevel:52.5762 isFreezed:0 Fertility:49.9505 toDelete:0 Texture:whiteNoise Roles:{1, 13, 2, 3, 5, 6, 8, 11, 12, 0} 
+CELL-> G_Aggression:10 G_DivisionTh:25 G_FoodLimit:90 G_MaxAge:95 G_MaxSize:45 G_MaxSpeed:1 G_RadarRg:4 Rotation:53.4892 Position:{1692.23, 1570.44} Color:{0, 0, 255, 255} Age:1.09492 Speed:0.489184 Size:20 isDead:0 FoodLevel:48.5877 isFreezed:0 Fertility:98.4341 toDelete:0 Texture:whiteNoise Roles:{1, 13, 2, 3, 5, 6, 8, 11, 12, 0} 
+CELL-> G_Aggression:10 G_DivisionTh:25 G_FoodLimit:90 G_MaxAge:95 G_MaxSize:45 G_MaxSpeed:1 G_RadarRg:4 Rotation:59.8966 Position:{1049.92, 2187.34} Color:{0, 0, 255, 255} Age:1.09492 Speed:0.12058 Size:20 isDead:0 FoodLevel:48.7243 isFreezed:0 Fertility:78.8079 toDelete:0 Texture:whiteNoise Roles:{1, 13, 2, 3, 5, 6, 8, 11, 12, 0} 
+CELL-> G_Aggression:10 G_DivisionTh:25 G_FoodLimit:90 G_MaxAge:95 G_MaxSize:45 G_MaxSpeed:1 G_RadarRg:4 Rotation:250.638 Position:{475.279, 1203.27} Color:{0, 0, 255, 255} Age:1.09492 Speed:0.363415 Size:20 isDead:0 FoodLevel:48.6081 isFreezed:0 Fertility:75.7459 toDelete:0 Texture:whiteNoise Roles:{1, 13, 2, 3, 5, 6, 8, 11, 12, 0} 
+CELL-> G_Aggression:10 G_DivisionTh:25 G_FoodLimit:90 G_MaxAge:95 G_MaxSize:45 G_MaxSpeed:1 G_RadarRg:4 Rotation:129.867 Position:{3375.84, 660.427} Color:{0, 0, 255, 255} Age:1.09492 Speed:0.511772 Size:20 isDead:0 FoodLevel:48.6007 isFreezed:0 Fertility:69.0899 toDelete:0 Texture:whiteNoise Roles:{1, 13, 2, 3, 5, 6, 8, 11, 12, 0} 
+CELL-> G_Aggression:10 G_DivisionTh:25 G_FoodLimit:90 G_MaxAge:95 G_MaxSize:45 G_MaxSpeed:1 G_RadarRg:4 Rotation:320.83 Position:{1777.56, 1393.15} Color:{0, 0, 255, 255} Age:1.09492 Speed:0.136057 Size:20 isDead:0 FoodLevel:48.5423 isFreezed:0 Fertility:81.6977 toDelete:0 Texture:whiteNoise Roles:{1, 13, 2, 3, 5, 6, 8, 11, 12, 0} 
+CELL-> G_Aggression:10 G_DivisionTh:25 G_FoodLimit:90 G_MaxAge:95 G_MaxSize:45 G_MaxSpeed:1 G_RadarRg:4 Rotation:91.2951 Position:{396.83, 892.039} Color:{0, 0, 255, 255} Age:1.09492 Speed:0.387916 Size:20 isDead:0 FoodLevel:48.6268 isFreezed:0 Fertility:12.2404 toDelete:0 Texture:whiteNoise Roles:{1, 13, 2, 3, 5, 6, 8, 11, 12, 0} 
+CELL-> G_Aggression:10 G_DivisionTh:25 G_FoodLimit:90 G_MaxAge:95 G_MaxSize:45 G_MaxSpeed:1 G_RadarRg:4 Rotation:71.7012 Position:{2588.68, 231.151} Color:{0, 0, 255, 255} Age:1.09492 Speed:0.372118 Size:20 isDead:0 FoodLevel:48.6698 isFreezed:0 Fertility:1.70967 toDelete:0 Texture:whiteNoise Roles:{1, 13, 2, 3, 5, 6, 8, 11, 12, 0} 
+CELL-> G_Aggression:10 G_DivisionTh:25 G_FoodLimit:90 G_MaxAge:95 G_MaxSize:45 G_MaxSpeed:1 G_RadarRg:4 Rotation:137.928 Position:{3699.46, 1527.55} Color:{0, 0, 255, 255} Age:1.09492 Speed:1.45555 Size:20 isDead:0 FoodLevel:48.7151 isFreezed:0 Fertility:39.8563 toDelete:0 Texture:whiteNoise Roles:{1, 13, 2, 3, 5, 6, 8, 11, 12, 0} 
+CELL-> G_Aggression:10 G_DivisionTh:25 G_FoodLimit:90 G_MaxAge:95 G_MaxSize:45 G_MaxSpeed:1 G_RadarRg:4 Rotation:246.121 Position:{4756.67, 1148.57} Color:{0, 0, 255, 255} Age:1.09492 Speed:0.141581 Size:20 isDead:0 FoodLevel:48.593 isFreezed:0 Fertility:85.7409 toDelete:0 Texture:whiteNoise Roles:{1, 13, 2, 3, 5, 6, 8, 11, 12, 0} 
+CELL-> G_Aggression:10 G_DivisionTh:25 G_FoodLimit:90 G_MaxAge:95 G_MaxSize:45 G_MaxSpeed:1 G_RadarRg:4 Rotation:118.528 Position:{854.405, 2286.12} Color:{0, 0, 255, 255} Age:1.09492 Speed:0.420134 Size:20 isDead:0 FoodLevel:48.7248 isFreezed:0 Fertility:23.6419 toDelete:0 Texture:whiteNoise Roles:{1, 13, 2, 3, 5, 6, 8, 11, 12, 0} 
+CELL-> G_Aggression:10 G_DivisionTh:25 G_FoodLimit:90 G_MaxAge:95 G_MaxSize:45 G_MaxSpeed:1 G_RadarRg:4 Rotation:219.66 Position:{3766.58, 1551.96} Color:{0, 0, 255, 255} Age:1.09492 Speed:0.190615 Size:20 isDead:0 FoodLevel:48.5977 isFreezed:0 Fertility:96.1454 toDelete:0 Texture:whiteNoise Roles:{1, 13, 2, 3, 5, 6, 8, 11, 12, 0} 
+CELL-> G_Aggression:10 G_DivisionTh:25 G_FoodLimit:90 G_MaxAge:95 G_MaxSize:45 G_MaxSpeed:1 G_RadarRg:4 Rotation:18.8018 Position:{4560.23, 1272.37} Color:{0, 0, 255, 255} Age:1.09492 Speed:0.891352 Size:20 isDead:0 FoodLevel:48.6714 isFreezed:0 Fertility:61.6219 toDelete:0 Texture:whiteNoise Roles:{1, 13, 2, 3, 5, 6, 8, 11, 12, 0} 
+CELL-> G_Aggression:10 G_DivisionTh:25 G_FoodLimit:90 G_MaxAge:95 G_MaxSize:45 G_MaxSpeed:1 G_RadarRg:4 Rotation:196.058 Position:{1358.31, 163.688} Color:{0, 0, 255, 255} Age:1.09492 Speed:0.299613 Size:20 isDead:0 FoodLevel:48.6599 isFreezed:0 Fertility:27.3269 toDelete:0 Texture:whiteNoise Roles:{1, 13, 2, 3, 5, 6, 8, 11, 12, 0} 
+CELL-> G_Aggression:10 G_DivisionTh:25 G_FoodLimit:90 G_MaxAge:95 G_MaxSize:45 G_MaxSpeed:1 G_RadarRg:4 Rotation:291.22 Position:{4013, 1423} Color:{0, 0, 255, 255} Age:1.09492 Speed:0.373449 Size:20 isDead:0 FoodLevel:48.6645 isFreezed:0 Fertility:85.1473 toDelete:0 Texture:whiteNoise Roles:{1, 13, 2, 3, 5, 6, 8, 11, 12, 0} 
+CELL-> G_Aggression:73.596 G_DivisionTh:76.6439 G_FoodLimit:14.6714 G_MaxAge:96.8026 G_MaxSize:25.3899 G_MaxSpeed:1.37262 G_RadarRg:3.63124 Rotation:337.835 Position:{1784.92, 1038.54} Color:{255, 255, 0, 255} Age:1.09492 Speed:0.474012 Size:20 isDead:0 FoodLevel:13.6036 isFreezed:0 Fertility:97.2618 toDelete:0 Texture:whiteNoise Roles:{1, 13, 2, 3, 5, 6, 8, 11, 12, 0} 
+CELL-> G_Aggression:81.8182 G_DivisionTh:46.4485 G_FoodLimit:62.6127 G_MaxAge:52.7142 G_MaxSize:42.5113 G_MaxSpeed:1.96029 G_RadarRg:1.38348 Rotation:126.05 Position:{3123.11, 741.528} Color:{255, 255, 0, 255} Age:1.09492 Speed:0.303874 Size:20 isDead:0 FoodLevel:48.7401 isFreezed:0 Fertility:82.1652 toDelete:0 Texture:whiteNoise Roles:{1, 13, 2, 3, 5, 6, 8, 11, 12, 0} 
+CELL-> G_Aggression:72.8353 G_DivisionTh:16.1868 G_FoodLimit:55.5829 G_MaxAge:3.0401 G_MaxSize:20.0013 G_MaxSpeed:1.77083 G_RadarRg:0.452192 Rotation:97.061 Position:{956.163, 2379.08} Color:{255, 255, 0, 255} Age:1.09492 Speed:1.04523 Size:20 isDead:0 FoodLevel:49.5711 isFreezed:0 Fertility:49.9487 toDelete:0 Texture:whiteNoise Roles:{1, 13, 2, 3, 5, 6, 8, 11, 12, 0} 
+CELL-> G_Aggression:44.5109 G_DivisionTh:90.6731 G_FoodLimit:58.5161 G_MaxAge:96.1196 G_MaxSize:34.2984 G_MaxSpeed:0.749462 G_RadarRg:5.9667 Rotation:132.242 Position:{851.312, 194.019} Color:{255, 255, 0, 255} Age:1.09492 Speed:0.749462 Size:21 isDead:0 FoodLevel:53.7152 isFreezed:0 Fertility:53.7558 toDelete:0 Texture:whiteNoise Roles:{1, 13, 2, 3, 5, 6, 8, 11, 12, 0} 
+CELL-> G_Aggression:55.9136 G_DivisionTh:13.9589 G_FoodLimit:61.1059 G_MaxAge:6.78422 G_MaxSize:38.1875 G_MaxSpeed:1.91739 G_RadarRg:4.09817 Rotation:37.0194 Position:{2929.5, 1337.73} Color:{255, 255, 0, 255} Age:1.09492 Speed:0.11246 Size:20 isDead:0 FoodLevel:48.6609 isFreezed:0 Fertility:12.5961 toDelete:0 Texture:whiteNoise Roles:{1, 13, 2, 3, 5, 6, 8, 11, 12, 0} 
+CELL-> G_Aggression:62.4395 G_DivisionTh:15.0762 G_FoodLimit:49.0813 G_MaxAge:99.7861 G_MaxSize:31.8118 G_MaxSpeed:1.46413 G_RadarRg:7.79989 Rotation:4.35657 Position:{3128.27, 2298.7} Color:{255, 255, 0, 255} Age:1.09492 Speed:0.0302272 Size:20 isDead:0 FoodLevel:48.5965 isFreezed:0 Fertility:41.2883 toDelete:0 Texture:whiteNoise Roles:{1, 13, 2, 3, 5, 6, 8, 11, 12, 0} 
+CELL-> G_Aggression:25.2362 G_DivisionTh:83.5008 G_FoodLimit:114.568 G_MaxAge:55.0717 G_MaxSize:44.5699 G_MaxSpeed:0.626507 G_RadarRg:2.78616 Rotation:178.781 Position:{2065.48, 714.951} Color:{255, 255, 0, 255} Age:1.09492 Speed:0.180933 Size:20 isDead:0 FoodLevel:48.599 isFreezed:0 Fertility:23.8433 toDelete:0 Texture:whiteNoise Roles:{1, 13, 2, 3, 5, 6, 8, 11, 12, 0} 
+CELL-> G_Aggression:55.9826 G_DivisionTh:17.076 G_FoodLimit:77.7688 G_MaxAge:48.4455 G_MaxSize:22.8122 G_MaxSpeed:1.8559 G_RadarRg:0.339414 Rotation:296.451 Position:{4345.21, 1271.37} Color:{255, 255, 0, 255} Age:1.09492 Speed:0.159918 Size:20 isDead:0 FoodLevel:48.7169 isFreezed:0 Fertility:96.3848 toDelete:0 Texture:whiteNoise Roles:{1, 13, 2, 3, 5, 6, 8, 11, 12, 0} 
+CELL-> G_Aggression:86.7727 G_DivisionTh:7.28275 G_FoodLimit:52.3156 G_MaxAge:94.0948 G_MaxSize:41.5049 G_MaxSpeed:0.103502 G_RadarRg:0.790212 Rotation:310.168 Position:{3714.19, 2136.44} Color:{255, 255, 0, 255} Age:1.09492 Speed:1.16899 Size:20 isDead:0 FoodLevel:48.556 isFreezed:0 Fertility:47.0934 toDelete:0 Texture:whiteNoise Roles:{1, 13, 2, 3, 5, 6, 8, 11, 12, 0} 
+CELL-> G_Aggression:34.595 G_DivisionTh:21.2954 G_FoodLimit:95.3096 G_MaxAge:39.0998 G_MaxSize:26.008 G_MaxSpeed:0.321172 G_RadarRg:1.75367 Rotation:319.1 Position:{444.202, 2380.17} Color:{255, 255, 0, 255} Age:1.09492 Speed:0.270627 Size:20 isDead:0 FoodLevel:48.644 isFreezed:0 Fertility:17.1849 toDelete:0 Texture:whiteNoise Roles:{1, 13, 2, 3, 5, 6, 8, 11, 12, 0} 
+CELL-> G_Aggression:0 G_DivisionTh:45 G_FoodLimit:0 G_MaxAge:10 G_MaxSize:25 G_MaxSpeed:0.75 G_RadarRg:0 Rotation:85.6209 Position:{2114.81, 1442.96} Color:{255, 255, 255, 255} Age:0 Speed:1.34876 Size:20 isDead:0 FoodLevel:50 isFreezed:0 Fertility:10.8995 toDelete:0 Texture:greenLettuce Roles:{1, 13, 3, 6, 8, 0, 9} 
+CELL-> G_Aggression:0 G_DivisionTh:45 G_FoodLimit:0 G_MaxAge:10 G_MaxSize:25 G_MaxSpeed:0.75 G_RadarRg:0 Rotation:110.808 Position:{4471.1, 884.633} Color:{255, 255, 255, 255} Age:0 Speed:0.382064 Size:20 isDead:0 FoodLevel:50 isFreezed:0 Fertility:79.8428 toDelete:0 Texture:greenLettuce Roles:{1, 13, 3, 6, 8, 0, 9} 
+CELL-> G_Aggression:0 G_DivisionTh:45 G_FoodLimit:0 G_MaxAge:10 G_MaxSize:25 G_MaxSpeed:0.75 G_RadarRg:0 Rotation:227.559 Position:{1969.51, 563.328} Color:{255, 255, 255, 255} Age:0 Speed:0.129873 Size:20 isDead:0 FoodLevel:50 isFreezed:0 Fertility:61.1042 toDelete:0 Texture:greenLettuce Roles:{1, 13, 3, 6, 8, 0, 9} 
+CELL-> G_Aggression:72.8353 G_DivisionTh:16.1868 G_FoodLimit:55.5829 G_MaxAge:3.0401 G_MaxSize:20.0013 G_MaxSpeed:1.77083 G_RadarRg:0.452192 Rotation:268.758 Position:{906.559, 2376.23} Color:{255, 255, 0, 255} Age:1.07797 Speed:0.371153 Size:20 isDead:0 FoodLevel:49.6652 isFreezed:0 Fertility:49.9487 toDelete:0 Texture:whiteNoise Roles:{1, 13, 2, 3, 5, 6, 8, 11, 12, 0} 
+
+FOOD-> Rotation:10.7727 Position:{1189, 1143} Color:{0, 142, 16, 255} Size:11 toDelete:0 
+FOOD-> Rotation:115.77 Position:{748, 1280} Color:{0, 162, 24, 255} Size:6 toDelete:0 
+FOOD-> Rotation:246.148 Position:{425, 2358} Color:{0, 152, 27, 255} Size:9 toDelete:0 
+FOOD-> Rotation:156.78 Position:{1123, 1072} Color:{0, 219, 19, 255} Size:3 toDelete:0 
+FOOD-> Rotation:173.019 Position:{2492, 1871} Color:{0, 220, 19, 255} Size:3 toDelete:0 
+FOOD-> Rotation:196.312 Position:{1104, 1209} Color:{0, 177, 44, 255} Size:12 toDelete:0 
+FOOD-> Rotation:103.22 Position:{2771, 154} Color:{0, 204, 36, 255} Size:4 toDelete:0 
+FOOD-> Rotation:358.494 Position:{3171, 1521} Color:{0, 140, 25, 255} Size:9 toDelete:0 
+FOOD-> Rotation:193.351 Position:{80, 1388} Color:{0, 183, 1, 255} Size:6 toDelete:0 
+FOOD-> Rotation:263.874 Position:{3319, 1640} Color:{0, 244, 62, 255} Size:5 toDelete:0 
+FOOD-> Rotation:18.1992 Position:{2706, 905} Color:{0, 221, 7, 255} Size:9 toDelete:0 
+FOOD-> Rotation:163.529 Position:{4772, 2100} Color:{0, 232, 1, 255} Size:10 toDelete:0 
+FOOD-> Rotation:273.551 Position:{2859, 2362} Color:{0, 223, 28, 255} Size:6 toDelete:0 
+FOOD-> Rotation:109.852 Position:{3210, 100} Color:{0, 219, 29, 255} Size:3 toDelete:0 
+FOOD-> Rotation:91.1091 Position:{971, 1218} Color:{0, 212, 46, 255} Size:10 toDelete:0 
+FOOD-> Rotation:66.1381 Position:{3492, 2404} Color:{0, 227, 34, 255} Size:5 toDelete:0 
+FOOD-> Rotation:316.782 Position:{3928, 1390} Color:{0, 223, 31, 255} Size:7 toDelete:0 
+FOOD-> Rotation:195.9 Position:{4096, 2338} Color:{0, 174, 27, 255} Size:12 toDelete:0 
+FOOD-> Rotation:238.707 Position:{2798, 1673} Color:{0, 254, 7, 255} Size:4 toDelete:0 
+FOOD-> Rotation:53.0392 Position:{3248, 2142} Color:{0, 149, 23, 255} Size:10 toDelete:0 
+FOOD-> Rotation:227.25 Position:{96, 1911} Color:{0, 193, 54, 255} Size:12 toDelete:0 
+FOOD-> Rotation:217.34 Position:{4470, 1575} Color:{0, 164, 0, 255} Size:7 toDelete:0 
+FOOD-> Rotation:297.753 Position:{1067, 1188} Color:{0, 160, 25, 255} Size:11 toDelete:0 
+FOOD-> Rotation:125.586 Position:{2446, 396} Color:{0, 220, 1, 255} Size:12 toDelete:0 
+FOOD-> Rotation:243.551 Position:{648, 2421} Color:{0, 254, 28, 255} Size:6 toDelete:0 
+FOOD-> Rotation:258.149 Position:{3634, 1928} Color:{0, 231, 48, 255} Size:3 toDelete:0 
+FOOD-> Rotation:108.569 Position:{2706, 80} Color:{0, 230, 63, 255} Size:10 toDelete:0 
+FOOD-> Rotation:213.003 Position:{4129, 1841} Color:{0, 226, 57, 255} Size:9 toDelete:0 
+FOOD-> Rotation:326.587 Position:{579, 1828} Color:{0, 236, 52, 255} Size:12 toDelete:0 
+FOOD-> Rotation:343.565 Position:{4520, 1743} Color:{0, 165, 19, 255} Size:3 toDelete:0 
+FOOD-> Rotation:193.057 Position:{4011, 1661} Color:{0, 212, 10, 255} Size:6 toDelete:0 
+FOOD-> Rotation:119.453 Position:{4940, 2243} Color:{0, 170, 43, 255} Size:11 toDelete:0 
+FOOD-> Rotation:342.314 Position:{3639, 596} Color:{0, 133, 22, 255} Size:7 toDelete:0 
+FOOD-> Rotation:177.084 Position:{911, 1837} Color:{0, 185, 14, 255} Size:9 toDelete:0 
+FOOD-> Rotation:196.587 Position:{4394, 2253} Color:{0, 226, 30, 255} Size:7 toDelete:0 
+FOOD-> Rotation:340.267 Position:{3235, 400} Color:{0, 168, 10, 255} Size:11 toDelete:0 
+FOOD-> Rotation:200.333 Position:{4250, 1730} Color:{0, 246, 58, 255} Size:10 toDelete:0 
+FOOD-> Rotation:23.1525 Position:{3733, 1114} Color:{0, 208, 2, 255} Size:11 toDelete:0 
+FOOD-> Rotation:57.4384 Position:{3777, 1279} Color:{0, 236, 28, 255} Size:3 toDelete:0 
+FOOD-> Rotation:128.157 Position:{2253, 1703} Color:{0, 155, 21, 255} Size:5 toDelete:0 
+FOOD-> Rotation:109.169 Position:{3138, 2171} Color:{0, 169, 40, 255} Size:12 toDelete:0 
+FOOD-> Rotation:261.852 Position:{85, 2406} Color:{0, 252, 31, 255} Size:8 toDelete:0 
+FOOD-> Rotation:198.039 Position:{3745, 1578} Color:{0, 228, 47, 255} Size:8 toDelete:0 
+FOOD-> Rotation:27.3864 Position:{2327, 1969} Color:{0, 241, 46, 255} Size:9 toDelete:0 
+FOOD-> Rotation:205.244 Position:{4280, 518} Color:{0, 131, 59, 255} Size:10 toDelete:0 
+FOOD-> Rotation:334.171 Position:{3355, 1749} Color:{0, 176, 2, 255} Size:5 toDelete:0 
+FOOD-> Rotation:108.734 Position:{4800, 2396} Color:{0, 135, 52, 255} Size:7 toDelete:0 
+FOOD-> Rotation:225.546 Position:{4332, 649} Color:{0, 189, 31, 255} Size:4 toDelete:0 
+FOOD-> Rotation:78.2884 Position:{1257, 557} Color:{0, 235, 45, 255} Size:12 toDelete:0 
+FOOD-> Rotation:75.3544 Position:{722, 1251} Color:{0, 220, 0, 255} Size:6 toDelete:0 
+FOOD-> Rotation:171.07 Position:{4440, 1372} Color:{0, 255, 9, 255} Size:8 toDelete:0 
+FOOD-> Rotation:148.542 Position:{1766, 2044} Color:{0, 145, 46, 255} Size:7 toDelete:0 
+FOOD-> Rotation:182.712 Position:{1180, 1567} Color:{0, 233, 51, 255} Size:12 toDelete:0 
+FOOD-> Rotation:94.1002 Position:{3401, 910} Color:{0, 129, 16, 255} Size:7 toDelete:0 
+FOOD-> Rotation:308.696 Position:{2770, 601} Color:{0, 171, 60, 255} Size:9 toDelete:0 
+FOOD-> Rotation:20.5774 Position:{1732, 1541} Color:{0, 236, 49, 255} Size:3 toDelete:0 
+FOOD-> Rotation:209.307 Position:{3941, 2139} Color:{0, 149, 27, 255} Size:6 toDelete:0 
+FOOD-> Rotation:156.936 Position:{1127, 1269} Color:{0, 204, 15, 255} Size:4 toDelete:0 
+FOOD-> Rotation:7.57247 Position:{3158, 1203} Color:{0, 138, 21, 255} Size:4 toDelete:0 
+FOOD-> Rotation:199.959 Position:{2128, 2139} Color:{0, 157, 38, 255} Size:8 toDelete:0 
+FOOD-> Rotation:11.6041 Position:{1650, 1188} Color:{0, 206, 34, 255} Size:10 toDelete:0 
+FOOD-> Rotation:182.083 Position:{201, 591} Color:{0, 199, 56, 255} Size:9 toDelete:0 
+FOOD-> Rotation:54.727 Position:{928, 1151} Color:{0, 251, 48, 255} Size:12 toDelete:0 
+FOOD-> Rotation:207.937 Position:{1709, 1309} Color:{0, 241, 9, 255} Size:3 toDelete:0 
+FOOD-> Rotation:222.142 Position:{3194, 1551} Color:{0, 218, 48, 255} Size:11 toDelete:0 
+FOOD-> Rotation:241.321 Position:{1735, 916} Color:{0, 129, 8, 255} Size:3 toDelete:0 
+FOOD-> Rotation:180.831 Position:{1788, 1573} Color:{0, 238, 17, 255} Size:4 toDelete:0 
+FOOD-> Rotation:312.834 Position:{4477, 814} Color:{0, 157, 26, 255} Size:8 toDelete:0 
+FOOD-> Rotation:195.665 Position:{4836, 2369} Color:{0, 221, 35, 255} Size:5 toDelete:0 
+FOOD-> Rotation:306.709 Position:{111, 1403} Color:{0, 173, 22, 255} Size:11 toDelete:0 
+FOOD-> Rotation:75.0218 Position:{4706, 403} Color:{0, 226, 24, 255} Size:7 toDelete:0 
+FOOD-> Rotation:197.16 Position:{3525, 785} Color:{0, 160, 57, 255} Size:7 toDelete:0 
+FOOD-> Rotation:40.2232 Position:{4826, 817} Color:{0, 232, 62, 255} Size:11 toDelete:0 
+FOOD-> Rotation:306.76 Position:{2698, 195} Color:{0, 195, 60, 255} Size:9 toDelete:0 
+FOOD-> Rotation:101.857 Position:{1130, 1884} Color:{0, 219, 5, 255} Size:12 toDelete:0 
+FOOD-> Rotation:311.604 Position:{4118, 374} Color:{0, 221, 48, 255} Size:12 toDelete:0 
+FOOD-> Rotation:143.144 Position:{156, 167} Color:{0, 144, 31, 255} Size:4 toDelete:0 
+FOOD-> Rotation:265.056 Position:{2442, 1512} Color:{0, 223, 32, 255} Size:12 toDelete:0 
+FOOD-> Rotation:236.547 Position:{4198, 1999} Color:{0, 254, 26, 255} Size:6 toDelete:0 
+FOOD-> Rotation:282.409 Position:{4302, 2056} Color:{0, 166, 23, 255} Size:8 toDelete:0 
+FOOD-> Rotation:42.6981 Position:{4155, 742} Color:{0, 189, 38, 255} Size:6 toDelete:0 
+FOOD-> Rotation:293.917 Position:{4575, 1229} Color:{0, 241, 20, 255} Size:12 toDelete:0 
+FOOD-> Rotation:338.367 Position:{642, 1924} Color:{0, 160, 27, 255} Size:8 toDelete:0 
+FOOD-> Rotation:148.459 Position:{1949, 1315} Color:{0, 204, 40, 255} Size:12 toDelete:0 
+FOOD-> Rotation:50.9749 Position:{2897, 2175} Color:{0, 203, 8, 255} Size:10 toDelete:0 
+FOOD-> Rotation:111.639 Position:{3832, 1006} Color:{0, 213, 31, 255} Size:12 toDelete:0 
+FOOD-> Rotation:38.7754 Position:{348, 1248} Color:{0, 154, 39, 255} Size:7 toDelete:0 
+FOOD-> Rotation:233.623 Position:{3059, 1166} Color:{0, 207, 45, 255} Size:3 toDelete:0 
+FOOD-> Rotation:222.958 Position:{3634, 1015} Color:{0, 200, 17, 255} Size:6 toDelete:0 
+FOOD-> Rotation:215.613 Position:{4071, 2337} Color:{0, 196, 46, 255} Size:4 toDelete:0 
+FOOD-> Rotation:27.8579 Position:{1566, 1527} Color:{0, 251, 15, 255} Size:12 toDelete:0 
+FOOD-> Rotation:114.707 Position:{1506, 339} Color:{0, 148, 59, 255} Size:7 toDelete:0 
+FOOD-> Rotation:354.678 Position:{3999, 62} Color:{0, 177, 63, 255} Size:6 toDelete:0 
+FOOD-> Rotation:213.559 Position:{844, 860} Color:{0, 171, 48, 255} Size:9 toDelete:0 
+FOOD-> Rotation:335.847 Position:{2921, 568} Color:{0, 198, 54, 255} Size:9 toDelete:0 
+FOOD-> Rotation:237.279 Position:{3412, 2177} Color:{0, 159, 2, 255} Size:8 toDelete:0 
+FOOD-> Rotation:43.8527 Position:{4307, 1845} Color:{0, 129, 13, 255} Size:11 toDelete:0 

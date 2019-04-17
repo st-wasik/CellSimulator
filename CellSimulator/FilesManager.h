@@ -4,7 +4,7 @@
 class FilesManager
 {
 public:
-	static constexpr const char* const fileDirectory = "";
+	static constexpr const char* const fileDirectory = "./saves/";
 	static constexpr const char* const fileFormat = ".cell";
 
 	~FilesManager();

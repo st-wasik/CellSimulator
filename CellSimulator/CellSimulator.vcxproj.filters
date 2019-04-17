@@ -218,5 +218,8 @@
     <ClInclude Include="CellInsertionTool.h">
       <Filter>Simulation Tools\Header</Filter>
     </ClInclude>
+    <ClInclude Include="RegexPattern.h">
+      <Filter>Utils\Header</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

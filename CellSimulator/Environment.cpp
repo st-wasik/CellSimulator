@@ -53,12 +53,14 @@ void Environment::sterilizeEnvironment()
 	}
 }
 
-void Environment::configure()
+void Environment::configure(sf::Vector2f envSize)
 {
+	sterilizeEnvironment();
+
 	backgroundDefaultColor = sf::Color{ 170, 135, 200 };
 
 	auto& eb = environmentBackground;
-	eb.setSize(sf::Vector2f{ 5000,2500 });
+	eb.setSize(envSize);
 	eb.setFillColor(backgroundDefaultColor);
 	eb.setOutlineColor(sf::Color::Red);
 	eb.setOutlineThickness(5);
@@ -86,6 +88,8 @@ void Environment::configure()
 	}
 
 
+
+
 	for (int i = 0; i < 2; i++) {
 		auto cell = CellFactory::getCell(Cell::Type::Aggressive);
 		cell->setPosition(sf::Vector2f(randomInt(40, static_cast<int>(Environment::getSize().x - 40)), randomInt(40, static_cast<int>(Environment::getSize().y - 40))));
@@ -111,6 +115,11 @@ void Environment::configure()
 	}
 
 	FoodManager::generateFood(sf::Vector2f(3, 12), 100);
+}
+
+void Environment::configure(std::string formattedEnvString)
+{
+
 }
 
 void Environment::updateBackground()
@@ -333,8 +342,7 @@ std::string Environment::getSaveString()
 	std::ostringstream result;
 
 	result << "ENVIRONMENT-> " <<
-		VarAbbrv::envSizeX << ":" << this->environmentBackground.getSize().x << " " <<
-		VarAbbrv::envSizeY << ":" << this->environmentBackground.getSize().y << " " <<
+		VarAbbrv::envSize << ":{" << this->environmentBackground.getSize().x <<", "<< this->environmentBackground.getSize().y << "} " <<
 		VarAbbrv::radiation << ":" << this->getRadiation() << " " <<
 		VarAbbrv::temperature << ":" << this->getTemperature() << " " <<
 		VarAbbrv::isSimualtionActive << ":" << this->getIsSimulationActive() << " " << std::endl << std::endl;
