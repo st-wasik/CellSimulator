@@ -12,9 +12,11 @@
 #include "FoodManager.h"
 #include "AutoFeederTool.h"
 #include "Distance.h"
+#include "RegexPattern.h"
 #include "CellFactory.h"
 #include "MessagesManager.h"
 #include <sstream>
+#include <regex>
 
 Environment::~Environment()
 {
@@ -119,6 +121,86 @@ void Environment::configure(sf::Vector2f envSize)
 
 void Environment::configure(std::string formattedEnvString)
 {
+	std::string doubleRegex(RegexPattern::Double);
+	std::string vectorRegex(RegexPattern::Vector);
+	std::string word(RegexPattern::Word);
+
+	std::regex envRegex("ENVIRONMENT->( " + word + ":((" + doubleRegex + ")|(" + vectorRegex + ")))* ");
+	//std::regex envRegex("^ENVIRONMENT->( [a-zA-Z_]+:(([0-9]+\\.?[0-9]*)|(\\{[0-9]+\\.?[0-9]*(, [0-9]+\\.?[0-9]*)*\\})))*$");
+	std::regex cellHeader("CELL->");
+	std::regex foodHeader("FOOD->");
+	std::regex empty("^$");
+
+	std::vector<std::string> lines;
+	std::istringstream input(formattedEnvString);
+
+	while (true)
+	{
+		std::string tempString;
+		std::getline(input, tempString, '\n');
+		if (input.eof()) break;
+		lines.push_back(tempString);
+	}
+
+	if (lines.size() == 0)
+	{
+		throw std::exception("Save string is empty!");
+	}
+	if (!std::regex_match(lines[0].begin(), lines[0].end(), envRegex))
+	{
+		throw std::exception((std::string("Environment string wrong format!   ") + + "<" + lines[0] + ">").c_str());
+	}
+
+	std::regex envSettingsRegex(" " + word + ":(" + doubleRegex + "|" + vectorRegex + ")");
+	auto envSettingsBegin = std::sregex_iterator(lines[0].begin(), lines[0].end(), envSettingsRegex);
+	auto envSettingsEnd = std::sregex_iterator();
+
+	for (auto i = envSettingsBegin; i != envSettingsEnd; ++i)
+	{
+		std::string settingStr = i->str();
+		std::regex type(word);
+		std::regex value(doubleRegex);
+		std::regex vectorValue(vectorRegex);
+
+		auto type_i = std::sregex_iterator(settingStr.begin(), settingStr.end(), type);
+		auto value_i = std::sregex_iterator(settingStr.begin(), settingStr.end(), value);
+		auto vector_value_i = std::sregex_iterator(settingStr.begin(), settingStr.end(), vectorValue);
+
+		if (type_i != std::sregex_iterator() && value_i != std::sregex_iterator())
+			modifyValueFromString(type_i->str(), value_i->str());
+		else if (type_i != std::sregex_iterator() && value_i != std::sregex_iterator())
+		{
+			std::vector<std::string> values_vect;
+			for (auto it = value_i; it != std::sregex_iterator(); it++)
+			{
+				values_vect.push_back(it->str());
+			}
+			modifyValueFromVector(type_i->str(), values_vect);
+		}
+	}
+
+	for (int i = 1; i < lines.size(); ++i)
+	{
+		try
+		{
+
+			if (std::regex_match(lines[i].begin(), lines[i].end(), empty))
+				continue;
+			else if (std::regex_search(lines[i].begin(), lines[i].end(), cellHeader))
+			{
+				insertNewCell(Cell::create(lines[i]));
+			}
+			else if (std::regex_search(lines[i].begin(), lines[i].end(), foodHeader))
+			{
+				insertNewFood(Food::create(lines[i]));
+			}
+			else Logger::log("Not recognized data format in environment save string.");
+		}
+		catch (std::exception e)
+		{
+			Logger::log(e.what());
+		}
+	}
 
 }
 
@@ -389,6 +471,33 @@ bool Environment::isCellInEnvironmentBounds(Cell & c)
 		return false;
 	}
 	return true;
+}
+
+void Environment::modifyValueFromString(std::string valueName, std::string value)
+{
+	Logger::log("Setting '" + valueName + "' to " + value);
+	auto& v = valueName;
+
+	if (v == VarAbbrv::isSimualtionActive)		this->_simulationActive = (std::stod(value));
+	else if (v == VarAbbrv::radiation)			this->_radiation = (std::stod(value));
+	else if (v == VarAbbrv::temperature)		this->_temperature = (std::stod(value));
+	else Logger::log(std::string("Unknown environment var name '" + v + "' with value '" + value + "'!"));
+}
+
+void Environment::modifyValueFromVector(std::string valueName, const std::vector<std::string>& values)
+{
+	Logger::log("Setting '" + valueName + "'.");
+	auto& v = valueName;
+
+	if (v == VarAbbrv::envSize)
+	{
+		if (values.size() != 2)
+		{
+			Logger::log("Wrong values count for " + std::string(VarAbbrv::envSize) + ".");
+			return;
+		}
+		configure(sf::Vector2f(std::stod(values[0]), std::stod(values[1])));
+	}
 }
 
 sf::Vector2i Environment::getCollisionSectorCoords(std::shared_ptr<BaseObj> o)

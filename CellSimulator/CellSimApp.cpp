@@ -100,6 +100,35 @@ void CellSimApp::run()
 					Environment::getInstance().startSimualtion();
 			}
 
+			if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::R)
+			{
+				bool wasSimActive = Environment::getInstance().getIsSimulationActive();
+				Environment::getInstance().pauseSimulation();
+				MessagesManager::getInstance().append("Loading simulation from file...");
+				std::string saveString;
+				try
+				{
+					saveString = FilesManager::getInstance().readFile("quick_save");
+				}
+				catch (std::exception e)
+				{
+					Logger::log(e.what());
+				}
+
+				try
+				{
+					Environment::getInstance().configure(saveString);
+				}
+				catch (std::exception e)
+				{
+					Logger::log(e.what());
+				}
+
+				MessagesManager::getInstance().append("Simulation loaded from quick_save.cell.");
+				if (wasSimActive)
+					Environment::getInstance().startSimualtion();
+			}
+
 			if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Tilde)
 				CellInsertionTool::getInstance().setIsActive(!CellInsertionTool::getInstance().getIsActive());
 
@@ -151,7 +180,7 @@ void CellSimApp::configure()
 	window->create(windowVideoMode, windowTitle, sf::Style::Fullscreen);
 	window->setFramerateLimit(60);
 	window->setPosition({ 0,0 });
-	//window->setVerticalSyncEnabled(true);
+	window->setVerticalSyncEnabled(true);
 
 	//sf::Image icon;
 	//icon.loadFromFile("./textures/icon.png");

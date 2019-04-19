@@ -73,13 +73,13 @@ Cell::Cell(std::string formattedCellString) : Cell(0, { 0,0 }, sf::Color::Transp
 	std::string vectorRegex(RegexPattern::Vector);
 	std::string word(RegexPattern::Word);
 
-	std::regex cellRegex("CELL->( " + word + ":(" + doubleRegex + "|" + vectorRegex + "))*");
+	std::regex cellRegex("CELL->( " + word + ":((" + doubleRegex + ")|(" + vectorRegex + ")|(" + word + ")))* ");
 	if (!std::regex_match(formattedCellString.begin(), formattedCellString.end(), cellRegex))
 	{
-		throw std::exception("Cell string wrong format!");
+		throw std::exception((std::string("Cell string wrong format!") + "<" + formattedCellString + ">").c_str());
 	}
 
-	std::regex settingRegex(" " + word + ":(" + doubleRegex + "|" + vectorRegex + ")");
+	std::regex settingRegex(" " + word + ":((" + doubleRegex + ")|(" + vectorRegex + "))");
 
 	auto settingsBegin = std::sregex_iterator(formattedCellString.begin(), formattedCellString.end(), settingRegex);
 	auto settingsEnd = std::sregex_iterator();
@@ -92,27 +92,32 @@ Cell::Cell(std::string formattedCellString) : Cell(0, { 0,0 }, sf::Color::Transp
 		std::regex vectorValue(vectorRegex);
 
 		auto type_i = std::sregex_iterator(settingStr.begin(), settingStr.end(), type);
-		auto value_i = std::sregex_iterator(settingStr.begin(), settingStr.end(), value);
+		
 		auto vector_value_i = std::sregex_iterator(settingStr.begin(), settingStr.end(), vectorValue);
 
-		if (type_i != std::sregex_iterator() && value_i != std::sregex_iterator())
-			modifyValueFromString(type_i->str(), value_i->str());
-		else if (type_i != std::sregex_iterator() && value_i != std::sregex_iterator())
+		if (type_i != std::sregex_iterator() && vector_value_i != std::sregex_iterator())
 		{
 			std::vector<std::string> values_vect;
-			for (auto it = value_i; it != std::sregex_iterator(); it++)
+			for (auto it = vector_value_i; it != std::sregex_iterator(); it++)
 			{
 				values_vect.push_back(it->str());
 			}
 			modifyValueFromVector(type_i->str(), values_vect);
 		}
+		else
+		{
+			auto value_i = std::sregex_iterator(settingStr.begin(), settingStr.end(), value);
+			if (type_i != std::sregex_iterator() && value_i != std::sregex_iterator())
+				modifyValueFromString(type_i->str(), value_i->str());
+		}
+
 		//TODO: add cell name
 	}
 }
 
 void Cell::modifyValueFromString(std::string valueName, std::string value)
 {
-	Logger::log("Setting '" + valueName + "' to " + value);
+	//Logger::log("Setting '" + valueName + "' to " + value);
 	auto& v = valueName;
 
 	if (v == VarAbbrv::currentRotation)			this->setRotation(std::stod(value));
@@ -130,19 +135,23 @@ void Cell::modifyValueFromString(std::string valueName, std::string value)
 	else if (v == VarAbbrv::maxSize)			this->genes.maxSize = (std::stod(value));
 	else if (v == VarAbbrv::maxSpeed)			this->genes.maxSpeed = (std::stod(value));
 	else if (v == VarAbbrv::radarRange)			this->genes.radarRange = (std::stod(value));
+	else if (v == BaseObj::VarAbbrv::markedToDelete)
+	{
+		if (std::stod(value)) this->markToDelete();
+	}
 	else Logger::log(std::string("Unknown cell var name '" + v + "' with value '" + value + "'!"));
 }
 
 void Cell::modifyValueFromVector(std::string valueName, const std::vector<std::string>& values)
 {
-	Logger::log("Setting '" + valueName + "'.");
+	//Logger::log("Setting '" + valueName + "'.");
 	auto& v = valueName;
 
 	if (v == VarAbbrv::currentPosition)
 	{
 		if (values.size() != 2)
 		{
-			Logger::log("Wrong values count for " + std::string(VarAbbrv::currentPosition) + ".");
+			Logger::log("Wrong values count for " + std::string(VarAbbrv::currentPosition) + ": " + std::to_string(values.size()) + ".");
 			return;
 		}
 		this->setPosition(sf::Vector2f(std::stod(values[0]), std::stod(values[1])));
@@ -151,7 +160,7 @@ void Cell::modifyValueFromVector(std::string valueName, const std::vector<std::s
 	{
 		if (values.size() != 4)
 		{
-			Logger::log("Wrong values count for " + std::string(VarAbbrv::color) + ".");
+			Logger::log("Wrong values count for " + std::string(VarAbbrv::color) + ": " + std::to_string(values.size()) + ". <" + values[0] + ">");
 			return;
 		}
 		this->setBaseColor(sf::Color(std::stod(values[0]), std::stod(values[1]), std::stod(values[2]), std::stod(values[3])));

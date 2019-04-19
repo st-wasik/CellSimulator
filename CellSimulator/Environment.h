@@ -55,6 +55,9 @@ public:
 	std::string getSaveString();
 
 	bool isCellInEnvironmentBounds(Cell& c);
+
+	void modifyValueFromString(std::string valueName, std::string value);
+	void modifyValueFromVector(std::string valueName, const std::vector<std::string>& value);
 private:
 	// used to determine collision sector size
 	// value = cell max radius*2 (diameter) + margin

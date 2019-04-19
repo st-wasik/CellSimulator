@@ -17,6 +17,10 @@ public:
 
 private:
 	Food(float size, sf::Vector2f position, sf::Color color);
+	Food(std::string formattedFoodString);
+
+	void modifyValueFromString(std::string valueName, std::string value);
+	void modifyValueFromVector(std::string valueName, const std::vector<std::string>& value);
 };
 
 template<typename ...T>
