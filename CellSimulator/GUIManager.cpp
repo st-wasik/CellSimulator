@@ -5,6 +5,135 @@
 #include "DoubleToString.h"
 #include "MessagesManager.h"
 
+std::shared_ptr<tgui::Label> GUIManager::createLabel(std::shared_ptr<tgui::Gui> gui, std::string text, int x, int y, int textSize, std::shared_ptr<tgui::Label> tooltip = nullptr, int enabled = 1, std::string renderer = "Label")
+{
+	std::shared_ptr<tgui::Label> Label = tgui::Label::create();
+
+	Label->setRenderer(theme.getRenderer(renderer));
+	Label->setText(text);
+	Label->setPosition(x, y);
+	Label->setTextSize(textSize);
+	if (!enabled)
+		Label->setInheritedOpacity(0.5);
+	Label->setToolTip(tooltip);
+	if (renderer == "Label")
+		gui->add(Label);
+
+	return Label;
+}
+
+std::shared_ptr<tgui::EditBox> GUIManager::createEditBox(std::shared_ptr<tgui::Gui> gui, int width, int height, int textSize, int x, int y, sf::String defaultText, int enabled = 1)
+{
+	std::shared_ptr<tgui::EditBox> EditBox = tgui::EditBox::create();
+
+	EditBox->setRenderer(theme.getRenderer("EditBox"));
+	EditBox->setSize(width, height);
+	EditBox->setTextSize(textSize);
+	EditBox->setPosition(x, y);
+	EditBox->setDefaultText(defaultText);
+	if (!enabled)
+	{
+		EditBox->setEnabled(enabled);
+		EditBox->setInheritedOpacity(0.5);
+	}
+	gui->add(EditBox);
+
+	return EditBox;
+}
+
+std::shared_ptr<tgui::Slider> GUIManager::createSlider(std::shared_ptr<tgui::Gui> gui, int width, int height, int x, int y, int max, int min, int val, int enabled = 1)
+{
+	std::shared_ptr <tgui::Slider> Slider = tgui::Slider::create();
+	Slider->setRenderer(theme.getRenderer("Slider"));
+	Slider->setPosition(x, y);
+	Slider->setSize(width, height);
+	Slider->setMaximum(max);
+	Slider->setMinimum(min);
+	Slider->setValue(val);
+	if (!enabled)
+	{
+		Slider->setEnabled(enabled);
+		Slider->setInheritedOpacity(0.5);
+	}
+	gui->add(Slider);
+
+	return Slider;
+}
+
+std::shared_ptr<tgui::Button> GUIManager::createButton(std::shared_ptr<tgui::Gui> gui, int width, int height, int x, int y, sf::String text, int enabled = 1)
+{
+	std::shared_ptr<tgui::Button> Button = tgui::Button::create();
+	Button->setRenderer(theme.getRenderer("Button"));
+	Button->setPosition(x, y);
+	Button->setText(text);
+	Button->setSize(width, height);
+	if (!enabled)
+	{
+		Button->setEnabled(enabled);
+		Button->setInheritedOpacity(0.5);
+	}
+	gui->add(Button);
+
+	return Button;
+}
+
+std::shared_ptr<tgui::CheckBox> GUIManager::createCheckBox(std::shared_ptr<tgui::Gui> gui, int width, int height, int x, int y, sf::String text, int textSize)
+{
+	std::shared_ptr<tgui::CheckBox> CheckBox = tgui::CheckBox::create();
+	CheckBox->setRenderer(theme.getRenderer("CheckBox"));
+	CheckBox->setPosition(x, y);
+	CheckBox->setText(text);
+	CheckBox->setSize(width, height);
+	CheckBox->setTextSize(textSize);
+	gui->add(CheckBox);
+
+	return CheckBox;
+}
+std::shared_ptr<tgui::ProgressBar> GUIManager::createProgressBar(std::shared_ptr<tgui::Gui> gui, int width, int height, int x, int y, int textSize, std::shared_ptr<tgui::Label> tooltip, int visible = 0)
+{
+	std::shared_ptr<tgui::ProgressBar> ProgressBar = tgui::ProgressBar::create();
+	ProgressBar->setRenderer(theme.getRenderer("ProgressBar"));
+	ProgressBar->setPosition(x, y);
+	ProgressBar->setSize(width, height);
+	ProgressBar->setTextSize(textSize);
+	ProgressBar->setVisible(visible);
+	ProgressBar->setToolTip(tooltip);
+	gui->add(ProgressBar);
+
+	return ProgressBar;
+}
+std::shared_ptr<tgui::TextBox> GUIManager::createTextBox(std::shared_ptr<tgui::Gui> gui, int width, int height, int x, int y, int textSize, int visible = 0)
+{
+	std::shared_ptr<tgui::TextBox> TextBox = tgui::TextBox::create();
+	TextBox->setRenderer(theme.getRenderer("TextBox"));
+	TextBox->setPosition(x, y);
+	TextBox->setSize(width, height);
+	TextBox->setTextSize(textSize);
+	TextBox->setVisible(visible);
+	TextBox->setReadOnly(1);
+	TextBox->setVerticalScrollbarPolicy(tgui::Scrollbar::Policy::Never);
+	gui->add(TextBox);
+
+	return TextBox;
+}
+
+void GUIManager::setVisible(std::vector<std::shared_ptr<tgui::Widget>> widgets, int enable)
+{
+	for (int i = 0; i < widgets.size(); i++)
+	{
+		widgets[i]->setVisible(enable);
+	}
+}
+
+void GUIManager::updateValues(std::shared_ptr<tgui::Label> ValTT, std::shared_ptr<tgui::ProgressBar> Val, sf::String setTextTT, sf::String setText, int max, int min, int val)
+{
+	ValTT->setText(setTextTT);
+	Val->setText(setText);
+	Val->setMaximum(max);
+	Val->setMinimum(min);
+	Val->setValue(val);
+}
+
 GUIManager::GUIManager()
 {
 }
@@ -27,214 +156,120 @@ void GUIManager::configure(std::shared_ptr<sf::RenderWindow> window)
 	gui = std::make_shared<tgui::Gui>(*window);
 	theme.load("../../CellSimulator/TGUI-0.8/themes/TransparentGrey.txt");
 
-	background.setSize(sf::Vector2f( 360, window->getSize().y ));
+	background.setSize(sf::Vector2f(360, window->getSize().y));
 	background.setFillColor(sf::Color(32, 32, 32, 128));
 	background.setPosition({ 0,0 });
 	background.setOutlineColor(sf::Color(32, 32, 16));
 	background.setOutlineThickness(7);
 
-	/*backgroundPanel = tgui::Panel::create();
-	backgroundPanel->setRenderer(theme.getRenderer("Panel"));
-	backgroundPanel->setSize(350, sf::VideoMode::getDesktopMode().height);
-	backgroundPanel->setPosition({ 0,0 });
-	gui->add(backgroundPanel);
-*/
-
 	//ENV SETTINGS
-	labelTemp = tgui::Label::create();
-	labelTemp->setRenderer(theme.getRenderer("Label"));
-	labelTemp->setText("Temperature");
-	labelTemp->setPosition(50, 15);
-	labelTemp->setTextSize(18);
-	gui->add(labelTemp);
+	createLabel(gui, "Temperature", 50, 15, 18);
 
-	editBoxTemp = tgui::EditBox::create();
-	editBoxTemp->setRenderer(theme.getRenderer("EditBox"));
-	editBoxTemp->setSize(60, 25);
-	editBoxTemp->setTextSize(18);
-	editBoxTemp->setPosition(220, 32);
-	editBoxTemp->setDefaultText(std::to_string((int)Environment::getInstance().getTemperature()));
-	gui->add(editBoxTemp);
+	editBoxTemp = createEditBox(gui, 60, 25, 18, 220, 32, std::to_string((int)Environment::getInstance().getTemperature()));
 
-	sliderTemp = tgui::Slider::create();
-	sliderTemp->setRenderer(theme.getRenderer("Slider"));
-	sliderTemp->setPosition(10, 40);
-	sliderTemp->setSize(200, 9);
-	sliderTemp->setMaximum(100);
-	sliderTemp->setMinimum(-100);
-	sliderTemp->setValue(Environment::getInstance().getTemperature());
-	gui->add(sliderTemp);
+	sliderTemp = createSlider(gui, 200, 9, 10, 40, 100, -100, Environment::getInstance().getTemperature());
 
-	buttonTemp = tgui::Button::create();
-	buttonTemp->setRenderer(theme.getRenderer("Button"));
-	buttonTemp->setPosition(285, 32);
-	buttonTemp->setText("SET");
-	buttonTemp->setSize(60, 25);
-	gui->add(buttonTemp);
+	buttonTemp = createButton(gui, 60, 25, 285, 32, "SET");
 
-	labelRad = tgui::Label::create();
-	labelRad->setRenderer(theme.getRenderer("Label"));
-	labelRad->setText("Radiation");
-	labelRad->setPosition(70, 60);
-	labelRad->setTextSize(18);
-	gui->add(labelRad);
+	createLabel(gui, "Radiation", 70, 60, 18);
 
-	editBoxRad = tgui::EditBox::create();
-	editBoxRad->setRenderer(theme.getRenderer("EditBox"));
-	editBoxRad->setSize(60, 25);
-	editBoxRad->setTextSize(18);
-	editBoxRad->setPosition(220, 77);
-	editBoxRad->setDefaultText(std::to_string((int)Environment::getInstance().getRadiation()));
-	gui->add(editBoxRad);
+	editBoxRad = createEditBox(gui, 60, 25, 18, 220, 77, std::to_string((int)Environment::getInstance().getRadiation()));
 
-	sliderRad = tgui::Slider::create();
-	sliderRad->setRenderer(theme.getRenderer("Slider"));
-	sliderRad->setPosition(10, 85);
-	sliderRad->setSize(200, 9);
-	sliderRad->setMaximum(100);
-	sliderRad->setMinimum(0);
-	sliderRad->setValue(Environment::getInstance().getRadiation());
-	gui->add(sliderRad);
+	sliderRad = createSlider(gui, 200, 9, 10, 85, 100, 0, Environment::getInstance().getRadiation());
 
-	buttonRad = tgui::Button::create();
-	buttonRad->setRenderer(theme.getRenderer("Button"));
-	buttonRad->setPosition(285, 77);
-	buttonRad->setText("SET");
-	buttonRad->setSize(60, 25);
-	gui->add(buttonRad);
+	buttonRad = createButton(gui, 60, 25, 285, 77, "SET");
 
-	labelQuan = tgui::Label::create();
-	labelQuan->setRenderer(theme.getRenderer("Label"));
-	labelQuan->setText("Food limit [%]");
-	labelQuan->setPosition(45, 125);
-	labelQuan->setTextSize(18);
-	labelQuan->setEnabled(0);
-	labelQuan->setInheritedOpacity(0.5);
-	gui->add(labelQuan);
+	labelQuan = createLabel(gui, "Food limit [%]", 45, 125, 18, 0, 0.5);
 
-	editBoxQuan = tgui::EditBox::create();
-	editBoxQuan->setRenderer(theme.getRenderer("EditBox"));
-	editBoxQuan->setSize(60, 25);
-	editBoxQuan->setTextSize(18);
-	editBoxQuan->setPosition(220, 142);
-	editBoxQuan->setDefaultText(std::to_string((int)AutoFeederTool::getInstance().getMaxThresholdValue()));
-	editBoxQuan->setEnabled(0);
-	editBoxQuan->setInheritedOpacity(0.5);
-	gui->add(editBoxQuan);
+	editBoxQuan = createEditBox(gui, 60, 25, 18, 220, 142, std::to_string((int)AutoFeederTool::getInstance().getMaxThresholdValue()), 0);
 
-	sliderQuan = tgui::Slider::create();
-	sliderQuan->setRenderer(theme.getRenderer("Slider"));
-	sliderQuan->setPosition(10, 150);
-	sliderQuan->setSize(200, 9);
-	sliderQuan->setMaximum(100);
-	sliderQuan->setMinimum(1);
-	sliderQuan->setValue(AutoFeederTool::getInstance().getMaxThresholdValue());
-	sliderQuan->setEnabled(0);
-	sliderQuan->setInheritedOpacity(0.5);
-	gui->add(sliderQuan);
+	sliderQuan = createSlider(gui, 200, 9, 10, 150, 100, 1, AutoFeederTool::getInstance().getMaxThresholdValue(), 0);
 
-	buttonQuan = tgui::Button::create();
-	buttonQuan->setRenderer(theme.getRenderer("Button"));
-	buttonQuan->setPosition(285, 142);
-	buttonQuan->setText("SET");
-	buttonQuan->setSize(60, 25);
-	buttonQuan->setEnabled(0);
-	buttonQuan->setInheritedOpacity(0.5);
-	gui->add(buttonQuan);
+	buttonQuan = createButton(gui, 60, 25, 285, 142, "SET", 0);
 
-	labelFreq = tgui::Label::create();
-	labelFreq->setRenderer(theme.getRenderer("Label"));
-	labelFreq->setText("Feed frequency");
-	labelFreq->setPosition(38, 170);
-	labelFreq->setTextSize(18);
-	labelFreq->setEnabled(0);
-	labelFreq->setInheritedOpacity(0.5);
-	gui->add(labelFreq);
+	labelFreq = createLabel(gui, "Feed frequency", 28, 170, 18, 0, 0.5);
 
-	editBoxFreq = tgui::EditBox::create();
-	editBoxFreq->setRenderer(theme.getRenderer("EditBox"));
-	editBoxFreq->setSize(60, 25);
-	editBoxFreq->setTextSize(18);
-	editBoxFreq->setPosition(220, 187);
-	editBoxFreq->setDefaultText(std::to_string((int)AutoFeederTool::getInstance().getMaxFoodPerSec()));
-	editBoxFreq->setEnabled(0);
-	editBoxFreq->setInheritedOpacity(0.5);
-	gui->add(editBoxFreq);
+	editBoxFreq = createEditBox(gui, 60, 25, 18, 220, 187, std::to_string((int)AutoFeederTool::getInstance().getMaxFoodPerSec()), 0);
 
-	sliderFreq = tgui::Slider::create();
-	sliderFreq->setRenderer(theme.getRenderer("Slider"));
-	sliderFreq->setPosition(10, 195);
-	sliderFreq->setSize(200, 9);
-	sliderFreq->setMaximum(250);
-	sliderFreq->setMinimum(1);
-	sliderFreq->setValue(AutoFeederTool::getInstance().getMaxFoodPerSec());
-	sliderFreq->setEnabled(0);
-	sliderFreq->setInheritedOpacity(0.5);
-	gui->add(sliderFreq);
+	sliderFreq = createSlider(gui, 200, 9, 10, 195, 250, 1, AutoFeederTool::getInstance().getMaxFoodPerSec(), 0);
 
-	buttonFreq = tgui::Button::create();
-	buttonFreq->setRenderer(theme.getRenderer("Button"));
-	buttonFreq->setPosition(285, 187);
-	buttonFreq->setText("SET");
-	buttonFreq->setSize(60, 25);
-	buttonFreq->setEnabled(0);
-	buttonFreq->setInheritedOpacity(0.5);
-	gui->add(buttonFreq);
+	buttonFreq = createButton(gui, 60, 25, 285, 187, "SET", 0);
 
-	buttonFeed = tgui::Button::create();
-	buttonFeed->setRenderer(theme.getRenderer("Button"));
-	buttonFeed->setPosition(75, 230);
-	buttonFeed->setText("Feed");
-	buttonFeed->setSize(100, 40);
-	buttonFeed->setInheritedOpacity(1);
-	gui->add(buttonFeed);
+	buttonFeed = createButton(gui, 100, 40, 75, 230, "Feed");
 
-	buttonSelect = tgui::Button::create();
-	buttonSelect->setRenderer(theme.getRenderer("Button"));
-	buttonSelect->setPosition(180, 230);
-	buttonSelect->setText("Select");
-	buttonSelect->setSize(100, 40);
-	buttonSelect->setInheritedOpacity(0.5);
-	buttonSelect->setEnabled(0);
-	gui->add(buttonSelect);
+	buttonSelect = createButton(gui, 100, 40, 180, 230, "Select", 0);
 
-	checkBoxFeed = tgui::CheckBox::create();
-	checkBoxFeed->setRenderer(theme.getRenderer("CheckBox"));
-	checkBoxFeed->setPosition(75, 275);
-	checkBoxFeed->setText("Auto-feed");
-	checkBoxFeed->setSize(15, 15);
-	checkBoxFeed->setTextSize(14);
-	gui->add(checkBoxFeed);
+	checkBoxFeed = createCheckBox(gui, 15, 15, 75, 275, "Auto-feed", 14);
 
-	labelCells = tgui::Label::create();
-	labelCells->setRenderer(theme.getRenderer("Label"));
-	labelCells->setText("Cells:");
-	labelCells->setPosition(10, 310);
-	labelCells->setTextSize(18);
-	gui->add(labelCells);
+	createLabel(gui, "Cells:", 10, 310, 18);
 
-	labelFood = tgui::Label::create();
-	labelFood->setRenderer(theme.getRenderer("Label"));
-	labelFood->setText("Food:");
-	labelFood->setPosition(10, 340);
-	labelFood->setTextSize(18);
-	gui->add(labelFood);
+	createLabel(gui, "Food:", 10, 340, 18);
 
-	labelCellsVar = tgui::Label::create();
-	labelCellsVar->setRenderer(theme.getRenderer("Label"));
-	labelCellsVar->setText(std::to_string(Environment::getInstance().getAliveCellsCount()));
-	labelCellsVar->setPosition(75, 310);
-	labelCellsVar->setTextSize(18);
-	gui->add(labelCellsVar);
+	labelCellsVar = createLabel(gui, std::to_string(Environment::getInstance().getAliveCellsCount()), 75, 310, 18);
 
-	labelFoodVar = tgui::Label::create();
-	labelFoodVar->setRenderer(theme.getRenderer("Label"));
-	labelFoodVar->setText(std::to_string(Environment::getInstance().getFoodCount()));
-	labelFoodVar->setPosition(75, 340);
-	labelFoodVar->setTextSize(18);
-	gui->add(labelFoodVar);
+	labelFoodVar = createLabel(gui, std::to_string(Environment::getInstance().getFoodCount()), 75, 340, 18);
 
-	//wywo³anie eventów
+	//GUI OFFSET
+	constexpr int offset = 400;
+
+	//CELL PREVIEW
+	createLabel(gui, "Size", 10, 10 + offset, 18);
+
+	sizeValTT = createLabel(gui, "", 0, 0, 18, nullptr, 1, "ToolTip");
+
+	sizeVal = createProgressBar(gui, 170, 20, 150, 9 + offset, 16, sizeValTT);
+	widgetsPreview.push_back(sizeVal);
+
+	createLabel(gui, "Speed", 10, 40 + offset, 18);
+
+	speedValTT = createLabel(gui, "", 0, 0, 18, nullptr, 1, "ToolTip");
+
+	speedVal = createProgressBar(gui, 170, 20, 150, 39 + offset, 16, speedValTT);
+	widgetsPreview.push_back(speedVal);
+
+	createLabel(gui, "Age", 10, 70 + offset, 18);
+
+	ageValTT = createLabel(gui, "", 0, 0, 18, nullptr, 1, "ToolTip");
+
+	ageVal = createProgressBar(gui, 170, 20, 150, 69 + offset, 16, ageValTT);
+	widgetsPreview.push_back(ageVal);
+
+	createLabel(gui, "Fertility", 10, 100 + offset, 18);
+
+	horninessValTT = createLabel(gui, "", 0, 0, 18, nullptr, 1, "ToolTip");
+
+	horninessVal = createProgressBar(gui, 170, 20, 150, 99 + offset, 16, horninessValTT);
+	widgetsPreview.push_back(horninessVal);
+
+	createLabel(gui, "Aggresion", 10, 130 + offset, 18);
+
+	aggresionValTT = createLabel(gui, "", 0, 0, 18, nullptr, 1, "ToolTip");
+
+	aggresionVal = createProgressBar(gui, 170, 20, 150, 129 + offset, 16, aggresionValTT);
+	widgetsPreview.push_back(aggresionVal);
+
+	createLabel(gui, "Food level", 10, 160 + offset, 18);
+
+	foodLevelValTT = createLabel(gui, "", 0, 0, 18, nullptr, 1, "ToolTip");
+
+	foodLevelVal = createProgressBar(gui, 170, 20, 150, 159 + offset, 16, foodLevelValTT);
+	widgetsPreview.push_back(foodLevelVal);
+
+	divisionThresholdTT = createLabel(gui, "Division Threshold", 0, 0, 18, nullptr, 1, "ToolTip");
+
+	createLabel(gui, "Div. th", 10, 190 + offset, 18, divisionThresholdTT);
+
+	divisionThresholdVal = createTextBox(gui, 50, 20, 210, 189 + offset, 16);
+	widgetsPreview.push_back(divisionThresholdVal);
+
+	radarRangeTT = createLabel(gui, "Detection Range", 0, 0, 18, nullptr, 1, "ToolTip");
+
+	createLabel(gui, "Detec. rg", 10, 220 + offset, 18, radarRangeTT);
+
+	radarRangeVal = createTextBox(gui, 50, 20, 210, 219 + offset, 16);
+	widgetsPreview.push_back(radarRangeVal);
+
+	//EVENTS ENV
 	sliderTemp->connect("ValueChanged", [&]()
 	{
 		Environment::getInstance().setTemperature(sliderTemp->getValue());
@@ -325,7 +360,6 @@ void GUIManager::configure(std::shared_ptr<sf::RenderWindow> window)
 
 	checkBoxFeed->connect("checked", [=]()
 	{
-		labelQuan->setEnabled(1);
 		labelQuan->setInheritedOpacity(1);
 		editBoxQuan->setEnabled(1);
 		editBoxQuan->setInheritedOpacity(1);
@@ -333,7 +367,6 @@ void GUIManager::configure(std::shared_ptr<sf::RenderWindow> window)
 		sliderQuan->setInheritedOpacity(1);
 		buttonQuan->setEnabled(1);
 		buttonQuan->setInheritedOpacity(1);
-		labelFreq->setEnabled(1);
 		labelFreq->setInheritedOpacity(1);
 		editBoxFreq->setEnabled(1);
 		editBoxFreq->setInheritedOpacity(1);
@@ -346,7 +379,6 @@ void GUIManager::configure(std::shared_ptr<sf::RenderWindow> window)
 
 	checkBoxFeed->connect("unchecked", [=]()
 	{
-		labelQuan->setEnabled(0);
 		labelQuan->setInheritedOpacity(0.5);
 		editBoxQuan->setEnabled(0);
 		editBoxQuan->setInheritedOpacity(0.5);
@@ -354,7 +386,6 @@ void GUIManager::configure(std::shared_ptr<sf::RenderWindow> window)
 		sliderQuan->setInheritedOpacity(0.5);
 		buttonQuan->setEnabled(0);
 		buttonQuan->setInheritedOpacity(0.5);
-		labelFreq->setEnabled(0);
 		labelFreq->setInheritedOpacity(0.5);
 		editBoxFreq->setEnabled(0);
 		editBoxFreq->setInheritedOpacity(0.5);
@@ -364,189 +395,6 @@ void GUIManager::configure(std::shared_ptr<sf::RenderWindow> window)
 		buttonFreq->setInheritedOpacity(0.5);
 		AutoFeederTool::getInstance().setIsActive(false);
 	});
-
-	constexpr int offset = 400;
-
-	//CELL PREVIEW
-	size = tgui::Label::create();
-	size->setRenderer(theme.getRenderer("Label"));
-	size->setText("Size");
-	size->setPosition(10, 10 + offset);
-	size->setTextSize(18);
-	gui->add(size);
-
-	sizeValTT = tgui::Label::create();
-	sizeValTT->setRenderer(theme.getRenderer("ToolTip"));
-	sizeValTT->setText("");
-	sizeValTT->setPosition(0, 0);
-	sizeValTT->setTextSize(18);
-
-	sizeVal = tgui::ProgressBar::create();
-	sizeVal->setRenderer(theme.getRenderer("ProgressBar"));
-	sizeVal->setPosition(150, 9 + offset);
-	sizeVal->setSize(170, 20);
-	sizeVal->setTextSize(16);
-	sizeVal->setVisible(0);
-	sizeVal->setToolTip(sizeValTT);
-	gui->add(sizeVal);
-
-	speed = tgui::Label::create();
-	speed->setRenderer(theme.getRenderer("Label"));
-	speed->setText("Speed");
-	speed->setPosition(10, 40 + offset);
-	speed->setTextSize(18);
-	gui->add(speed);
-
-	speedValTT = tgui::Label::create();
-	speedValTT->setRenderer(theme.getRenderer("ToolTip"));
-	speedValTT->setText("");
-	speedValTT->setPosition(0, 0);
-	speedValTT->setTextSize(18);
-
-	speedVal = tgui::ProgressBar::create();
-	speedVal->setRenderer(theme.getRenderer("ProgressBar"));
-	speedVal->setPosition(150, 39 + offset);
-	speedVal->setSize(170, 20);
-	speedVal->setTextSize(16);
-	speedVal->setVisible(0);
-	speedVal->setToolTip(speedValTT);
-	gui->add(speedVal);
-
-	age = tgui::Label::create();
-	age->setRenderer(theme.getRenderer("Label"));
-	age->setText("Age");
-	age->setPosition(10, 70 + offset);
-	age->setTextSize(18);
-	gui->add(age);
-
-	ageValTT = tgui::Label::create();
-	ageValTT->setRenderer(theme.getRenderer("ToolTip"));
-	ageValTT->setText("");
-	ageValTT->setPosition(0, 0);
-	ageValTT->setTextSize(18);
-
-	ageVal = tgui::ProgressBar::create();
-	ageVal->setRenderer(theme.getRenderer("ProgressBar"));
-	ageVal->setPosition(150, 69 + offset);
-	ageVal->setSize(170, 20);
-	ageVal->setTextSize(16);
-	ageVal->setVisible(0);
-	ageVal->setToolTip(ageValTT);
-	gui->add(ageVal);
-
-	horniness = tgui::Label::create();
-	horniness->setRenderer(theme.getRenderer("Label"));
-	horniness->setText("Fertility");
-	horniness->setPosition(10, 100 + offset);
-	horniness->setTextSize(18);
-	gui->add(horniness);
-
-	horninessValTT = tgui::Label::create();
-	horninessValTT->setRenderer(theme.getRenderer("ToolTip"));
-	horninessValTT->setText("");
-	horninessValTT->setPosition(0, 0);
-	horninessValTT->setTextSize(18);
-
-	horninessVal = tgui::ProgressBar::create();
-	horninessVal->setRenderer(theme.getRenderer("ProgressBar"));
-	horninessVal->setPosition(150, 99 + offset);
-	horninessVal->setSize(170, 20);
-	horninessVal->setTextSize(16);
-	horninessVal->setVisible(0);
-	horninessVal->setToolTip(horninessValTT);
-	gui->add(horninessVal);
-
-	aggresion = tgui::Label::create();
-	aggresion->setRenderer(theme.getRenderer("Label"));
-	aggresion->setText("Aggresion");
-	aggresion->setPosition(10, 130 + offset);
-	aggresion->setTextSize(18);
-	gui->add(aggresion);
-
-	aggresionValTT = tgui::Label::create();
-	aggresionValTT->setRenderer(theme.getRenderer("ToolTip"));
-	aggresionValTT->setText("");
-	aggresionValTT->setPosition(0, 0 + offset);
-	aggresionValTT->setTextSize(18);
-
-	aggresionVal = tgui::ProgressBar::create();
-	aggresionVal->setRenderer(theme.getRenderer("ProgressBar"));
-	aggresionVal->setPosition(150, 129 + offset);
-	aggresionVal->setSize(170, 20);
-	aggresionVal->setTextSize(16);
-	aggresionVal->setVisible(0);
-	aggresionVal->setToolTip(aggresionValTT);
-	gui->add(aggresionVal);
-
-	foodLevel = tgui::Label::create();
-	foodLevel->setRenderer(theme.getRenderer("Label"));
-	foodLevel->setText("Food level");
-	foodLevel->setPosition(10, 160 + offset);
-	foodLevel->setTextSize(18);
-	gui->add(foodLevel);
-
-	foodLevelValTT = tgui::Label::create();
-	foodLevelValTT->setRenderer(theme.getRenderer("ToolTip"));
-	foodLevelValTT->setText("");
-	foodLevelValTT->setPosition(0, 0);
-	foodLevelValTT->setTextSize(18);
-
-	foodLevelVal = tgui::ProgressBar::create();
-	foodLevelVal->setRenderer(theme.getRenderer("ProgressBar"));
-	foodLevelVal->setPosition(150, 159 + offset);
-	foodLevelVal->setSize(170, 20);
-	foodLevelVal->setTextSize(16);
-	foodLevelVal->setVisible(0);
-	foodLevelVal->setToolTip(foodLevelValTT);
-	gui->add(foodLevelVal);
-
-	divisionThresholdTT = tgui::Label::create();
-	divisionThresholdTT->setRenderer(theme.getRenderer("ToolTip"));
-	divisionThresholdTT->setText("Division Threshold");
-	divisionThresholdTT->setPosition(0, 0);
-	divisionThresholdTT->setTextSize(18);
-
-	divisionThreshold = tgui::Label::create();
-	divisionThreshold->setRenderer(theme.getRenderer("Label"));
-	divisionThreshold->setText("Div. th");
-	divisionThreshold->setPosition(10, 190 + offset);
-	divisionThreshold->setTextSize(18);
-	divisionThreshold->setToolTip(divisionThresholdTT);
-	gui->add(divisionThreshold);
-
-	divisionThresholdVal = tgui::TextBox::create();
-	divisionThresholdVal->setRenderer(theme.getRenderer("TextBox"));
-	divisionThresholdVal->setPosition(210, 189 + offset);
-	divisionThresholdVal->setSize(50, 20);
-	divisionThresholdVal->setTextSize(16);
-	divisionThresholdVal->setVisible(0);
-	divisionThresholdVal->setReadOnly(1);
-	divisionThresholdVal->setVerticalScrollbarPolicy(tgui::Scrollbar::Policy::Never);
-	gui->add(divisionThresholdVal);
-
-	radarRangeTT = tgui::Label::create();
-	radarRangeTT->setRenderer(theme.getRenderer("ToolTip"));
-	radarRangeTT->setText("Detection Range");
-	radarRangeTT->setPosition(0, 0);
-	radarRangeTT->setTextSize(18);
-
-	radarRange = tgui::Label::create();
-	radarRange->setRenderer(theme.getRenderer("Label"));
-	radarRange->setText("Detec. rg");
-	radarRange->setPosition(10, 220 + offset);
-	radarRange->setTextSize(18);
-	radarRange->setToolTip(radarRangeTT);
-	gui->add(radarRange);
-
-	radarRangeVal = tgui::TextBox::create();
-	radarRangeVal->setRenderer(theme.getRenderer("TextBox"));
-	radarRangeVal->setPosition(210, 219 + offset);
-	radarRangeVal->setSize(50, 20);
-	radarRangeVal->setTextSize(16);
-	radarRangeVal->setVisible(0);
-	radarRangeVal->setReadOnly(1);
-	radarRangeVal->setVerticalScrollbarPolicy(tgui::Scrollbar::Policy::Never);
-	gui->add(radarRangeVal);
 }
 
 void GUIManager::handleEvent(sf::Event & e)
@@ -569,53 +417,28 @@ void GUIManager::update()
 	//CELL PREVIEW
 	if (cell != nullptr)
 	{
+		setVisible(widgetsPreview, 1);
 		//size
-		sizeValTT->setText("Min: " + doubleToString(cell->getGenes().maxSize.getMin(), 2) + "\nMax: " + doubleToString(cell->getGenes().maxSize.get(), 2));
-		sizeVal->setVisible(1);
-		sizeVal->setText(doubleToString(cell->getSize(), 2));
-		sizeVal->setMaximum(cell->getGenes().maxSize.get());
-		sizeVal->setMinimum(cell->getGenes().maxSize.getMin());
-		sizeVal->setValue(cell->getSize());
+		updateValues(sizeValTT, sizeVal, "Min: " + doubleToString(cell->getGenes().maxSize.getMin(), 2) + "\nMax: " + doubleToString(cell->getGenes().maxSize.get(), 2),
+			doubleToString(cell->getSize(), 2), cell->getGenes().maxSize.get() * 100, cell->getGenes().maxSize.getMin() * 100, cell->getSize() * 100);
 		//speed
-		speedValTT->setText("Min: " + doubleToString(cell->getGenes().maxSpeed.getMin(), 2) + "\nMax: " + doubleToString(cell->getGenes().maxSpeed.get(), 2));
-		speedVal->setVisible(1);
-		speedVal->setText(doubleToString(cell->getCurrentSpeed(), 2));
-		speedVal->setMaximum(cell->getGenes().maxSpeed.get() * 100);
-		speedVal->setMinimum(cell->getGenes().maxSpeed.getMin() * 100);
-		speedVal->setValue(cell->getCurrentSpeed() * 100);
+		updateValues(speedValTT, speedVal, "Min: " + doubleToString(cell->getGenes().maxSpeed.getMin(), 2) + "\nMax: " + doubleToString(cell->getGenes().maxSpeed.get(), 2),
+			doubleToString(cell->getCurrentSpeed(), 2), cell->getGenes().maxSpeed.get() * 100, cell->getGenes().maxSpeed.getMin() * 100, cell->getCurrentSpeed() * 100);
 		//age
-		ageValTT->setText("Min: " + doubleToString(cell->getGenes().maxAge.getMin(), 2) + "\nMax: " + doubleToString(cell->getGenes().maxAge.get(), 2));
-		ageVal->setVisible(1);
-		ageVal->setText(doubleToString(cell->age, 2));
-		ageVal->setMaximum(cell->getGenes().maxAge.get() * 100);
-		ageVal->setMinimum(cell->getGenes().maxAge.getMin() * 100);
-		ageVal->setValue(cell->age * 100);
+		updateValues(ageValTT, ageVal, "Min: " + doubleToString(cell->getGenes().maxAge.getMin(), 2) + "\nMax: " + doubleToString(cell->getGenes().maxAge.get(), 2),
+			doubleToString(cell->age, 2), cell->getGenes().maxAge.get() * 100, cell->getGenes().maxAge.getMin() * 100, cell->age * 100);
 		//horniness
-		horninessValTT->setText("Min: " + doubleToString(cell->getHorniness().getMin(), 2) + "\nMax: " + doubleToString(cell->getHorniness().getMax(), 2));
-		horninessVal->setVisible(1);
-		horninessVal->setText(doubleToString(cell->getHorniness().get(), 2));
-		horninessVal->setMaximum(cell->getHorniness().getMax() * 100);
-		horninessVal->setMinimum(cell->getHorniness().getMin() * 100);
-		horninessVal->setValue(cell->getHorniness().get() * 100);
+		updateValues(horninessValTT, horninessVal, "Min: " + doubleToString(cell->getHorniness().getMin(), 2) + "\nMax: " + doubleToString(cell->getHorniness().getMax(), 2),
+			doubleToString(cell->getHorniness().get(), 2), cell->getHorniness().getMax() * 100, cell->getHorniness().getMin() * 100, cell->getHorniness().get() * 100);
 		//aggresion
-		aggresionValTT->setText("Min: " + doubleToString(cell->getGenes().aggresion.getMin(), 2) + "\nMax: " + doubleToString(cell->getGenes().aggresion.getMax(), 2));
-		aggresionVal->setVisible(1);
-		aggresionVal->setText(doubleToString(cell->getGenes().aggresion.get(), 2));
-		aggresionVal->setMaximum(cell->getGenes().aggresion.getMax() * 100);
-		aggresionVal->setMinimum(cell->getGenes().aggresion.getMin() * 100);
-		aggresionVal->setValue(cell->getGenes().aggresion.get() * 100);
+		updateValues(aggresionValTT, aggresionVal, "Min: " + doubleToString(cell->getGenes().aggresion.getMin(), 2) + "\nMax: " + doubleToString(cell->getGenes().aggresion.getMax(), 2),
+			doubleToString(cell->getGenes().aggresion.get(), 2), cell->getGenes().aggresion.getMax() * 100, cell->getGenes().aggresion.getMin() * 100, cell->getGenes().aggresion.get() * 100);
 		//food level
-		foodLevelValTT->setText("Min: " + doubleToString(cell->getGenes().foodLimit.getMin(), 2) + "\nMax: " + doubleToString(cell->getGenes().foodLimit.getMax(), 2));
-		foodLevelVal->setVisible(1);
-		foodLevelVal->setText(doubleToString(cell->getFoodLevel(), 2));
-		foodLevelVal->setMaximum(cell->getGenes().foodLimit.getMax() * 100);
-		foodLevelVal->setMinimum(cell->getGenes().foodLimit.getMin() * 100);
-		foodLevelVal->setValue(cell->getFoodLevel() * 100);
+		updateValues(foodLevelValTT, foodLevelVal, "Min: " + doubleToString(cell->getGenes().foodLimit.getMin(), 2) + "\nMax: " + doubleToString(cell->getGenes().foodLimit.getMax(), 2),
+			doubleToString(cell->getFoodLevel(), 2), cell->getGenes().foodLimit.getMax() * 100, cell->getGenes().foodLimit.getMin() * 100, cell->getFoodLevel() * 100);
 		//divisionThreshold
-		divisionThresholdVal->setVisible(1);
 		divisionThresholdVal->setText(" " + doubleToString(cell->getGenes().divisionThreshold.get(), 2));
 		//radarRange
-		radarRangeVal->setVisible(1);
 		radarRangeVal->setText(" " + doubleToString(cell->getGenes().radarRange.get(), 2));
 
 		cell->setPosition(sf::Vector2f(175, 900));
@@ -624,14 +447,7 @@ void GUIManager::update()
 	}
 	else
 	{
-		sizeVal->setVisible(0);
-		speedVal->setVisible(0);
-		ageVal->setVisible(0);
-		horninessVal->setVisible(0);
-		aggresionVal->setVisible(0);
-		foodLevelVal->setVisible(0);
-		divisionThresholdVal->setVisible(0);
-		radarRangeVal->setVisible(0);
+		setVisible(widgetsPreview, 0);
 	}
 }
 
