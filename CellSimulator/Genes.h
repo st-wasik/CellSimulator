@@ -15,7 +15,8 @@ struct Genes
 		double foodLimit,
 		double maxSize,
 		double age,
-		int type);
+		int type,
+		double metabolism);
 
 	Ranged<double, 0, 2> maxSpeed;
 	Ranged<double, 0, 100> aggresion;
@@ -25,6 +26,7 @@ struct Genes
 	Ranged<double, 20, 50> maxSize;
 	Ranged<double, 1, 100> maxAge;
 	Ranged<int, 0, 2> type;
+	Ranged<double, 0, 2> metabolism;
 
 	void randomize();
 	std::string toString();

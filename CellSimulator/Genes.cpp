@@ -5,7 +5,7 @@ Genes::Genes()
 	randomize();
 }
 
-Genes::Genes(double maxSpeed, double aggresion, double radarRange, double divisionThreshold, double foodLimit, double maxSize, double age, int type)
+Genes::Genes(double maxSpeed, double aggresion, double radarRange, double divisionThreshold, double foodLimit, double maxSize, double age, int type, double metabolism)
 {
 	this->maxSpeed = maxSpeed;
 	this->aggresion = aggresion;
@@ -15,6 +15,7 @@ Genes::Genes(double maxSpeed, double aggresion, double radarRange, double divisi
 	this->maxSize = maxSize;
 	this->maxAge = age;
 	this->type = type;
+	this->metabolism = metabolism;
 }
 
 void Genes::randomize()
@@ -27,6 +28,7 @@ void Genes::randomize()
 	maxSize.randomize();
 	maxAge.randomize();
 	type.randomize();
+	metabolism.randomize();
 }
 
 std::string Genes::toString()
