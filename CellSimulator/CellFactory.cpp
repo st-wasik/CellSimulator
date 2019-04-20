@@ -51,6 +51,9 @@ std::shared_ptr<Cell> CellFactory::getCell(Cell::Type type)
 		result->dropRole(CellRoles::simulateHunger);
 		result->dropRole(CellRoles::mutate);
 		result->dropRole(CellRoles::makeOlder);
+		result->dropRole(CellRoles::grow);
+		result->dropRole(CellRoles::divideAndConquer);
+		result->dropRole(CellRoles::getingHot);
 		result->addRole(CellRoles::makeFood);
 		result->setBaseColor(sf::Color::White);
 		result->shape.setTextureRect(sf::IntRect{ 0,0,960,960 });
