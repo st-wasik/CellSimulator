@@ -164,14 +164,6 @@ void CellRoles::eat(Cell * c)
 		if (c->foodLevel < c->genes.foodLimit.get())
 		{
 			c->foodLevel += static_cast<float>(f->getSize());
-			if (!c->horniness.isMax())
-			{
-				c->horniness = c->horniness.get() + randomReal(0, 10);
-			}
-			if (c->getSize() < c->genes.maxSize.get())
-			{
-				c->setSize(c->getSize() + 1);
-			}
 			f->markToDelete();
 		}
 	}
@@ -226,7 +218,7 @@ void CellRoles::beDead(Cell * c)
 }
 
 void CellRoles::simulateHunger(Cell * c) {
-	c->foodLevel -= randomReal(0.005, 0.02) * CellSimApp::getInstance().getDeltaTime();
+	c->foodLevel -= 0.1 * CellSimApp::getInstance().getDeltaTime() * c->genes.metabolism.get() * c->currentSpeed * c->getSize()/10;
 	if (c->foodLevel <= 0)
 	{
 		c->kill();
@@ -239,8 +231,8 @@ void CellRoles::divideAndConquer(Cell * c)
 	auto& cells = Environment::getInstance().getCellsVector();
 	if (c->foodLevel >= c->genes.foodLimit.get() && c->getSize() >= c->genes.maxSize.get() && randomInt(0, 100) <= c->genes.divisionThreshold.get())
 	{
-		c->foodLevel = 50;
-		c->setSize(20);
+		c->foodLevel -= c->genes.foodLimit.get()/2;
+		c->setSize(c->genes.maxSize.get()/2);
 		auto ptr = Cell::create(*c);
 		Environment::getInstance().insertNewCell(ptr);
 		c->setRotation(c->getRotation() + 180);
@@ -249,30 +241,36 @@ void CellRoles::divideAndConquer(Cell * c)
 
 void CellRoles::grow(Cell * c)
 {
-	auto rand = randomReal(0.025, 0.06);
+	auto rand = randomReal(0.0005, 0.025);
 
-	if (c->getSize() < c->genes.maxSize.get() && c->foodLevel > 50)
+	if (c->getSize() < c->genes.maxSize.get() && c->foodLevel >= c->genes.foodLimit.get()*0.90)
 	{
-		c->setSize(c->getSize() + rand * CellSimApp::getInstance().getDeltaTime());
+		c->setSize(c->getSize() + (rand * CellSimApp::getInstance().getDeltaTime()));
 	}
 
-	if (c->getSize() > 10 && c->foodLevel < 20)
+	if (c->getSize() > 15 && c->foodLevel <= c->genes.foodLimit.get()*0.25)
 	{
-		c->setSize(c->getSize() - rand * CellSimApp::getInstance().getDeltaTime());
+		c->setSize(c->getSize() - (rand * CellSimApp::getInstance().getDeltaTime()));
 	}
 }
 
 void CellRoles::getingHot(Cell * c)
 {
+	if (c->foodLevel >= c->genes.foodLimit.get()*0.75)
+	{
+		c->setHorniness(c->getHorniness().get()+ (randomReal(0.01, 0.05)*CellSimApp::getInstance().getDeltaTime()));
+	}
 	if (c->horniness.isMax())
 	{
 		auto & cells = Environment::getInstance().getCellsVector();
 		for (auto & cell : cells)
 		{
-			if (!cell->isDead() && cell->getHorniness().isMax() && c->genes.type.get() == cell->genes.type.get() && c->collision(cell))
+			if (cell.get() != c && !cell->isDead() && cell->getHorniness().isMax() && c->genes.type.get() == cell->genes.type.get() && c->collision(cell))
 			{
 				c->setHorniness(0);
+				c->foodLevel = c->genes.foodLimit.get() / 2;
 				cell->setHorniness(0);
+				cell->foodLevel = c->genes.foodLimit.get() / 2;
 				std::shared_ptr<Cell> tmp = Cell::create(*c, *cell);
 				Environment::getInstance().insertNewCell(tmp);
 			}
@@ -363,10 +361,10 @@ void CellRoles::mutate(Cell * c)
 		genes.maxSize = genes.maxSize + genes.maxSize.getRange() / mutationRatio * Environment::getInstance().getRadiation() * randomInt(-1, 1);
 		genes.maxSpeed = genes.maxSpeed + genes.maxSpeed.getRange() / mutationRatio * Environment::getInstance().getRadiation() * randomInt(-1, 1);
 		genes.radarRange = genes.radarRange + genes.radarRange.getRange() / mutationRatio * Environment::getInstance().getRadiation() * randomInt(-1, 1);
-
+		genes.metabolism = genes.metabolism + genes.metabolism.getRange() / mutationRatio * Environment::getInstance().getRadiation() * randomInt(-1, 1);
 		c->setFoodLevel(checkRange(c->getFoodLevel(), 0, genes.foodLimit.get()));
 		c->setAge(checkRange(c->age, 0, genes.maxAge.get()));
-		c->setSize(checkRange(c->getSize(), 0, genes.maxSize.get()));
+		c->setSize(checkRange(c->getSize(), 15, genes.maxSize.get()));
 		c->setCurrentSpeed(checkRange(c->getCurrentSpeed(), 0, genes.maxSpeed.get()));
 	}
 

@@ -14,7 +14,7 @@ Cell::Cell(float size, sf::Vector2f position, sf::Color color) : BaseObj(size, p
 {
 	this->age = 0;
 
-	this->foodLevel = 50;
+	this->foodLevel = this->genes.foodLimit.get()/2;
 
 	this->currentSpeed = randomReal(0.1, genes.maxSpeed.get());
 
@@ -39,7 +39,7 @@ Cell::Cell(float size, sf::Vector2f position, sf::Color color) : BaseObj(size, p
 	roles.push_back(CellRoles::simulateHunger);
 	roles.push_back(CellRoles::divideAndConquer);
 	roles.push_back(CellRoles::getingHot);
-	//roles.push_back(CellRoles::grow);
+	roles.push_back(CellRoles::grow);
 	//roles.push_back(CellRoles::fight);
 	roles.push_back(CellRoles::makeOlder);
 	roles.push_back(CellRoles::mutate);
