@@ -13,17 +13,20 @@ public:
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 	virtual void update() = 0;
 
-	virtual float getSize();
-	virtual void setSize(const float&);
+	float getSize();
+	void setSize(const float&);
 
-	virtual float getRotation();
-	virtual void setRotation(const float&);
+	float getRotation();
+	void setRotation(const float&);
 
-	virtual sf::Vector2f getPosition();
-	virtual void setPosition(const sf::Vector2f&);
+	sf::Vector2f getPosition();
+	void setPosition(const sf::Vector2f&);
 
-	virtual sf::Color getBaseColor();
-	virtual void setBaseColor(sf::Color);
+	sf::Color getBaseColor();
+	void setBaseColor(sf::Color);
+
+	float getOutlineThickness();
+	void setOutlineThickness(float value);
 
 	virtual std::string toString();
 

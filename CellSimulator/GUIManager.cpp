@@ -442,6 +442,8 @@ void GUIManager::update()
 		radarRangeVal->setText(" " + doubleToString(cell->getGenes().radarRange.get(), 2));
 
 		cell->setPosition(sf::Vector2f(175, 900));
+		auto factor = cell->getOutlineThickness() / cell->getSize();
+		cell->setOutlineThickness(150 * factor);
 		cell->setSize(150);
 		cell->setRotation(0);
 	}
