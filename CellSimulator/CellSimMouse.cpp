@@ -1,6 +1,7 @@
 #include "CellSimMouse.h"
 #include <iostream>
 #include "CellSimApp.h"
+#include "GUIManager.h"
 
 bool CellSimMouse::_prevIsLeftPressed = false;
 bool CellSimMouse::_prevIsRightPressed = false;
@@ -15,6 +16,8 @@ void CellSimMouse::update()
 	auto m = sf::Mouse::getPosition(*CellSimApp::getInstance().getWindowHandle());
 	if ((m.x < 0 || m.x > CellSimApp::getInstance().getWindowHandle()->getSize().x) || (m.y < 0 || m.y > CellSimApp::getInstance().getWindowHandle()->getSize().y))
 		return;
+	//if (sf::IntRect(0, 0, GUIManager::backgroundWidth, CellSimApp::getInstance().getWindowHandle()->getSize().y).contains(m))
+	//	return;
 
 	_wheelDelta = 0;
 	_prevPosition = _currentPosition;

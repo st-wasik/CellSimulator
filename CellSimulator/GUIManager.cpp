@@ -156,7 +156,7 @@ void GUIManager::configure(std::shared_ptr<sf::RenderWindow> window)
 	gui = std::make_shared<tgui::Gui>(*window);
 	theme.load("../../CellSimulator/TGUI-0.8/themes/TransparentGrey.txt");
 
-	background.setSize(sf::Vector2f(360, window->getSize().y));
+	background.setSize(sf::Vector2f(backgroundWidth, window->getSize().y));
 	background.setFillColor(sf::Color(32, 32, 32, 128));
 	background.setPosition({ 0,0 });
 	background.setOutlineColor(sf::Color(32, 32, 16));

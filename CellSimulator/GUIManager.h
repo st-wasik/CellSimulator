@@ -16,6 +16,7 @@ public:
 
 	void draw();
 
+	static constexpr int backgroundWidth = 360;
 private:
 	GUIManager();
 	GUIManager(const GUIManager&) = delete;
