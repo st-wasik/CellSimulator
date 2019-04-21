@@ -37,8 +37,11 @@ Food::Food(std::string formattedFoodString) : Food(0, { 0,0 }, sf::Color::Transp
 
 		if (type_i != std::sregex_iterator() && vector_value_i != std::sregex_iterator())
 		{
+			std::regex value(RegexPattern::Double);
+			auto vector_value_s = vector_value_i->str();
+			auto valuesBegin = std::sregex_iterator(vector_value_s.begin(), vector_value_s.end(), value);
 			std::vector<std::string> values_vect;
-			for (auto it = vector_value_i; it != std::sregex_iterator(); it++)
+			for (auto it = valuesBegin; it != std::sregex_iterator(); it++)
 			{
 				values_vect.push_back(it->str());
 			}

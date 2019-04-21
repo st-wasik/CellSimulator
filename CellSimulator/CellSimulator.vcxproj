@@ -152,6 +152,7 @@
     <ClCompile Include="MixDouble.cpp" />
     <ClCompile Include="Random.cpp" />
     <ClCompile Include="RangeChecker.cpp" />
+    <ClCompile Include="RegexPattern.cpp" />
     <ClCompile Include="TextureProvider.cpp" />
   </ItemGroup>
   <ItemGroup>

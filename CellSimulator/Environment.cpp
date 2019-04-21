@@ -92,7 +92,7 @@ void Environment::configure(sf::Vector2f envSize)
 
 
 
-	for (int i = 0; i < 2; i++) {
+	/*for (int i = 0; i < 2; i++) {
 		auto cell = CellFactory::getCell(Cell::Type::Aggressive);
 		cell->setPosition(sf::Vector2f(randomInt(40, static_cast<int>(Environment::getSize().x - 40)), randomInt(40, static_cast<int>(Environment::getSize().y - 40))));
 		insertNewCell(cell);
@@ -116,20 +116,20 @@ void Environment::configure(sf::Vector2f envSize)
 		insertNewCell(cell);
 	}
 
-	FoodManager::generateFood(sf::Vector2f(3, 12), 100);
+	FoodManager::generateFood(sf::Vector2f(3, 12), 100);*/
 }
 
 void Environment::configure(std::string formattedEnvString)
 {
-	std::string doubleRegex(RegexPattern::Double);
-	std::string vectorRegex(RegexPattern::Vector);
-	std::string word(RegexPattern::Word);
+	static std::string doubleRegex(RegexPattern::Double);
+	static std::string vectorRegex(RegexPattern::Vector);
+	static std::string word(RegexPattern::Word);
 
-	std::regex envRegex("ENVIRONMENT->( " + word + ":((" + doubleRegex + ")|(" + vectorRegex + ")))* ");
+	static std::regex envRegex("^ENVIRONMENT->( " + word + ":((" + doubleRegex + ")|(" + vectorRegex + ")))* ");
 	//std::regex envRegex("^ENVIRONMENT->( [a-zA-Z_]+:(([0-9]+\\.?[0-9]*)|(\\{[0-9]+\\.?[0-9]*(, [0-9]+\\.?[0-9]*)*\\})))*$");
-	std::regex cellHeader("CELL->");
-	std::regex foodHeader("FOOD->");
-	std::regex empty("^$");
+	static std::regex cellHeader("^CELL->");
+	static std::regex foodHeader("^FOOD->");
+	static std::regex empty("^$");
 
 	std::vector<std::string> lines;
 	std::istringstream input(formattedEnvString);
@@ -166,10 +166,11 @@ void Environment::configure(std::string formattedEnvString)
 		auto value_i = std::sregex_iterator(settingStr.begin(), settingStr.end(), value);
 		auto vector_value_i = std::sregex_iterator(settingStr.begin(), settingStr.end(), vectorValue);
 
-		if (type_i != std::sregex_iterator() && value_i != std::sregex_iterator())
-			modifyValueFromString(type_i->str(), value_i->str());
-		else if (type_i != std::sregex_iterator() && value_i != std::sregex_iterator())
+		if (type_i != std::sregex_iterator() && vector_value_i != std::sregex_iterator())
 		{
+			std::regex value(RegexPattern::Double);
+			auto vector_value_s = vector_value_i->str();
+			auto valuesBegin = std::sregex_iterator(vector_value_s.begin(), vector_value_s.end(), value);
 			std::vector<std::string> values_vect;
 			for (auto it = value_i; it != std::sregex_iterator(); it++)
 			{
@@ -177,6 +178,8 @@ void Environment::configure(std::string formattedEnvString)
 			}
 			modifyValueFromVector(type_i->str(), values_vect);
 		}
+		else if (type_i != std::sregex_iterator() && value_i != std::sregex_iterator())
+			modifyValueFromString(type_i->str(), value_i->str());
 	}
 
 	for (int i = 1; i < lines.size(); ++i)
@@ -488,7 +491,6 @@ void Environment::modifyValueFromVector(std::string valueName, const std::vector
 {
 	Logger::log("Setting '" + valueName + "'.");
 	auto& v = valueName;
-
 	if (v == VarAbbrv::envSize)
 	{
 		if (values.size() != 2)

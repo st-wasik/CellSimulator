@@ -138,6 +138,9 @@
     <ClCompile Include="CellInsertionTool.cpp">
       <Filter>Simulation Tools\Source</Filter>
     </ClCompile>
+    <ClCompile Include="RegexPattern.cpp">
+      <Filter>Utils\Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CellSimApp.h">

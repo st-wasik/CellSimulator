@@ -6,6 +6,7 @@
 class BaseObj :public sf::Drawable
 {
 public:
+	explicit BaseObj();
 	BaseObj(float size, sf::Vector2f position, sf::Color color);
 	~BaseObj();
 
@@ -42,13 +43,13 @@ protected:
 
 	struct VarAbbrv final
 	{
-		static constexpr const char *const currentRotation = "Rotation";
-		static constexpr const char *const currentPosition = "Position";
-		static constexpr const char *const color = "Color";
-		static constexpr const char *const currentSize = "Size";
-		static constexpr const char *const markedToDelete = "toDelete";
-		static constexpr const char *const texture = "Texture";
-		static constexpr const char *const textureRect = "TextureRect";
+		static constexpr const char *const currentRotation = "Rt";
+		static constexpr const char *const currentPosition = "Ps";
+		static constexpr const char *const color = "C";
+		static constexpr const char *const currentSize = "Si";
+		static constexpr const char *const markedToDelete = "TD";
+		static constexpr const char *const texture = "Tx";
+		static constexpr const char *const textureRect = "TxR";
 	private:
 		VarAbbrv() = delete;
 		VarAbbrv(const VarAbbrv&) = delete;

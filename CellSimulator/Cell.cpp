@@ -10,11 +10,22 @@
 #include <sstream>
 #include <regex>
 
+Cell::Cell() : BaseObj()
+{
+	age = 0;
+	foodLevel = 0;
+	currentSpeed = 0;
+	horniness = 0;
+
+	shape.setOutlineThickness(-5);
+	shape.setOutlineColor(sf::Color(128, 64, 0, 75));
+}
+
 Cell::Cell(float size, sf::Vector2f position, sf::Color color) : BaseObj(size, position, color)
 {
 	this->age = 0;
 
-	this->foodLevel = this->genes.foodLimit.get()/2;
+	this->foodLevel = this->genes.foodLimit.get() / 2;
 
 	this->currentSpeed = randomReal(0.1, genes.maxSpeed.get());
 
@@ -67,19 +78,21 @@ Cell::Cell(Cell a, Cell b) : Cell(20, (a.getPosition() + b.getPosition()) / 2.0f
 
 }
 
-Cell::Cell(std::string formattedCellString) : Cell(0, { 0,0 }, sf::Color::Transparent)
+Cell::Cell(std::string formattedCellString) : Cell()
 {
-	std::string doubleRegex(RegexPattern::Double);
-	std::string vectorRegex(RegexPattern::Vector);
-	std::string word(RegexPattern::Word);
+	static int i = 0;
 
-	std::regex cellRegex("CELL->( " + word + ":((" + doubleRegex + ")|(" + vectorRegex + ")|(" + word + ")))* ");
+	Logger::log(i);
+	++i;
+
+	static std::regex cellRegex("CELL->( " + RegexPattern::Word + ":((" + RegexPattern::Double + ")|(" + RegexPattern::Vector + ")|(" + RegexPattern::Word + ")))* ");
 	if (!std::regex_match(formattedCellString.begin(), formattedCellString.end(), cellRegex))
 	{
-		throw std::exception((std::string("Cell string wrong format!") + "<" + formattedCellString + ">").c_str());
+		Logger::log("Cell string wrong format!");
+		return;
 	}
 
-	std::regex settingRegex(" " + word + ":((" + doubleRegex + ")|(" + vectorRegex + "))");
+	std::regex settingRegex(" " + RegexPattern::Word + ":((" + RegexPattern::Double + ")|(" + RegexPattern::Vector + ")|" + RegexPattern::Word + ")");
 
 	auto settingsBegin = std::sregex_iterator(formattedCellString.begin(), formattedCellString.end(), settingRegex);
 	auto settingsEnd = std::sregex_iterator();
@@ -87,18 +100,27 @@ Cell::Cell(std::string formattedCellString) : Cell(0, { 0,0 }, sf::Color::Transp
 	for (auto i = settingsBegin; i != settingsEnd; ++i)
 	{
 		std::string settingStr = i->str();
-		std::regex type(word);
-		std::regex value(doubleRegex);
-		std::regex vectorValue(vectorRegex);
+		static std::regex type(RegexPattern::Word);
+		static std::regex value(RegexPattern::Double);
+		static std::regex vectorValue(RegexPattern::Vector);
 
 		auto type_i = std::sregex_iterator(settingStr.begin(), settingStr.end(), type);
-		
+
 		auto vector_value_i = std::sregex_iterator(settingStr.begin(), settingStr.end(), vectorValue);
 
-		if (type_i != std::sregex_iterator() && vector_value_i != std::sregex_iterator())
+		if (std::distance(type_i, std::sregex_iterator()) == 2)
 		{
+			auto val = type_i;
+			++val;
+			modifyValueFromString(type_i->str(), val->str());
+		}
+		else if (type_i != std::sregex_iterator() && vector_value_i != std::sregex_iterator())
+		{
+			std::regex value(RegexPattern::Double);
+			auto vector_value_s = vector_value_i->str();
+			auto valuesBegin = std::sregex_iterator(vector_value_s.begin(), vector_value_s.end(), value);
 			std::vector<std::string> values_vect;
-			for (auto it = vector_value_i; it != std::sregex_iterator(); it++)
+			for (auto it = valuesBegin; it != std::sregex_iterator(); it++)
 			{
 				values_vect.push_back(it->str());
 			}
@@ -113,6 +135,7 @@ Cell::Cell(std::string formattedCellString) : Cell(0, { 0,0 }, sf::Color::Transp
 
 		//TODO: add cell name
 	}
+	CellRoles::updateColor(this);
 }
 
 void Cell::modifyValueFromString(std::string valueName, std::string value)
@@ -135,6 +158,8 @@ void Cell::modifyValueFromString(std::string valueName, std::string value)
 	else if (v == VarAbbrv::maxSize)			this->genes.maxSize = (std::stod(value));
 	else if (v == VarAbbrv::maxSpeed)			this->genes.maxSpeed = (std::stod(value));
 	else if (v == VarAbbrv::radarRange)			this->genes.radarRange = (std::stod(value));
+	else if (v == VarAbbrv::metabolism)			this->genes.metabolism = (std::stod(value));
+	else if (v == BaseObj::VarAbbrv::texture)			this->shape.setTexture(TextureProvider::getInstance().getTexture(value).get());
 	else if (v == BaseObj::VarAbbrv::markedToDelete)
 	{
 		if (std::stod(value)) this->markToDelete();
@@ -301,7 +326,8 @@ void Cell::dropRoles()
 
 void Cell::addRole(void(*role)(Cell *))
 {
-	roles.push_back(role);
+	if (std::find(roles.begin(), roles.end(), role) == roles.end())
+		roles.push_back(role);
 }
 
 std::string Cell::getSaveString()
@@ -311,11 +337,6 @@ std::string Cell::getSaveString()
 	result << getCellBlueprintString() <<
 		VarAbbrv::currentRotation << ":" << this->getRotation() << " " <<
 		VarAbbrv::currentPosition << ":{" << this->getPosition().x << ", " << this->getPosition().y << "} " <<
-		VarAbbrv::color << ":{" <<
-		static_cast<int>(this->getBaseColor().r) << ", " <<
-		static_cast<int>(this->getBaseColor().g) << ", " <<
-		static_cast<int>(this->getBaseColor().b) << ", " <<
-		static_cast<int>(this->getBaseColor().a) << "} " <<
 		VarAbbrv::currentAge << ":" << this->age << " " <<
 		VarAbbrv::currentSpeed << ":" << this->currentSpeed << " " <<
 		VarAbbrv::currentSize << ":" << this->getSize() << " " <<
@@ -324,6 +345,15 @@ std::string Cell::getSaveString()
 		VarAbbrv::isFreezed << ":" << this->freezed << " " <<
 		VarAbbrv::horniness << ":" << this->horniness << " " <<
 		BaseObj::VarAbbrv::markedToDelete << ":" << this->isMarkedToDelete() << " " <<
+		VarAbbrv::color << ":{" <<
+		static_cast<int>(this->getBaseColor().r) << ", " <<
+		static_cast<int>(this->getBaseColor().g) << ", " <<
+		static_cast<int>(this->getBaseColor().b) << ", " <<
+		static_cast<int>(this->getBaseColor().a) << "} " <<
+		BaseObj::VarAbbrv::textureRect << ":{" << this->shape.getTextureRect().left << ", " <<
+		this->shape.getTextureRect().top << ", " <<
+		this->shape.getTextureRect().width << ", " <<
+		this->shape.getTextureRect().height << "} " <<
 		BaseObj::VarAbbrv::texture << ":" << TextureProvider::getInstance().getTextureName(this->shape.getTexture()) << " " <<
 		VarAbbrv::cellRoles << ":{";
 
@@ -351,8 +381,8 @@ std::string Cell::getCellBlueprintString()
 		VarAbbrv::maxAge << ":" << genes.maxAge << " " <<
 		VarAbbrv::maxSize << ":" << genes.maxSize << " " <<
 		VarAbbrv::maxSpeed << ":" << genes.maxSpeed << " " <<
-		VarAbbrv::radarRange << ":" << genes.radarRange << " ";
-
+		VarAbbrv::radarRange << ":" << genes.radarRange << " " <<
+		VarAbbrv::metabolism << ":" << genes.metabolism << " ";
 	return result.str();
 }
 

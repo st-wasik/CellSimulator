@@ -2,6 +2,14 @@
 
 
 
+BaseObj::BaseObj()
+{
+	setSize(20);
+	setPosition({ 0, 0 });
+	setRotation(0);
+	shape.setFillColor(sf::Color::White);
+}
+
 BaseObj::BaseObj(float size, sf::Vector2f position, sf::Color color) : toDelete(false), baseColor(color)
 {
 	setSize(size);

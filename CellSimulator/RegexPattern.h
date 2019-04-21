@@ -1,7 +1,8 @@
 #pragma once
+#include <string>
 struct RegexPattern
 {
-	static constexpr const char * const Word = "[a-zA-Z_]+";
-	static constexpr const char * const Double = "[0-9]+\\.?[0-9]*";
-	static constexpr const char * const Vector = "\\{[0-9]+\\.?[0-9]*(, [0-9]+\\.?[0-9]*)*\\}";
+	static const std::string Word;
+	static const std::string Double;
+	static const std::string Vector;
 };

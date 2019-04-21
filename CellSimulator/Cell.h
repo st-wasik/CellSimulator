@@ -70,6 +70,7 @@ public:
 	void setName(std::string n);
 
 private:
+	explicit Cell();
 	Cell(float size, sf::Vector2f position, sf::Color color);
 	Cell(Cell a, Cell b);
 	Cell(std::string formattedCellString);
@@ -102,25 +103,47 @@ private:
 	// abbreviation used to save cell to file
 	struct VarAbbrv final
 	{
-		static constexpr const char *const currentRotation = "Rotation";
-		static constexpr const char *const currentPosition = "Position";
-		static constexpr const char *const color = "Color";
-		static constexpr const char *const currentAge = "Age";
-		static constexpr const char *const currentSpeed = "Speed";
-		static constexpr const char *const currentSize = "Size";
-		static constexpr const char *const isDead = "isDead";
-		static constexpr const char *const currentFoodLevel = "FoodLevel";
-		static constexpr const char *const isFreezed = "isFreezed";
-		static constexpr const char *const horniness = "Fertility";
-		static constexpr const char *const cellRoles = "Roles";
+		//static constexpr const char *const currentRotation = "Rotation";
+		//static constexpr const char *const currentPosition = "Position";
+		//static constexpr const char *const color = "Color";
+		//static constexpr const char *const currentAge = "Age";
+		//static constexpr const char *const currentSpeed = "Speed";
+		//static constexpr const char *const currentSize = "Size";
+		//static constexpr const char *const isDead = "isDead";
+		//static constexpr const char *const currentFoodLevel = "FoodLevel";
+		//static constexpr const char *const isFreezed = "isFreezed";
+		//static constexpr const char *const horniness = "Fertility";
+		//static constexpr const char *const cellRoles = "Roles";
 
-		static constexpr const char *const aggression = "G_Aggression";
-		static constexpr const char *const divisionTh = "G_DivisionTh";
-		static constexpr const char *const foodLimit = "G_FoodLimit";
-		static constexpr const char *const maxAge = "G_MaxAge";
-		static constexpr const char *const maxSize = "G_MaxSize";
-		static constexpr const char *const maxSpeed = "G_MaxSpeed";
-		static constexpr const char *const radarRange = "G_RadarRg";
+		//static constexpr const char *const aggression = "G_Aggression";
+		//static constexpr const char *const divisionTh = "G_DivisionTh";
+		//static constexpr const char *const foodLimit = "G_FoodLimit";
+		//static constexpr const char *const maxAge = "G_MaxAge";
+		//static constexpr const char *const maxSize = "G_MaxSize";
+		//static constexpr const char *const maxSpeed = "G_MaxSpeed";
+		//static constexpr const char *const radarRange = "G_RadarRg";
+		//static constexpr const char *const metabolism = "G_Metabolism";
+
+		static constexpr const char *const currentRotation = "Rt";
+		static constexpr const char *const currentPosition = "Ps";
+		static constexpr const char *const color = "C";
+		static constexpr const char *const currentAge = "A";
+		static constexpr const char *const currentSpeed = "Sp";
+		static constexpr const char *const currentSize = "Si";
+		static constexpr const char *const isDead = "De";
+		static constexpr const char *const currentFoodLevel = "FL";
+		static constexpr const char *const isFreezed = "FF";
+		static constexpr const char *const horniness = "Hr";
+		static constexpr const char *const cellRoles = "Rl";
+
+		static constexpr const char *const aggression = "GAr";
+		static constexpr const char *const divisionTh = "GDi";
+		static constexpr const char *const foodLimit = "GFL";
+		static constexpr const char *const maxAge = "GAg";
+		static constexpr const char *const maxSize = "GSi";
+		static constexpr const char *const maxSpeed = "GSp";
+		static constexpr const char *const radarRange = "GRR";
+		static constexpr const char *const metabolism = "GM";
 
 	private:
 		VarAbbrv() = delete;
