@@ -55,7 +55,7 @@ void Environment::sterilizeEnvironment()
 	}
 }
 
-void Environment::configure(sf::Vector2f envSize)
+void Environment::configure(sf::Vector2f envSize, bool fill)
 {
 	sterilizeEnvironment();
 
@@ -89,34 +89,34 @@ void Environment::configure(sf::Vector2f envSize)
 		foodCollisionSectors[i].resize(sectorsY);
 	}
 
+	if (fill)
+	{
+		for (int i = 0; i < 2; i++) {
+			auto cell = CellFactory::getCell(Cell::Type::Aggressive);
+			cell->setPosition(sf::Vector2f(randomInt(40, static_cast<int>(Environment::getSize().x - 40)), randomInt(40, static_cast<int>(Environment::getSize().y - 40))));
+			insertNewCell(cell);
+		}
 
+		for (int i = 0; i < 20; i++) {
+			auto cell = CellFactory::getCell(Cell::Type::Passive);
+			cell->setPosition(sf::Vector2f(randomInt(40, static_cast<int>(Environment::getSize().x - 40)), randomInt(40, static_cast<int>(Environment::getSize().y - 40))));
+			insertNewCell(cell);
+		}
 
+		for (int i = 0; i < 10; i++) {
+			auto cell = CellFactory::getCell(Cell::Type::Random);
+			cell->setPosition(sf::Vector2f(randomInt(40, static_cast<int>(Environment::getSize().x - 40)), randomInt(40, static_cast<int>(Environment::getSize().y - 40))));
+			insertNewCell(cell);
+		}
 
-	/*for (int i = 0; i < 2; i++) {
-		auto cell = CellFactory::getCell(Cell::Type::Aggressive);
-		cell->setPosition(sf::Vector2f(randomInt(40, static_cast<int>(Environment::getSize().x - 40)), randomInt(40, static_cast<int>(Environment::getSize().y - 40))));
-		insertNewCell(cell);
+		for (int i = 0; i < 3; i++) {
+			auto cell = CellFactory::getCell(Cell::Type::GreenLettuce);
+			cell->setPosition(sf::Vector2f(randomInt(40, static_cast<int>(Environment::getSize().x - 40)), randomInt(40, static_cast<int>(Environment::getSize().y - 40))));
+			insertNewCell(cell);
+		}
+
+		FoodManager::generateFood(sf::Vector2f(3, 12), 100);
 	}
-
-	for (int i = 0; i < 20; i++) {
-		auto cell = CellFactory::getCell(Cell::Type::Passive);
-		cell->setPosition(sf::Vector2f(randomInt(40, static_cast<int>(Environment::getSize().x - 40)), randomInt(40, static_cast<int>(Environment::getSize().y - 40))));
-		insertNewCell(cell);
-	}
-
-	for (int i = 0; i < 10; i++) {
-		auto cell = CellFactory::getCell(Cell::Type::Random);
-		cell->setPosition(sf::Vector2f(randomInt(40, static_cast<int>(Environment::getSize().x - 40)), randomInt(40, static_cast<int>(Environment::getSize().y - 40))));
-		insertNewCell(cell);
-	}
-
-	for (int i = 0; i < 3; i++) {
-		auto cell = CellFactory::getCell(Cell::Type::GreenLettuce);
-		cell->setPosition(sf::Vector2f(randomInt(40, static_cast<int>(Environment::getSize().x - 40)), randomInt(40, static_cast<int>(Environment::getSize().y - 40))));
-		insertNewCell(cell);
-	}
-
-	FoodManager::generateFood(sf::Vector2f(3, 12), 100);*/
 }
 
 void Environment::configure(std::string formattedEnvString)
@@ -148,7 +148,7 @@ void Environment::configure(std::string formattedEnvString)
 	}
 	if (!std::regex_match(lines[0].begin(), lines[0].end(), envRegex))
 	{
-		throw std::exception((std::string("Environment string wrong format!   ") + + "<" + lines[0] + ">").c_str());
+		throw std::exception((std::string("Environment string wrong format!   ") + +"<" + lines[0] + ">").c_str());
 	}
 
 	std::regex envSettingsRegex(" " + word + ":(" + doubleRegex + "|" + vectorRegex + ")");
@@ -427,7 +427,7 @@ std::string Environment::getSaveString()
 	std::ostringstream result;
 
 	result << "ENVIRONMENT-> " <<
-		VarAbbrv::envSize << ":{" << this->environmentBackground.getSize().x <<", "<< this->environmentBackground.getSize().y << "} " <<
+		VarAbbrv::envSize << ":{" << this->environmentBackground.getSize().x << ", " << this->environmentBackground.getSize().y << "} " <<
 		VarAbbrv::radiation << ":" << this->getRadiation() << " " <<
 		VarAbbrv::temperature << ":" << this->getTemperature() << " " <<
 		VarAbbrv::isSimualtionActive << ":" << this->getIsSimulationActive() << " " << std::endl << std::endl;

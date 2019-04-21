@@ -32,7 +32,7 @@ CellSimApp::~CellSimApp()
 void CellSimApp::run()
 {
 	MessagesManager::getInstance().configure();
-	Environment::getInstance().configure();
+	Environment::getInstance().configure({2000,1000}, true);
 	GUIManager::getInstance().configure(window);
 
 	view.setCenter(sf::Vector2f(Environment::getInstance().getSize().x / 2, Environment::getInstance().getSize().y / 2));
