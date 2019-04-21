@@ -18,7 +18,7 @@ void CellInsertionTool::update()
 	{
 		cellBlueprint->setPosition(CellSimMouse::getPosition());
 
-		if (CellSimMouse::wasLeftPressed())
+		if (CellSimMouse::wasLeftPressed() || (sf::Keyboard::isKeyPressed(sf::Keyboard::LControl) && CellSimMouse::isLeftPressed()))
 		{
 			if (Environment::getInstance().isCellInEnvironmentBounds(*cellBlueprint))
 			{

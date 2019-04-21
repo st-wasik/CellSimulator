@@ -44,6 +44,10 @@ void CellSelectionTool::update()
 		{
 			selectedCell->kill();
 		}
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::N))
+		{
+			selectedCell->setName("It's alive!");
+		}
 		if (selectedCell->isMarkedToDelete() || selectedCell->isDead())
 		{
 			selectedCell = nullptr;
