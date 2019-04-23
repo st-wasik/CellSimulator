@@ -14,7 +14,6 @@ public:
 	Cell::Ptr getCellBlueprint();
 
 	void setIsActive(bool a);
-
 	bool getIsActive();
 
 private:

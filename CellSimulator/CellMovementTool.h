@@ -16,6 +16,9 @@ public:
 
 	std::shared_ptr<Cell> getAttachedCell();
 
+	void setIsActive(bool a);
+	bool getIsActive();
+
 private:
 	CellMovementTool();
 	CellMovementTool(const CellMovementTool&) = delete;
@@ -30,5 +33,7 @@ private:
 	void  pickCellFromEnvironment();
 
 	void  placeCellToEnvironment();
+
+	bool isActive;
 };
 

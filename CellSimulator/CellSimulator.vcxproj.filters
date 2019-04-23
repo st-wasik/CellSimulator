@@ -141,6 +141,7 @@
     <ClCompile Include="RegexPattern.cpp">
       <Filter>Utils\Source</Filter>
     </ClCompile>
+    <ClCompile Include="ToolManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CellSimApp.h">
@@ -224,5 +225,6 @@
     <ClInclude Include="RegexPattern.h">
       <Filter>Utils\Header</Filter>
     </ClInclude>
+    <ClInclude Include="ToolManager.h" />
   </ItemGroup>
 </Project>

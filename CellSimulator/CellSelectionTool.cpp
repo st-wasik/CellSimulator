@@ -13,7 +13,7 @@ CellSelectionTool & CellSelectionTool::getInstance()
 
 void CellSelectionTool::update()
 {
-	if (CellSimMouse::wasLeftPressed())
+	if (CellSimMouse::wasLeftPressed() && isActive)
 	{
 		CellSelectionTool::clearSelectedCell();
 		auto movedCell = CellMovementTool::getInstance().getAttachedCell();
@@ -141,6 +141,16 @@ void CellSelectionTool::setFollowSelectedCell(bool f)
 		followSelectedCell = f;
 	if (f == false)
 		followSelectedCell = f;
+}
+
+void CellSelectionTool::setIsActive(bool a)
+{
+	isActive = a;
+}
+
+bool CellSelectionTool::getIsActive()
+{
+	return isActive;
 }
 
 CellSelectionTool::CellSelectionTool() : selectedCellCopyValid(false)

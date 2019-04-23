@@ -26,6 +26,9 @@ public:
 	std::atomic_bool& getFollowSelectedCell();
 	void setFollowSelectedCell(bool f);
 
+	void setIsActive(bool a);
+	bool getIsActive();
+
 private:
 	CellSelectionTool();
 	CellSelectionTool(const CellSelectionTool&) = delete;
@@ -43,6 +46,8 @@ private:
 	std::atomic_bool followSelectedCell;
 
 	bool selectedMovedCell;
+
+	bool isActive;
 
 	static constexpr int fontSize = 20;
 	static constexpr int nameMargin = 23;

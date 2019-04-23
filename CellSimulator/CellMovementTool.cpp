@@ -15,7 +15,7 @@ void CellMovementTool::update()
 	constexpr int selectionMargin = 50;
 	constexpr double positioningMargin = 0.5;
 
-	if (CellSimMouse::isLeftPressed())
+	if (CellSimMouse::isLeftPressed() && isActive)
 	{
 		if (selectedCell != nullptr)
 		{
@@ -100,6 +100,16 @@ void CellMovementTool::attachCell(std::shared_ptr<Cell>&s)
 std::shared_ptr<Cell> CellMovementTool::getAttachedCell()
 {
 	return selectedCell;
+}
+
+void CellMovementTool::setIsActive(bool a)
+{
+	isActive = a;
+}
+
+bool CellMovementTool::getIsActive()
+{
+	return isActive;
 }
 
 CellMovementTool::CellMovementTool()
