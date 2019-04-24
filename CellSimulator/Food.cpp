@@ -17,7 +17,8 @@ Food::Food(std::string formattedFoodString) : Food(0, { 0,0 }, sf::Color::Transp
 	std::regex foodRegex("FOOD->( " + word + ":(" + doubleRegex + "|" + vectorRegex + "))* ");
 	if (!std::regex_match(formattedFoodString.begin(), formattedFoodString.end(), foodRegex))
 	{
-		throw std::exception("Cell string wrong format!");
+		Logger::log("Food string wrong format!");
+		return;
 	}
 
 	std::regex settingRegex(" " + word + ":((" + doubleRegex + ")|(" + vectorRegex + "))");
@@ -53,8 +54,6 @@ Food::Food(std::string formattedFoodString) : Food(0, { 0,0 }, sf::Color::Transp
 			if (type_i != std::sregex_iterator() && value_i != std::sregex_iterator())
 				modifyValueFromString(type_i->str(), value_i->str());
 		}
-		
-		//TODO: add cell name
 	}
 }
 

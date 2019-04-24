@@ -80,11 +80,6 @@ Cell::Cell(Cell a, Cell b) : Cell(20, (a.getPosition() + b.getPosition()) / 2.0f
 
 Cell::Cell(std::string formattedCellString) : Cell()
 {
-	static int i = 0;
-
-	Logger::log(i);
-	++i;
-
 	static std::regex cellRegex("CELL->( " + RegexPattern::Word + ":((" + RegexPattern::Double + ")|(" + RegexPattern::Vector + ")|(" + RegexPattern::Word + ")))* ");
 	if (!std::regex_match(formattedCellString.begin(), formattedCellString.end(), cellRegex))
 	{
