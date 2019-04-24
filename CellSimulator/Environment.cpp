@@ -145,11 +145,13 @@ void Environment::configure(std::string formattedEnvString)
 
 	if (lines.size() == 0)
 	{
-		throw std::exception("Save string is empty!");
+		Logger::log("Save string is empty!");
+		return;
 	}
 	if (!std::regex_match(lines[0].begin(), lines[0].end(), envRegex))
 	{
-		throw std::exception((std::string("Environment string wrong format!   ") + +"<" + lines[0] + ">").c_str());
+		Logger::log("Environment string wrong format!");
+		return;
 	}
 
 	std::regex envSettingsRegex(" " + word + ":(" + doubleRegex + "|" + vectorRegex + ")");
@@ -183,27 +185,22 @@ void Environment::configure(std::string formattedEnvString)
 			modifyValueFromString(type_i->str(), value_i->str());
 	}
 
-	for (int i = 1; i < lines.size(); ++i)
+	auto size = lines.size();
+	for (int i = 1; i < size; ++i)
 	{
-		try
-		{
+		if (i % 512 == 0) Logger::log("Load from file: " + std::to_string(i) + "/" + std::to_string(size));
 
-			if (std::regex_match(lines[i].begin(), lines[i].end(), empty))
-				continue;
-			else if (std::regex_search(lines[i].begin(), lines[i].end(), cellHeader))
-			{
-				insertNewCell(Cell::create(lines[i]));
-			}
-			else if (std::regex_search(lines[i].begin(), lines[i].end(), foodHeader))
-			{
-				insertNewFood(Food::create(lines[i]));
-			}
-			else Logger::log("Not recognized data format in environment save string.");
-		}
-		catch (std::exception e)
+		if (std::regex_match(lines[i].begin(), lines[i].end(), empty))
+			continue;
+		else if (std::regex_search(lines[i].begin(), lines[i].end(), cellHeader))
 		{
-			Logger::log(e.what());
+			insertNewCell(Cell::create(lines[i]));
 		}
+		else if (std::regex_search(lines[i].begin(), lines[i].end(), foodHeader))
+		{
+			insertNewFood(Food::create(lines[i]));
+		}
+		else Logger::log("Not recognized data format in environment save string.");
 	}
 
 }

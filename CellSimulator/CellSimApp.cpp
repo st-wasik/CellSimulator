@@ -40,6 +40,7 @@ void CellSimApp::run()
 
 	sf::Event event;
 	sf::Clock deltaTimeClock;
+	sf::Clock deltaLog;
 
 	while (window->isOpen())
 	{
@@ -73,6 +74,9 @@ void CellSimApp::run()
 
 			if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Space)
 				CellSelectionTool::getInstance().setFollowSelectedCell(true);
+
+			if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::M)
+				CellSelectionTool::getInstance().setIsActive(!CellSelectionTool::getInstance().getIsActive());
 
 			if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::C)
 				Environment::getInstance().clear();
@@ -143,6 +147,8 @@ void CellSimApp::run()
 				CellInsertionTool::getInstance().setCellBlueprint(CellFactory::getCell(Cell::Type::Random));
 			if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Num4)
 				CellInsertionTool::getInstance().setCellBlueprint(CellFactory::getCell(Cell::Type::GreenLettuce));
+			if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Num5)
+				CellInsertionTool::getInstance().setCellBlueprint(CellFactory::getCell(Cell::Type::Pizza));
 
 			if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::PageUp)
 				FoodBrush::getInstance().setBrushRadius(FoodBrush::getInstance().getBrushRadius() + 2);
@@ -169,7 +175,13 @@ void CellSimApp::run()
 
 		//OTHER --->
 		deltaTime = 0.0001 * deltaTimeClock.getElapsedTime().asMicroseconds();
-		fps = 1 / (deltaTime * 100);
+		fps = 1 / (deltaTime) * 100;
+
+		if (deltaLog.getElapsedTime().asMilliseconds() > 2500)
+		{
+			Logger::log("DELTA: " + std::to_string(deltaTime) + "   FPS: " + std::to_string(fps));
+			deltaLog.restart();
+		}
 	}
 }
 

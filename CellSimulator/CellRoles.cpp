@@ -39,6 +39,7 @@ CellRoles::CellRoles()
 	registerRole(makeOlder, 11, VAR_NAME(makeOlder));
 	registerRole(mutate, 12, VAR_NAME(mutate));
 	registerRole(changeSpeed, 13, VAR_NAME(changeSpeed));
+	registerRole(sniffForFood, 14, VAR_NAME(sniffForFood));
 }
 
 CellRoles & CellRoles::getManager()
@@ -81,57 +82,7 @@ void CellRoles::moveForward(Cell * c)
 
 void CellRoles::changeDirection(Cell * c)
 {
-	auto & foods = Environment::getInstance().getFoodsVector();
-	std::shared_ptr<Food> closestFood = nullptr;
-	double distance = 1000;
-	if (c->foodLevel < c->genes.foodLimit.get())
-	{
-		for (auto & food : foods)
-		{
-			if (getDistance(c->getPosition(), food->getPosition()) <= distance)
-			{
-				distance = getDistance(c->getPosition(), food->getPosition());
-				closestFood = food;
-			}
-		}
-	}
-	if (closestFood != nullptr && distance <= c->genes.radarRange.get() * 50 + c->getSize())
-	{
-		auto v = closestFood->getPosition() - c->getPosition();
-		auto angle = atan2(v.y, v.x);
-		double angle_change = 5 * CellSimApp::getInstance().getDeltaTime();
-		angle = angle * (180 / PI);
-		if (angle < 0)
-		{
-			angle = 360 - (-angle);
-		}
-		angle += 90; //Remove this for some magic
-		double cfDiffrence = c->getRotation() - angle;
-		double abscfDiffrence = abs(cfDiffrence);
-		if (abscfDiffrence > 180)
-		{
-			if (360 - abscfDiffrence < angle_change)
-			{
-				c->shape.rotate(cfDiffrence <= 0 ? -(360 - abscfDiffrence)*CellSimApp::getInstance().getDeltaTime() : (360 - abscfDiffrence)*CellSimApp::getInstance().getDeltaTime());
-			}
-			else
-			{
-				c->shape.rotate(cfDiffrence <= 0 ? -angle_change : angle_change);
-			}
-		}
-		else
-		{
-			if (abscfDiffrence < angle_change)
-			{
-				c->shape.rotate(cfDiffrence >= 0 ? -abscfDiffrence * CellSimApp::getInstance().getDeltaTime() : abscfDiffrence * CellSimApp::getInstance().getDeltaTime());
-			}
-			else
-			{
-				c->shape.rotate(cfDiffrence >= 0 ? -angle_change : angle_change);
-			}
-		}
-	}
-	else if (randomInt(0, 100) > 97)
+	if (randomInt(0, 100) > 97)
 	{
 		if (randomInt(0, 100) <= 50)
 		{
@@ -218,7 +169,7 @@ void CellRoles::beDead(Cell * c)
 }
 
 void CellRoles::simulateHunger(Cell * c) {
-	c->foodLevel -= 0.1 * CellSimApp::getInstance().getDeltaTime() * c->genes.metabolism.get() * c->currentSpeed * c->getSize()/10;
+	c->foodLevel -= 0.1 * CellSimApp::getInstance().getDeltaTime() * c->genes.metabolism.get() * c->currentSpeed * c->getSize() / 10;
 	if (c->foodLevel <= 0)
 	{
 		c->kill();
@@ -231,8 +182,8 @@ void CellRoles::divideAndConquer(Cell * c)
 	auto& cells = Environment::getInstance().getCellsVector();
 	if (c->foodLevel >= c->genes.foodLimit.get() && c->getSize() >= c->genes.maxSize.get() && randomInt(0, 100) <= c->genes.divisionThreshold.get())
 	{
-		c->foodLevel -= c->genes.foodLimit.get()/2;
-		c->setSize(c->genes.maxSize.get()/2);
+		c->foodLevel -= c->genes.foodLimit.get() / 2;
+		c->setSize(c->genes.maxSize.get() / 2);
 		auto ptr = Cell::create(*c);
 		Environment::getInstance().insertNewCell(ptr);
 		c->setRotation(c->getRotation() + 180);
@@ -258,7 +209,7 @@ void CellRoles::getingHot(Cell * c)
 {
 	if (c->foodLevel >= c->genes.foodLimit.get()*0.75)
 	{
-		c->setHorniness(c->getHorniness().get()+ (randomReal(0.01, 0.05)*CellSimApp::getInstance().getDeltaTime()));
+		c->setHorniness(c->getHorniness().get() + (randomReal(0.01, 0.05)*CellSimApp::getInstance().getDeltaTime()));
 	}
 	if (c->horniness.isMax())
 	{
@@ -280,12 +231,15 @@ void CellRoles::getingHot(Cell * c)
 
 void CellRoles::makeFood(Cell * c)
 {
-	if (randomInt(0, 1000) > 996)
+	c->foodLevel += randomReal(0.1, 0.5) * c->genes.metabolism.get() * CellSimApp::getInstance().getDeltaTime();
+
+	if (c->foodLevel >= c->genes.foodLimit.get())
 	{
+		c->foodLevel = 0;
 		auto size = c->getSize();
 
 		int foods = randomInt(0, 100) > 70 ? 2 : 1;
-		auto foodSize = 0.4 * size;
+		auto foodSize = 0.5 * size;
 
 		for (int i = 0; i < foods; ++i)
 		{
@@ -294,7 +248,12 @@ void CellRoles::makeFood(Cell * c)
 
 			auto position = c->getPosition() + sf::Vector2f{ xDeviation, yDeviation };
 
-			auto food = Food::create(foodSize, position, sf::Color(8, 128, 8));
+			constexpr int margin = 8;
+			auto foodColor = c->makedFoodColor;
+			foodColor.r = randomInt(foodColor.r - margin, foodColor.r + margin);
+			foodColor.g = randomInt(foodColor.g - margin, foodColor.g + margin);
+			foodColor.b = randomInt(foodColor.b - margin, foodColor.b + margin);
+			auto food = Food::create(foodSize, position, foodColor);
 			Environment::getInstance().insertNewFood(food);
 
 			c->horniness = 0;
@@ -368,6 +327,60 @@ void CellRoles::mutate(Cell * c)
 		c->setCurrentSpeed(checkRange(c->getCurrentSpeed(), 0, genes.maxSpeed.get()));
 	}
 
+}
+
+void CellRoles::sniffForFood(Cell * c)
+{
+	auto & foods = Environment::getInstance().getFoodsVector();
+	std::shared_ptr<Food> closestFood = nullptr;
+	double distance = 1000;
+	if (c->foodLevel < c->genes.foodLimit.get())
+	{
+		for (auto & food : foods)
+		{
+			if (getDistance(c->getPosition(), food->getPosition()) <= distance)
+			{
+				distance = getDistance(c->getPosition(), food->getPosition());
+				closestFood = food;
+			}
+		}
+	}
+	if (closestFood != nullptr && distance <= c->genes.radarRange.get() * 50 + c->getSize())
+	{
+		auto v = closestFood->getPosition() - c->getPosition();
+		auto angle = atan2(v.y, v.x);
+		double angle_change = 5 * CellSimApp::getInstance().getDeltaTime();
+		angle = angle * (180 / PI);
+		if (angle < 0)
+		{
+			angle = 360 - (-angle);
+		}
+		angle += 90; //Remove this for some magic
+		double cfDiffrence = c->getRotation() - angle;
+		double abscfDiffrence = abs(cfDiffrence);
+		if (abscfDiffrence > 180)
+		{
+			if (360 - abscfDiffrence < angle_change)
+			{
+				c->shape.rotate(cfDiffrence <= 0 ? -(360 - abscfDiffrence)*CellSimApp::getInstance().getDeltaTime() : (360 - abscfDiffrence)*CellSimApp::getInstance().getDeltaTime());
+			}
+			else
+			{
+				c->shape.rotate(cfDiffrence <= 0 ? -angle_change : angle_change);
+			}
+		}
+		else
+		{
+			if (abscfDiffrence < angle_change)
+			{
+				c->shape.rotate(cfDiffrence >= 0 ? -abscfDiffrence * CellSimApp::getInstance().getDeltaTime() : abscfDiffrence * CellSimApp::getInstance().getDeltaTime());
+			}
+			else
+			{
+				c->shape.rotate(cfDiffrence >= 0 ? -angle_change : angle_change);
+			}
+		}
+	}
 }
 
 bool CellRoles::checkEnvironmentBounds(Cell * c)

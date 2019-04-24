@@ -44,6 +44,7 @@ Cell::Cell(float size, sf::Vector2f position, sf::Color color) : BaseObj(size, p
 	// name of function is its address
 	// place here all role-functions that cell should call
 	roles.push_back(CellRoles::changeDirection);
+	roles.push_back(CellRoles::sniffForFood);
 	roles.push_back(CellRoles::changeSpeed);
 	roles.push_back(CellRoles::eat);
 	roles.push_back(CellRoles::updateColor);
@@ -80,11 +81,6 @@ Cell::Cell(Cell a, Cell b) : Cell(20, (a.getPosition() + b.getPosition()) / 2.0f
 
 Cell::Cell(std::string formattedCellString) : Cell()
 {
-	static int i = 0;
-
-	Logger::log(i);
-	++i;
-
 	static std::regex cellRegex("CELL->( " + RegexPattern::Word + ":((" + RegexPattern::Double + ")|(" + RegexPattern::Vector + ")|(" + RegexPattern::Word + ")))* ");
 	if (!std::regex_match(formattedCellString.begin(), formattedCellString.end(), cellRegex))
 	{
@@ -394,6 +390,16 @@ std::string Cell::getName()
 void Cell::setName(std::string n)
 {
 	name = n;
+}
+
+void Cell::setMakedFoodColor(sf::Color c)
+{
+	makedFoodColor = c;
+}
+
+sf::Color Cell::getMakedFoodColor()
+{
+	return makedFoodColor;
 }
 
 std::shared_ptr<std::vector<std::shared_ptr<BaseObj>>> Cell::getFoodCollisionVector()

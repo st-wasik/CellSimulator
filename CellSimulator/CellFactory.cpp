@@ -4,7 +4,7 @@
 
 std::shared_ptr<Cell> CellFactory::getCell(Cell::Type type)
 {
-	std::shared_ptr<Cell> result = Cell::create(20.f, sf::Vector2f{0.f, 0.f}, sf::Color::Red);
+	std::shared_ptr<Cell> result = Cell::create(20.f, sf::Vector2f{ 0.f, 0.f }, sf::Color::Red);
 
 	Genes g;
 
@@ -41,12 +41,12 @@ std::shared_ptr<Cell> CellFactory::getCell(Cell::Type type)
 	case Cell::Type::GreenLettuce:
 		result->genes.aggresion = 0;
 		result->genes.divisionThreshold = 45;
-		result->genes.foodLimit = 0;
+		result->genes.foodLimit = 100;
 		result->genes.maxAge = 10;
 		result->genes.maxSize = 25;
 		result->genes.maxSpeed = 0.75;
 		result->genes.radarRange = 0;
-		result->setBaseColor(sf::Color::Green);
+		result->genes.metabolism = 0.5;
 		result->dropRole(CellRoles::eat);
 		result->dropRole(CellRoles::simulateHunger);
 		result->dropRole(CellRoles::mutate);
@@ -54,10 +54,37 @@ std::shared_ptr<Cell> CellFactory::getCell(Cell::Type type)
 		result->dropRole(CellRoles::grow);
 		result->dropRole(CellRoles::divideAndConquer);
 		result->dropRole(CellRoles::getingHot);
+		result->dropRole(CellRoles::sniffForFood);
 		result->addRole(CellRoles::makeFood);
 		result->setBaseColor(sf::Color::White);
+		result->setMakedFoodColor(sf::Color(8, 128, 8));
 		result->shape.setTextureRect(sf::IntRect{ 0,0,960,960 });
 		result->shape.setTexture(TextureProvider::getInstance().getTexture("greenLettuce").get());
+		break;
+
+	case Cell::Type::Pizza:
+		result->genes.aggresion = 0;
+		result->genes.divisionThreshold = 45;
+		result->genes.foodLimit = 150;
+		result->genes.maxAge = 10;
+		result->genes.maxSize = 45;
+		result->genes.maxSpeed = 0.5;
+		result->genes.radarRange = 0;
+		result->genes.metabolism = 0.2;
+		result->dropRole(CellRoles::eat);
+		result->dropRole(CellRoles::simulateHunger);
+		result->dropRole(CellRoles::mutate);
+		result->dropRole(CellRoles::makeOlder);
+		result->dropRole(CellRoles::grow);
+		result->dropRole(CellRoles::divideAndConquer);
+		result->dropRole(CellRoles::getingHot);
+		result->dropRole(CellRoles::sniffForFood);
+		result->addRole(CellRoles::makeFood);
+		result->setBaseColor(sf::Color::White);
+		result->setMakedFoodColor(sf::Color(224, 144, 33, 255));
+		result->shape.setTextureRect(sf::IntRect{ 0,0,1052,1052 });
+		result->shape.setTexture(TextureProvider::getInstance().getTexture("pizza").get());
+		result->setSize(45);
 		break;
 	}
 
