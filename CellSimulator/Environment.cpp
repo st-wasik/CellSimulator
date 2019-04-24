@@ -3,6 +3,7 @@
 #include "CellSimMouse.h"
 #include "CellSelectionTool.h"
 #include "CellInsertionTool.h"
+#include "FoodBrush.h"
 #include <math.h>
 #include <random>
 #include <algorithm>
@@ -260,6 +261,7 @@ void Environment::update()
 	CellSelectionTool::getInstance().update();
 	AutoFeederTool::getInstance().update();
 	CellInsertionTool::getInstance().update();
+	FoodBrush::getInstance().update();
 
 	for (auto& newCell : newCells)
 	{
@@ -330,6 +332,7 @@ void Environment::draw(sf::RenderWindow & window)
 	CellSelectionTool::getInstance().draw(window);
 	CellMovementTool::getInstance().draw(window);
 	CellInsertionTool::getInstance().draw(window);
+	FoodBrush::getInstance().draw(window);
 }
 
 std::atomic<double>& Environment::getTemperature()

@@ -140,6 +140,7 @@
     <ClCompile Include="Environment.cpp" />
     <ClCompile Include="FilesManager.cpp" />
     <ClCompile Include="Food.cpp" />
+    <ClCompile Include="FoodBrush.cpp" />
     <ClCompile Include="FoodManager.cpp" />
     <ClCompile Include="Genes.cpp" />
     <ClCompile Include="GUIManager.cpp" />
@@ -171,6 +172,7 @@
     <ClInclude Include="CellSimApp.h" />
     <ClInclude Include="FilesManager.h" />
     <ClInclude Include="Food.h" />
+    <ClInclude Include="FoodBrush.h" />
     <ClInclude Include="FoodManager.h" />
     <ClInclude Include="Genes.h" />
     <ClInclude Include="GUIManager.h" />

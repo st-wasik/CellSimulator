@@ -9,6 +9,7 @@
 #include "TextureProvider.h"
 #include "MessagesManager.h"
 #include "CellInsertionTool.h"
+#include "FoodBrush.h"
 #include "CellFactory.h"
 #include <iostream>
 #include <atomic>
@@ -131,7 +132,9 @@ void CellSimApp::run()
 
 			if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Tilde)
 				CellInsertionTool::getInstance().setIsActive(!CellInsertionTool::getInstance().getIsActive());
-
+			if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::F)
+				FoodBrush::getInstance().setIsActive(!FoodBrush::getInstance().getIsActive());
+			
 			if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Num1)
 				CellInsertionTool::getInstance().setCellBlueprint(CellFactory::getCell(Cell::Type::Aggressive));
 			if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Num2)
@@ -140,6 +143,11 @@ void CellSimApp::run()
 				CellInsertionTool::getInstance().setCellBlueprint(CellFactory::getCell(Cell::Type::Random));
 			if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Num4)
 				CellInsertionTool::getInstance().setCellBlueprint(CellFactory::getCell(Cell::Type::GreenLettuce));
+
+			if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::PageUp)
+				FoodBrush::getInstance().setBrushRadius(FoodBrush::getInstance().getBrushRadius() + 2);
+			if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::PageDown)
+				FoodBrush::getInstance().setBrushRadius(FoodBrush::getInstance().getBrushRadius() - 2);
 
 
 			GUIManager::getInstance().handleEvent(event);

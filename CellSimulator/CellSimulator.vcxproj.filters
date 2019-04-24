@@ -142,6 +142,9 @@
       <Filter>Utils\Source</Filter>
     </ClCompile>
     <ClCompile Include="ToolManager.cpp" />
+    <ClCompile Include="FoodBrush.cpp">
+      <Filter>Simulation Tools\Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CellSimApp.h">
@@ -226,5 +229,8 @@
       <Filter>Utils\Header</Filter>
     </ClInclude>
     <ClInclude Include="ToolManager.h" />
+    <ClInclude Include="FoodBrush.h">
+      <Filter>Simulation Tools\Header</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
