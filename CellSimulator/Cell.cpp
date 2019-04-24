@@ -392,6 +392,16 @@ void Cell::setName(std::string n)
 	name = n;
 }
 
+void Cell::setMakedFoodColor(sf::Color c)
+{
+	makedFoodColor = c;
+}
+
+sf::Color Cell::getMakedFoodColor()
+{
+	return makedFoodColor;
+}
+
 std::shared_ptr<std::vector<std::shared_ptr<BaseObj>>> Cell::getFoodCollisionVector()
 {
 	auto& foodSectors = Environment::getInstance().getFoodCollisionSectors();

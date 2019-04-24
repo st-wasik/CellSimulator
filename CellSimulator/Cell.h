@@ -26,7 +26,7 @@ public:
 
 	enum class Type
 	{
-		Passive, Aggressive, Random, GreenLettuce
+		Passive, Aggressive, Random, GreenLettuce, Pizza
 	};
 
 	template <typename ... Types>
@@ -69,6 +69,9 @@ public:
 	std::string getName();
 	void setName(std::string n);
 
+	void setMakedFoodColor(sf::Color c);
+	sf::Color getMakedFoodColor();
+
 private:
 	explicit Cell();
 	Cell(float size, sf::Vector2f position, sf::Color color);
@@ -99,6 +102,8 @@ private:
 	Ranged<double, 0, 100> horniness;
 
 	std::string name;
+
+	sf::Color makedFoodColor;
 
 	// abbreviation used to save cell to file
 	struct VarAbbrv final

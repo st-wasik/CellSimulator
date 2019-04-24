@@ -74,6 +74,9 @@ void CellSimApp::run()
 			if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Space)
 				CellSelectionTool::getInstance().setFollowSelectedCell(true);
 
+			if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::M)
+				CellSelectionTool::getInstance().setIsActive(!CellSelectionTool::getInstance().getIsActive());
+
 			if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::C)
 				Environment::getInstance().clear();
 
@@ -141,6 +144,8 @@ void CellSimApp::run()
 				CellInsertionTool::getInstance().setCellBlueprint(CellFactory::getCell(Cell::Type::Random));
 			if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Num4)
 				CellInsertionTool::getInstance().setCellBlueprint(CellFactory::getCell(Cell::Type::GreenLettuce));
+			if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Num5)
+				CellInsertionTool::getInstance().setCellBlueprint(CellFactory::getCell(Cell::Type::Pizza));
 
 
 			GUIManager::getInstance().handleEvent(event);

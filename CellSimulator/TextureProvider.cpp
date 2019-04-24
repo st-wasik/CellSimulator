@@ -5,6 +5,7 @@ TextureProvider::TextureProvider()
 	loadTexture("whiteNoise");
 	loadTexture("background");
 	loadTexture("greenLettuce");
+	loadTexture("pizza");
 }
 
 void TextureProvider::loadTexture(const std::string &name)

@@ -169,7 +169,7 @@ void CellRoles::beDead(Cell * c)
 }
 
 void CellRoles::simulateHunger(Cell * c) {
-	c->foodLevel -= 0.1 * CellSimApp::getInstance().getDeltaTime() * c->genes.metabolism.get() * c->currentSpeed * c->getSize()/10;
+	c->foodLevel -= 0.1 * CellSimApp::getInstance().getDeltaTime() * c->genes.metabolism.get() * c->currentSpeed * c->getSize() / 10;
 	if (c->foodLevel <= 0)
 	{
 		c->kill();
@@ -182,8 +182,8 @@ void CellRoles::divideAndConquer(Cell * c)
 	auto& cells = Environment::getInstance().getCellsVector();
 	if (c->foodLevel >= c->genes.foodLimit.get() && c->getSize() >= c->genes.maxSize.get() && randomInt(0, 100) <= c->genes.divisionThreshold.get())
 	{
-		c->foodLevel -= c->genes.foodLimit.get()/2;
-		c->setSize(c->genes.maxSize.get()/2);
+		c->foodLevel -= c->genes.foodLimit.get() / 2;
+		c->setSize(c->genes.maxSize.get() / 2);
 		auto ptr = Cell::create(*c);
 		Environment::getInstance().insertNewCell(ptr);
 		c->setRotation(c->getRotation() + 180);
@@ -209,7 +209,7 @@ void CellRoles::getingHot(Cell * c)
 {
 	if (c->foodLevel >= c->genes.foodLimit.get()*0.75)
 	{
-		c->setHorniness(c->getHorniness().get()+ (randomReal(0.01, 0.05)*CellSimApp::getInstance().getDeltaTime()));
+		c->setHorniness(c->getHorniness().get() + (randomReal(0.01, 0.05)*CellSimApp::getInstance().getDeltaTime()));
 	}
 	if (c->horniness.isMax())
 	{
@@ -231,12 +231,15 @@ void CellRoles::getingHot(Cell * c)
 
 void CellRoles::makeFood(Cell * c)
 {
-	if (randomInt(0, 1000) > 996)
+	c->foodLevel += randomReal(0.1, 0.5) * c->genes.metabolism.get() * CellSimApp::getInstance().getDeltaTime();
+
+	if (c->foodLevel >= c->genes.foodLimit.get())
 	{
+		c->foodLevel = 0;
 		auto size = c->getSize();
 
 		int foods = randomInt(0, 100) > 70 ? 2 : 1;
-		auto foodSize = 0.4 * size;
+		auto foodSize = 0.5 * size;
 
 		for (int i = 0; i < foods; ++i)
 		{
@@ -245,7 +248,12 @@ void CellRoles::makeFood(Cell * c)
 
 			auto position = c->getPosition() + sf::Vector2f{ xDeviation, yDeviation };
 
-			auto food = Food::create(foodSize, position, sf::Color(8, 128, 8));
+			constexpr int margin = 8;
+			auto foodColor = c->makedFoodColor;
+			foodColor.r = randomInt(foodColor.r - margin, foodColor.r + margin);
+			foodColor.g = randomInt(foodColor.g - margin, foodColor.g + margin);
+			foodColor.b = randomInt(foodColor.b - margin, foodColor.b + margin);
+			auto food = Food::create(foodSize, position, foodColor);
 			Environment::getInstance().insertNewFood(food);
 
 			c->horniness = 0;
