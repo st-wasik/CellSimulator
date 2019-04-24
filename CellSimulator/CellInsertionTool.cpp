@@ -64,7 +64,7 @@ bool CellInsertionTool::getIsActive()
 	return isActive;
 }
 
-CellInsertionTool::CellInsertionTool() : cellBlueprint(nullptr)
+CellInsertionTool::CellInsertionTool() : cellBlueprint(nullptr), isActive(false)
 {
 }
 

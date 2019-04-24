@@ -153,7 +153,7 @@ bool CellSelectionTool::getIsActive()
 	return isActive;
 }
 
-CellSelectionTool::CellSelectionTool() : selectedCellCopyValid(false)
+CellSelectionTool::CellSelectionTool() : selectedCellCopyValid(false), isActive(false)
 {
 	selectedCellCopy = Cell::create(0.0, sf::Vector2f{ 0.0f, 0.0f }, sf::Color::Transparent);
 

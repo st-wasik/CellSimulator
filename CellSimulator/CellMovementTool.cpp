@@ -112,7 +112,7 @@ bool CellMovementTool::getIsActive()
 	return isActive;
 }
 
-CellMovementTool::CellMovementTool()
+CellMovementTool::CellMovementTool() : isActive(false)
 {
 }
 
