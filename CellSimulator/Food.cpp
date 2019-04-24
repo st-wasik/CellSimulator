@@ -93,7 +93,7 @@ void Food::modifyValueFromVector(std::string valueName, const std::vector<std::s
 			Logger::log("Wrong values count for " + std::string(VarAbbrv::color) + ": " + std::to_string(values.size()) + ".");
 			return;
 		}
-		this->setBaseColor(sf::Color(std::stod(values[0]), std::stod(values[1]), std::stod(values[2]), std::stod(values[3])));
+		this->setBaseColor(sf::Color(std::stod(values[0]), std::stod(values[1]), std::stod(values[2]), std::stod(values[3])), true);
 	}
 }
 
@@ -112,12 +112,12 @@ std::string Food::getSaveString()
 	result << "FOOD-> " <<
 		VarAbbrv::currentRotation << ":" << this->getRotation() << " " <<
 		VarAbbrv::currentPosition << ":{" << this->getPosition().x << ", " << this->getPosition().y << "} " <<
+		VarAbbrv::currentSize << ":" << this->getSize() << " " <<
 		VarAbbrv::color << ":{" <<
 		static_cast<int>(this->getBaseColor().r) << ", " <<
 		static_cast<int>(this->getBaseColor().g) << ", " <<
 		static_cast<int>(this->getBaseColor().b) << ", " <<
 		static_cast<int>(this->getBaseColor().a) << "} " <<
-		VarAbbrv::currentSize << ":" << this->getSize() << " " <<
 		VarAbbrv::markedToDelete << ":" << this->isMarkedToDelete() << " ";
 
 	return result.str();

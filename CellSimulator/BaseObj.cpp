@@ -65,9 +65,11 @@ sf::Color BaseObj::getBaseColor()
 	return baseColor;
 }
 
-void BaseObj::setBaseColor(sf::Color c)
+void BaseObj::setBaseColor(sf::Color c, bool update)
 {
 	baseColor = c;
+	if (update)
+		shape.setFillColor(c);
 }
 
 float BaseObj::getOutlineThickness()

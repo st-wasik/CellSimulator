@@ -23,7 +23,7 @@ public:
 	void setPosition(const sf::Vector2f&);
 
 	sf::Color getBaseColor();
-	void setBaseColor(sf::Color);
+	void setBaseColor(sf::Color, bool updateShapeColor = false);
 
 	float getOutlineThickness();
 	void setOutlineThickness(float value);
