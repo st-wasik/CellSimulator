@@ -39,6 +39,7 @@ void CellSimApp::run()
 
 	sf::Event event;
 	sf::Clock deltaTimeClock;
+	sf::Clock deltaLog;
 
 	while (window->isOpen())
 	{
@@ -161,7 +162,13 @@ void CellSimApp::run()
 
 		//OTHER --->
 		deltaTime = 0.0001 * deltaTimeClock.getElapsedTime().asMicroseconds();
-		fps = 1 / (deltaTime * 100);
+		fps = 1 / (deltaTime) * 100;
+
+		if (deltaLog.getElapsedTime().asMilliseconds() > 2500)
+		{
+			Logger::log("DELTA: " + std::to_string(deltaTime) + "   FPS: " + std::to_string(fps));
+			deltaLog.restart();
+		}
 	}
 }
 
