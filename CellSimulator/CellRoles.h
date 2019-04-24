@@ -59,6 +59,8 @@ public:
 
 	static void mutate(Cell * c);
 
+	static void sniffForFood(Cell * c);
+
 	/// \returns true if collision occured - otherwise false
 	static bool checkEnvironmentBounds(Cell* c);
 private:

@@ -44,6 +44,7 @@ Cell::Cell(float size, sf::Vector2f position, sf::Color color) : BaseObj(size, p
 	// name of function is its address
 	// place here all role-functions that cell should call
 	roles.push_back(CellRoles::changeDirection);
+	roles.push_back(CellRoles::sniffForFood);
 	roles.push_back(CellRoles::changeSpeed);
 	roles.push_back(CellRoles::eat);
 	roles.push_back(CellRoles::updateColor);
