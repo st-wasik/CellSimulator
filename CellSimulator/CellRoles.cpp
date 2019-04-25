@@ -169,12 +169,11 @@ void CellRoles::beDead(Cell * c)
 }
 
 void CellRoles::simulateHunger(Cell * c) {
-	c->foodLevel -= 0.1 * CellSimApp::getInstance().getDeltaTime() * c->genes.metabolism.get() * c->currentSpeed * c->getSize() / 10;
+	c->foodLevel -= 0.025 * CellSimApp::getInstance().getDeltaTime() * c->genes.metabolism.get() * c->currentSpeed * c->getSize() / 10;
 	if (c->foodLevel <= 0)
 	{
 		c->kill();
 	}
-
 }
 
 void CellRoles::divideAndConquer(Cell * c)
@@ -310,7 +309,7 @@ void CellRoles::mutate(Cell * c)
 {
 	if (randomInt(0, 100) > 99) {
 
-		constexpr double mutationRatio = 1000;
+		constexpr double mutationRatio = 100;
 
 		auto& genes = c->getGenes();
 		genes.aggresion = genes.aggresion + genes.aggresion.getRange() / mutationRatio * Environment::getInstance().getRadiation() * randomInt(-1, 1);

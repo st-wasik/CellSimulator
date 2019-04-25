@@ -2,6 +2,7 @@
 #include "CellMovementTool.h"
 #include "CellInsertionTool.h"
 #include "CellSelectionTool.h"
+#include "FoodBrush.h"
 
 ToolManager & ToolManager::getInstance()
 {
@@ -45,6 +46,7 @@ void ToolManager::deactivateAllTools()
 	CellMovementTool::getInstance().setIsActive(false);
 	CellInsertionTool::getInstance().setIsActive(false);
 	CellSelectionTool::getInstance().setIsActive(false);
+	FoodBrush::getInstance().setIsActive(false);
 }
 
 void ToolManager::reconfigure()
@@ -53,6 +55,7 @@ void ToolManager::reconfigure()
 	switch (activeTool)
 	{
 	case Tool::Feeder:
+		FoodBrush::getInstance().setIsActive(true);
 		break;
 	case Tool::Insertion:
 		CellInsertionTool::getInstance().setIsActive(true);

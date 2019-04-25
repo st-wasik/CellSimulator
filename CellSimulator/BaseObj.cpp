@@ -68,7 +68,7 @@ sf::Color BaseObj::getBaseColor()
 void BaseObj::setBaseColor(sf::Color c, bool update)
 {
 	baseColor = c;
-	if (update)
+	//if (update)
 		shape.setFillColor(c);
 }
 
