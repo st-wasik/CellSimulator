@@ -12,6 +12,9 @@ public:
 	void setIsActive(bool a);
 	bool getIsActive();
 
+	void setBrushDelay(int delay);
+	int getBrushDelay();
+
 	void setBrushRadius(float size);
 	float getBrushRadius();
 
@@ -20,7 +23,8 @@ public:
 
 private:
 	bool isActive;
-
+	int delay;
+	sf::Clock deltaTimeClock;
 	sf::CircleShape brush;
 };
 

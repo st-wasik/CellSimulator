@@ -17,9 +17,12 @@ void FoodBrush::update()
 	if (isActive) 
 	{
 		brush.setPosition(CellSimMouse::getPosition());
-		if (CellSimMouse::wasLeftPressed())
+		if (CellSimMouse::isLeftPressed() && deltaTimeClock.getElapsedTime().asMilliseconds() > delay)
 		{
-			auto food = Food::create(randomInt(3,10), CellSimMouse::getPosition(),sf::Color::Green);
+			deltaTimeClock.restart();
+			float radius = brush.getRadius();
+			sf::Vector2f position(CellSimMouse::getPosition().x + randomInt(-radius*0.7, radius*0.7), CellSimMouse::getPosition().y + randomInt(-radius*0.7, radius*0.7));
+			auto food = Food::create(randomInt(3,10), position, sf::Color::Green);
 			Environment::getInstance().insertNewFood(food);
 		}
 	}
@@ -43,6 +46,16 @@ bool FoodBrush::getIsActive()
 	return isActive;
 }
 
+void FoodBrush::setBrushDelay(int delay)
+{
+	this->delay = delay;
+}
+
+int FoodBrush::getBrushDelay()
+{
+	return this->delay;
+}
+
 void FoodBrush::setBrushRadius(float radius)
 {
 	if (radius > 10.f)
@@ -64,11 +77,13 @@ float FoodBrush::getBrushRadius()
 FoodBrush::FoodBrush()
 {
 	brush.setFillColor(sf::Color::Transparent);
-	brush.setOutlineColor(sf::Color::White);
+	brush.setOutlineColor(sf::Color(255,255,255,128));
 	brush.setRadius(50.f);
 	brush.setOutlineThickness(4.f);
 	brush.setOrigin(brush.getRadius(), brush.getRadius());
 	isActive = false;
+	deltaTimeClock.restart();
+	delay = 25;
 }
 
 
