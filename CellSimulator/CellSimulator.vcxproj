@@ -168,6 +168,7 @@
     <ClInclude Include="CellSelectionTool.h" />
     <ClInclude Include="Distance.h" />
     <ClInclude Include="DoubleToString.h" />
+    <ClInclude Include="DynamicRanged.h" />
     <ClInclude Include="Environment.h" />
     <ClInclude Include="CellSimApp.h" />
     <ClInclude Include="FilesManager.h" />

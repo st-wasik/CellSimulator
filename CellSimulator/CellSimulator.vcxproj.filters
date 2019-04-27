@@ -236,5 +236,6 @@
     <ClInclude Include="ToolManager.h">
       <Filter>Simulation Tools\Header</Filter>
     </ClInclude>
+    <ClInclude Include="DynamicRanged.h" />
   </ItemGroup>
 </Project>
