@@ -193,12 +193,19 @@ void CellRoles::grow(Cell * c)
 {
 	auto rand = randomReal(0.0005, 0.025);
 
+	auto prevSize = c->getSize();
+
+	// grow
 	if (c->getSize() < c->genes.maxSize.get() && c->foodLevel >= c->genes.foodLimit.get()*0.90)
 	{
 		c->setSize(c->getSize() + (rand * CellSimApp::getInstance().getDeltaTime()));
+		if (checkEnvironmentBounds(c))
+		{
+			c->setSize(prevSize);
+		}
 	}
-
-	if (c->getSize() > 15 && c->foodLevel <= c->genes.foodLimit.get()*0.25)
+	// grow in other direction
+	else if (c->getSize() > 15 && c->foodLevel <= c->genes.foodLimit.get()*0.25)
 	{
 		c->setSize(c->getSize() - (rand * CellSimApp::getInstance().getDeltaTime()));
 	}
