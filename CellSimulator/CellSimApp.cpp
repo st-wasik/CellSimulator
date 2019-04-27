@@ -182,6 +182,12 @@ void CellSimApp::run()
 			Logger::log("DELTA: " + std::to_string(deltaTime) + "   FPS: " + std::to_string(fps));
 			deltaLog.restart();
 		}
+
+		if (fps < 3)
+		{
+			Environment::getInstance().pauseSimulation();
+			MessagesManager::getInstance().append("Simulation Paused - to low preformance (FPS). Exterminate some cells...");
+		}
 	}
 }
 
