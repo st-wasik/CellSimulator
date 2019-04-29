@@ -19,10 +19,9 @@ FilesManager & FilesManager::getInstance()
 
 std::string FilesManager::readFile(std::string filename)
 {
-	const std::string fullName = fileDirectory + filename + fileFormat;
-	std::ifstream fin(fullName);
+	std::ifstream fin(filename);
 
-	if (fin.fail()) throw std::exception((std::string("Cannot open file ") + fullName).c_str());
+	if (fin.fail()) throw std::exception((std::string("Cannot open file ") + filename).c_str());
 	auto content = std::string{ std::istreambuf_iterator<char>(fin), std::istreambuf_iterator<char>() };
 	fin.close();
 	return content;
@@ -30,10 +29,9 @@ std::string FilesManager::readFile(std::string filename)
 
 void FilesManager::writeFile(std::string filename, std::string content)
 {
-	const std::string fullName = fileDirectory + filename + fileFormat;
-	std::ofstream fout(fileDirectory + filename + fileFormat);
+	std::ofstream fout(filename);
 
-	if (fout.fail()) throw std::exception((std::string("Cannot open file ") + fullName).c_str());
+	if (fout.fail()) throw std::exception((std::string("Cannot open file ") + filename).c_str());
 
 	fout << content;
 	fout.close();

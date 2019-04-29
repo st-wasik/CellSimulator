@@ -12,6 +12,7 @@
 #include "FoodBrush.h"
 #include "CellFactory.h"
 #include "ToolManager.h"
+#include "SaveManager.h"
 #include <iostream>
 #include <atomic>
 
@@ -110,17 +111,27 @@ void CellSimApp::run()
 				bool wasSimActive = Environment::getInstance().getIsSimulationActive();
 				Environment::getInstance().pauseSimulation();
 
-				try
-				{
-					FilesManager::getInstance().writeFile("quick_save", Environment::getInstance().getSaveString());
-				}
-				catch (std::exception e)
-				{
-					Logger::log(e.what());
-				}
-				MessagesManager::getInstance().append("Simulation saved as quick_save.cell.");
+				SaveManager::getInstance().saveEnvironmentToFile("quick_save");
+
+				MessagesManager::getInstance().append("Simulation saved as quick_save.env.");
 				if (wasSimActive)
 					Environment::getInstance().startSimualtion();
+			}
+
+			if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::F6)
+			{
+				auto cell = CellSelectionTool::getInstance().getSelectedCell();
+				if (cell != nullptr)
+				{
+					bool wasSimActive = Environment::getInstance().getIsSimulationActive();
+					Environment::getInstance().pauseSimulation();
+
+					SaveManager::getInstance().saveCellToFile(cell, "cell_save");
+
+					MessagesManager::getInstance().append("Cell saved as cell_save.cell.");
+					if (wasSimActive)
+						Environment::getInstance().startSimualtion();
+				}
 			}
 
 			if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::F9)
@@ -128,24 +139,8 @@ void CellSimApp::run()
 				bool wasSimActive = Environment::getInstance().getIsSimulationActive();
 				Environment::getInstance().pauseSimulation();
 				MessagesManager::getInstance().append("Loading simulation from file...");
-				std::string saveString;
-				try
-				{
-					saveString = FilesManager::getInstance().readFile("quick_save");
-				}
-				catch (std::exception e)
-				{
-					Logger::log(e.what());
-				}
 
-				try
-				{
-					Environment::getInstance().configure(saveString);
-				}
-				catch (std::exception e)
-				{
-					Logger::log(e.what());
-				}
+				SaveManager::getInstance().readEnvironmentFromFile("quick_save");
 
 				MessagesManager::getInstance().append("Simulation loaded from quick_save.cell.");
 				if (wasSimActive)
@@ -199,7 +194,16 @@ void CellSimApp::run()
 		if (fps < 3)
 		{
 			Environment::getInstance().pauseSimulation();
-			MessagesManager::getInstance().append("Simulation Paused - to low preformance (FPS). Exterminate some cells...");
+			MessagesManager::getInstance().append("Too low preformance - simulation paused - delete some cells...");
+		}
+
+		if (fps < 10)
+		{
+			if (!zoomByOneStep)
+			{
+				zoomByOneStep = true;
+				MessagesManager::getInstance().append("Too low performance - toogled zoom mode to One Step.");
+			}
 		}
 	}
 }
@@ -216,7 +220,11 @@ void CellSimApp::configure()
 	// first getInstance call loads all textures
 	TextureProvider::getInstance();
 
+#ifdef DEBUG 
+	window->create(windowVideoMode, windowTitle, sf::Style::Close);
+#else 
 	window->create(windowVideoMode, windowTitle, sf::Style::Fullscreen);
+#endif
 	window->setFramerateLimit(60);
 	window->setPosition({ 0,0 });
 	window->setVerticalSyncEnabled(true);

@@ -87,7 +87,7 @@
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)\TGUI-0.8\include;$(SolutionDir)\SFML-2.5.1\include</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>SFML_STATIC;TGUI_STATIC;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>DEBUG;SFML_STATIC;TGUI_STATIC;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>$(SolutionDir)\TGUI-0.8\lib;$(SolutionDir)\SFML-2.5.1\lib</AdditionalLibraryDirectories>
@@ -154,6 +154,7 @@
     <ClCompile Include="Random.cpp" />
     <ClCompile Include="RangeChecker.cpp" />
     <ClCompile Include="RegexPattern.cpp" />
+    <ClCompile Include="SaveManager.cpp" />
     <ClCompile Include="TextureProvider.cpp" />
     <ClCompile Include="ToolManager.cpp" />
   </ItemGroup>
@@ -186,6 +187,7 @@
     <ClInclude Include="RangeChecker.h" />
     <ClInclude Include="Ranged.h" />
     <ClInclude Include="RegexPattern.h" />
+    <ClInclude Include="SaveManager.h" />
     <ClInclude Include="TextureProvider.h" />
     <ClInclude Include="ToolManager.h" />
   </ItemGroup>
