@@ -11,6 +11,7 @@
 #include "CellInsertionTool.h"
 #include "FoodBrush.h"
 #include "CellFactory.h"
+#include "ToolManager.h"
 #include <iostream>
 #include <atomic>
 
@@ -20,7 +21,7 @@ CellSimApp& CellSimApp::getInstance()
 	return instance;
 }
 
-CellSimApp::CellSimApp()
+CellSimApp::CellSimApp() : zoomByOneStep(true)
 {
 	deltaTime = 0;
 	fps = 0;
@@ -33,8 +34,9 @@ CellSimApp::~CellSimApp()
 void CellSimApp::run()
 {
 	MessagesManager::getInstance().configure();
-	Environment::getInstance().configure({3000,1500}, true);
+	Environment::getInstance().configure({ 3000,1500 }, true);
 	GUIManager::getInstance().configure(window);
+	ToolManager::getInstance().enable();
 
 	view.setCenter(sf::Vector2f(Environment::getInstance().getSize().x / 2, Environment::getInstance().getSize().y / 2));
 
@@ -75,11 +77,27 @@ void CellSimApp::run()
 			if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Space)
 				CellSelectionTool::getInstance().setFollowSelectedCell(true);
 
-			if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::M)
-				CellSelectionTool::getInstance().setIsActive(!CellSelectionTool::getInstance().getIsActive());
+			if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::F1)
+			{
+				ToolManager::getInstance().setActiveTool(ToolManager::Tool::SelectionMovement);
+				MessagesManager::getInstance().append("Active tool: Select/Move.");
+			}
+			if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::F3)
+			{
+				ToolManager::getInstance().setActiveTool(ToolManager::Tool::Insertion);
+				MessagesManager::getInstance().append("Active tool: Insert.");
+			}
+			if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::F2)
+			{
+				ToolManager::getInstance().setActiveTool(ToolManager::Tool::Feeder);
+				MessagesManager::getInstance().append("Active tool: Feed.");
+			}
 
 			if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::C)
 				Environment::getInstance().clear();
+
+			if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Z)
+				zoomByOneStep = !zoomByOneStep;
 
 			if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Return)
 				if (Environment::getInstance().getIsSimulationActive())
@@ -87,7 +105,7 @@ void CellSimApp::run()
 				else
 					Environment::getInstance().startSimualtion();
 
-			if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::S)
+			if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::F5)
 			{
 				bool wasSimActive = Environment::getInstance().getIsSimulationActive();
 				Environment::getInstance().pauseSimulation();
@@ -105,7 +123,7 @@ void CellSimApp::run()
 					Environment::getInstance().startSimualtion();
 			}
 
-			if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::R)
+			if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::F9)
 			{
 				bool wasSimActive = Environment::getInstance().getIsSimulationActive();
 				Environment::getInstance().pauseSimulation();
@@ -134,11 +152,6 @@ void CellSimApp::run()
 					Environment::getInstance().startSimualtion();
 			}
 
-			if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Tilde)
-				CellInsertionTool::getInstance().setIsActive(!CellInsertionTool::getInstance().getIsActive());
-			if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::F)
-				FoodBrush::getInstance().setIsActive(!FoodBrush::getInstance().getIsActive());
-			
 			if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Num1)
 				CellInsertionTool::getInstance().setCellBlueprint(CellFactory::getCell(Cell::Type::Aggressive));
 			if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Num2)
@@ -266,16 +279,39 @@ void CellSimApp::updateViewZoom()
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Numpad0) && window->hasFocus()) _expectedZoom = 0;
 
-	if (_currentZoom < _expectedZoom && abs(_currentZoom - _expectedZoom) > 0.2)
+	if (zoomByOneStep)
 	{
-		_currentZoom += 0.1;
-		view.zoom(1.025);
+		while (true)
+		{
+			if (_currentZoom < _expectedZoom && abs(_currentZoom - _expectedZoom) > 0.2)
+			{
+				_currentZoom += 0.1;
+				view.zoom(1.025);
+			}
+			else if (_currentZoom > _expectedZoom && abs(_currentZoom - _expectedZoom) > 0.2)
+			{
+				_currentZoom -= 0.1;
+				view.zoom(0.975);
+			}
+			else
+			{
+				break;
+			}
+		}
 	}
-
-	if (_currentZoom > _expectedZoom && abs(_currentZoom - _expectedZoom) > 0.2)
+	else
 	{
-		_currentZoom -= 0.1;
-		view.zoom(0.975);
+		if (_currentZoom < _expectedZoom && abs(_currentZoom - _expectedZoom) > 0.2)
+		{
+			_currentZoom += 0.1;
+			view.zoom(1.025);
+		}
+		
+		if (_currentZoom > _expectedZoom && abs(_currentZoom - _expectedZoom) > 0.2)
+		{
+			_currentZoom -= 0.1;
+			view.zoom(0.975);
+		}
 	}
 
 	window->setView(view);

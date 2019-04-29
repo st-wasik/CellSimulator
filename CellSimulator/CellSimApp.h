@@ -48,6 +48,8 @@ private:
 	static constexpr int _maxZoom = -7;
 	static constexpr int _minZoom = 7;
 
+	bool zoomByOneStep;
+
 	float deltaTime;
 	float fps;
 };
