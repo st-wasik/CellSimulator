@@ -1,5 +1,5 @@
 #pragma once
-#include "Ranged.h"
+#include "DynamicRanged.h"
 #include <string>
 #include <iostream>
 
@@ -18,15 +18,16 @@ struct Genes
 		int type,
 		double metabolism);
 
-	Ranged<double, 0, 2> maxSpeed;
-	Ranged<double, 0, 100> aggresion;
-	Ranged<double, 0, 10> radarRange;
-	Ranged<double, 0, 100> divisionThreshold;
-	Ranged<double, 0, 150> foodLimit;
-	Ranged<double, 20, 50> maxSize;
-	Ranged<double, 1, 100> maxAge;
-	Ranged<int, 0, 2> type;
-	Ranged<double, 0, 2> metabolism;
+	
+	DynamicRanged<double> maxSpeed; //<0.1, 2>
+	DynamicRanged<double> aggresion; //<0, 100>;
+	DynamicRanged<double> radarRange; //<0, 10>
+	DynamicRanged<double> divisionThreshold; //<0, 100>
+	DynamicRanged<double> foodLimit; //<0, 150>
+	DynamicRanged<double> maxSize; //<20, 50>
+	DynamicRanged<double> maxAge; //<1, 100>
+	DynamicRanged<int> type; //<0, 2>
+	DynamicRanged<double> metabolism;//<0.1, 2>
 
 	void randomize();
 	std::string toString();
