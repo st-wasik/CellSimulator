@@ -147,7 +147,9 @@
     <ClCompile Include="ToolManager.cpp">
       <Filter>Simulation Tools\Source</Filter>
     </ClCompile>
-    <ClCompile Include="SaveManager.cpp" />
+    <ClCompile Include="SaveManager.cpp">
+      <Filter>Simulation Control\Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CellSimApp.h">
@@ -239,6 +241,9 @@
     </ClInclude>
     <ClInclude Include="DynamicRanged.h">
       <Filter>Utils\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="SaveManager.h">
+      <Filter>Simulation Control\Header</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
