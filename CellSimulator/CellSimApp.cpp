@@ -22,7 +22,7 @@ CellSimApp& CellSimApp::getInstance()
 	return instance;
 }
 
-CellSimApp::CellSimApp() : zoomByOneStep(true)
+CellSimApp::CellSimApp() : zoomByOneStep(false)
 {
 	deltaTime = 0;
 	fps = 0;
@@ -38,6 +38,7 @@ void CellSimApp::run()
 	Environment::getInstance().configure({ 3000,1500 }, true);
 	GUIManager::getInstance().configure(window);
 	ToolManager::getInstance().enable();
+	ToolManager::getInstance().setActiveTool(ToolManager::Tool::SelectionMovement);
 
 	view.setCenter(sf::Vector2f(Environment::getInstance().getSize().x / 2, Environment::getInstance().getSize().y / 2));
 
