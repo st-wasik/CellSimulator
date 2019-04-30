@@ -43,6 +43,10 @@ Cell::Cell(float size, sf::Vector2f position, sf::Color color) : BaseObj(size, p
 
 	// name of function is its address
 	// place here all role-functions that cell should call
+
+	// make sure that checkCollisions is always the first role-function
+	roles.push_back(CellRoles::checkCollisions);
+
 	roles.push_back(CellRoles::changeDirection);
 	roles.push_back(CellRoles::sniffForFood);
 	roles.push_back(CellRoles::changeSpeed);
@@ -402,8 +406,9 @@ sf::Color Cell::getMakedFoodColor()
 	return makedFoodColor;
 }
 
-std::shared_ptr<std::vector<std::shared_ptr<BaseObj>>> Cell::getFoodCollisionVector()
+void Cell::getFoodCollisionVector()
 {
+	this->FoodCollisionVector->clear();
 	auto& foodSectors = Environment::getInstance().getFoodCollisionSectors();
 	const auto sectorsX = foodSectors.size();
 	const auto sectorsY = foodSectors[0].size();
@@ -411,34 +416,86 @@ std::shared_ptr<std::vector<std::shared_ptr<BaseObj>>> Cell::getFoodCollisionVec
 	auto cellPtr = this->getSelfPtr();
 	auto cellPosition = Environment::getCollisionSectorCoords(cellPtr);
 
-	auto minX = cellPosition.x - 1;
+	auto minX = cellPosition.x - static_cast<int>(this->genes.radarRange.get() / 50 + 0.5);
 	if (minX < 0) minX = 0;
 
-	auto minY = cellPosition.y - 1;
+	auto minY = cellPosition.y - static_cast<int>(this->genes.radarRange.get() / 50 + 0.5);
 	if (minY < 0) minY = 0;
 
-	auto maxX = cellPosition.x + 1;
+	auto maxX = cellPosition.x + static_cast<int>(this->genes.radarRange.get() / 50 + 0.5);
 	if (maxX >= sectorsX) maxX = sectorsX - 1;
 
-	auto maxY = cellPosition.y + 1;
+	auto maxY = cellPosition.y + static_cast<int>(this->genes.radarRange.get() / 50 + 0.5);
 	if (maxY >= sectorsY) maxY = sectorsY - 1;
 
 	//std::clog << minX << " " << minY << "   " << maxX << " " << maxY << std::endl;
 
-	std::shared_ptr<std::vector<std::shared_ptr<BaseObj>>> result = std::make_shared<std::vector<std::shared_ptr<BaseObj>>>();
-
+	//250000 is a max distance^2 what cell can "see"
+	double distance = 250000;
 	for (int i = minX; i <= maxX; ++i)
 	{
 		for (int j = minY; j <= maxY; ++j)
 		{
-			for (auto& f : foodSectors[i][j])
+			for (auto& food : foodSectors[i][j])
 			{
-				if (cellPtr->collision(f) && !f->isMarkedToDelete())
+				auto check = cellPtr->collision(food);
+				if (check.second < distance && !food->isMarkedToDelete())
 				{
-					result->push_back(f);
+					this->closestFood.first = food;
+					this->closestFood.second = distance = check.second;
+				}
+				if (check.first && !food->isMarkedToDelete())
+				{
+					this->FoodCollisionVector->push_back(food);
 				}
 			}
 		}
 	}
-	return result;
+}
+
+void Cell::getCellCollisionVector()
+{
+	this->CellCollisionVector->clear();
+	auto& cellSectors = Environment::getInstance().getCellCollisionSectors();
+	const auto sectorsX = cellSectors.size();
+	const auto sectorsY = cellSectors[0].size();
+
+	auto cellPtr = this->getSelfPtr();
+	auto cellPosition = Environment::getCollisionSectorCoords(cellPtr);
+
+	auto minX = cellPosition.x - static_cast<int>(this->genes.radarRange.get() / 50 + 0.5);
+	if (minX < 0) minX = 0;
+
+	auto minY = cellPosition.y - static_cast<int>(this->genes.radarRange.get() / 50 + 0.5);
+	if (minY < 0) minY = 0;
+
+	auto maxX = cellPosition.x + static_cast<int>(this->genes.radarRange.get() / 50 + 0.5);
+	if (maxX >= sectorsX) maxX = sectorsX - 1;
+
+	auto maxY = cellPosition.y + static_cast<int>(this->genes.radarRange.get() / 50 + 0.5);
+	if (maxY >= sectorsY) maxY = sectorsY - 1;
+
+	//std::clog << minX << " " << minY << "   " << maxX << " " << maxY << std::endl;
+
+	//250000 is a max distance^2 what cell can "see"
+	double distance = 250000;
+	for (int i = minX; i <= maxX; ++i)
+	{
+		for (int j = minY; j <= maxY; ++j)
+		{
+			for (auto& cell : cellSectors[i][j])
+			{
+				auto check = cellPtr->collision(cell);
+				if (check.second < distance && !cell->isMarkedToDelete())
+				{
+					this->closestCell.first = cell;
+					this->closestCell.second = distance = check.second;
+				}
+				if (check.first && !cell->isMarkedToDelete())
+				{
+					this->CellCollisionVector->push_back(std::dynamic_pointer_cast<Cell>(cell));
+				}
+			}
+		}
+	}
 }

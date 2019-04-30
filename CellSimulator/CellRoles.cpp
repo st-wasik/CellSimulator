@@ -40,6 +40,7 @@ CellRoles::CellRoles()
 	registerRole(mutate, 12, VAR_NAME(mutate));
 	registerRole(changeSpeed, 13, VAR_NAME(changeSpeed));
 	registerRole(sniffForFood, 14, VAR_NAME(sniffForFood));
+	registerRole(checkCollisions, 15, VAR_NAME(checkCollisions));
 }
 
 CellRoles & CellRoles::getManager()
@@ -105,10 +106,7 @@ void CellRoles::changeSpeed(Cell * c)
 void CellRoles::eat(Cell * c)
 {
 	auto& foods = Environment::getInstance().getFoodsVector();
-	auto collisions = c->getFoodCollisionVector();
-
-
-	auto& sectors = Environment::getInstance().getFoodCollisionSectors();
+	auto& collisions = c->FoodCollisionVector;
 
 	for (auto& f : *collisions)
 	{
@@ -219,10 +217,10 @@ void CellRoles::getingHot(Cell * c)
 	}
 	if (c->horniness.isMax())
 	{
-		auto & cells = Environment::getInstance().getCellsVector();
-		for (auto & cell : cells)
+		auto & cells = c->CellCollisionVector;
+		for (auto & cell : *cells)
 		{
-			if (cell.get() != c && !cell->isDead() && cell->getHorniness().isMax() && c->genes.type.get() == cell->genes.type.get() && c->collision(cell))
+			if (cell.get() != c && !cell->isDead() && cell->getHorniness().isMax() && c->genes.type.get() == cell->genes.type.get())
 			{
 				c->setHorniness(0);
 				c->foodLevel = c->genes.foodLimit.get() / 2;
@@ -274,7 +272,7 @@ void CellRoles::fight(Cell * c)
 
 	for (auto& cell : cells)
 	{
-		if (c->collision(cell) && c != cell.get())
+		if (c->collision(cell).first && c != cell.get())
 		{
 			float cSize = c->getSize();
 			float cellSize = cell->getSize();
@@ -337,23 +335,9 @@ void CellRoles::mutate(Cell * c)
 
 void CellRoles::sniffForFood(Cell * c)
 {
-	auto & foods = Environment::getInstance().getFoodsVector();
-	std::shared_ptr<Food> closestFood = nullptr;
-	double distance = 1000;
-	if (c->foodLevel < c->genes.foodLimit.get())
+	if (c->closestFood.first != nullptr && c->closestFood.second <= c->genes.radarRange.get()*c->genes.radarRange.get() + c->getSize())
 	{
-		for (auto & food : foods)
-		{
-			if (getDistance(c->getPosition(), food->getPosition()) <= distance)
-			{
-				distance = getDistance(c->getPosition(), food->getPosition());
-				closestFood = food;
-			}
-		}
-	}
-	if (closestFood != nullptr && distance <= c->genes.radarRange.get() * 50 + c->getSize())
-	{
-		auto v = closestFood->getPosition() - c->getPosition();
+		auto v = c->closestFood.first->getPosition() - c->getPosition();
 		auto angle = atan2(v.y, v.x);
 		double angle_change = 5 * CellSimApp::getInstance().getDeltaTime();
 		angle = angle * (180 / PI);
@@ -387,6 +371,16 @@ void CellRoles::sniffForFood(Cell * c)
 			}
 		}
 	}
+}
+
+void CellRoles::checkCollisions(Cell * c)
+{
+	c->FoodCollisionVector->clear();
+	c->CellCollisionVector->clear();
+	c->closestFood.first = nullptr;
+	c->closestCell.first = nullptr;
+	c->getFoodCollisionVector();
+	c->getCellCollisionVector();
 }
 
 bool CellRoles::checkEnvironmentBounds(Cell * c)

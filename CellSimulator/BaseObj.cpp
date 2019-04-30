@@ -69,7 +69,7 @@ void BaseObj::setBaseColor(sf::Color c, bool update)
 {
 	baseColor = c;
 	//if (update)
-		shape.setFillColor(c);
+	shape.setFillColor(c);
 }
 
 float BaseObj::getOutlineThickness()
@@ -97,15 +97,16 @@ bool BaseObj::isMarkedToDelete()
 	return toDelete;
 }
 
-bool BaseObj::collision(std::shared_ptr<BaseObj> obj)
+std::pair<bool, double> BaseObj::collision(std::shared_ptr<BaseObj> obj)
 {
 	auto sizes = this->getSize() + obj->getSize();
-	auto distance = this->getPosition() - obj->getPosition();
-	if (distance.x * distance.x + distance.y*distance.y <= sizes * sizes)
+	auto subPosition = this->getPosition() - obj->getPosition();
+	double distance = subPosition.x*subPosition.x + subPosition.y*subPosition.y;
+	if (distance <= sizes * sizes)
 	{
-		return true;
+		return std::make_pair(true, distance);
 	}
-	return false;
+	return std::make_pair(false, distance);
 }
 
 void BaseObj::setSelfPtr(std::shared_ptr<BaseObj> s)

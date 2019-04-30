@@ -61,6 +61,8 @@ public:
 
 	static void sniffForFood(Cell * c);
 
+	static void checkCollisions(Cell * c);
+
 	/// \returns true if collision occured - otherwise false
 	static bool checkEnvironmentBounds(Cell* c);
 private:

@@ -84,9 +84,8 @@ private:
 	// vector of pointers to role-functions
 	std::vector<void(*)(Cell*)> roles;
 
-	// returns vector of all foods colliding with cell
-	std::shared_ptr<std::vector<std::shared_ptr<BaseObj>>> getFoodCollisionVector();
-
+	void getFoodCollisionVector();
+	void getCellCollisionVector();
 	// curent cell stats:
 
 	double currentSpeed;
@@ -105,6 +104,10 @@ private:
 
 	sf::Color makedFoodColor;
 
+	std::shared_ptr<std::vector<std::shared_ptr<BaseObj>>> FoodCollisionVector = std::make_shared<std::vector<std::shared_ptr<BaseObj>>>();
+	std::shared_ptr<std::vector<std::shared_ptr<Cell>>> CellCollisionVector = std::make_shared<std::vector<std::shared_ptr<Cell>>>();
+	std::pair<std::shared_ptr<BaseObj>, double> closestCell; 
+	std::pair<std::shared_ptr<BaseObj>, double> closestFood;
 	// abbreviation used to save cell to file
 	struct VarAbbrv final
 	{

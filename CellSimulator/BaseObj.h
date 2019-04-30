@@ -36,7 +36,7 @@ public:
 	void markToDelete();
 	bool isMarkedToDelete();
 
-	bool collision(std::shared_ptr<BaseObj> obj);
+	std::pair<bool,double> collision(std::shared_ptr<BaseObj> obj);
 
 	void setSelfPtr(std::shared_ptr<BaseObj> s);
 	std::shared_ptr<BaseObj> getSelfPtr();
