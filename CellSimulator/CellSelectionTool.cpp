@@ -71,7 +71,7 @@ void CellSelectionTool::updateSelectionMarker()
 		selectionMarker.setOrigin(size, size);
 		selectionMarker.setPosition(pos);
 
-		auto radarRadius = selectedCell->getGenes().radarRange.get() * 50;
+		auto radarRadius = selectedCell->getGenes().radarRange.get();
 		cellRadarRange.setOrigin(sf::Vector2f(radarRadius, radarRadius));
 		cellRadarRange.setRadius(radarRadius);
 		cellRadarRange.setPosition(pos);
