@@ -37,10 +37,10 @@ public:
 
 	std::shared_ptr<Cell> getCellAtPosition(const sf::Vector2f&);
 
-	const std::list<std::shared_ptr<Food>>& getFoodsVector();
+	const std::vector<std::shared_ptr<Food>>& getFoodsVector();
 	std::vector<std::shared_ptr<Cell>>& getCellsVector();
 	std::vector<std::shared_ptr<Cell>>& getNewCellsVector();
-	const std::list<std::shared_ptr<Food>>& getNewFoodsVector();
+	const std::vector<std::shared_ptr<Food>>& getNewFoodsVector();
 
 	baseObjMatrix& getCellCollisionSectors();
 	baseObjMatrix& getFoodCollisionSectors();
@@ -73,8 +73,8 @@ private:
 	std::vector<std::shared_ptr<Cell>> cells;
 	std::vector<std::shared_ptr<Cell>> deadCells;
 	std::vector<std::shared_ptr<Cell>> newCells;
-	std::list<std::shared_ptr<Food>> food;
-	std::list<std::shared_ptr<Food>> newFood;
+	std::vector<std::shared_ptr<Food>> food;
+	std::vector<std::shared_ptr<Food>> newFood;
 	baseObjMatrix cellCollisionSectors;
 	baseObjMatrix foodCollisionSectors;
 

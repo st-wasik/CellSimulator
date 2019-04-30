@@ -376,7 +376,7 @@ std::shared_ptr<Cell> Environment::getCellAtPosition(const sf::Vector2f & p)
 	return nullptr;
 }
 
-const std::list<std::shared_ptr<Food>>& Environment::getFoodsVector()
+const std::vector<std::shared_ptr<Food>>& Environment::getFoodsVector()
 {
 	return food;
 }
@@ -391,7 +391,7 @@ std::vector<std::shared_ptr<Cell>>& Environment::getNewCellsVector()
 	return newCells;
 }
 
-const std::list<std::shared_ptr<Food>>& Environment::getNewFoodsVector()
+const std::vector<std::shared_ptr<Food>>& Environment::getNewFoodsVector()
 {
 	return newFood;
 }
