@@ -240,6 +240,5 @@
     <ClInclude Include="DynamicRanged.h">
       <Filter>Utils\Header</Filter>
     </ClInclude>
-    <ClInclude Include="SaveManager.h" />
   </ItemGroup>
 </Project>
