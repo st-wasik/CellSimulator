@@ -40,7 +40,8 @@ CellRoles::CellRoles()
 	registerRole(mutate, 12, VAR_NAME(mutate));
 	registerRole(changeSpeed, 13, VAR_NAME(changeSpeed));
 	registerRole(sniffForFood, 14, VAR_NAME(sniffForFood));
-	registerRole(checkCollisions, 15, VAR_NAME(checkCollisions));
+	registerRole(sniffForCell, 15, VAR_NAME(sniffForCell));
+	registerRole(checkCollisions, 16, VAR_NAME(checkCollisions));
 }
 
 CellRoles & CellRoles::getManager()
@@ -377,11 +378,11 @@ void CellRoles::mutate(Cell * c)
 
 void CellRoles::sniffForFood(Cell * c)
 {
-	if (c->closestFood.first != nullptr && c->closestFood.second <= c->genes.radarRange.get()*c->genes.radarRange.get() + c->getSize())
+	if (c->foodLevel <= c->genes.foodLimit.get()*0.8 && c->closestFood.first != nullptr && c->closestFood.second <= c->genes.radarRange.get()*c->genes.radarRange.get() + c->getSize())
 	{
 		auto v = c->closestFood.first->getPosition() - c->getPosition();
 		auto angle = atan2(v.y, v.x);
-		double angle_change = 5 * CellSimApp::getInstance().getDeltaTime();
+		double angle_change = c->genes.turningRate.get() * CellSimApp::getInstance().getDeltaTime();
 		angle = angle * (180 / PI);
 		if (angle < 0)
 		{
@@ -421,8 +422,56 @@ void CellRoles::checkCollisions(Cell * c)
 	c->CellCollisionVector->clear();
 	c->closestFood.first = nullptr;
 	c->closestCell.first = nullptr;
-	c->getFoodCollisionVector();
-	c->getCellCollisionVector();
+	c->closestFood.second = -1;
+	c->closestCell.second = -1;
+	if (c->genes.type.get() != 2)
+	{
+		c->getFoodCollisionVector();
+	}
+	if (c->genes.type.get() != 1)
+	{
+		c->getCellCollisionVector();
+	}
+}
+
+void CellRoles::sniffForCell(Cell * c)
+{
+	if (c->foodLevel <= c->genes.foodLimit.get()*0.8 && c->closestCell.first != nullptr && c->closestCell.second <= c->genes.radarRange.get()*c->genes.radarRange.get() + c->getSize())
+	{
+		auto v = c->closestCell.first->getPosition() - c->getPosition();
+		auto angle = atan2(v.y, v.x);
+		double angle_change = c->genes.turningRate.get() * CellSimApp::getInstance().getDeltaTime();
+		angle = angle * (180 / PI);
+		if (angle < 0)
+		{
+			angle = 360 - (-angle);
+		}
+		angle += 90; //Remove this for some magic
+		double cfDiffrence = c->getRotation() - angle;
+		double abscfDiffrence = abs(cfDiffrence);
+		if (abscfDiffrence > 180)
+		{
+			if (360 - abscfDiffrence < angle_change)
+			{
+				c->shape.rotate(cfDiffrence <= 0 ? -(360 - abscfDiffrence)*CellSimApp::getInstance().getDeltaTime() : (360 - abscfDiffrence)*CellSimApp::getInstance().getDeltaTime());
+			}
+			else
+			{
+				c->shape.rotate(cfDiffrence <= 0 ? -angle_change : angle_change);
+			}
+		}
+		else
+		{
+			if (abscfDiffrence < angle_change)
+			{
+				c->shape.rotate(cfDiffrence >= 0 ? -abscfDiffrence * CellSimApp::getInstance().getDeltaTime() : abscfDiffrence * CellSimApp::getInstance().getDeltaTime());
+			}
+			else
+			{
+				c->shape.rotate(cfDiffrence >= 0 ? -angle_change : angle_change);
+			}
+		}
+	}
 }
 
 bool CellRoles::checkEnvironmentBounds(Cell * c)

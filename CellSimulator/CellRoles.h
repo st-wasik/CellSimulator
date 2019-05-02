@@ -63,6 +63,8 @@ public:
 
 	static void checkCollisions(Cell * c);
 
+	static void sniffForCell(Cell * c);
+
 	/// \returns true if collision occured - otherwise false
 	static bool checkEnvironmentBounds(Cell* c);
 private:
