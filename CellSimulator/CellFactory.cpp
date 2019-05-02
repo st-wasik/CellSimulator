@@ -16,9 +16,11 @@ std::shared_ptr<Cell> CellFactory::getCell(Cell::Type type)
 		result->genes.foodLimit = 120;
 		result->genes.maxAge = 90;
 		result->genes.maxSize = 35;
-		result->genes.maxSpeed = 2*50;
-		result->genes.radarRange = 7;
+		result->genes.maxSpeed = 2;
+		result->genes.radarRange = 350;
+		result->genes.type = 2;
 		result->setBaseColor(sf::Color::Red);
+		result->dropRole(CellRoles::sniffForFood);
 		break;
 
 	case Cell::Type::Passive:
@@ -28,8 +30,10 @@ std::shared_ptr<Cell> CellFactory::getCell(Cell::Type type)
 		result->genes.maxAge = 95;
 		result->genes.maxSize = 45;
 		result->genes.maxSpeed = 1;
-		result->genes.radarRange = 4*50;
+		result->genes.radarRange = 200;
+		result->genes.type = 1;
 		result->setBaseColor(sf::Color::Blue);
+		result->dropRole(CellRoles::sniffForCell);
 		break;
 
 	case Cell::Type::Random:
