@@ -272,8 +272,6 @@ void CellRoles::fight(Cell * c)
 	std::vector<std::shared_ptr<Cell>> &cells = Environment::getInstance().getCellsVector();
 	c->delayTime += CellSimApp::getInstance().getDeltaTime();
 
-	std::cout << c->delayTime << std::endl;
-
 	if (c->delayTime > 250)
 	{
 		c->delayTime = 0;
