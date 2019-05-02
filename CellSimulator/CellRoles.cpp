@@ -340,7 +340,7 @@ void CellRoles::sniffForFood(Cell * c)
 	{
 		auto v = c->closestFood.first->getPosition() - c->getPosition();
 		auto angle = atan2(v.y, v.x);
-		double angle_change = 5 * CellSimApp::getInstance().getDeltaTime();
+		double angle_change = c->genes.turningRate.get() * CellSimApp::getInstance().getDeltaTime();
 		angle = angle * (180 / PI);
 		if (angle < 0)
 		{
@@ -398,7 +398,7 @@ void CellRoles::sniffForCell(Cell * c)
 	{
 		auto v = c->closestCell.first->getPosition() - c->getPosition();
 		auto angle = atan2(v.y, v.x);
-		double angle_change = 5 * CellSimApp::getInstance().getDeltaTime();
+		double angle_change = c->genes.turningRate.get() * CellSimApp::getInstance().getDeltaTime();
 		angle = angle * (180 / PI);
 		if (angle < 0)
 		{
