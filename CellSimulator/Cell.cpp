@@ -48,7 +48,14 @@ Cell::Cell(float size, sf::Vector2f position, sf::Color color) : BaseObj(size, p
 	roles.push_back(CellRoles::checkCollisions);
 
 	roles.push_back(CellRoles::changeDirection);
-	roles.push_back(CellRoles::sniffForFood);
+	if (this->genes.type.get() == 1 || this->genes.type.get() == 0)
+	{
+		roles.push_back(CellRoles::sniffForFood);
+	}
+	if (this->genes.type.get() == 2 || this->genes.type.get() == 0)
+	{
+		roles.push_back(CellRoles::sniffForCell);
+	}
 	roles.push_back(CellRoles::changeSpeed);
 	roles.push_back(CellRoles::eat);
 	roles.push_back(CellRoles::updateColor);
@@ -431,7 +438,7 @@ void Cell::getFoodCollisionVector()
 	//std::clog << minX << " " << minY << "   " << maxX << " " << maxY << std::endl;
 
 	//250000 is a max distance^2 what cell can "see"
-	double distance = 250000;
+	double distance = this->genes.radarRange.get() * this->genes.radarRange.get();
 	for (int i = minX; i <= maxX; ++i)
 	{
 		for (int j = minY; j <= maxY; ++j)
@@ -478,22 +485,25 @@ void Cell::getCellCollisionVector()
 	//std::clog << minX << " " << minY << "   " << maxX << " " << maxY << std::endl;
 
 	//250000 is a max distance^2 what cell can "see"
-	double distance = 250000;
+	double distance = this->genes.radarRange.get() * this->genes.radarRange.get();
 	for (int i = minX; i <= maxX; ++i)
 	{
 		for (int j = minY; j <= maxY; ++j)
 		{
 			for (auto& cell : cellSectors[i][j])
 			{
-				auto check = cellPtr->collision(cell);
-				if (check.second < distance && !cell->isMarkedToDelete())
+				if (cell != cellPtr)
 				{
-					this->closestCell.first = cell;
-					this->closestCell.second = distance = check.second;
-				}
-				if (check.first && !cell->isMarkedToDelete())
-				{
-					this->CellCollisionVector->push_back(std::dynamic_pointer_cast<Cell>(cell));
+					auto check = cellPtr->collision(cell);
+					if (check.second < distance && !cell->isMarkedToDelete())
+					{
+						this->closestCell.first = cell;
+						this->closestCell.second = distance = check.second;
+					}
+					if (check.first && !cell->isMarkedToDelete())
+					{
+						this->CellCollisionVector->push_back(std::dynamic_pointer_cast<Cell>(cell));
+					}
 				}
 			}
 		}
