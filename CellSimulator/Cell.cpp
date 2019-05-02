@@ -19,6 +19,8 @@ Cell::Cell() : BaseObj()
 
 	shape.setOutlineThickness(-5);
 	shape.setOutlineColor(sf::Color(128, 64, 0, 75));
+
+	delayTime = CellSimApp::getInstance().getDeltaTime();
 }
 
 Cell::Cell(float size, sf::Vector2f position, sf::Color color) : BaseObj(size, position, color)
@@ -56,7 +58,7 @@ Cell::Cell(float size, sf::Vector2f position, sf::Color color) : BaseObj(size, p
 	roles.push_back(CellRoles::divideAndConquer);
 	roles.push_back(CellRoles::getingHot);
 	roles.push_back(CellRoles::grow);
-	//roles.push_back(CellRoles::fight);
+	roles.push_back(CellRoles::fight);
 	roles.push_back(CellRoles::makeOlder);
 	roles.push_back(CellRoles::mutate);
 
@@ -64,6 +66,8 @@ Cell::Cell(float size, sf::Vector2f position, sf::Color color) : BaseObj(size, p
 	// make sure that moveForward is always the last role-function
 	// cell should be moved after all updates
 	roles.push_back(CellRoles::moveForward);
+
+	delayTime = CellSimApp::getInstance().getDeltaTime();
 }
 
 Cell::Cell(Cell a, Cell b) : Cell(20, (a.getPosition() + b.getPosition()) / 2.0f, a.getBaseColor()*b.getBaseColor())
@@ -80,7 +84,7 @@ Cell::Cell(Cell a, Cell b) : Cell(20, (a.getPosition() + b.getPosition()) / 2.0f
 	genes.maxSpeed = mutationRatio <= randomReal(0, 100) ? MixDouble(a.genes.maxSpeed.get(), b.genes.maxSpeed.get()) : (a.genes.maxSpeed.get() + b.genes.maxSpeed.get()) / 2;
 	genes.radarRange = mutationRatio <= randomReal(0, 100) ? MixDouble(a.genes.radarRange.get(), b.genes.radarRange.get()) : (a.genes.radarRange.get() + b.genes.radarRange.get()) / 2;
 
-
+	delayTime = CellSimApp::getInstance().getDeltaTime();
 }
 
 Cell::Cell(std::string formattedCellString) : Cell()
@@ -136,6 +140,8 @@ Cell::Cell(std::string formattedCellString) : Cell()
 		//TODO: add cell name
 	}
 	CellRoles::updateColor(this);
+
+	delayTime = CellSimApp::getInstance().getDeltaTime();
 }
 
 void Cell::modifyValueFromString(std::string valueName, std::string value)

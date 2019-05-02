@@ -59,6 +59,7 @@ public:
 	void addRole(void(*role)(Cell*));
 
 	double age;
+	float delayTime;
 
 	// returns string with cell description that can be used to save cell from environment to file (contains current stats, position etc.)
 	std::string getSaveString();
