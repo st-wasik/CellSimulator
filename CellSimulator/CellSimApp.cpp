@@ -168,10 +168,11 @@ void CellSimApp::run()
 			GUIManager::getInstance().handleEvent(event);
 		}
 		//UPDATE --->
+		GUIManager::getInstance().update();
+
 		updateViewCenter();
 		updateViewZoom();
 
-		GUIManager::getInstance().update();
 		Environment::getInstance().update();
 
 		//DRAW --->
@@ -268,6 +269,11 @@ const float & CellSimApp::getDeltaTime()
 const sf::Font & CellSimApp::getFont()
 {
 	return font;
+}
+
+sf::View & CellSimApp::getView()
+{
+	return view;
 }
 
 

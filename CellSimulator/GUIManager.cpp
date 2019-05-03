@@ -5,7 +5,9 @@
 #include "DoubleToString.h"
 #include "ToolManager.h"
 #include "CellSimMouse.h"
+#include "CellSimApp.h"
 #include "MessagesManager.h"
+#include "SaveManager.h"
 
 std::shared_ptr<tgui::Label> GUIManager::createLabel(std::shared_ptr<tgui::Gui> gui, std::string text, int x, int y, int textSize, std::shared_ptr<tgui::Label> tooltip = nullptr, int enabled = 1, std::string renderer = "Label")
 {
@@ -126,9 +128,15 @@ std::shared_ptr<tgui::MenuBar> GUIManager::createMenuBar(std::shared_ptr<tgui::G
 	MenuBar->addMenu("Simulation");
 	MenuBar->addMenu("Help");
 	MenuBar->addMenuItem("Simulation", "New");
-	MenuBar->addMenuItem("Simulation", "Load");
+	MenuBar->connectMenuItem("Simulation", "New", []() {Environment::getInstance().configure(); });
+	MenuBar->addMenuItem("Simulation", "New Random");
+	MenuBar->connectMenuItem("Simulation", "New Random", []() {Environment::getInstance().configure({2500.f,1250.f}, true); });
 	MenuBar->addMenuItem("Simulation", "Save");
-	MenuBar->addMenuItem("Simulation", "Random");
+	MenuBar->connectMenuItem("Simulation", "Save", []() {SaveManager::getInstance().saveEnvironmentToFile("quick_save"); });
+	MenuBar->addMenuItem("Simulation", "Load");
+	MenuBar->connectMenuItem("Simulation", "Load", []() {SaveManager::getInstance().readEnvironmentFromFile("quick_save"); });
+	MenuBar->addMenuItem("Simulation", "Exit");
+	MenuBar->connectMenuItem("Simulation", "Exit", []() {CellSimApp::getInstance().close(); });
 	MenuBar->addMenuItem("Help", "Info");
 	MenuBar->addMenuItem("Help", "Authors");
 	gui->add(MenuBar);
@@ -367,6 +375,14 @@ void GUIManager::configure(std::shared_ptr<sf::RenderWindow> window)
 	radarRangeValI = createTextBox(insertGui, 70, 20, 200, 219 + offset, 16);
 
 	listBoxI = createListBox(insertGui, 160, 72, 100, 270 + offset);
+	listBoxI->addItem("Agersiv");
+	listBoxI->addItem("Pasiv");
+	listBoxI->addItem("Lettuce");
+	listBoxI->addItem("Pizza");
+	for (auto& v : SaveManager::getInstance().getAvailableCellSaves())
+	{
+		listBoxI->addItem(v);
+	}
 
 	buttonInsertI = createButton(insertGui, 80, 40, 140, 370 + offset, "Insert");
 
@@ -473,6 +489,8 @@ void GUIManager::configure(std::shared_ptr<sf::RenderWindow> window)
 		buttonInsert->setInheritedOpacity(1);
 		buttonFeed->setEnabled(1);
 		buttonFeed->setInheritedOpacity(1);
+
+		ToolManager::getInstance().setActiveTool(ToolManager::Tool::SelectionMovement);
 	});
 
 	buttonInsert->connect("pressed", [=]()
@@ -484,6 +502,8 @@ void GUIManager::configure(std::shared_ptr<sf::RenderWindow> window)
 		buttonPreview->setInheritedOpacity(1);
 		buttonFeed->setEnabled(1);
 		buttonFeed->setInheritedOpacity(1);
+
+		ToolManager::getInstance().setActiveTool(ToolManager::Tool::Insertion);
 	});
 
 	buttonFeed->connect("pressed", [=]()
@@ -495,6 +515,8 @@ void GUIManager::configure(std::shared_ptr<sf::RenderWindow> window)
 		buttonPreview->setInheritedOpacity(1);
 		buttonInsert->setEnabled(1);
 		buttonInsert->setInheritedOpacity(1);
+
+		ToolManager::getInstance().setActiveTool(ToolManager::Tool::Feeder);
 	});
 
 	checkBoxFeed->connect("checked", [=]()
@@ -565,6 +587,7 @@ void GUIManager::update()
 	
 	if (guiCollisionRect.contains(CellSimMouse::getPosition()))
 	{
+		CellSimMouse::setWheelDelta(0);
 		ToolManager::getInstance().disable();
 	}
 	else

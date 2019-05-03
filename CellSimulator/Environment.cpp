@@ -1,4 +1,5 @@
 #include "Environment.h"
+#include "CellSimApp.h"
 #include "Logger.h"
 #include "CellSimMouse.h"
 #include "CellSelectionTool.h"
@@ -71,6 +72,8 @@ void Environment::configure(sf::Vector2f envSize, bool fill)
 	eb.setTextureRect(sf::IntRect(0, 0, eb.getSize().x / 10, eb.getSize().y / 10));
 	TextureProvider::getInstance().getTexture("background")->setSmooth(true);
 	eb.setTexture(TextureProvider::getInstance().getTexture("background").get());
+
+	CellSimApp::getInstance().getView().setCenter(eb.getSize()/2.0f);
 
 	//TextureProvider::getInstance().getTexture("whiteNoise")->setSmooth(true);
 

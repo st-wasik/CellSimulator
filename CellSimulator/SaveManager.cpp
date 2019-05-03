@@ -87,7 +87,9 @@ std::vector<std::string> SaveManager::getAvailableCellSaves()
 			// read all (real) files in current folder
 			// , delete '!' read other 2 default folder . and ..
 			if (!(fd.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)) {
-				names.push_back(fd.cFileName);
+				std::string filename(fd.cFileName);
+				filename.erase(filename.end()-std::string(cellSaveFormat).size(), filename.end());
+				names.push_back(filename);
 			}
 		} while (::FindNextFile(hFind, &fd));
 		::FindClose(hFind);
@@ -107,7 +109,9 @@ std::vector<std::string> SaveManager::getAvailableEnvSaves()
 			// read all (real) files in current folder
 			// , delete '!' read other 2 default folder . and ..
 			if (!(fd.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)) {
-				names.push_back(fd.cFileName);
+				std::string filename(fd.cFileName);
+				filename.erase(filename.end() - std::string(envSaveFormat).size(), filename.end());
+				names.push_back(filename);
 			}
 		} while (::FindNextFile(hFind, &fd));
 		::FindClose(hFind);

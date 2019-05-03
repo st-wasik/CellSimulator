@@ -25,6 +25,8 @@ public:
 
 	 const sf::Font& getFont();
 
+	 sf::View& getView();
+
 private:
 	CellSimApp();
 	CellSimApp(const CellSimApp&) = delete;
