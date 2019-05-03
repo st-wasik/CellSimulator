@@ -3,6 +3,8 @@
 #include "AutoFeederTool.h"
 #include "CellSelectionTool.h"
 #include "DoubleToString.h"
+#include "ToolManager.h"
+#include "CellSimMouse.h"
 #include "MessagesManager.h"
 
 std::shared_ptr<tgui::Label> GUIManager::createLabel(std::shared_ptr<tgui::Gui> gui, std::string text, int x, int y, int textSize, std::shared_ptr<tgui::Label> tooltip = nullptr, int enabled = 1, std::string renderer = "Label")
@@ -553,6 +555,22 @@ void GUIManager::handleEvent(sf::Event & e)
 void GUIManager::update()
 {
 	MessagesManager::getInstance().update();
+
+	auto view = window->getView();
+	auto xFactor = view.getSize().x / window->getSize().x;
+	auto yFactor = view.getSize().y / window->getSize().y;
+
+	// gui panel position = {0,0}
+	sf::FloatRect guiCollisionRect{ (view.getCenter().x - view.getSize().x / 2), (view.getCenter().y - view.getSize().y / 2), background.getSize().x*xFactor, background.getSize().y*yFactor };
+	
+	if (guiCollisionRect.contains(CellSimMouse::getPosition()))
+	{
+		ToolManager::getInstance().disable();
+	}
+	else
+	{
+		ToolManager::getInstance().enable();
+	}
 
 	selectedCellPtr = CellSelectionTool::getInstance().getSelectedCellCopy();
 	auto cell = selectedCellPtr;
