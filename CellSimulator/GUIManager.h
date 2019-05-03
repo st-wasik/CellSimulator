@@ -25,7 +25,9 @@ private:
 
 	std::shared_ptr<sf::RenderWindow> window;
 
-	std::shared_ptr<tgui::Gui> gui;
+	int mode = 1;
+
+	std::shared_ptr<tgui::Gui> mainGui,previewGui,createGui,modifyGui,insertGui,feedGui;
 
 	tgui::Theme theme;
 
@@ -43,6 +45,9 @@ private:
 	std::shared_ptr<tgui::CheckBox> createCheckBox(std::shared_ptr<tgui::Gui> gui, int width, int height, int x, int y, sf::String text, int textSize);
 	std::shared_ptr<tgui::ProgressBar> createProgressBar(std::shared_ptr<tgui::Gui> gui, int width, int height, int x, int y, int textSize, std::shared_ptr<tgui::Label> tooltip, int visible);
 	std::shared_ptr<tgui::TextBox> createTextBox(std::shared_ptr<tgui::Gui> gui, int width, int height, int x, int y, int textSize, int visible);
+	std::shared_ptr<tgui::MenuBar> createMenuBar(std::shared_ptr<tgui::Gui> gui, int width, int height);
+	std::shared_ptr<tgui::ListBox> createListBox(std::shared_ptr<tgui::Gui> gui, int width, int height, int x, int y);
+
 
 	//ENV SETTINGS
 	std::shared_ptr<tgui::Label>
@@ -63,7 +68,10 @@ private:
 		buttonQuan,
 		buttonFreq,
 		buttonFeed,
-		buttonSelect;
+		buttonPreview,
+		buttonCreate,
+		buttonModify,
+		buttonInsert;
 
 	std::shared_ptr<tgui::EditBox>
 		editBoxTemp,
@@ -73,6 +81,8 @@ private:
 
 	std::shared_ptr<tgui::CheckBox>
 		checkBoxFeed;
+	std::shared_ptr<tgui::MenuBar>
+		menuBar;
 
 
 
@@ -101,5 +111,46 @@ private:
 		radarRangeVal,
 		divisionThresholdVal;
 
+	//CELL INSERT
+	std::shared_ptr<tgui::Label>
+		aggresionValTTI,
+		foodLevelValTTI,
+		speedValTTI,
+		sizeValTTI,
+		horninessValTTI,
+		ageValTTI,
+		radarRangeTTI,
+		divisionThresholdTTI;
+
+	std::shared_ptr<tgui::ProgressBar>
+		aggresionValI,
+		foodLevelValI,
+		speedValI,
+		sizeValI,
+		horninessValI,
+		ageValI;
+
+	std::shared_ptr<tgui::TextBox>
+		radarRangeValI,
+		divisionThresholdValI;
+
+	std::shared_ptr<tgui::ListBox>
+		listBoxI;
+
+	std::shared_ptr<tgui::Button>
+		buttonInsertI;
+
+	//FEED
+	std::shared_ptr<tgui::Slider>
+		sliderRadius,
+		sliderFreqF;
+
+	std::shared_ptr<tgui::Button>
+		buttonRadius,
+		buttonFreqF;
+
+	std::shared_ptr<tgui::EditBox>
+		editBoxRadius,
+		editBoxFreqF;
 };
 

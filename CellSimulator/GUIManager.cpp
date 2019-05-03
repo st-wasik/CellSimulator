@@ -116,6 +116,38 @@ std::shared_ptr<tgui::TextBox> GUIManager::createTextBox(std::shared_ptr<tgui::G
 
 	return TextBox;
 }
+std::shared_ptr<tgui::MenuBar> GUIManager::createMenuBar(std::shared_ptr<tgui::Gui> gui, int width, int height)
+{
+	std::shared_ptr<tgui::MenuBar> MenuBar = tgui::MenuBar::create();
+	MenuBar->setRenderer(theme.getRenderer("MenuBar"));
+	MenuBar->setSize(width, height);
+	MenuBar->addMenu("Simulation");
+	MenuBar->addMenu("Help");
+	MenuBar->addMenuItem("Simulation", "New");
+	MenuBar->addMenuItem("Simulation", "Load");
+	MenuBar->addMenuItem("Simulation", "Save");
+	MenuBar->addMenuItem("Simulation", "Random");
+	MenuBar->addMenuItem("Help", "Info");
+	MenuBar->addMenuItem("Help", "Authors");
+	gui->add(MenuBar);
+
+	return MenuBar;
+}
+
+std::shared_ptr<tgui::ListBox> GUIManager::createListBox(std::shared_ptr<tgui::Gui> gui, int width, int height, int x, int y)
+{
+	std::shared_ptr<tgui::ListBox> ListBox = tgui::ListBox::create();
+	ListBox->setRenderer(theme.getRenderer("ListBox"));
+	ListBox->setSize(width, height);
+	ListBox->setItemHeight(24);
+	ListBox->setPosition(x, y);
+	ListBox->addItem("Example 1");
+	ListBox->addItem("Example 2");
+	ListBox->addItem("Example 3");
+	gui->add(ListBox);
+
+	return ListBox;
+}
 
 void GUIManager::setVisible(std::vector<std::shared_ptr<tgui::Widget>> widgets, int enable)
 {
@@ -153,7 +185,12 @@ void GUIManager::configure(std::shared_ptr<sf::RenderWindow> window)
 	MessagesManager::getInstance().configure();
 
 	this->window = window;
-	gui = std::make_shared<tgui::Gui>(*window);
+	mainGui = std::make_shared<tgui::Gui>(*window);
+	previewGui = std::make_shared<tgui::Gui>(*window);
+	createGui = std::make_shared<tgui::Gui>(*window);
+	modifyGui = std::make_shared<tgui::Gui>(*window);
+	insertGui = std::make_shared<tgui::Gui>(*window);
+	feedGui = std::make_shared<tgui::Gui>(*window);
 	theme.load("../../CellSimulator/TGUI-0.8/themes/TransparentGrey.txt");
 
 	background.setSize(sf::Vector2f(backgroundWidth, window->getSize().y));
@@ -163,111 +200,194 @@ void GUIManager::configure(std::shared_ptr<sf::RenderWindow> window)
 	background.setOutlineThickness(7);
 
 	//ENV SETTINGS
-	createLabel(gui, "Temperature", 50, 15, 18);
+	menuBar = createMenuBar(mainGui, 360, 20);
 
-	editBoxTemp = createEditBox(gui, 60, 25, 18, 220, 32, std::to_string((int)Environment::getInstance().getTemperature()));
+	createLabel(mainGui, "Temperature", 50, 25, 18);
 
-	sliderTemp = createSlider(gui, 200, 9, 10, 40, 100, -100, Environment::getInstance().getTemperature());
+	editBoxTemp = createEditBox(mainGui, 60, 25, 18, 220, 42, std::to_string((int)Environment::getInstance().getTemperature()));
 
-	buttonTemp = createButton(gui, 60, 25, 285, 32, "SET");
+	sliderTemp = createSlider(mainGui, 200, 9, 10, 50, 100, -100, Environment::getInstance().getTemperature());
 
-	createLabel(gui, "Radiation", 70, 60, 18);
+	buttonTemp = createButton(mainGui, 60, 25, 285, 42, "SET");
 
-	editBoxRad = createEditBox(gui, 60, 25, 18, 220, 77, std::to_string((int)Environment::getInstance().getRadiation()));
+	createLabel(mainGui, "Radiation", 70, 70, 18);
 
-	sliderRad = createSlider(gui, 200, 9, 10, 85, 100, 0, Environment::getInstance().getRadiation());
+	editBoxRad = createEditBox(mainGui, 60, 25, 18, 220, 87, std::to_string((int)Environment::getInstance().getRadiation()));
 
-	buttonRad = createButton(gui, 60, 25, 285, 77, "SET");
+	sliderRad = createSlider(mainGui, 200, 9, 10, 95, 100, 0, Environment::getInstance().getRadiation());
 
-	labelQuan = createLabel(gui, "Food limit [%]", 45, 125, 18, 0, 0.5);
+	buttonRad = createButton(mainGui, 60, 25, 285, 87, "SET");
 
-	editBoxQuan = createEditBox(gui, 60, 25, 18, 220, 142, std::to_string((int)AutoFeederTool::getInstance().getMaxThresholdValue()), 0);
+	checkBoxFeed = createCheckBox(mainGui, 15, 15, 10, 130, "Auto-feed", 14);
 
-	sliderQuan = createSlider(gui, 200, 9, 10, 150, 100, 1, AutoFeederTool::getInstance().getMaxThresholdValue(), 0);
+	labelQuan = createLabel(mainGui, "Food limit [%]", 45, 155, 18, nullptr, 0);
 
-	buttonQuan = createButton(gui, 60, 25, 285, 142, "SET", 0);
+	editBoxQuan = createEditBox(mainGui, 60, 25, 18, 220, 172, std::to_string((int)AutoFeederTool::getInstance().getMaxThresholdValue()), 0);
 
-	labelFreq = createLabel(gui, "Feed frequency", 28, 170, 18, 0, 0.5);
+	sliderQuan = createSlider(mainGui, 200, 9, 10, 180, 100, 1, AutoFeederTool::getInstance().getMaxThresholdValue(), 0);
 
-	editBoxFreq = createEditBox(gui, 60, 25, 18, 220, 187, std::to_string((int)AutoFeederTool::getInstance().getMaxFoodPerSec()), 0);
+	buttonQuan = createButton(mainGui, 60, 25, 285, 172, "SET", 0);
 
-	sliderFreq = createSlider(gui, 200, 9, 10, 195, 250, 1, AutoFeederTool::getInstance().getMaxFoodPerSec(), 0);
+	labelFreq = createLabel(mainGui, "Feed frequency", 38, 200, 18, nullptr, 0);
 
-	buttonFreq = createButton(gui, 60, 25, 285, 187, "SET", 0);
+	editBoxFreq = createEditBox(mainGui, 60, 25, 18, 220, 217, std::to_string((int)AutoFeederTool::getInstance().getMaxFoodPerSec()), 0);
 
-	buttonFeed = createButton(gui, 100, 40, 75, 230, "Feed");
+	sliderFreq = createSlider(mainGui, 200, 9, 10, 225, 250, 1, AutoFeederTool::getInstance().getMaxFoodPerSec(), 0);
 
-	buttonSelect = createButton(gui, 100, 40, 180, 230, "Select", 0);
+	buttonFreq = createButton(mainGui, 60, 25, 285, 217, "SET", 0);
 
-	checkBoxFeed = createCheckBox(gui, 15, 15, 75, 275, "Auto-feed", 14);
+	createLabel(mainGui, "Cells:", 10, 260, 18);
 
-	createLabel(gui, "Cells:", 10, 310, 18);
+	createLabel(mainGui, "Food:", 10, 290, 18);
 
-	createLabel(gui, "Food:", 10, 340, 18);
+	labelCellsVar = createLabel(mainGui, std::to_string(Environment::getInstance().getAliveCellsCount()), 75, 260, 18);
 
-	labelCellsVar = createLabel(gui, std::to_string(Environment::getInstance().getAliveCellsCount()), 75, 310, 18);
+	labelFoodVar = createLabel(mainGui, std::to_string(Environment::getInstance().getFoodCount()), 75, 290, 18);
 
-	labelFoodVar = createLabel(gui, std::to_string(Environment::getInstance().getFoodCount()), 75, 340, 18);
+	buttonPreview = createButton(mainGui, 70, 40, 5, 335, "Preview", 0);
+
+	buttonCreate = createButton(mainGui, 70, 40, 75, 335, "Create");
+
+	buttonModify = createButton(mainGui, 70, 40, 145, 335, "Modify");
+
+	buttonInsert = createButton(mainGui, 70, 40, 215, 335, "Insert");
+
+	buttonFeed = createButton(mainGui, 70, 40, 285, 335, "Feed");
+
 
 	//GUI OFFSET
 	constexpr int offset = 400;
 
 	//CELL PREVIEW
-	createLabel(gui, "Size", 10, 10 + offset, 18);
+	createLabel(previewGui, "Size", 10, 10 + offset, 18);
 
-	sizeValTT = createLabel(gui, "", 0, 0, 18, nullptr, 1, "ToolTip");
+	sizeValTT = createLabel(previewGui, "", 0, 0, 18, nullptr, 1, "ToolTip");
 
-	sizeVal = createProgressBar(gui, 170, 20, 150, 9 + offset, 16, sizeValTT);
+	sizeVal = createProgressBar(previewGui, 170, 20, 150, 9 + offset, 16, sizeValTT);
 	widgetsPreview.push_back(sizeVal);
 
-	createLabel(gui, "Speed", 10, 40 + offset, 18);
+	createLabel(previewGui, "Speed", 10, 40 + offset, 18);
 
-	speedValTT = createLabel(gui, "", 0, 0, 18, nullptr, 1, "ToolTip");
+	speedValTT = createLabel(previewGui, "", 0, 0, 18, nullptr, 1, "ToolTip");
 
-	speedVal = createProgressBar(gui, 170, 20, 150, 39 + offset, 16, speedValTT);
+	speedVal = createProgressBar(previewGui, 170, 20, 150, 39 + offset, 16, speedValTT);
 	widgetsPreview.push_back(speedVal);
 
-	createLabel(gui, "Age", 10, 70 + offset, 18);
+	createLabel(previewGui, "Age", 10, 70 + offset, 18);
 
-	ageValTT = createLabel(gui, "", 0, 0, 18, nullptr, 1, "ToolTip");
+	ageValTT = createLabel(previewGui, "", 0, 0, 18, nullptr, 1, "ToolTip");
 
-	ageVal = createProgressBar(gui, 170, 20, 150, 69 + offset, 16, ageValTT);
+	ageVal = createProgressBar(previewGui, 170, 20, 150, 69 + offset, 16, ageValTT);
 	widgetsPreview.push_back(ageVal);
 
-	createLabel(gui, "Fertility", 10, 100 + offset, 18);
+	createLabel(previewGui, "Fertility", 10, 100 + offset, 18);
 
-	horninessValTT = createLabel(gui, "", 0, 0, 18, nullptr, 1, "ToolTip");
+	horninessValTT = createLabel(previewGui, "", 0, 0, 18, nullptr, 1, "ToolTip");
 
-	horninessVal = createProgressBar(gui, 170, 20, 150, 99 + offset, 16, horninessValTT);
+	horninessVal = createProgressBar(previewGui, 170, 20, 150, 99 + offset, 16, horninessValTT);
 	widgetsPreview.push_back(horninessVal);
 
-	createLabel(gui, "Aggresion", 10, 130 + offset, 18);
+	createLabel(previewGui, "Aggresion", 10, 130 + offset, 18);
 
-	aggresionValTT = createLabel(gui, "", 0, 0, 18, nullptr, 1, "ToolTip");
+	aggresionValTT = createLabel(previewGui, "", 0, 0, 18, nullptr, 1, "ToolTip");
 
-	aggresionVal = createProgressBar(gui, 170, 20, 150, 129 + offset, 16, aggresionValTT);
+	aggresionVal = createProgressBar(previewGui, 170, 20, 150, 129 + offset, 16, aggresionValTT);
 	widgetsPreview.push_back(aggresionVal);
 
-	createLabel(gui, "Food level", 10, 160 + offset, 18);
+	createLabel(previewGui, "Food level", 10, 160 + offset, 18);
 
-	foodLevelValTT = createLabel(gui, "", 0, 0, 18, nullptr, 1, "ToolTip");
+	foodLevelValTT = createLabel(previewGui, "", 0, 0, 18, nullptr, 1, "ToolTip");
 
-	foodLevelVal = createProgressBar(gui, 170, 20, 150, 159 + offset, 16, foodLevelValTT);
+	foodLevelVal = createProgressBar(previewGui, 170, 20, 150, 159 + offset, 16, foodLevelValTT);
 	widgetsPreview.push_back(foodLevelVal);
 
-	divisionThresholdTT = createLabel(gui, "Division Threshold", 0, 0, 18, nullptr, 1, "ToolTip");
+	divisionThresholdTT = createLabel(previewGui, "Division Threshold", 0, 0, 18, nullptr, 1, "ToolTip");
 
-	createLabel(gui, "Div. th", 10, 190 + offset, 18, divisionThresholdTT);
+	createLabel(previewGui, "Div. th", 10, 190 + offset, 18, divisionThresholdTT);
 
-	divisionThresholdVal = createTextBox(gui, 50, 20, 210, 189 + offset, 16);
+	divisionThresholdVal = createTextBox(previewGui, 60, 20, 205, 189 + offset, 16);
 	widgetsPreview.push_back(divisionThresholdVal);
 
-	radarRangeTT = createLabel(gui, "Detection Range", 0, 0, 18, nullptr, 1, "ToolTip");
+	radarRangeTT = createLabel(previewGui, "Detection Range", 0, 0, 18, nullptr, 1, "ToolTip");
 
-	createLabel(gui, "Detec. rg", 10, 220 + offset, 18, radarRangeTT);
+	createLabel(previewGui, "Detec. rg", 10, 220 + offset, 18, radarRangeTT);
 
-	radarRangeVal = createTextBox(gui, 50, 20, 210, 219 + offset, 16);
+	radarRangeVal = createTextBox(previewGui, 70, 20, 200, 219 + offset, 16);
 	widgetsPreview.push_back(radarRangeVal);
+
+	//CELL INSERT
+	createLabel(insertGui, "Size", 10, 10 + offset, 18);
+
+	sizeValTTI = createLabel(insertGui, "", 0, 0, 18, nullptr, 1, "ToolTip");
+
+	sizeValI = createProgressBar(insertGui, 170, 20, 150, 9 + offset, 16, sizeValTTI);
+
+	createLabel(insertGui, "Speed", 10, 40 + offset, 18);
+
+	speedValTTI = createLabel(insertGui, "", 0, 0, 18, nullptr, 1, "ToolTip");
+
+	speedValI = createProgressBar(insertGui, 170, 20, 150, 39 + offset, 16, speedValTTI);
+
+	createLabel(insertGui, "Age", 10, 70 + offset, 18);
+
+	ageValTTI = createLabel(insertGui, "", 0, 0, 18, nullptr, 1, "ToolTip");
+
+	ageValI = createProgressBar(insertGui, 170, 20, 150, 69 + offset, 16, ageValTTI);
+
+	createLabel(insertGui, "Fertility", 10, 100 + offset, 18);
+
+	horninessValTTI = createLabel(insertGui, "", 0, 0, 18, nullptr, 1, "ToolTip");
+
+	horninessValI = createProgressBar(insertGui, 170, 20, 150, 99 + offset, 16, horninessValTTI);
+
+	createLabel(insertGui, "Aggresion", 10, 130 + offset, 18);
+
+	aggresionValTTI = createLabel(insertGui, "", 0, 0, 18, nullptr, 1, "ToolTip");
+
+	aggresionValI = createProgressBar(insertGui, 170, 20, 150, 129 + offset, 16, aggresionValTTI);
+
+	createLabel(insertGui, "Food level", 10, 160 + offset, 18);
+
+	foodLevelValTTI = createLabel(insertGui, "", 0, 0, 18, nullptr, 1, "ToolTip");
+
+	foodLevelValI = createProgressBar(insertGui, 170, 20, 150, 159 + offset, 16, foodLevelValTTI);
+
+	divisionThresholdTTI = createLabel(insertGui, "Division Threshold", 0, 0, 18, nullptr, 1, "ToolTip");
+
+	createLabel(insertGui, "Div. th", 10, 190 + offset, 18, divisionThresholdTTI);
+
+	divisionThresholdValI = createTextBox(insertGui, 60, 20, 205, 189 + offset, 16);
+
+	radarRangeTTI = createLabel(insertGui, "Detection Range", 0, 0, 18, nullptr, 1, "ToolTip");
+
+	createLabel(insertGui, "Detec. rg", 10, 220 + offset, 18, radarRangeTTI);
+
+	radarRangeValI = createTextBox(insertGui, 70, 20, 200, 219 + offset, 16);
+
+	listBoxI = createListBox(insertGui, 160, 72, 100, 270 + offset);
+
+	buttonInsertI = createButton(insertGui, 80, 40, 140, 370 + offset, "Insert");
+
+	//FEED
+
+	createLabel(feedGui, "Radius", 75, 35+offset, 18);
+
+	editBoxRadius = createEditBox(feedGui, 60, 25, 18, 220, 52+offset, std::to_string((int)AutoFeederTool::getInstance().getMaxThresholdValue()));
+
+	sliderRadius = createSlider(feedGui, 200, 9, 10, 60+ offset, 100, 1, AutoFeederTool::getInstance().getMaxThresholdValue());
+
+	buttonRadius = createButton(feedGui, 60, 25, 285, 52+ offset, "SET");
+
+	createLabel(feedGui, "Frequency", 60, 100+ offset, 18);
+
+	editBoxFreqF = createEditBox(feedGui, 60, 25, 18, 220, 117+ offset, std::to_string((int)AutoFeederTool::getInstance().getMaxFoodPerSec()));
+
+	sliderFreqF = createSlider(feedGui, 200, 9, 10, 125 + offset, 250, 1, AutoFeederTool::getInstance().getMaxFoodPerSec());
+
+	buttonFreqF = createButton(feedGui, 60, 25, 285, 117+ offset, "SET");
+
+	//MOVE MENU
+	menuBar->moveToFront();
 
 	//EVENTS ENV
 	sliderTemp->connect("ValueChanged", [&]()
@@ -342,20 +462,37 @@ void GUIManager::configure(std::shared_ptr<sf::RenderWindow> window)
 		}
 	});
 
-	buttonSelect->connect("pressed", [=]()
+	buttonPreview->connect("pressed", [=]()
 	{
-		buttonSelect->setEnabled(0);
-		buttonSelect->setInheritedOpacity(0.5);
+		mode = 1;
+		buttonPreview->setEnabled(0);
+		buttonPreview->setInheritedOpacity(0.5);
+		buttonInsert->setEnabled(1);
+		buttonInsert->setInheritedOpacity(1);
+		buttonFeed->setEnabled(1);
+		buttonFeed->setInheritedOpacity(1);
+	});
+
+	buttonInsert->connect("pressed", [=]()
+	{
+		mode = 4;
+		buttonInsert->setEnabled(0);
+		buttonInsert->setInheritedOpacity(0.5);
+		buttonPreview->setEnabled(1);
+		buttonPreview->setInheritedOpacity(1);
 		buttonFeed->setEnabled(1);
 		buttonFeed->setInheritedOpacity(1);
 	});
 
 	buttonFeed->connect("pressed", [=]()
 	{
+		mode = 5;
 		buttonFeed->setEnabled(0);
 		buttonFeed->setInheritedOpacity(0.5);
-		buttonSelect->setEnabled(1);
-		buttonSelect->setInheritedOpacity(1);
+		buttonPreview->setEnabled(1);
+		buttonPreview->setInheritedOpacity(1);
+		buttonInsert->setEnabled(1);
+		buttonInsert->setInheritedOpacity(1);
 	});
 
 	checkBoxFeed->connect("checked", [=]()
@@ -399,8 +536,18 @@ void GUIManager::configure(std::shared_ptr<sf::RenderWindow> window)
 
 void GUIManager::handleEvent(sf::Event & e)
 {
-	if (gui != nullptr)
-		gui->handleEvent(e);
+	if (mainGui != nullptr)
+		mainGui->handleEvent(e);
+	if (previewGui != nullptr)
+		previewGui->handleEvent(e);
+	if (createGui != nullptr)
+		createGui->handleEvent(e);
+	if (modifyGui != nullptr)
+		modifyGui->handleEvent(e);
+	if (insertGui != nullptr)
+		insertGui->handleEvent(e);
+	if (feedGui != nullptr)
+		feedGui->handleEvent(e);
 }
 
 void GUIManager::update()
@@ -435,7 +582,7 @@ void GUIManager::update()
 			doubleToString(cell->getGenes().aggresion.get(), 2), cell->getGenes().aggresion.getMax() * 100, cell->getGenes().aggresion.getMin() * 100, cell->getGenes().aggresion.get() * 100);
 		//food level
 		updateValues(foodLevelValTT, foodLevelVal, "Min: " + doubleToString(cell->getGenes().foodLimit.getMin(), 2) + "\nMax: " + doubleToString(cell->getGenes().foodLimit.getMax(), 2),
-			doubleToString(cell->getFoodLevel(), 2), cell->getGenes().foodLimit.getMax() * 100, cell->getGenes().foodLimit.getMin() * 100, cell->getFoodLevel() * 100);
+			doubleToString(cell->getFoodLevel(), 2), cell->getGenes().foodLimit.get() * 100, cell->getGenes().foodLimit.getMin() * 100, cell->getFoodLevel() * 100);
 		//divisionThreshold
 		divisionThresholdVal->setText(" " + doubleToString(cell->getGenes().divisionThreshold.get(), 2));
 		//radarRange
@@ -456,15 +603,24 @@ void GUIManager::update()
 void GUIManager::draw()
 {
 	auto defaultView = window->getView();
-	window->setView(gui->getView());
+	window->setView(mainGui->getView());
 
 	window->draw(background);
 
-	if (gui != nullptr)
-		gui->draw();
+	if (mainGui != nullptr)
+		mainGui->draw();
+	switch (mode)
+	{
+	case 1: previewGui->draw(); break;
+	case 2: createGui->draw(); break;
+	case 3: modifyGui->draw(); break;
+	case 4: insertGui->draw(); break;
+	case 5: feedGui->draw(); break;
+	}
 
 	if (selectedCellPtr != nullptr)
 	{
+		if(mode==1)
 		window->draw(*selectedCellPtr);
 	}
 
