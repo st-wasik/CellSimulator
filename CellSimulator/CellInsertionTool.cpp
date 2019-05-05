@@ -2,6 +2,7 @@
 #include "Environment.h"
 #include "CellSimMouse.h"
 #include "CellFactory.h"
+#include "CellSimApp.h"
 #include "MessagesManager.h"
 
 
@@ -30,10 +31,23 @@ void CellInsertionTool::update()
 
 			if (Environment::getInstance().isCellInEnvironmentBounds(*cellBlueprint))
 			{
-				auto newCell = Cell::create(*cellBlueprint);
-				newCell->unfreeze();
-				newCell->setRotation(randomInt(0, 359));
-				Environment::getInstance().insertNewCell(newCell);
+				if (sf::Keyboard::isKeyPressed(sf::Keyboard::LControl) && CellSimMouse::isLeftPressed())
+				{
+					for (int i = 0; i < (CellSimApp::getInstance().getDeltaTime() / cellSpawnTime); ++i)
+					{
+						auto newCell = Cell::create(*cellBlueprint);
+						newCell->unfreeze();
+						newCell->setRotation(randomInt(0, 359));
+						Environment::getInstance().insertNewCell(newCell);
+					}
+				}
+				else
+				{
+					auto newCell = Cell::create(*cellBlueprint);
+					newCell->unfreeze();
+					newCell->setRotation(randomInt(0, 359));
+					Environment::getInstance().insertNewCell(newCell);
+				}
 			}
 			else
 				MessagesManager::getInstance().append("Cell cannot be placed outside environment.");

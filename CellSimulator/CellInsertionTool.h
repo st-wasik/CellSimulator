@@ -28,5 +28,7 @@ private:
 
 	bool isActive;
 	bool random;
+
+	static constexpr int cellSpawnTime = 5;
 };
 
