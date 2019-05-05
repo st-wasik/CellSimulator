@@ -10,7 +10,7 @@
 #include <sstream>
 #include <regex>
 
-Cell::Cell() : BaseObj(), horniness(0,100,0)
+Cell::Cell() : BaseObj(), horniness(0, 100, 0)
 {
 	age = 0;
 	foodLevel = 0;
@@ -22,7 +22,7 @@ Cell::Cell() : BaseObj(), horniness(0,100,0)
 	delayTime = CellSimApp::getInstance().getDeltaTime();
 }
 
-Cell::Cell(float size, sf::Vector2f position, sf::Color color) : BaseObj(size, position, color), horniness(0,100,0)
+Cell::Cell(float size, sf::Vector2f position, sf::Color color) : BaseObj(size, position, color), horniness(0, 100, 0)
 {
 	this->age = 0;
 
@@ -35,8 +35,10 @@ Cell::Cell(float size, sf::Vector2f position, sf::Color color) : BaseObj(size, p
 	shape.setOutlineColor(sf::Color::Yellow);
 
 
-	int textureSize = getSize() / 1.3;
-	shape.setTextureRect({ 0,0,textureSize, textureSize });
+	int textureSize = randomInt(6,12);
+	float rnd = randomInt(0, 32); //64 - texture size
+	TextureProvider::getInstance().getTexture("whiteNoise")->setRepeated(true);
+	shape.setTextureRect(sf::IntRect( sf::Vector2i(rnd, rnd), sf::Vector2i( textureSize, textureSize )));
 	shape.setTexture(TextureProvider::getInstance().getTexture("whiteNoise").get());
 
 	shape.setOutlineThickness(-5);

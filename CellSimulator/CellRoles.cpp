@@ -146,11 +146,11 @@ void CellRoles::updateColor(Cell * c)
 
 	if (0.3 > maxSpeed)
 	{
-		outlineColor = sf::Color(bodyColor.r * 0.5 + 0.5 * 255 * maxSpeed, bodyColor.g * 0.5 + 0.5 * 255 * maxSpeed, 0, 50);
+		outlineColor = sf::Color(bodyColor.r * 0.3 + 0.7 * 255 * maxSpeed, bodyColor.g * 0.3 + 0.7 * 255 * maxSpeed, 0, 70);
 	}
 	else if (0.7 > maxSpeed)
 	{
-		outlineColor = sf::Color(bodyColor.r * 0.7 + 0.3 * 255 * maxSpeed, bodyColor.g * 0.7 + 0.3 * 255 * maxSpeed, bodyColor.b * 0.3 + 0.7 * 255 * maxSpeed, 65);
+		outlineColor = sf::Color(bodyColor.r * 0.7 + 0.3 * 255 * maxSpeed, bodyColor.g * 0.7 + 0.3 * 255 * maxSpeed, bodyColor.b * 0.3 + 0.7 * 255 * maxSpeed, 75);
 	}
 	else
 	{
