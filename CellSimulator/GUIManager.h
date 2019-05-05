@@ -84,6 +84,16 @@ private:
 	std::shared_ptr<tgui::MenuBar>
 		menuBar;
 
+	//MULTI GUI
+	std::shared_ptr<tgui::Label>
+		aggresionValLabel,
+		foodLevelValLabel,
+		speedValLabel,
+		sizeValLabel,
+		horninessValLabel,
+		ageValLabel,
+		radarRangeValLabel,
+		divisionThresholdValLabel;
 
 
 	//CELL PREVIEW
@@ -110,6 +120,37 @@ private:
 	std::shared_ptr<tgui::TextBox>
 		radarRangeVal,
 		divisionThresholdVal;
+
+	//CELL CREATE
+	std::shared_ptr<tgui::EditBox>
+		sizeC,
+		speedC,
+		ageC,
+		horninessC,
+		aggresionC,
+		foodLevelC,
+		divisionThresholdC,
+		radarRangeC,
+		nameC;
+
+	std::shared_ptr<tgui::Button>
+		buttonCreateC,
+		buttonSaveC;
+
+	//CELL MODIFY
+	std::shared_ptr<tgui::EditBox>
+		sizeM,
+		speedM,
+		ageM,
+		horninessM,
+		aggresionM,
+		foodLevelM,
+		divisionThresholdM,
+		radarRangeM,
+		nameM;
+
+	std::shared_ptr<tgui::Button>
+		buttonModifyM;
 
 	//CELL INSERT
 	std::shared_ptr<tgui::Label>

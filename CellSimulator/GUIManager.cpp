@@ -115,6 +115,7 @@ std::shared_ptr<tgui::TextBox> GUIManager::createTextBox(std::shared_ptr<tgui::G
 	TextBox->setTextSize(textSize);
 	TextBox->setVisible(visible);
 	TextBox->setReadOnly(1);
+	TextBox->setEnabled(0);
 	TextBox->setVerticalScrollbarPolicy(tgui::Scrollbar::Policy::Never);
 	gui->add(TextBox);
 
@@ -151,9 +152,14 @@ std::shared_ptr<tgui::ListBox> GUIManager::createListBox(std::shared_ptr<tgui::G
 	ListBox->setSize(width, height);
 	ListBox->setItemHeight(24);
 	ListBox->setPosition(x, y);
-	ListBox->addItem("Example 1");
-	ListBox->addItem("Example 2");
-	ListBox->addItem("Example 3");
+	ListBox->addItem("Aggressive");
+	ListBox->addItem("Passive");
+	ListBox->addItem("Lettuce");
+	ListBox->addItem("Pizza");
+	for (auto& v : SaveManager::getInstance().getAvailableCellSaves())
+	{
+		ListBox->addItem(v);
+	}
 	gui->add(ListBox);
 
 	return ListBox;
@@ -269,42 +275,60 @@ void GUIManager::configure(std::shared_ptr<sf::RenderWindow> window)
 	constexpr int offset = 400;
 
 	//CELL PREVIEW
-	createLabel(previewGui, "Size", 10, 10 + offset, 18);
+	sizeValLabel = createLabel(previewGui, "Size", 10, 10 + offset, 18);
+	insertGui->add(sizeValLabel);
+	modifyGui->add(sizeValLabel);
+	createGui->add(sizeValLabel);
 
 	sizeValTT = createLabel(previewGui, "", 0, 0, 18, nullptr, 1, "ToolTip");
 
 	sizeVal = createProgressBar(previewGui, 170, 20, 150, 9 + offset, 16, sizeValTT);
 	widgetsPreview.push_back(sizeVal);
 
-	createLabel(previewGui, "Speed", 10, 40 + offset, 18);
+	speedValLabel = createLabel(previewGui, "Speed", 10, 40 + offset, 18);
+	insertGui->add(speedValLabel);
+	modifyGui->add(speedValLabel);
+	createGui->add(speedValLabel);
 
 	speedValTT = createLabel(previewGui, "", 0, 0, 18, nullptr, 1, "ToolTip");
 
 	speedVal = createProgressBar(previewGui, 170, 20, 150, 39 + offset, 16, speedValTT);
 	widgetsPreview.push_back(speedVal);
 
-	createLabel(previewGui, "Age", 10, 70 + offset, 18);
+	ageValLabel = createLabel(previewGui, "Age", 10, 70 + offset, 18);
+	insertGui->add(ageValLabel);
+	modifyGui->add(ageValLabel);
+	createGui->add(ageValLabel);
 
 	ageValTT = createLabel(previewGui, "", 0, 0, 18, nullptr, 1, "ToolTip");
 
 	ageVal = createProgressBar(previewGui, 170, 20, 150, 69 + offset, 16, ageValTT);
 	widgetsPreview.push_back(ageVal);
 
-	createLabel(previewGui, "Fertility", 10, 100 + offset, 18);
+	horninessValLabel = createLabel(previewGui, "Fertility", 10, 100 + offset, 18);
+	insertGui->add(horninessValLabel);
+	modifyGui->add(horninessValLabel);
+	createGui->add(horninessValLabel);
 
 	horninessValTT = createLabel(previewGui, "", 0, 0, 18, nullptr, 1, "ToolTip");
 
 	horninessVal = createProgressBar(previewGui, 170, 20, 150, 99 + offset, 16, horninessValTT);
 	widgetsPreview.push_back(horninessVal);
 
-	createLabel(previewGui, "Aggresion", 10, 130 + offset, 18);
+	aggresionValLabel = createLabel(previewGui, "Aggresion", 10, 130 + offset, 18);
+	insertGui->add(aggresionValLabel);
+	modifyGui->add(aggresionValLabel);
+	createGui->add(aggresionValLabel);
 
 	aggresionValTT = createLabel(previewGui, "", 0, 0, 18, nullptr, 1, "ToolTip");
 
 	aggresionVal = createProgressBar(previewGui, 170, 20, 150, 129 + offset, 16, aggresionValTT);
 	widgetsPreview.push_back(aggresionVal);
 
-	createLabel(previewGui, "Food level", 10, 160 + offset, 18);
+	foodLevelValLabel = createLabel(previewGui, "Food level", 10, 160 + offset, 18);
+	insertGui->add(foodLevelValLabel);
+	modifyGui->add(foodLevelValLabel);
+	createGui->add(foodLevelValLabel);
 
 	foodLevelValTT = createLabel(previewGui, "", 0, 0, 18, nullptr, 1, "ToolTip");
 
@@ -313,50 +337,88 @@ void GUIManager::configure(std::shared_ptr<sf::RenderWindow> window)
 
 	divisionThresholdTT = createLabel(previewGui, "Division Threshold", 0, 0, 18, nullptr, 1, "ToolTip");
 
-	createLabel(previewGui, "Div. th", 10, 190 + offset, 18, divisionThresholdTT);
+	divisionThresholdValLabel = createLabel(previewGui, "Div. th", 10, 190 + offset, 18, divisionThresholdTT);
+	insertGui->add(divisionThresholdValLabel);
+	modifyGui->add(divisionThresholdValLabel);
+	createGui->add(divisionThresholdValLabel);
 
 	divisionThresholdVal = createTextBox(previewGui, 60, 20, 205, 189 + offset, 16);
 	widgetsPreview.push_back(divisionThresholdVal);
 
 	radarRangeTT = createLabel(previewGui, "Detection Range", 0, 0, 18, nullptr, 1, "ToolTip");
 
-	createLabel(previewGui, "Detec. rg", 10, 220 + offset, 18, radarRangeTT);
+	radarRangeValLabel = createLabel(previewGui, "Detec. rg", 10, 220 + offset, 18, radarRangeTT);
+	insertGui->add(radarRangeValLabel);
+	modifyGui->add(radarRangeValLabel);
+	createGui->add(radarRangeValLabel);
 
 	radarRangeVal = createTextBox(previewGui, 70, 20, 200, 219 + offset, 16);
 	widgetsPreview.push_back(radarRangeVal);
 
-	//CELL INSERT
-	createLabel(insertGui, "Size", 10, 10 + offset, 18);
+	//CELL CREATE
+	sizeC = createEditBox(createGui, 70, 20, 18, 200, 9 + offset,"");
 
+	speedC = createEditBox(createGui, 70, 20, 18, 200, 39 + offset, "");
+
+	ageC = createEditBox(createGui, 70, 20, 18, 200, 69 + offset, "");
+
+	horninessC = createEditBox(createGui, 70, 20, 18, 200, 99 + offset, "");
+
+	aggresionC = createEditBox(createGui, 70, 20, 18, 200, 129 + offset, "");
+
+	foodLevelC = createEditBox(createGui, 70, 20, 18, 200, 159 + offset, "");
+
+	divisionThresholdC = createEditBox(createGui, 70, 20, 18, 200, 189 + offset, "");
+
+	radarRangeC = createEditBox(createGui, 70, 20, 18, 200, 219 + offset, "");
+
+	nameC = createEditBox(createGui, 100, 20, 18, 130, 270 + offset, "   Name");
+
+	buttonCreateC = createButton(createGui, 70, 40, 105, 300 + offset, "Create");
+
+	buttonSaveC = createButton(createGui, 70, 40, 185, 300 + offset, "Save");
+
+	//CELL MODIFY
+	sizeM = createEditBox(modifyGui, 70, 20, 18, 200, 9 + offset, "");
+
+	speedM = createEditBox(modifyGui, 70, 20, 18, 200, 39 + offset, "");
+
+	ageM = createEditBox(modifyGui, 70, 20, 18, 200, 69 + offset, "");
+
+	horninessM = createEditBox(modifyGui, 70, 20, 18, 200, 99 + offset, "");
+
+	aggresionM = createEditBox(modifyGui, 70, 20, 18, 200, 129 + offset, "");
+
+	foodLevelM = createEditBox(modifyGui, 70, 20, 18, 200, 159 + offset, "");
+
+	divisionThresholdM = createEditBox(modifyGui, 70, 20, 18, 200, 189 + offset, "");
+
+	radarRangeM = createEditBox(modifyGui, 70, 20, 18, 200, 219 + offset, "");
+
+	nameM = createEditBox(modifyGui, 100, 20, 18, 130, 270 + offset, "   Name");
+
+	buttonModifyM = createButton(modifyGui, 100, 40, 130, 300 + offset, "Modify");
+
+	//CELL INSERT
 	sizeValTTI = createLabel(insertGui, "", 0, 0, 18, nullptr, 1, "ToolTip");
 
 	sizeValI = createProgressBar(insertGui, 170, 20, 150, 9 + offset, 16, sizeValTTI);
-
-	createLabel(insertGui, "Speed", 10, 40 + offset, 18);
 
 	speedValTTI = createLabel(insertGui, "", 0, 0, 18, nullptr, 1, "ToolTip");
 
 	speedValI = createProgressBar(insertGui, 170, 20, 150, 39 + offset, 16, speedValTTI);
 
-	createLabel(insertGui, "Age", 10, 70 + offset, 18);
-
 	ageValTTI = createLabel(insertGui, "", 0, 0, 18, nullptr, 1, "ToolTip");
 
 	ageValI = createProgressBar(insertGui, 170, 20, 150, 69 + offset, 16, ageValTTI);
-
-	createLabel(insertGui, "Fertility", 10, 100 + offset, 18);
 
 	horninessValTTI = createLabel(insertGui, "", 0, 0, 18, nullptr, 1, "ToolTip");
 
 	horninessValI = createProgressBar(insertGui, 170, 20, 150, 99 + offset, 16, horninessValTTI);
 
-	createLabel(insertGui, "Aggresion", 10, 130 + offset, 18);
-
 	aggresionValTTI = createLabel(insertGui, "", 0, 0, 18, nullptr, 1, "ToolTip");
 
 	aggresionValI = createProgressBar(insertGui, 170, 20, 150, 129 + offset, 16, aggresionValTTI);
-
-	createLabel(insertGui, "Food level", 10, 160 + offset, 18);
 
 	foodLevelValTTI = createLabel(insertGui, "", 0, 0, 18, nullptr, 1, "ToolTip");
 
@@ -364,25 +426,13 @@ void GUIManager::configure(std::shared_ptr<sf::RenderWindow> window)
 
 	divisionThresholdTTI = createLabel(insertGui, "Division Threshold", 0, 0, 18, nullptr, 1, "ToolTip");
 
-	createLabel(insertGui, "Div. th", 10, 190 + offset, 18, divisionThresholdTTI);
-
 	divisionThresholdValI = createTextBox(insertGui, 60, 20, 205, 189 + offset, 16);
 
 	radarRangeTTI = createLabel(insertGui, "Detection Range", 0, 0, 18, nullptr, 1, "ToolTip");
 
-	createLabel(insertGui, "Detec. rg", 10, 220 + offset, 18, radarRangeTTI);
-
 	radarRangeValI = createTextBox(insertGui, 70, 20, 200, 219 + offset, 16);
 
 	listBoxI = createListBox(insertGui, 160, 72, 100, 270 + offset);
-	listBoxI->addItem("Agersiv");
-	listBoxI->addItem("Pasiv");
-	listBoxI->addItem("Lettuce");
-	listBoxI->addItem("Pizza");
-	for (auto& v : SaveManager::getInstance().getAvailableCellSaves())
-	{
-		listBoxI->addItem(v);
-	}
 
 	buttonInsertI = createButton(insertGui, 80, 40, 140, 370 + offset, "Insert");
 
@@ -485,6 +535,42 @@ void GUIManager::configure(std::shared_ptr<sf::RenderWindow> window)
 		mode = 1;
 		buttonPreview->setEnabled(0);
 		buttonPreview->setInheritedOpacity(0.5);
+		buttonCreate->setEnabled(1);
+		buttonCreate->setInheritedOpacity(1);
+		buttonModify->setEnabled(1);
+		buttonModify->setInheritedOpacity(1);
+		buttonInsert->setEnabled(1);
+		buttonInsert->setInheritedOpacity(1);
+		buttonFeed->setEnabled(1);
+		buttonFeed->setInheritedOpacity(1);
+
+		ToolManager::getInstance().setActiveTool(ToolManager::Tool::SelectionMovement);
+	});
+
+	buttonCreate->connect("pressed", [=]()
+	{
+		mode = 2;
+		buttonCreate->setEnabled(0);
+		buttonCreate->setInheritedOpacity(0.5);
+		buttonPreview->setEnabled(1);
+		buttonPreview->setInheritedOpacity(1);
+		buttonModify->setEnabled(1);
+		buttonModify->setInheritedOpacity(1);
+		buttonInsert->setEnabled(1);
+		buttonInsert->setInheritedOpacity(1);
+		buttonFeed->setEnabled(1);
+		buttonFeed->setInheritedOpacity(1);
+	});
+
+	buttonModify->connect("pressed", [=]()
+	{
+		mode = 3;
+		buttonModify->setEnabled(0);
+		buttonModify->setInheritedOpacity(0.5);
+		buttonPreview->setEnabled(1);
+		buttonPreview->setInheritedOpacity(1);
+		buttonCreate->setEnabled(1);
+		buttonCreate->setInheritedOpacity(1);
 		buttonInsert->setEnabled(1);
 		buttonInsert->setInheritedOpacity(1);
 		buttonFeed->setEnabled(1);
@@ -500,6 +586,10 @@ void GUIManager::configure(std::shared_ptr<sf::RenderWindow> window)
 		buttonInsert->setInheritedOpacity(0.5);
 		buttonPreview->setEnabled(1);
 		buttonPreview->setInheritedOpacity(1);
+		buttonCreate->setEnabled(1);
+		buttonCreate->setInheritedOpacity(1);
+		buttonModify->setEnabled(1);
+		buttonModify->setInheritedOpacity(1);
 		buttonFeed->setEnabled(1);
 		buttonFeed->setInheritedOpacity(1);
 
@@ -515,6 +605,10 @@ void GUIManager::configure(std::shared_ptr<sf::RenderWindow> window)
 		buttonPreview->setInheritedOpacity(1);
 		buttonInsert->setEnabled(1);
 		buttonInsert->setInheritedOpacity(1);
+		buttonCreate->setEnabled(1);
+		buttonCreate->setInheritedOpacity(1);
+		buttonModify->setEnabled(1);
+		buttonModify->setInheritedOpacity(1);
 
 		ToolManager::getInstance().setActiveTool(ToolManager::Tool::Feeder);
 	});
