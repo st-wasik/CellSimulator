@@ -22,7 +22,7 @@ void FoodBrush::update()
 			deltaTimeClock.restart();
 			float radius = brush.getRadius();
 			sf::Vector2f position(CellSimMouse::getPosition().x + randomInt(-radius*0.7, radius*0.7), CellSimMouse::getPosition().y + randomInt(-radius*0.7, radius*0.7));
-			auto food = Food::create(randomInt(3,10), position, sf::Color::Green);
+			auto food = Food::create(0, position, sf::Color::Green, randomInt(3, 10));
 			Environment::getInstance().insertNewFood(food);
 		}
 	}

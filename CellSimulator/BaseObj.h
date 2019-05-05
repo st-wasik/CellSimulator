@@ -53,6 +53,7 @@ protected:
 		static constexpr const char *const currentPosition = "Ps";
 		static constexpr const char *const color = "C";
 		static constexpr const char *const currentSize = "Si";
+		static constexpr const char *const maxSize = "MS";
 		static constexpr const char *const markedToDelete = "TD";
 		static constexpr const char *const texture = "Tx";
 		static constexpr const char *const textureRect = "TxR";

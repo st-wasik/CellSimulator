@@ -301,7 +301,7 @@ void CellRoles::makeFood(Cell * c)
 			foodColor.r = randomInt(foodColor.r - margin, foodColor.r + margin);
 			foodColor.g = randomInt(foodColor.g - margin, foodColor.g + margin);
 			foodColor.b = randomInt(foodColor.b - margin, foodColor.b + margin);
-			auto food = Food::create(foodSize, position, foodColor);
+			auto food = Food::create(foodSize, position, foodColor, foodSize);
 			Environment::getInstance().insertNewFood(food);
 
 			c->horniness = 0;

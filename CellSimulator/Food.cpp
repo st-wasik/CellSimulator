@@ -1,14 +1,16 @@
 #include "Food.h"
 #include "RegexPattern.h"
 #include "Logger.h"
+#include "CellSimApp.h"
 #include <sstream>
 #include <regex>
 
-Food::Food(float size, sf::Vector2f position, sf::Color color) : BaseObj(size, position, color)
+Food::Food(float size, sf::Vector2f position, sf::Color color, float maxSize) : BaseObj(size, position, color)
 {
+	this->maxSize = maxSize;
 }
 
-Food::Food(std::string formattedFoodString) : Food(0, { 0,0 }, sf::Color::Transparent)
+Food::Food(std::string formattedFoodString) : Food(0, { 0,0 }, sf::Color::Transparent, 0)
 {
 	std::string doubleRegex(RegexPattern::Double);
 	std::string vectorRegex(RegexPattern::Vector);
@@ -64,6 +66,7 @@ void Food::modifyValueFromString(std::string valueName, std::string value)
 
 	if (v == VarAbbrv::currentRotation)			this->setRotation(std::stod(value));
 	else if (v == VarAbbrv::currentSize)		this->setSize((std::stod(value)));
+	else if (v == VarAbbrv::maxSize)			this->maxSize = std::stod(value);
 	else if (v == BaseObj::VarAbbrv::markedToDelete)
 	{
 		if (std::stod(value)) this->markToDelete();
@@ -102,6 +105,13 @@ Food::~Food()
 
 void Food::update()
 {
+	auto currentSize = shape.getRadius();
+	if (currentSize < maxSize)
+	{
+		currentSize += 0.7 * CellSimApp::getInstance().getDeltaTime();
+		if (currentSize > maxSize) currentSize = maxSize;
+		setSize(currentSize);
+	}
 }
 
 std::string Food::getSaveString()
@@ -112,6 +122,7 @@ std::string Food::getSaveString()
 		VarAbbrv::currentRotation << ":" << this->getRotation() << " " <<
 		VarAbbrv::currentPosition << ":{" << this->getPosition().x << ", " << this->getPosition().y << "} " <<
 		VarAbbrv::currentSize << ":" << this->getSize() << " " <<
+		VarAbbrv::maxSize << ":" << this->maxSize << " " <<
 		VarAbbrv::color << ":{" <<
 		static_cast<int>(this->getBaseColor().r) << ", " <<
 		static_cast<int>(this->getBaseColor().g) << ", " <<

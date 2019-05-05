@@ -280,6 +280,11 @@ void Environment::update()
 	// call role-functions for all cells
 	if (_simulationActive)
 	{
+		for (auto& f : food)
+		{
+			f->update();
+		}
+
 		for (auto& cell : cells)
 		{
 			cell->update();

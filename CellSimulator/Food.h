@@ -16,11 +16,13 @@ public:
 	std::string getSaveString();
 
 private:
-	Food(float size, sf::Vector2f position, sf::Color color);
+	Food(float size, sf::Vector2f position, sf::Color color, float maxSize);
 	Food(std::string formattedFoodString);
 
 	void modifyValueFromString(std::string valueName, std::string value);
 	void modifyValueFromVector(std::string valueName, const std::vector<std::string>& value);
+
+	float maxSize;
 };
 
 template<typename ...T>

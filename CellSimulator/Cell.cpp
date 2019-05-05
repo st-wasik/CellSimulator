@@ -275,7 +275,7 @@ void Cell::kill()
 
 			auto position = getPosition() + sf::Vector2f{ xDeviation, yDeviation };
 
-			auto food = Food::create(foodSize, position, sf::Color::Black);
+			auto food = Food::create(foodSize, position, sf::Color::Black, foodSize);
 			Environment::getInstance().insertNewFood(food);
 		}
 	}
