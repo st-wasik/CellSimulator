@@ -153,7 +153,7 @@ void CellSimApp::run()
 			if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Num2)
 				CellInsertionTool::getInstance().setCellBlueprint(CellFactory::getCell(Cell::Type::Passive));
 			if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Num3)
-				CellInsertionTool::getInstance().setCellBlueprint(CellFactory::getCell(Cell::Type::Random));
+				CellInsertionTool::getInstance().setRandomMode();
 			if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Num4)
 				CellInsertionTool::getInstance().setCellBlueprint(CellFactory::getCell(Cell::Type::GreenLettuce));
 			if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Num5)

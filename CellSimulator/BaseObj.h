@@ -28,6 +28,9 @@ public:
 	float getOutlineThickness();
 	void setOutlineThickness(float value);
 
+	sf::Color getOutlineColor();
+	void setOutlineColor(sf::Color c);
+
 	virtual std::string toString();
 
 	virtual std::string getSaveString() = 0;

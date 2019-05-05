@@ -4,6 +4,7 @@ TextureProvider::TextureProvider()
 {
 	loadTexture("whiteNoise");
 	loadTexture("background");
+	loadTexture("background2");
 	loadTexture("greenLettuce");
 	loadTexture("pizza");
 }

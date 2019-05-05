@@ -61,7 +61,9 @@ void Environment::configure(sf::Vector2f envSize, bool fill)
 {
 	sterilizeEnvironment();
 
-	backgroundDefaultColor = sf::Color{ 170, 135, 200 };
+	//backgroundDefaultColor = sf::Color{ 170, 135, 200 };
+	//backgroundDefaultColor = sf::Color{ 50, 60, 40 };
+	backgroundDefaultColor = sf::Color{ 60, 60, 30 };
 
 	auto& eb = environmentBackground;
 	eb.setSize(envSize);
@@ -69,9 +71,9 @@ void Environment::configure(sf::Vector2f envSize, bool fill)
 	eb.setOutlineColor(sf::Color::Red);
 	eb.setOutlineThickness(5);
 	eb.setPosition(sf::Vector2f{ 0,0 });
-	eb.setTextureRect(sf::IntRect(0, 0, eb.getSize().x / 10, eb.getSize().y / 10));
-	TextureProvider::getInstance().getTexture("background")->setSmooth(true);
-	eb.setTexture(TextureProvider::getInstance().getTexture("background").get());
+	eb.setTextureRect(sf::IntRect(0, 0, eb.getSize().x / 25, eb.getSize().y / 25));
+	TextureProvider::getInstance().getTexture("background2")->setSmooth(true);
+	eb.setTexture(TextureProvider::getInstance().getTexture("background2").get());
 
 	CellSimApp::getInstance().getView().setCenter(eb.getSize()/2.0f);
 

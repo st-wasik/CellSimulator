@@ -82,6 +82,16 @@ void BaseObj::setOutlineThickness(float v)
 	shape.setOutlineThickness(v);
 }
 
+sf::Color BaseObj::getOutlineColor()
+{
+	return shape.getOutlineColor();
+}
+
+void BaseObj::setOutlineColor(sf::Color c)
+{
+	shape.setOutlineColor(c);
+}
+
 std::string BaseObj::toString()
 {
 	return "Object pos: " + (std::to_string(getPosition().x) + ":" + std::to_string(getPosition().y)) + " radius: " + std::to_string(getSize()) + " rotation:" + std::to_string(getRotation());

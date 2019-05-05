@@ -17,9 +17,17 @@ void CellInsertionTool::update()
 	if (isActive && cellBlueprint != nullptr)
 	{
 		cellBlueprint->setPosition(CellSimMouse::getPosition());
+		auto cellPos = cellBlueprint->getPosition();
 
 		if (CellSimMouse::wasLeftPressed() || (sf::Keyboard::isKeyPressed(sf::Keyboard::LControl) && CellSimMouse::isLeftPressed()))
 		{
+			if (random)
+			{
+				cellBlueprint = CellFactory::getCell(Cell::Type::Random);
+				cellBlueprint->setPosition(cellPos);
+				cellBlueprint->setRotation(0);
+			}
+
 			if (Environment::getInstance().isCellInEnvironmentBounds(*cellBlueprint))
 			{
 				auto newCell = Cell::create(*cellBlueprint);
@@ -43,10 +51,18 @@ void CellInsertionTool::setCellBlueprint(Cell::Ptr cell)
 {
 	if (cell == nullptr) return;
 
+	random = false;
+
 	auto newCell = Cell::create(*cell);
 	newCell->freeze();
 	newCell->setRotation(0);
 	cellBlueprint = newCell;
+}
+
+void CellInsertionTool::setRandomMode()
+{
+	setCellBlueprint(CellFactory::getCell(Cell::Type::Random));
+	random = true;
 }
 
 Cell::Ptr CellInsertionTool::getCellBlueprint()
@@ -64,7 +80,7 @@ bool CellInsertionTool::getIsActive()
 	return isActive;
 }
 
-CellInsertionTool::CellInsertionTool() : cellBlueprint(nullptr), isActive(false)
+CellInsertionTool::CellInsertionTool() : cellBlueprint(nullptr), isActive(false), random(false)
 {
 }
 

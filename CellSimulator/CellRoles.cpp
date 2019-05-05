@@ -121,10 +121,50 @@ void CellRoles::eat(Cell * c)
 
 void CellRoles::updateColor(Cell * c)
 {
-	static double threshold = 30;
+	auto& genes = c->getGenes();
+	double aggression = genes.aggresion.get() / (genes.aggresion.getMax() - genes.aggresion.getMin());
 
+	double maxSpeed = genes.maxSpeed.get() / (genes.maxSpeed.getMax() - genes.maxSpeed.getMin());
+
+	double foodLimit = genes.foodLimit.get() / (genes.foodLimit.getMax() - genes.foodLimit.getMin());
+
+	sf::Color bodyColor;
+	sf::Color outlineColor;
+
+	if (0.3 > aggression)
+	{
+		bodyColor = sf::Color(255 * aggression, 0, 255 - 255 * aggression);
+	}
+	else if (0.7 > aggression)
+	{
+		bodyColor = sf::Color(255 * aggression/3, 255*aggression, 255 * aggression/3);
+	}
+	else
+	{
+		bodyColor = sf::Color(255 * aggression, 0, 255 - 255 * aggression);
+	}
+
+	if (0.3 > maxSpeed)
+	{
+		outlineColor = sf::Color(bodyColor.r * 0.5 + 0.5 * 255 * maxSpeed, bodyColor.g * 0.5 + 0.5 * 255 * maxSpeed, 0, 50);
+	}
+	else if (0.7 > maxSpeed)
+	{
+		outlineColor = sf::Color(bodyColor.r * 0.7 + 0.3 * 255 * maxSpeed, bodyColor.g * 0.7 + 0.3 * 255 * maxSpeed, bodyColor.b * 0.3 + 0.7 * 255 * maxSpeed, 65);
+	}
+	else
+	{
+		outlineColor = sf::Color(255*maxSpeed, 255*maxSpeed, 0, 80);
+	}
+
+
+	c->setBaseColor(bodyColor);
+	c->setOutlineColor(outlineColor);
+	c->setOutlineThickness(c->getSize()*0.7*foodLimit*(-1));
+
+	// ENVIRONMENT INFLUENCE
+	constexpr double threshold = 30;
 	Ranged<int, 0, 255> newR, newG, newB;
-
 	auto newColor = c->getBaseColor();
 
 	//temperature
@@ -154,12 +194,15 @@ void CellRoles::updateColor(Cell * c)
 void CellRoles::beDead(Cell * c)
 {
 	auto color = c->shape.getFillColor();
+	auto color2 = c->shape.getOutlineColor();
 	if (color.a > 0)
 	{
 		double a = static_cast<double>(color.a) - ((Environment::getInstance().getTemperature() + 100 + 1)*0.01*CellSimApp::getInstance().getDeltaTime());
 		if (0 > a) a = 0;
 		color.a = a;
+		color2.a = a;
 		c->shape.setFillColor(color);
+		c->shape.setOutlineColor(color2);
 	}
 	else
 	{
@@ -243,7 +286,7 @@ void CellRoles::makeFood(Cell * c)
 		c->foodLevel = 0;
 		auto size = c->getSize();
 
-		int foods = randomInt(0, 100) > 70 ? 2 : 1;
+		int foods = randomInt(0, 100) > 90 ? 2 : 1;
 		auto foodSize = 0.5 * size;
 
 		for (int i = 0; i < foods; ++i)

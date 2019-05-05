@@ -21,6 +21,7 @@ std::shared_ptr<Cell> CellFactory::getCell(Cell::Type type)
 		result->genes.type = 2;
 		result->setBaseColor(sf::Color::Red);
 		result->dropRole(CellRoles::sniffForFood);
+		CellRoles::updateColor(result.get());
 		break;
 
 	case Cell::Type::Passive:
@@ -34,12 +35,14 @@ std::shared_ptr<Cell> CellFactory::getCell(Cell::Type type)
 		result->genes.type = 1;
 		result->setBaseColor(sf::Color::Blue);
 		result->dropRole(CellRoles::sniffForCell);
+		CellRoles::updateColor(result.get());
 		break;
 
 	case Cell::Type::Random:
 		g.randomize();
 		result->genes = g;
 		result->setBaseColor(sf::Color::Yellow);
+		CellRoles::updateColor(result.get());
 		break;
 
 	case Cell::Type::GreenLettuce:
@@ -59,6 +62,7 @@ std::shared_ptr<Cell> CellFactory::getCell(Cell::Type type)
 		result->dropRole(CellRoles::divideAndConquer);
 		result->dropRole(CellRoles::getingHot);
 		result->dropRole(CellRoles::sniffForFood);
+		result->dropRole(CellRoles::updateColor);
 		result->addRole(CellRoles::makeFood);
 		result->setBaseColor(sf::Color::White);
 		result->setMakedFoodColor(sf::Color(8, 128, 8));
@@ -83,6 +87,7 @@ std::shared_ptr<Cell> CellFactory::getCell(Cell::Type type)
 		result->dropRole(CellRoles::divideAndConquer);
 		result->dropRole(CellRoles::getingHot);
 		result->dropRole(CellRoles::sniffForFood);
+		result->dropRole(CellRoles::updateColor);
 		result->addRole(CellRoles::makeFood);
 		result->setBaseColor(sf::Color::White);
 		result->setMakedFoodColor(sf::Color(224, 144, 33, 255));
@@ -103,6 +108,7 @@ std::shared_ptr<Cell> CellFactory::getCell(Cell::Type type)
 		result->setSize(20);
 		break;
 	}
+
 
 	return result;
 }

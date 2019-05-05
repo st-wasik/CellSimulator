@@ -11,6 +11,8 @@ public:
 
 	void setCellBlueprint(Cell::Ptr cell);
 
+	void setRandomMode();
+
 	Cell::Ptr getCellBlueprint();
 
 	void setIsActive(bool a);
@@ -25,5 +27,6 @@ private:
 	Cell::Ptr cellBlueprint;
 
 	bool isActive;
+	bool random;
 };
 
