@@ -26,7 +26,7 @@ public:
 
 	enum class Type
 	{
-		Passive, Aggressive, Random, GreenLettuce, Pizza
+		Passive, Aggressive, Random, GreenLettuce, Pizza, Default
 	};
 
 	template <typename ... Types>
@@ -52,7 +52,7 @@ public:
 	void setFoodLevel(double foodLevel);
 	void setAge(double age);
 	void setHorniness(double horniness);
-	Ranged<double, 0, 100>& getHorniness();
+	DynamicRanged<double>& getHorniness();
 
 	void dropRole(void(*role)(Cell*));
 	void dropRoles();
@@ -99,7 +99,7 @@ private:
 
 	Genes genes;
 
-	Ranged<double, 0, 100> horniness;
+	DynamicRanged<double> horniness; // <0,100>
 
 	std::string name;
 

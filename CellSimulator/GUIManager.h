@@ -32,6 +32,7 @@ private:
 	tgui::Theme theme;
 
 	std::shared_ptr<Cell> selectedCellPtr;
+	std::shared_ptr<Cell> createCellPtr;
 
 	sf::RectangleShape background;
 

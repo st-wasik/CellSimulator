@@ -10,12 +10,11 @@
 #include <sstream>
 #include <regex>
 
-Cell::Cell() : BaseObj()
+Cell::Cell() : BaseObj(), horniness(0,100,0)
 {
 	age = 0;
 	foodLevel = 0;
 	currentSpeed = 0;
-	horniness = 0;
 
 	shape.setOutlineThickness(-5);
 	shape.setOutlineColor(sf::Color(128, 64, 0, 75));
@@ -23,7 +22,7 @@ Cell::Cell() : BaseObj()
 	delayTime = CellSimApp::getInstance().getDeltaTime();
 }
 
-Cell::Cell(float size, sf::Vector2f position, sf::Color color) : BaseObj(size, position, color)
+Cell::Cell(float size, sf::Vector2f position, sf::Color color) : BaseObj(size, position, color), horniness(0,100,0)
 {
 	this->age = 0;
 
@@ -79,9 +78,6 @@ Cell::Cell(float size, sf::Vector2f position, sf::Color color) : BaseObj(size, p
 
 Cell::Cell(Cell a, Cell b) : Cell(20, (a.getPosition() + b.getPosition()) / 2.0f, a.getBaseColor()*b.getBaseColor())
 {
-
-
-
 	double mutationRatio = Environment::getInstance().getRadiation();
 	genes.aggresion = mutationRatio <= randomReal(0, 100) ? MixDouble(a.genes.aggresion.get(), b.genes.divisionThreshold.get()) : (a.genes.aggresion.get() + b.genes.divisionThreshold.get()) / 2;
 	genes.divisionThreshold = mutationRatio <= randomReal(0, 100) ? MixDouble(a.genes.divisionThreshold.get(), b.genes.divisionThreshold.get()) : (a.genes.divisionThreshold.get() + b.genes.divisionThreshold.get()) / 2;
@@ -322,7 +318,7 @@ void Cell::setHorniness(double horniness)
 {
 	this->horniness = horniness;
 }
-Ranged<double, 0, 100>& Cell::getHorniness()
+DynamicRanged<double>& Cell::getHorniness()
 {
 	return this->horniness;
 }

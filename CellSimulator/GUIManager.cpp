@@ -8,6 +8,10 @@
 #include "CellSimApp.h"
 #include "MessagesManager.h"
 #include "SaveManager.h"
+#include "CellFactory.h"
+#include "DoubleToString.h"
+#include <regex>
+#include "RegexPattern.h"
 
 std::shared_ptr<tgui::Label> GUIManager::createLabel(std::shared_ptr<tgui::Gui> gui, std::string text, int x, int y, int textSize, std::shared_ptr<tgui::Label> tooltip = nullptr, int enabled = 1, std::string renderer = "Label")
 {
@@ -131,7 +135,7 @@ std::shared_ptr<tgui::MenuBar> GUIManager::createMenuBar(std::shared_ptr<tgui::G
 	MenuBar->addMenuItem("Simulation", "New");
 	MenuBar->connectMenuItem("Simulation", "New", []() {Environment::getInstance().configure(); });
 	MenuBar->addMenuItem("Simulation", "New Random");
-	MenuBar->connectMenuItem("Simulation", "New Random", []() {Environment::getInstance().configure({2500.f,1250.f}, true); });
+	MenuBar->connectMenuItem("Simulation", "New Random", []() {Environment::getInstance().configure(sf::Vector2f(randomReal(0.5, 3.5) * 1000, randomReal(0.5, 3.5) * 1000), true); });
 	MenuBar->addMenuItem("Simulation", "Save");
 	MenuBar->connectMenuItem("Simulation", "Save", []() {SaveManager::getInstance().saveEnvironmentToFile("quick_save"); });
 	MenuBar->addMenuItem("Simulation", "Load");
@@ -438,24 +442,37 @@ void GUIManager::configure(std::shared_ptr<sf::RenderWindow> window)
 
 	//FEED
 
-	createLabel(feedGui, "Radius", 75, 35+offset, 18);
+	createLabel(feedGui, "Radius", 75, 35 + offset, 18);
 
-	editBoxRadius = createEditBox(feedGui, 60, 25, 18, 220, 52+offset, std::to_string((int)AutoFeederTool::getInstance().getMaxThresholdValue()));
+	editBoxRadius = createEditBox(feedGui, 60, 25, 18, 220, 52 + offset, std::to_string((int)AutoFeederTool::getInstance().getMaxThresholdValue()));
 
-	sliderRadius = createSlider(feedGui, 200, 9, 10, 60+ offset, 100, 1, AutoFeederTool::getInstance().getMaxThresholdValue());
+	sliderRadius = createSlider(feedGui, 200, 9, 10, 60 + offset, 100, 1, AutoFeederTool::getInstance().getMaxThresholdValue());
 
-	buttonRadius = createButton(feedGui, 60, 25, 285, 52+ offset, "SET");
+	buttonRadius = createButton(feedGui, 60, 25, 285, 52 + offset, "SET");
 
-	createLabel(feedGui, "Frequency", 60, 100+ offset, 18);
+	createLabel(feedGui, "Frequency", 60, 100 + offset, 18);
 
-	editBoxFreqF = createEditBox(feedGui, 60, 25, 18, 220, 117+ offset, std::to_string((int)AutoFeederTool::getInstance().getMaxFoodPerSec()));
+	editBoxFreqF = createEditBox(feedGui, 60, 25, 18, 220, 117 + offset, std::to_string((int)AutoFeederTool::getInstance().getMaxFoodPerSec()));
 
 	sliderFreqF = createSlider(feedGui, 200, 9, 10, 125 + offset, 250, 1, AutoFeederTool::getInstance().getMaxFoodPerSec());
 
-	buttonFreqF = createButton(feedGui, 60, 25, 285, 117+ offset, "SET");
+	buttonFreqF = createButton(feedGui, 60, 25, 285, 117 + offset, "SET");
 
 	//MOVE MENU
 	menuBar->moveToFront();
+
+	//CELL CREATE DEFAULT VALUES CONFIGURE
+	createCellPtr = CellFactory::getCell(Cell::Type::Default);
+
+	sizeC->setText(doubleToString(createCellPtr->getGenes().maxSize.get(), 2));
+	speedC->setText(doubleToString(createCellPtr->getGenes().maxSpeed.get(), 2));
+	ageC->setText(doubleToString(createCellPtr->getGenes().maxAge.get(), 2));
+	horninessC->setText(doubleToString(createCellPtr->getHorniness().get(), 2));
+	aggresionC->setText(doubleToString(createCellPtr->getGenes().aggresion.get(), 2));
+	foodLevelC->setText(doubleToString(createCellPtr->getGenes().foodLimit.get(), 2));
+	divisionThresholdC->setText(doubleToString(createCellPtr->getGenes().divisionThreshold.get(), 2));
+	radarRangeC->setText(doubleToString(createCellPtr->getGenes().radarRange.get(), 2));
+	nameC->setText(createCellPtr->getName());
 
 	//EVENTS ENV
 	sliderTemp->connect("ValueChanged", [&]()
@@ -649,6 +666,54 @@ void GUIManager::configure(std::shared_ptr<sf::RenderWindow> window)
 		buttonFreq->setEnabled(0);
 		buttonFreq->setInheritedOpacity(0.5);
 		AutoFeederTool::getInstance().setIsActive(false);
+	});
+
+	buttonSaveC->connect("pressed", [=]()
+	{
+		auto checkValue = [](std::shared_ptr<tgui::EditBox> textBox, std::string geneName, DynamicRanged<double>& gene)->void 
+		{
+			std::regex number(RegexPattern::Double);
+			std::string text = textBox->getText();
+			if (std::regex_match(text, number))
+			{
+				double value = 0;
+				value = std::stod(text);
+				if (value >= gene.getMin() && value <= gene.getMax())
+				{
+					gene = value;
+				}
+				else
+				{
+					textBox->setText(doubleToString(gene.get(), 2));
+					MessagesManager::getInstance().append(geneName + " must be between " + doubleToString(gene.getMin(), 2) + " and " + doubleToString(gene.getMax(), 2) + ".");
+				}
+			}
+			else
+			{
+				textBox->setText(doubleToString(gene.get(), 2));
+				MessagesManager::getInstance().append(geneName + " must be a real value.");
+			}
+		};
+
+		checkValue(sizeC, "Max Size", createCellPtr->getGenes().maxSize);
+		checkValue(speedC, "Max Speed", createCellPtr->getGenes().maxSpeed);
+		checkValue(ageC, "Max Age", createCellPtr->getGenes().maxAge);
+		checkValue(horninessC, "Max Fertility", createCellPtr->getHorniness());
+		checkValue(foodLevelC, "Max Food Level", createCellPtr->getGenes().foodLimit);
+		checkValue(divisionThresholdC, "Max Division Threshold", createCellPtr->getGenes().divisionThreshold);
+		checkValue(radarRangeC, "Max Size", createCellPtr->getGenes().radarRange);
+
+		std::regex word(RegexPattern::Word);
+		std::string text = nameC->getText();
+		if (std::regex_match(text, word))
+		{
+			createCellPtr->setName(text);
+		}
+		else
+		{
+			nameC->setText(createCellPtr->getName());
+			MessagesManager::getInstance().append("Cell Name must consist of letters only.");
+		}
 	});
 }
 

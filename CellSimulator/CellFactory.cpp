@@ -90,6 +90,18 @@ std::shared_ptr<Cell> CellFactory::getCell(Cell::Type type)
 		result->shape.setTexture(TextureProvider::getInstance().getTexture("pizza").get());
 		result->setSize(45);
 		break;
+	case Cell::Type::Default:
+		result->genes.aggresion = 50;
+		result->genes.divisionThreshold = 50;
+		result->genes.foodLimit = 75;
+		result->genes.maxAge = 50;
+		result->genes.maxSize = 35;
+		result->genes.maxSpeed = 1.0;
+		result->genes.radarRange = 250;
+		result->genes.metabolism = 1.0;
+		result->setBaseColor(sf::Color::White);
+		result->setSize(20);
+		break;
 	}
 
 	return result;
