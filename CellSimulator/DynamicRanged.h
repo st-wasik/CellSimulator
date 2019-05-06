@@ -23,6 +23,7 @@ public:
 
 	T get() const;
 	void randomize();
+	void randomizeInt();
 	bool isMax() const;
 	bool isMin() const;
 
@@ -147,6 +148,12 @@ template<typename T>
 inline void DynamicRanged<T>::randomize()
 {
 	value = randomReal(min, max);
+}
+
+template<typename T>
+inline void DynamicRanged<T>::randomizeInt()
+{
+	value = randomInt(min, max);
 }
 
 template<typename T>

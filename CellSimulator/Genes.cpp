@@ -18,7 +18,7 @@ void Genes::randomize()
 	foodLimit.randomize();
 	maxSize.randomize();
 	maxAge.randomize();
-	type.randomize();
+	type.randomizeInt();
 	metabolism.randomize();
 }
 

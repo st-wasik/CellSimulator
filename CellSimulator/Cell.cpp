@@ -20,6 +20,10 @@ Cell::Cell() : BaseObj(), horniness(0, 100, 0)
 	shape.setOutlineColor(sf::Color(128, 64, 0, 75));
 
 	delayTime = CellSimApp::getInstance().getDeltaTime();
+
+	setSize(20);
+	setPosition({0,0});
+	typeShape.setPointCount(3);
 }
 
 Cell::Cell(float size, sf::Vector2f position, sf::Color color) : BaseObj(size, position, color), horniness(0, 100, 0)
@@ -34,6 +38,9 @@ Cell::Cell(float size, sf::Vector2f position, sf::Color color) : BaseObj(size, p
 
 	shape.setOutlineColor(sf::Color::Yellow);
 
+	setSize(size);
+	setPosition(position);
+	typeShape.setPointCount(3);
 
 	int textureSize = randomInt(6,12);
 	float rnd = randomInt(0, 32); //64 - texture size
@@ -417,6 +424,31 @@ void Cell::setMakedFoodColor(sf::Color c)
 sf::Color Cell::getMakedFoodColor()
 {
 	return makedFoodColor;
+}
+
+void Cell::draw(sf::RenderTarget & target, sf::RenderStates states) const
+{
+	BaseObj::draw(target, states);
+	target.draw(typeShape, states);
+}
+
+void Cell::setPosition(const sf::Vector2f & v)
+{
+	BaseObj::setPosition(v);
+	typeShape.setPosition(v);
+}
+
+void Cell::setSize(const float & s)
+{
+	BaseObj::setSize(s);
+	typeShape.setRadius(s/2);
+	typeShape.setOrigin(s/2,s/2);
+}
+
+void Cell::setRotation(const float & f)
+{
+	BaseObj::setRotation(f);
+	typeShape.setRotation(f);
 }
 
 void Cell::getFoodCollisionVector()

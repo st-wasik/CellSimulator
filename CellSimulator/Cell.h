@@ -73,6 +73,14 @@ public:
 	void setMakedFoodColor(sf::Color c);
 	sf::Color getMakedFoodColor();
 
+	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
+
+	void setPosition(const sf::Vector2f&);
+
+	void setSize(const float&);
+
+	void setRotation(const float & r);
+
 private:
 	explicit Cell();
 	Cell(float size, sf::Vector2f position, sf::Color color);
@@ -80,7 +88,7 @@ private:
 	Cell(std::string formattedCellString);
 
 	void modifyValueFromString(std::string valueName, std::string value);
-	void modifyValueFromVector(std::string valueName,const std::vector<std::string>& value);
+	void modifyValueFromVector(std::string valueName, const std::vector<std::string>& value);
 
 	// vector of pointers to role-functions
 	std::vector<void(*)(Cell*)> roles;
@@ -105,9 +113,11 @@ private:
 
 	sf::Color makedFoodColor;
 
+	sf::CircleShape typeShape;
+
 	std::shared_ptr<std::vector<std::shared_ptr<BaseObj>>> FoodCollisionVector = std::make_shared<std::vector<std::shared_ptr<BaseObj>>>();
 	std::shared_ptr<std::vector<std::shared_ptr<Cell>>> CellCollisionVector = std::make_shared<std::vector<std::shared_ptr<Cell>>>();
-	std::pair<std::shared_ptr<BaseObj>, double> closestCell; 
+	std::pair<std::shared_ptr<BaseObj>, double> closestCell;
 	std::pair<std::shared_ptr<BaseObj>, double> closestFood;
 	// abbreviation used to save cell to file
 	struct VarAbbrv final
