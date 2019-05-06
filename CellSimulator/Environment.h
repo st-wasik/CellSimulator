@@ -15,7 +15,7 @@ public:
 	static Environment& getInstance();
 	static sf::Vector2i getCollisionSectorCoords(std::shared_ptr<BaseObj> o);
 
-	void configure(sf::Vector2f envSize = {2000,1000}, bool fill = false);
+	void configure(sf::Vector2f envSize = {2000,1000}, bool randomFill = false);
 	void configure(std::string formattedEnvString);
 	void clear();
 	void update();
@@ -87,6 +87,7 @@ private:
 	std::atomic<int> _foodCount;
 	std::atomic_bool _clearEnvironment;
 	std::atomic_bool _simulationActive;
+	bool _wasAutofeederActive;
 
 	struct VarAbbrv final
 	{

@@ -53,7 +53,9 @@ std::shared_ptr<Cell> CellFactory::getCell(Cell::Type type)
 		result->genes.maxSize = 25;
 		result->genes.maxSpeed = 0.75;
 		result->genes.radarRange = 0;
+		result->genes.turningRate = 0.5;
 		result->genes.metabolism = 0.5;
+		result->genes.type = -1;
 		result->dropRole(CellRoles::eat);
 		result->dropRole(CellRoles::simulateHunger);
 		result->dropRole(CellRoles::mutate);
@@ -62,12 +64,14 @@ std::shared_ptr<Cell> CellFactory::getCell(Cell::Type type)
 		result->dropRole(CellRoles::divideAndConquer);
 		result->dropRole(CellRoles::getingHot);
 		result->dropRole(CellRoles::sniffForFood);
+		result->dropRole(CellRoles::fight);
 		result->dropRole(CellRoles::updateColor);
 		result->addRole(CellRoles::makeFood);
 		result->setBaseColor(sf::Color::White);
 		result->setMakedFoodColor(sf::Color(8, 128, 8));
 		result->shape.setTextureRect(sf::IntRect{ 0,0,960,960 });
 		result->shape.setTexture(TextureProvider::getInstance().getTexture("greenLettuce").get());
+		result->typeShape.setRadius(0);
 		break;
 
 	case Cell::Type::Pizza:
@@ -79,6 +83,8 @@ std::shared_ptr<Cell> CellFactory::getCell(Cell::Type type)
 		result->genes.maxSpeed = 0.5;
 		result->genes.radarRange = 0;
 		result->genes.metabolism = 0.2;
+		result->genes.turningRate = 0.5;
+		result->genes.type = -1;
 		result->dropRole(CellRoles::eat);
 		result->dropRole(CellRoles::simulateHunger);
 		result->dropRole(CellRoles::mutate);
@@ -87,6 +93,7 @@ std::shared_ptr<Cell> CellFactory::getCell(Cell::Type type)
 		result->dropRole(CellRoles::divideAndConquer);
 		result->dropRole(CellRoles::getingHot);
 		result->dropRole(CellRoles::sniffForFood);
+		result->dropRole(CellRoles::fight);
 		result->dropRole(CellRoles::updateColor);
 		result->addRole(CellRoles::makeFood);
 		result->setBaseColor(sf::Color::White);
@@ -94,6 +101,7 @@ std::shared_ptr<Cell> CellFactory::getCell(Cell::Type type)
 		result->shape.setTextureRect(sf::IntRect{ 0,0,1052,1052 });
 		result->shape.setTexture(TextureProvider::getInstance().getTexture("pizza").get());
 		result->setSize(45);
+		result->typeShape.setRadius(0);
 		break;
 	case Cell::Type::Default:
 		result->genes.aggresion = 50;
@@ -104,11 +112,12 @@ std::shared_ptr<Cell> CellFactory::getCell(Cell::Type type)
 		result->genes.maxSpeed = 1.0;
 		result->genes.radarRange = 250;
 		result->genes.metabolism = 1.0;
+		result->genes.type = 0;
+		result->genes.turningRate = 3.25;
 		result->setBaseColor(sf::Color::White);
 		result->setSize(20);
 		break;
 	}
-
 
 	return result;
 }

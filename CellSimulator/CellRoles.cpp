@@ -125,68 +125,81 @@ void CellRoles::eat(Cell * c)
 
 void CellRoles::updateColor(Cell * c)
 {
-	auto& genes = c->getGenes();
-	double aggression = genes.aggresion.get() / (genes.aggresion.getMax() - genes.aggresion.getMin());
-
-	double maxSpeed = genes.maxSpeed.get() / (genes.maxSpeed.getMax() - genes.maxSpeed.getMin());
-
-	double foodLimit = genes.foodLimit.get() / (genes.foodLimit.getMax() - genes.foodLimit.getMin());
-
-	sf::Color bodyColor;
-	sf::Color outlineColor;
-
-	if (0.3 > aggression)
+	if (c->genes.type.get() != -1)
 	{
-		bodyColor = sf::Color(255 * aggression, 0, 255 - 255 * aggression);
-	}
-	else if (0.7 > aggression)
-	{
-		bodyColor = sf::Color(255 * aggression / 3, 255 * aggression, 255 * aggression / 3);
+		auto& genes = c->getGenes();
+		double aggression = genes.aggresion.get() / (genes.aggresion.getMax() - genes.aggresion.getMin());
+
+		double maxSpeed = genes.maxSpeed.get() / (genes.maxSpeed.getMax() - genes.maxSpeed.getMin());
+
+		double foodLimit = genes.foodLimit.get() / (genes.foodLimit.getMax() - genes.foodLimit.getMin());
+
+		sf::Color bodyColor;
+		sf::Color outlineColor;
+
+		if (0.3 > aggression)
+		{
+			bodyColor = sf::Color(255 * aggression, 0, 255 - 255 * aggression);
+		}
+		else if (0.7 > aggression)
+		{
+			bodyColor = sf::Color(255 * aggression / 3, 255 * aggression, 255 * aggression / 3);
+		}
+		else
+		{
+			bodyColor = sf::Color(255 * aggression, 0, 255 - 255 * aggression);
+		}
+
+		if (0.3 > maxSpeed)
+		{
+			outlineColor = sf::Color(bodyColor.r * 0.3 + 0.7 * 255 * maxSpeed, bodyColor.g * 0.3 + 0.7 * 255 * maxSpeed, 0, 70);
+		}
+		else if (0.7 > maxSpeed)
+		{
+			outlineColor = sf::Color(bodyColor.r * 0.7 + 0.3 * 255 * maxSpeed, bodyColor.g * 0.7 + 0.3 * 255 * maxSpeed, bodyColor.b * 0.3 + 0.7 * 255 * maxSpeed, 75);
+		}
+		else
+		{
+			outlineColor = sf::Color(255 * maxSpeed, 255 * maxSpeed, 0, 80);
+		}
+
+		if (c->genes.type.get() == 0)
+		{
+			c->typeShape.setFillColor(sf::Color(192, 0, 0, 100));
+			c->typeShape.setPointCount(3);
+			c->typeShape.setOutlineThickness(-2);
+			c->typeShape.setOutlineColor(sf::Color(192, 192, 128));
+		}
+		else if (c->genes.type.get() == 1)
+		{
+			c->typeShape.setFillColor(sf::Color(0, 192, 0, 100));
+			c->typeShape.setPointCount(4);
+			c->typeShape.setOutlineThickness(-2);
+			c->typeShape.setOutlineColor(sf::Color(192, 192, 128));
+		}
+		else if (c->genes.type.get() == 2)
+		{
+			c->typeShape.setFillColor(sf::Color(0, 0, 192, 100));
+			c->typeShape.setPointCount(7);
+			c->typeShape.setOutlineThickness(-2);
+			c->typeShape.setOutlineColor(sf::Color(192, 192, 128));
+		}
+
+		c->setBaseColor(bodyColor);
+		c->setOutlineColor(outlineColor);
+		c->setOutlineThickness(c->getSize()*0.7*foodLimit*(-1));
 	}
 	else
 	{
-		bodyColor = sf::Color(255 * aggression, 0, 255 - 255 * aggression);
-	}
+		c->typeShape.setFillColor(sf::Color(0, 0, 0, 0));
+		c->typeShape.setPointCount(0);
+		c->typeShape.setOutlineThickness(0);
+		c->typeShape.setOutlineColor(sf::Color(0, 0, 0, 0));
 
-	if (0.3 > maxSpeed)
-	{
-		outlineColor = sf::Color(bodyColor.r * 0.3 + 0.7 * 255 * maxSpeed, bodyColor.g * 0.3 + 0.7 * 255 * maxSpeed, 0, 70);
+		c->setBaseColor(sf::Color::White);
+		c->setOutlineColor(sf::Color::White);
+		c->setOutlineThickness(0);
 	}
-	else if (0.7 > maxSpeed)
-	{
-		outlineColor = sf::Color(bodyColor.r * 0.7 + 0.3 * 255 * maxSpeed, bodyColor.g * 0.7 + 0.3 * 255 * maxSpeed, bodyColor.b * 0.3 + 0.7 * 255 * maxSpeed, 75);
-	}
-	else
-	{
-		outlineColor = sf::Color(255 * maxSpeed, 255 * maxSpeed, 0, 80);
-	}
-
-	if (c->genes.type.get() == 0)
-	{
-		c->typeShape.setFillColor(sf::Color(192, 0, 0,100));
-		c->typeShape.setPointCount(3);
-		c->typeShape.setOutlineThickness(-2);
-		c->typeShape.setOutlineColor(sf::Color(192, 192, 128));
-	}
-	else if (c->genes.type.get() == 1)
-	{
-		c->typeShape.setFillColor(sf::Color(0, 192, 0,100));
-		c->typeShape.setPointCount(4);
-		c->typeShape.setOutlineThickness(-2);
-		c->typeShape.setOutlineColor(sf::Color(192, 192, 128));
-	}
-	else if (c->genes.type.get() == 2)
-	{
-		c->typeShape.setFillColor(sf::Color(0, 0, 192,100));
-		c->typeShape.setPointCount(7);
-		c->typeShape.setOutlineThickness(-2);
-		c->typeShape.setOutlineColor(sf::Color(192, 192, 128));
-	}
-	
-	c->setBaseColor(bodyColor);
-	c->setOutlineColor(outlineColor);
-	c->setOutlineThickness(c->getSize()*0.7*foodLimit*(-1));
-
 	// ENVIRONMENT INFLUENCE
 	constexpr double threshold = 30;
 	Ranged<int, 0, 255> newR, newG, newB;
@@ -354,7 +367,7 @@ void CellRoles::fight(Cell * c)
 			if (cell->getGenes().type.get() != c->getGenes().type.get()) {
 
 				cell->delayTime = 0;
-				
+
 				double sizeWeight = 0.2;
 				double agressionWeight = 0.4;
 				double randomWeight = 0.4;

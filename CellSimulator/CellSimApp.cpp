@@ -79,27 +79,29 @@ void CellSimApp::run()
 			if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Space)
 				CellSelectionTool::getInstance().setFollowSelectedCell(true);
 
-			if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::F1)
-			{
-				ToolManager::getInstance().setActiveTool(ToolManager::Tool::SelectionMovement);
-				MessagesManager::getInstance().append("Active tool: Select/Move.");
-			}
-			if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::F3)
-			{
-				ToolManager::getInstance().setActiveTool(ToolManager::Tool::Insertion);
-				MessagesManager::getInstance().append("Active tool: Insert.");
-			}
-			if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::F2)
-			{
-				ToolManager::getInstance().setActiveTool(ToolManager::Tool::Feeder);
-				MessagesManager::getInstance().append("Active tool: Feed.");
-			}
+			//if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::F1)
+			//{
+			//	ToolManager::getInstance().setActiveTool(ToolManager::Tool::SelectionMovement);
+			//	MessagesManager::getInstance().append("Active tool: Select/Move.");
+			//}
 
-			if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::C)
-				Environment::getInstance().clear();
+			//if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::F3)
+			//{
+			//	ToolManager::getInstance().setActiveTool(ToolManager::Tool::Insertion);
+			//	MessagesManager::getInstance().append("Active tool: Insert.");
+			//}
 
-			if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Z)
-				zoomByOneStep = !zoomByOneStep;
+			//if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::F2)
+			//{
+			//	ToolManager::getInstance().setActiveTool(ToolManager::Tool::Feeder);
+			//	MessagesManager::getInstance().append("Active tool: Feed.");
+			//}
+
+			//if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::C)
+			//	Environment::getInstance().clear();
+
+			//if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Z)
+			//	zoomByOneStep = !zoomByOneStep;
 
 			if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Return)
 				if (Environment::getInstance().getIsSimulationActive())
@@ -114,7 +116,7 @@ void CellSimApp::run()
 
 				SaveManager::getInstance().saveEnvironmentToFile("quick_save");
 
-				MessagesManager::getInstance().append("Simulation saved as quick_save.env.");
+				MessagesManager::getInstance().append("Quick save completed.");
 				if (wasSimActive)
 					Environment::getInstance().startSimualtion();
 			}
@@ -127,9 +129,9 @@ void CellSimApp::run()
 					bool wasSimActive = Environment::getInstance().getIsSimulationActive();
 					Environment::getInstance().pauseSimulation();
 
-					SaveManager::getInstance().saveCellToFile(cell, "cell_save");
+					SaveManager::getInstance().saveCellToFile(cell, "quick_cell_save");
 
-					MessagesManager::getInstance().append("Cell saved as cell_save.cell.");
+					MessagesManager::getInstance().append("Cell saved as quick_cell_save.cell.");
 					if (wasSimActive)
 						Environment::getInstance().startSimualtion();
 				}
@@ -139,24 +141,23 @@ void CellSimApp::run()
 			{
 				bool wasSimActive = Environment::getInstance().getIsSimulationActive();
 				Environment::getInstance().pauseSimulation();
-				MessagesManager::getInstance().append("Loading simulation from file...");
 
 				SaveManager::getInstance().readEnvironmentFromFile("quick_save");
 
-				MessagesManager::getInstance().append("Simulation loaded from quick_save.cell.");
+				MessagesManager::getInstance().append("Quick save loaded.");
 				if (wasSimActive)
 					Environment::getInstance().startSimualtion();
 			}
 
-			if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Num1)
+			if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::F1)
 				CellInsertionTool::getInstance().setCellBlueprint(CellFactory::getCell(Cell::Type::Aggressive));
-			if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Num2)
+			if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::F2)
 				CellInsertionTool::getInstance().setCellBlueprint(CellFactory::getCell(Cell::Type::Passive));
-			if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Num3)
+			if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::F3)
 				CellInsertionTool::getInstance().setRandomMode();
-			if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Num4)
+			if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::F11)
 				CellInsertionTool::getInstance().setCellBlueprint(CellFactory::getCell(Cell::Type::GreenLettuce));
-			if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Num5)
+			if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::F12)
 				CellInsertionTool::getInstance().setCellBlueprint(CellFactory::getCell(Cell::Type::Pizza));
 
 			if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::PageUp)

@@ -63,7 +63,7 @@ void Environment::configure(sf::Vector2f envSize, bool fill)
 
 	//backgroundDefaultColor = sf::Color{ 170, 135, 200 };
 	//backgroundDefaultColor = sf::Color{ 50, 60, 40 };
-	backgroundDefaultColor = sf::Color{ 170/3, 135/3, 200/3 };
+	backgroundDefaultColor = sf::Color{ 170 / 3, 135 / 3, 200 / 3 };
 
 	auto& eb = environmentBackground;
 	eb.setSize(envSize);
@@ -75,7 +75,7 @@ void Environment::configure(sf::Vector2f envSize, bool fill)
 	TextureProvider::getInstance().getTexture("background2")->setSmooth(false);
 	eb.setTexture(TextureProvider::getInstance().getTexture("background2").get());
 
-	CellSimApp::getInstance().getView().setCenter(eb.getSize()/2.0f);
+	CellSimApp::getInstance().getView().setCenter(eb.getSize() / 2.0f);
 
 	int sectorsX = getSize().x / sectorSize + 1;
 	int sectorsY = getSize().y / sectorSize + 1;
@@ -453,6 +453,7 @@ Environment::Environment()
 {
 	_clearEnvironment = false;
 	_simulationActive = true;
+	_wasAutofeederActive = AutoFeederTool::getInstance().getIsActive();
 }
 
 bool Environment::isObjInEnvironmentBounds(BaseObj::Ptr o, float expectedSize)
@@ -521,6 +522,7 @@ void Environment::pauseSimulation()
 	if (_simulationActive)
 		MessagesManager::getInstance().append("Simulation paused.");
 	_simulationActive = false;
+	_wasAutofeederActive = AutoFeederTool::getInstance().getIsActive();
 	AutoFeederTool::getInstance().setIsActive(false);
 }
 
@@ -529,7 +531,8 @@ void Environment::startSimualtion()
 	if (!_simulationActive)
 		MessagesManager::getInstance().append("Simulation resumed.");
 	_simulationActive = true;
-	AutoFeederTool::getInstance().setIsActive(true);
+	if (_wasAutofeederActive)
+		AutoFeederTool::getInstance().setIsActive(true);
 }
 
 std::atomic_bool & Environment::getIsSimulationActive()

@@ -27,7 +27,7 @@ struct Genes
 	DynamicRanged<double> foodLimit; //<0, 150>
 	DynamicRanged<double> maxSize; //<20, 50>
 	DynamicRanged<double> maxAge; //<1, 100>
-	DynamicRanged<int> type; //<0, 2> 0 = Omnivore, 1 = Herbivore, 2 = Carnivore
+	DynamicRanged<int> type; //<-1, 2> -1 = Special (Pizza/Lettuce), 0 = Omnivore, 1 = Herbivore, 2 = Carnivore
 	DynamicRanged<double> metabolism;//<0.1, 2>
 	DynamicRanged<double> turningRate;//<0.5,7>
 

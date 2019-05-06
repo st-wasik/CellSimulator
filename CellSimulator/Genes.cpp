@@ -1,12 +1,12 @@
 #include "Genes.h"
 #include "DoubleToString.h"
 
-Genes::Genes(): maxSpeed(0.1,2,0.1), aggresion(0, 100, 0), radarRange(0, 500, 0), divisionThreshold(0, 100, 0), foodLimit(0, 150, 0), maxSize(20, 50, 0), maxAge(1, 100, 1), type(0, 2, 0), metabolism(0.1, 2, 0.1),turningRate(0.5, 7, 4)
+Genes::Genes(): maxSpeed(0.1,2,0.1), aggresion(0, 100, 0), radarRange(0, 500, 0), divisionThreshold(0, 100, 0), foodLimit(0, 150, 0), maxSize(20, 50, 0), maxAge(1, 100, 1), type(-1, 2, 0), metabolism(0.1, 2, 0.1),turningRate(0.5, 7, 4)
 {
 	randomize();
 }
 
-Genes::Genes(double maxSpeed, double aggresion, double radarRange, double divisionThreshold, double foodLimit, double maxSize, double age, int type, double metabolism, double turningRate) : maxSpeed(0.1, 2, maxSpeed), aggresion(0, 100, aggresion), radarRange(0, 500, radarRange), divisionThreshold(0, 100, divisionThreshold), foodLimit(0, 150, foodLimit), maxSize(20, 50, maxSize), maxAge(1, 100, age), type(0, 2, type), metabolism(0.1, 2, metabolism), turningRate(0.5, 7, turningRate)
+Genes::Genes(double maxSpeed, double aggresion, double radarRange, double divisionThreshold, double foodLimit, double maxSize, double age, int type, double metabolism, double turningRate) : maxSpeed(0.1, 2, maxSpeed), aggresion(0, 100, aggresion), radarRange(0, 500, radarRange), divisionThreshold(0, 100, divisionThreshold), foodLimit(0, 150, foodLimit), maxSize(20, 50, maxSize), maxAge(1, 100, age), type(-1, 2, type), metabolism(0.1, 2, metabolism), turningRate(0.5, 7, turningRate)
 {
 }
 
@@ -19,7 +19,7 @@ void Genes::randomize()
 	foodLimit.randomize();
 	maxSize.randomize();
 	maxAge.randomize();
-	type.randomizeInt();
+	type = randomInt(0, type.getMax()); //-1 for special
 	metabolism.randomize();
 	turningRate.randomize();
 }
