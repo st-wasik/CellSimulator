@@ -1,4 +1,5 @@
 #include "Genes.h"
+#include "DoubleToString.h"
 
 Genes::Genes(): maxSpeed(0.1,2,0.1), aggresion(0, 100, 0), radarRange(0, 500, 0), divisionThreshold(0, 100, 0), foodLimit(0, 150, 0), maxSize(20, 50, 0), maxAge(1, 100, 1), type(0, 2, 0), metabolism(0.1, 2, 0.1),turningRate(0.5, 7, 4)
 {
@@ -20,9 +21,19 @@ void Genes::randomize()
 	maxAge.randomize();
 	type.randomizeInt();
 	metabolism.randomize();
+	turningRate.randomize();
 }
 
 std::string Genes::toString()
 {
-	return "Max speed: " + std::to_string(this->maxSpeed.get()) + " aggresion: " + std::to_string(this->aggresion.get()) + " radar range: " + std::to_string(this->radarRange.get()) + " division threshold: " + std::to_string(this->divisionThreshold.get()) + " food limit: " + std::to_string(this->foodLimit.get()) + " max size: " + std::to_string(this->maxSize.get()) + " max age: " + std::to_string(this->maxAge.get()) + " type: " + std::to_string(this->type.get());
+	return "Max speed: " + doubleToString(this->maxSpeed.get(),2) +
+		" aggresion: " + doubleToString(this->aggresion.get(),2) +
+		" radar range: " + doubleToString(this->radarRange.get(),2) +
+		" division threshold: " + doubleToString(this->divisionThreshold.get(),2) +
+		" food limit: " + doubleToString(this->foodLimit.get(),2) +
+		" max size: " + doubleToString(this->maxSize.get(),2) +
+		" max age: " + doubleToString(this->maxAge.get(),2) +
+		" type: " + doubleToString(this->type.get(),2) +
+		" metabolism: " + doubleToString(this->metabolism.get(),2) +
+		" turning rate: " + doubleToString(this->turningRate.get(),2);
 }
