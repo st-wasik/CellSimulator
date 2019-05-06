@@ -6,6 +6,8 @@
 class BaseObj :public sf::Drawable
 {
 public:
+	using Ptr = std::shared_ptr<BaseObj>;
+
 	explicit BaseObj();
 	BaseObj(float size, sf::Vector2f position, sf::Color color);
 	~BaseObj();

@@ -29,7 +29,7 @@ void CellInsertionTool::update()
 				cellBlueprint->setRotation(0);
 			}
 
-			if (Environment::getInstance().isCellInEnvironmentBounds(*cellBlueprint))
+			if (Environment::getInstance().isObjInEnvironmentBounds(cellBlueprint))
 			{
 				if (sf::Keyboard::isKeyPressed(sf::Keyboard::LControl) && CellSimMouse::isLeftPressed())
 				{

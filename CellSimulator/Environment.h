@@ -54,7 +54,7 @@ public:
 	// returns string that can be used to save whole environment to file 
 	std::string getSaveString();
 
-	bool isCellInEnvironmentBounds(Cell& c);
+	bool isObjInEnvironmentBounds(BaseObj::Ptr o);
 
 	void modifyValueFromString(std::string valueName, std::string value);
 	void modifyValueFromVector(std::string valueName, const std::vector<std::string>& value);
