@@ -121,7 +121,7 @@ private:
 		divisionThresholdVal;
 
 	//CELL CREATE
-	int typeC = 1;
+	std::shared_ptr<int> typeC;
 
 	std::shared_ptr<tgui::EditBox>
 		sizeC,

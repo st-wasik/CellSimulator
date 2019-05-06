@@ -2,6 +2,7 @@
 #include "Environment.h"
 #include "AutoFeederTool.h"
 #include "CellSelectionTool.h"
+#include "CellInsertionTool.h"
 #include "DoubleToString.h"
 #include "ToolManager.h"
 #include "CellSimMouse.h"
@@ -190,7 +191,7 @@ void GUIManager::updateValues(std::shared_ptr<tgui::Label> ValTT, std::shared_pt
 	Val->setValue(val);
 }
 
-GUIManager::GUIManager()
+GUIManager::GUIManager() : typeC(std::make_shared<int>(0))
 {
 }
 
@@ -376,9 +377,9 @@ void GUIManager::configure(std::shared_ptr<sf::RenderWindow> window)
 
 	radarRangeC = createEditBox(createGui, 70, 20, 18, 200, 192 + offset, doubleToString(createCellPtr->getGenes().radarRange.get(), 2));
 
-	buttonCarnivoreC = createButton(createGui, 70, 30, 25, 240 + offset, "Carnivore",0);
+	buttonCarnivoreC = createButton(createGui, 70, 30, 25, 240 + offset, "Carnivore");
 
-	buttonOmnivoreC = createButton(createGui, 70, 30, 145, 240 + offset, "Omnivore");
+	buttonOmnivoreC = createButton(createGui, 70, 30, 145, 240 + offset, "Omnivore", 0);
 
 	buttonHerbivoreC = createButton(createGui, 70, 30, 265, 240 + offset, "Herbivore");
 
@@ -410,7 +411,7 @@ void GUIManager::configure(std::shared_ptr<sf::RenderWindow> window)
 	radarRangeM = createEditBox(modifyGui, 70, 20, 18, 200, 192 + offset, "");
 	widgetsModify.push_back(radarRangeM);
 
-	buttonCarnivoreM = createButton(modifyGui, 70, 30, 25, 240 + offset, "Carnivore",0);
+	buttonCarnivoreM = createButton(modifyGui, 70, 30, 25, 240 + offset, "Carnivore");
 
 	buttonOmnivoreM = createButton(modifyGui, 70, 30, 145, 240 + offset, "Omnivore");
 
@@ -672,44 +673,47 @@ void GUIManager::configure(std::shared_ptr<sf::RenderWindow> window)
 		AutoFeederTool::getInstance().setIsActive(false);
 	});
 
-	buttonSaveC->connect("pressed", [=]()
+	auto checkValue = [](std::shared_ptr<tgui::EditBox> textBox, std::string geneName, DynamicRanged<double>& gene)->bool
 	{
-		auto checkValue = [](std::shared_ptr<tgui::EditBox> textBox, std::string geneName, DynamicRanged<double>& gene)->bool
+		std::regex number(RegexPattern::Double);
+		std::string text = textBox->getText();
+		if (text.empty())
+			text = textBox->getDefaultText();
+		if (std::regex_match(text, number))
 		{
-			std::regex number(RegexPattern::Double);
-			std::string text = textBox->getText();
-			if (text.empty())
-				text = textBox->getDefaultText();
-			if (std::regex_match(text, number))
+			double value = std::stod(text);
+			if (value >= gene.getMin() && value <= gene.getMax())
 			{
-				double value = std::stod(text);
-				if (value >= gene.getMin() && value <= gene.getMax())
-				{
-					gene = value;
-				}
-				else
-				{
-					textBox->setText("");
-					MessagesManager::getInstance().append(geneName + " must be between " + doubleToString(gene.getMin(), 2) + " and " + doubleToString(gene.getMax(), 2) + ".");
-					return false;
-				}
+				gene = value;
 			}
 			else
 			{
 				textBox->setText("");
-				MessagesManager::getInstance().append(geneName + " must be a real value.");
+				MessagesManager::getInstance().append(geneName + " must be between " + doubleToString(gene.getMin(), 2) + " and " + doubleToString(gene.getMax(), 2) + ".");
 				return false;
 			}
-			return true;
-		};
+		}
+		else
+		{
+			textBox->setText("");
+			MessagesManager::getInstance().append(geneName + " must be a real value.");
+			return false;
+		}
+		return true;
+	};
 
+	buttonSaveC->connect("pressed", [=]()
+	{
 		std::vector<bool> checkResults;
 		checkResults.push_back(checkValue(sizeC, "Max Size", createCellPtr->getGenes().maxSize));
 		checkResults.push_back(checkValue(speedC, "Max Speed", createCellPtr->getGenes().maxSpeed));
 		checkResults.push_back(checkValue(ageC, "Max Age", createCellPtr->getGenes().maxAge));
 		checkResults.push_back(checkValue(foodLevelC, "Max Food Level", createCellPtr->getGenes().foodLimit));
+		checkResults.push_back(checkValue(aggresionC, "Aggresion", createCellPtr->getGenes().aggresion));
 		checkResults.push_back(checkValue(divisionThresholdC, "Max Division Threshold", createCellPtr->getGenes().divisionThreshold));
 		checkResults.push_back(checkValue(radarRangeC, "Max Size", createCellPtr->getGenes().radarRange));
+
+		createCellPtr->getGenes().type = *typeC;
 
 		std::regex word(RegexPattern::Word);
 		std::string text = nameC->getText();
@@ -743,45 +747,78 @@ void GUIManager::configure(std::shared_ptr<sf::RenderWindow> window)
 
 	buttonCreateC->connect("pressed", [=]()
 	{
+		std::vector<bool> checkResults;
+		checkResults.push_back(checkValue(sizeC, "Max Size", createCellPtr->getGenes().maxSize));
+		checkResults.push_back(checkValue(speedC, "Max Speed", createCellPtr->getGenes().maxSpeed));
+		checkResults.push_back(checkValue(ageC, "Max Age", createCellPtr->getGenes().maxAge));
+		checkResults.push_back(checkValue(aggresionC, "Aggresion", createCellPtr->getGenes().aggresion));
+		checkResults.push_back(checkValue(foodLevelC, "Max Food Level", createCellPtr->getGenes().foodLimit));
+		checkResults.push_back(checkValue(divisionThresholdC, "Max Division Threshold", createCellPtr->getGenes().divisionThreshold));
+		checkResults.push_back(checkValue(radarRangeC, "Max Size", createCellPtr->getGenes().radarRange));
 
+		if (std::all_of(checkResults.begin(), checkResults.end(), [&](auto r) {return r == true; }))
+		{
+			CellInsertionTool::getInstance().setCellBlueprint(createCellPtr);
+		}
 	});
 
 	buttonModifyM->connect("pressed", [=]()
 	{
+		std::vector<bool> checkResults;
+		checkResults.push_back(checkValue(sizeC, "Max Size", selectedCellPtr->getGenes().maxSize));
+		checkResults.push_back(checkValue(speedC, "Max Speed", selectedCellPtr->getGenes().maxSpeed));
+		checkResults.push_back(checkValue(ageC, "Max Age", selectedCellPtr->getGenes().maxAge));
+		checkResults.push_back(checkValue(foodLevelC, "Max Food Level", selectedCellPtr->getGenes().foodLimit));
+		checkResults.push_back(checkValue(divisionThresholdC, "Max Division Threshold", selectedCellPtr->getGenes().divisionThreshold));
+		checkResults.push_back(checkValue(radarRangeC, "Max Size", selectedCellPtr->getGenes().radarRange));
+		checkResults.push_back(checkValue(aggresionC, "Aggresion", createCellPtr->getGenes().aggresion));
 
+		if (std::all_of(checkResults.begin(), checkResults.end(), [&](auto r) {return r == true; }))
+		{
+			CellSelectionTool::getInstance().getSelectedCell()->getGenes() = selectedCellPtr->getGenes();
+		}
 	});
 
 	buttonCarnivoreC->connect("pressed", [=]()
 	{
-		typeC = 1;
+		*typeC = 2;
 		buttonCarnivoreC->setEnabled(0);
 		buttonCarnivoreC->setInheritedOpacity(0.5);
 		buttonOmnivoreC->setEnabled(1);
 		buttonOmnivoreC->setInheritedOpacity(1);
 		buttonHerbivoreC->setEnabled(1);
 		buttonHerbivoreC->setInheritedOpacity(1);
+
+		createCellPtr->getGenes().type = 2;
+		CellInsertionTool::getInstance().setCellBlueprint(createCellPtr);
 	});
 
 	buttonOmnivoreC->connect("pressed", [=]()
 	{
-		typeC = 2;
+		*typeC = 0;
 		buttonOmnivoreC->setEnabled(0);
 		buttonOmnivoreC->setInheritedOpacity(0.5);
 		buttonCarnivoreC->setEnabled(1);
 		buttonCarnivoreC->setInheritedOpacity(1);
 		buttonHerbivoreC->setEnabled(1);
 		buttonHerbivoreC->setInheritedOpacity(1);
+
+		createCellPtr->getGenes().type = 0;
+		CellInsertionTool::getInstance().setCellBlueprint(createCellPtr);
 	});
 
 	buttonHerbivoreC->connect("pressed", [=]()
 	{
-		typeC = 3;
+		*typeC = 1;
 		buttonHerbivoreC->setEnabled(0);
 		buttonHerbivoreC->setInheritedOpacity(0.5);
 		buttonCarnivoreC->setEnabled(1);
 		buttonCarnivoreC->setInheritedOpacity(1);
 		buttonOmnivoreC->setEnabled(1);
 		buttonOmnivoreC->setInheritedOpacity(1);
+
+		createCellPtr->getGenes().type = 1;
+		CellInsertionTool::getInstance().setCellBlueprint(createCellPtr);
 	});
 
 	buttonCarnivoreM->connect("pressed", [=]()
@@ -870,7 +907,7 @@ void GUIManager::update()
 		//size
 		updateValues(sizeValTT, sizeVal, "Min: " + doubleToString(cell->getGenes().maxSize.getMin(), 2) + "\nMax: " + doubleToString(cell->getGenes().maxSize.get(), 2),
 			doubleToString(cell->getSize(), 2), cell->getGenes().maxSize.get() * 100, cell->getGenes().maxSize.getMin() * 100, cell->getSize() * 100);
-		sizeM->setDefaultText(doubleToString(cell->getGenes().maxSize.get(),2));
+		sizeM->setDefaultText(doubleToString(cell->getGenes().maxSize.get(), 2));
 		//speed
 		updateValues(speedValTT, speedVal, "Min: " + doubleToString(cell->getGenes().maxSpeed.getMin(), 2) + "\nMax: " + doubleToString(cell->getGenes().maxSpeed.get(), 2),
 			doubleToString(cell->getCurrentSpeed(), 2), cell->getGenes().maxSpeed.get() * 100, cell->getGenes().maxSpeed.getMin() * 100, cell->getCurrentSpeed() * 100);
@@ -896,6 +933,27 @@ void GUIManager::update()
 		//radarRange
 		radarRangeVal->setText(doubleToString(cell->getGenes().radarRange.get(), 2));
 		radarRangeM->setDefaultText(doubleToString(cell->getGenes().radarRange.get(), 2));
+
+		switch (cell->getGenes().type.get())
+		{
+		case 0: 
+			buttonOmnivoreM->setEnabled(0); buttonOmnivoreM->setInheritedOpacity(0.5); 
+			buttonHerbivoreM->setEnabled(1); buttonHerbivoreM->setInheritedOpacity(1);
+			buttonCarnivoreM->setEnabled(1); buttonCarnivoreM->setInheritedOpacity(1);
+			break;
+
+		case 1:
+			buttonOmnivoreM->setEnabled(1); buttonOmnivoreM->setInheritedOpacity(1);
+			buttonHerbivoreM->setEnabled(0); buttonHerbivoreM->setInheritedOpacity(0.5);
+			buttonCarnivoreM->setEnabled(1); buttonCarnivoreM->setInheritedOpacity(1);
+			break;
+
+		case 2: 
+			buttonOmnivoreM->setEnabled(1); buttonOmnivoreM->setInheritedOpacity(1);
+			buttonHerbivoreM->setEnabled(1); buttonHerbivoreM->setInheritedOpacity(1);
+			buttonCarnivoreM->setEnabled(0); buttonCarnivoreM->setInheritedOpacity(0.5); 
+			break;
+		}
 
 		cell->setPosition(sf::Vector2f(175, 900));
 		auto factor = cell->getOutlineThickness() / cell->getSize();
