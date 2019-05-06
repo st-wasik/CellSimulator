@@ -362,7 +362,7 @@ void GUIManager::configure(std::shared_ptr<sf::RenderWindow> window)
 	widgetsPreview.push_back(radarRangeVal);
 
 	//CELL CREATE
-	sizeC = createEditBox(createGui, 70, 20, 18, 200, 9 + offset,"");
+	sizeC = createEditBox(createGui, 70, 20, 18, 200, 9 + offset, "");
 
 	speedC = createEditBox(createGui, 70, 20, 18, 200, 39 + offset, "");
 
@@ -672,7 +672,7 @@ void GUIManager::configure(std::shared_ptr<sf::RenderWindow> window)
 
 	buttonSaveC->connect("pressed", [=]()
 	{
-		auto checkValue = [](std::shared_ptr<tgui::EditBox> textBox, std::string geneName, DynamicRanged<double>& gene)->void 
+		auto checkValue = [](std::shared_ptr<tgui::EditBox> textBox, std::string geneName, DynamicRanged<double>& gene)->void
 		{
 			std::regex number(RegexPattern::Double);
 			std::string text = textBox->getText();
@@ -723,15 +723,15 @@ void GUIManager::handleEvent(sf::Event & e)
 {
 	if (mainGui != nullptr)
 		mainGui->handleEvent(e);
-	if (previewGui != nullptr)
+	if (previewGui != nullptr && mode == 1)
 		previewGui->handleEvent(e);
-	if (createGui != nullptr)
+	if (createGui != nullptr && mode == 2)
 		createGui->handleEvent(e);
-	if (modifyGui != nullptr)
+	if (modifyGui != nullptr && mode == 3)
 		modifyGui->handleEvent(e);
-	if (insertGui != nullptr)
+	if (insertGui != nullptr && mode == 4)
 		insertGui->handleEvent(e);
-	if (feedGui != nullptr)
+	if (feedGui != nullptr && mode == 5)
 		feedGui->handleEvent(e);
 }
 
@@ -745,7 +745,7 @@ void GUIManager::update()
 
 	// gui panel position = {0,0}
 	sf::FloatRect guiCollisionRect{ (view.getCenter().x - view.getSize().x / 2), (view.getCenter().y - view.getSize().y / 2), background.getSize().x*xFactor, background.getSize().y*yFactor };
-	
+
 	if (guiCollisionRect.contains(CellSimMouse::getPosition()))
 	{
 		CellSimMouse::setWheelDelta(0);
@@ -822,8 +822,8 @@ void GUIManager::draw()
 
 	if (selectedCellPtr != nullptr)
 	{
-		if(mode==1)
-		window->draw(*selectedCellPtr);
+		if (mode == 1)
+			window->draw(*selectedCellPtr);
 	}
 
 	MessagesManager::getInstance().draw(window);
