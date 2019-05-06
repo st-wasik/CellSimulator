@@ -46,7 +46,8 @@ std::shared_ptr<tgui::EditBox> GUIManager::createEditBox(std::shared_ptr<tgui::G
 		EditBox->setEnabled(enabled);
 		EditBox->setInheritedOpacity(0.5);
 	}
-	gui->add(EditBox);
+	if (gui != nullptr)
+		gui->add(EditBox);
 
 	return EditBox;
 }
@@ -82,7 +83,8 @@ std::shared_ptr<tgui::Button> GUIManager::createButton(std::shared_ptr<tgui::Gui
 		Button->setEnabled(enabled);
 		Button->setInheritedOpacity(0.5);
 	}
-	gui->add(Button);
+	if (gui != nullptr)
+		gui->add(Button);
 
 	return Button;
 }
@@ -278,6 +280,74 @@ void GUIManager::configure(std::shared_ptr<sf::RenderWindow> window)
 	buttonInsert = createButton(mainGui, 70, 40, 215, 335, "Insert");
 
 	buttonFeed = createButton(mainGui, 70, 40, 285, 335, "Feed");
+
+	//CHILD WINDOWS
+
+	newWindow = tgui::ChildWindow::create();
+	newWindow->setRenderer(theme.getRenderer("ChildWindow"));
+	newWindow->setSize(360, 160);
+	newWindow->setPosition(window->getSize().x / 2 - 180, window->getSize().y / 2 - 80);
+	newWindow->setTitle("Insert width and height of new simulation window");
+	newWindow->setEnabled(0);
+	newWindow->setVisible(0);
+	previewGui->add(newWindow);
+
+	saveWindow = tgui::ChildWindow::create();
+	saveWindow->setRenderer(theme.getRenderer("ChildWindow"));
+	saveWindow->setSize(360, 160);
+	saveWindow->setPosition(window->getSize().x / 2 - 180, window->getSize().y / 2 - 80);
+	saveWindow->setTitle("   Save");
+	saveWindow->setEnabled(0);
+	saveWindow->setVisible(0);
+	previewGui->add(saveWindow);
+
+	loadWindow = tgui::ChildWindow::create();
+	loadWindow->setRenderer(theme.getRenderer("ChildWindow"));
+	loadWindow->setSize(360, 160);
+	loadWindow->setPosition(window->getSize().x / 2 - 180, window->getSize().y / 2 - 80);
+	loadWindow->setTitle("Load");
+	loadWindow->setEnabled(0);
+	loadWindow->setVisible(0);
+	previewGui->add(loadWindow);
+
+	width = createEditBox(nullptr, 80, 25, 18, 70, 40, "Width");
+	newWindow->add(width);
+
+	height = createEditBox(nullptr, 80, 25, 18, 210, 40, "Height");
+	newWindow->add(height);
+
+	confirmN = createButton(nullptr, 70, 30, 100, 100, "Confirm");
+	newWindow->add(confirmN);
+
+	cancelN = createButton(nullptr, 70, 30, 190, 100, "Cancel");
+	newWindow->add(cancelN);
+
+	nameSave = createEditBox(nullptr, 120, 25, 18, 120, 40, "Name");
+	saveWindow->add(nameSave);
+
+	confirmS = createButton(nullptr, 70, 30, 100, 100, "Confirm");
+	saveWindow->add(confirmS);
+
+	cancelS = createButton(nullptr, 70, 30, 190, 100, "Cancel");
+	saveWindow->add(cancelS);
+
+	loadList = tgui::ListBox::create();
+	loadList->setRenderer(theme.getRenderer("ListBox"));
+	loadList->setSize(160, 72);
+	loadList->setTextSize(18);
+	loadList->setItemHeight(24);
+	loadList->setPosition(100, 10);
+	for (int i = 0; i < SaveManager::getInstance().getAvailableEnvSaves().size(); i++)
+	{
+		loadList->addItem(SaveManager::getInstance().getAvailableEnvSaves()[i]);
+	}
+	loadWindow->add(loadList);
+
+	confirmL = createButton(nullptr, 70, 30, 100, 100, "Confirm");
+	loadWindow->add(confirmL);
+
+	cancelL = createButton(nullptr, 70, 30, 190, 100, "Cancel");
+	loadWindow->add(cancelL);
 
 	//GUI OFFSET
 	constexpr int offset = 400;
@@ -854,6 +924,14 @@ void GUIManager::configure(std::shared_ptr<sf::RenderWindow> window)
 		buttonOmnivoreM->setInheritedOpacity(1);
 	});
 
+	listBoxI->connect("ItemSelected", [=]()
+	{
+		listBoxI->getSelectedItem();
+	});
+	listBoxI->connect("DoubleClicked", [=]()
+	{
+		listBoxI->getSelectedItem();
+	});
 }
 
 void GUIManager::handleEvent(sf::Event & e)

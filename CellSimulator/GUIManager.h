@@ -49,6 +49,27 @@ private:
 	std::shared_ptr<tgui::MenuBar> createMenuBar(std::shared_ptr<tgui::Gui> gui, int width, int height);
 	std::shared_ptr<tgui::ListBox> createListBox(std::shared_ptr<tgui::Gui> gui, int width, int height, int x, int y);
 
+	//CHILD WINDOWS
+	std::shared_ptr<tgui::ChildWindow>
+		newWindow,
+		saveWindow,
+		loadWindow;
+
+	std::shared_ptr<tgui::EditBox>
+		width,
+		height,
+		nameSave;
+
+	std::shared_ptr<tgui::ListBox>
+		loadList;
+
+	std::shared_ptr<tgui::Button>
+		confirmN,
+		cancelN,
+		confirmS,
+		cancelS,
+		confirmL,
+		cancelL;
 
 	//ENV SETTINGS
 	std::shared_ptr<tgui::Label>
