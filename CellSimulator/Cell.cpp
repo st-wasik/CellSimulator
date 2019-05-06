@@ -300,6 +300,11 @@ Genes& Cell::getGenes()
 	return this->genes;
 }
 
+void Cell::setGenes(Genes g)
+{
+	genes = g;
+}
+
 double Cell::getFoodLevel()
 {
 	return this->foodLevel;

@@ -45,6 +45,8 @@ public:
 	bool isDead();
 
 	Genes& getGenes();
+	void setGenes(Genes g);
+
 	double getFoodLevel();
 	double getCurrentSpeed();
 

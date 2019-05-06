@@ -2,6 +2,7 @@
 #include "Environment.h"
 #include "CellSimMouse.h"
 #include "CellFactory.h"
+#include "CellRoles.h"
 #include "CellSimApp.h"
 #include "MessagesManager.h"
 
@@ -68,6 +69,7 @@ void CellInsertionTool::setCellBlueprint(Cell::Ptr cell)
 	random = false;
 
 	auto newCell = Cell::create(*cell);
+	CellRoles::updateColor(newCell.get());
 	newCell->freeze();
 	newCell->setRotation(0);
 	cellBlueprint = newCell;
