@@ -14,7 +14,7 @@ public:
 	~SaveManager();
 	static SaveManager& getInstance();
 
-	void saveCellToFile(Cell::Ptr cell, std::string filename);
+	bool saveCellToFile(Cell::Ptr cell, std::string filename);
 
 	void saveEnvironmentToFile(std::string filename);
 

@@ -255,7 +255,8 @@ std::shared_ptr<tgui::ListBox> GUIManager::createListBox(std::shared_ptr<tgui::G
 	ListBox->setPosition(x, y);
 	ListBox->addItem("Aggressive");
 	ListBox->addItem("Passive");
-	ListBox->addItem("Lettuce");
+	ListBox->addItem("Random");
+	ListBox->addItem("Green Lettuce");
 	ListBox->addItem("Pizza");
 	for (auto& v : SaveManager::getInstance().getAvailableCellSaves())
 	{
@@ -844,19 +845,37 @@ void GUIManager::configure(std::shared_ptr<sf::RenderWindow> window)
 
 	buttonModifyM->connect("pressed", [=]()
 	{
-		std::vector<bool> checkResults;
-		checkResults.push_back(checkValue(sizeC, "Max Size", selectedCellPtr->getGenes().maxSize));
-		checkResults.push_back(checkValue(speedC, "Max Speed", selectedCellPtr->getGenes().maxSpeed));
-		checkResults.push_back(checkValue(ageC, "Max Age", selectedCellPtr->getGenes().maxAge));
-		checkResults.push_back(checkValue(foodLevelC, "Max Food Level", selectedCellPtr->getGenes().foodLimit));
-		checkResults.push_back(checkValue(divisionThresholdC, "Max Division Threshold", selectedCellPtr->getGenes().divisionThreshold));
-		checkResults.push_back(checkValue(radarRangeC, "Max Size", selectedCellPtr->getGenes().radarRange));
-		checkResults.push_back(checkValue(aggresionC, "Aggresion", createCellPtr->getGenes().aggresion));
-
-		if (std::all_of(checkResults.begin(), checkResults.end(), [&](auto r) {return r == true; }))
+		if (CellSelectionTool::getInstance().getSelectedCell() != nullptr)
 		{
-			CellSelectionTool::getInstance().getSelectedCell()->getGenes() = selectedCellPtr->getGenes();
+			std::vector<bool> checkResults;
+			checkResults.push_back(checkValue(sizeM, "Max Size", selectedCellPtr->getGenes().maxSize));
+			checkResults.push_back(checkValue(speedM, "Max Speed", selectedCellPtr->getGenes().maxSpeed));
+			checkResults.push_back(checkValue(ageM, "Max Age", selectedCellPtr->getGenes().maxAge));
+			checkResults.push_back(checkValue(foodLevelM, "Max Food Level", selectedCellPtr->getGenes().foodLimit));
+			checkResults.push_back(checkValue(divisionThresholdM, "Max Division Threshold", selectedCellPtr->getGenes().divisionThreshold));
+			checkResults.push_back(checkValue(radarRangeM, "Max Size", selectedCellPtr->getGenes().radarRange));
+			checkResults.push_back(checkValue(aggresionM, "Aggresion", selectedCellPtr->getGenes().aggresion));
+
+			if (!(nameM->getText().toAnsiString().empty()))
+			{
+				std::regex word(RegexPattern::Word);
+				std::string text = nameM->getText();
+				if (std::regex_match(text, word))
+				{
+					CellSelectionTool::getInstance().getSelectedCell()->setName(text);
+				}
+				else
+				{
+					MessagesManager::getInstance().append("Cell Name must consist of letters only.");
+				}
+			}
+
+			if (std::all_of(checkResults.begin(), checkResults.end(), [&](auto r) {return r == true; }))
+			{
+				CellSelectionTool::getInstance().getSelectedCell()->getGenes() = selectedCellPtr->getGenes();
+			}
 		}
+
 	});
 
 	buttonCarnivoreC->connect("pressed", [=]()
@@ -910,6 +929,11 @@ void GUIManager::configure(std::shared_ptr<sf::RenderWindow> window)
 		buttonOmnivoreM->setInheritedOpacity(1);
 		buttonHerbivoreM->setEnabled(1);
 		buttonHerbivoreM->setInheritedOpacity(1);
+
+		if (CellSelectionTool::getInstance().getSelectedCell() != nullptr)
+		{
+			CellSelectionTool::getInstance().getSelectedCell()->getGenes().type = 2;
+		}
 	});
 
 	buttonOmnivoreM->connect("pressed", [=]()
@@ -921,6 +945,11 @@ void GUIManager::configure(std::shared_ptr<sf::RenderWindow> window)
 		buttonCarnivoreM->setInheritedOpacity(1);
 		buttonHerbivoreM->setEnabled(1);
 		buttonHerbivoreM->setInheritedOpacity(1);
+
+		if (CellSelectionTool::getInstance().getSelectedCell() != nullptr)
+		{
+			CellSelectionTool::getInstance().getSelectedCell()->getGenes().type = 0;
+		}
 	});
 
 	buttonHerbivoreM->connect("pressed", [=]()
@@ -932,16 +961,70 @@ void GUIManager::configure(std::shared_ptr<sf::RenderWindow> window)
 		buttonCarnivoreM->setInheritedOpacity(1);
 		buttonOmnivoreM->setEnabled(1);
 		buttonOmnivoreM->setInheritedOpacity(1);
+
+		if (CellSelectionTool::getInstance().getSelectedCell() != nullptr)
+		{
+			CellSelectionTool::getInstance().getSelectedCell()->getGenes().type = 1;
+		}
 	});
 
 	listBoxI->connect("ItemSelected", [=]()
 	{
 		listBoxI->getSelectedItem();
+		std::string cellname = listBoxI->getSelectedItem();
+		if (cellname == "Passive")
+		{
+			insertCellPtr = (CellFactory::getCell(Cell::Type::Passive));
+		}
+		else if (cellname == "Aggressive")
+		{
+			insertCellPtr= (CellFactory::getCell(Cell::Type::Aggressive));
+		}
+		else if (cellname == "Random")
+		{
+			insertCellPtr = (CellFactory::getCell(Cell::Type::Random));
+		}
+		else if (cellname == "Green Lettuce")
+		{
+			insertCellPtr = (CellFactory::getCell(Cell::Type::GreenLettuce));
+		}
+		else if (cellname == "Pizza")
+		{
+			insertCellPtr = (CellFactory::getCell(Cell::Type::Pizza));
+		}
+		else
+		{
+			insertCellPtr = (SaveManager::getInstance().readCellFromFile(cellname));
+		}
 	});
 
 	listBoxI->connect("DoubleClicked", [=]()
 	{
-		listBoxI->getSelectedItem();
+		std::string cellname = listBoxI->getSelectedItem();
+		if (cellname == "Passive")
+		{
+			CellInsertionTool::getInstance().setCellBlueprint(CellFactory::getCell(Cell::Type::Passive));
+		}
+		else if (cellname == "Aggressive")
+		{
+			CellInsertionTool::getInstance().setCellBlueprint(CellFactory::getCell(Cell::Type::Aggressive));
+		}
+		else if (cellname == "Random")
+		{
+			CellInsertionTool::getInstance().setRandomMode();
+		}
+		else if (cellname == "Green Lettuce")
+		{
+			CellInsertionTool::getInstance().setCellBlueprint(CellFactory::getCell(Cell::Type::GreenLettuce));
+		}
+		else if (cellname == "Pizza")
+		{
+			CellInsertionTool::getInstance().setCellBlueprint(CellFactory::getCell(Cell::Type::Pizza));
+		}
+		else
+		{
+			CellInsertionTool::getInstance().setCellBlueprint(SaveManager::getInstance().readCellFromFile(cellname));
+		}
 	});
 }
 

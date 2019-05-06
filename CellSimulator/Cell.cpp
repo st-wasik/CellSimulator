@@ -99,7 +99,7 @@ Cell::Cell(Cell a, Cell b) : Cell(20, (a.getPosition() + b.getPosition()) / 2.0f
 	delayTime = CellSimApp::getInstance().getDeltaTime();
 }
 
-Cell::Cell(std::string formattedCellString) : Cell()
+Cell::Cell(std::string formattedCellString) : Cell(20, {0,0}, sf::Color::White)
 {
 	static std::regex cellRegex("CELL->( " + RegexPattern::Word + ":((" + RegexPattern::Double + ")|(" + RegexPattern::Vector + ")|(" + RegexPattern::Word + ")))* ");
 	if (!std::regex_match(formattedCellString.begin(), formattedCellString.end(), cellRegex))
@@ -179,7 +179,9 @@ void Cell::modifyValueFromString(std::string valueName, std::string value)
 	else if (v == VarAbbrv::maxSpeed)			this->genes.maxSpeed = (std::stod(value));
 	else if (v == VarAbbrv::radarRange)			this->genes.radarRange = (std::stod(value));
 	else if (v == VarAbbrv::metabolism)			this->genes.metabolism = (std::stod(value));
-	else if (v == BaseObj::VarAbbrv::texture)			this->shape.setTexture(TextureProvider::getInstance().getTexture(value).get());
+	else if (v == VarAbbrv::type)				this->genes.type = (std::stod(value));
+	else if (v == VarAbbrv::turningRate)		this->genes.turningRate = (std::stod(value));
+	else if (v == BaseObj::VarAbbrv::texture)	this->shape.setTexture(TextureProvider::getInstance().getTexture(value).get());
 	else if (v == BaseObj::VarAbbrv::markedToDelete)
 	{
 		if (std::stod(value)) this->markToDelete();
@@ -221,6 +223,7 @@ void Cell::modifyValueFromVector(std::string valueName, const std::vector<std::s
 	}
 	else if (v == VarAbbrv::cellRoles)
 	{
+		roles.clear();
 		for (int i = 0; i < values.size(); ++i)
 		{
 			this->addRole(CellRoles::getManager().getRoleById(std::stod(values.at(i))));
@@ -272,7 +275,9 @@ void Cell::kill()
 		auto color = randomInt(0, 32);
 		auto color2 = randomInt(0, 32);
 		shape.setFillColor(sf::Color(color, color, color, 255));
+		typeShape.setFillColor(sf::Color(color, color, color, 255));
 		shape.setOutlineColor(sf::Color(color2, color2, color2, 255));
+		typeShape.setOutlineColor(sf::Color(color2, color2, color2, 255));
 
 		auto size = getSize();
 
@@ -409,7 +414,9 @@ std::string Cell::getCellBlueprintString()
 		VarAbbrv::maxSize << ":" << genes.maxSize << " " <<
 		VarAbbrv::maxSpeed << ":" << genes.maxSpeed << " " <<
 		VarAbbrv::radarRange << ":" << genes.radarRange << " " <<
-		VarAbbrv::metabolism << ":" << genes.metabolism << " ";
+		VarAbbrv::metabolism << ":" << genes.metabolism << " " <<
+		VarAbbrv::type << ":" << genes.type << " " <<
+		VarAbbrv::turningRate << ":" << genes.turningRate << " ";
 	return result.str();
 }
 

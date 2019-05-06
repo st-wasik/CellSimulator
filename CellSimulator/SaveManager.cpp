@@ -1,6 +1,7 @@
 #include "SaveManager.h"
 #include "FilesManager.h"
 #include "Environment.h"
+#include "MessagesManager.h"
 #include <Windows.h>
 
 SaveManager::SaveManager()
@@ -17,17 +18,25 @@ SaveManager & SaveManager::getInstance()
 	return instance;
 }
 
-void SaveManager::saveCellToFile(Cell::Ptr cell, std::string filename)
+bool SaveManager::saveCellToFile(Cell::Ptr cell, std::string filename)
 {
+	if (cell->getGenes().type.get() == -1)
+	{
+		MessagesManager::getInstance().append("Cannot save special cell.");
+		return false;
+	}
+
 	std::string fullpath = cellSaveDir + filename + cellSaveFormat;
 	try
 	{
 		FilesManager::getInstance().writeFile(fullpath, cell->getCellBlueprintString());
+		return true;
 	}
 	catch (std::exception e)
 	{
 		Logger::log(e.what());
 	}
+	return false;
 }
 
 void SaveManager::saveEnvironmentToFile(std::string filename)
@@ -55,8 +64,8 @@ Cell::Ptr SaveManager::readCellFromFile(std::string filename)
 	{
 		Logger::log(e.what());
 	}
-
-	return Cell::create(saveString);
+	auto ptr = Cell::create(saveString);
+	return ptr;
 }
 
 void SaveManager::readEnvironmentFromFile(std::string filename)

@@ -71,7 +71,7 @@ std::shared_ptr<Cell> CellFactory::getCell(Cell::Type type)
 		result->setMakedFoodColor(sf::Color(8, 128, 8));
 		result->shape.setTextureRect(sf::IntRect{ 0,0,960,960 });
 		result->shape.setTexture(TextureProvider::getInstance().getTexture("greenLettuce").get());
-		result->typeShape.setRadius(0);
+		result->typeShape.setFillColor(sf::Color::Transparent);
 		break;
 
 	case Cell::Type::Pizza:
@@ -100,8 +100,8 @@ std::shared_ptr<Cell> CellFactory::getCell(Cell::Type type)
 		result->setMakedFoodColor(sf::Color(224, 144, 33, 255));
 		result->shape.setTextureRect(sf::IntRect{ 0,0,1052,1052 });
 		result->shape.setTexture(TextureProvider::getInstance().getTexture("pizza").get());
+		result->typeShape.setFillColor(sf::Color::Transparent);
 		result->setSize(45);
-		result->typeShape.setRadius(0);
 		break;
 	case Cell::Type::Default:
 		result->genes.aggresion = 50;

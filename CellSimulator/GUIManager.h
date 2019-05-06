@@ -33,6 +33,7 @@ private:
 
 	std::shared_ptr<Cell> selectedCellPtr;
 	std::shared_ptr<Cell> createCellPtr;
+	std::shared_ptr<Cell> insertCellPtr;
 
 	sf::RectangleShape background;
 
