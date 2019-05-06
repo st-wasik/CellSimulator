@@ -255,7 +255,8 @@ std::shared_ptr<tgui::ListBox> GUIManager::createListBox(std::shared_ptr<tgui::G
 	ListBox->setPosition(x, y);
 	ListBox->addItem("Aggressive");
 	ListBox->addItem("Passive");
-	ListBox->addItem("Lettuce");
+	ListBox->addItem("Random");
+	ListBox->addItem("Green Lettuce");
 	ListBox->addItem("Pizza");
 	for (auto& v : SaveManager::getInstance().getAvailableCellSaves())
 	{
@@ -984,11 +985,60 @@ void GUIManager::configure(std::shared_ptr<sf::RenderWindow> window)
 	listBoxI->connect("ItemSelected", [=]()
 	{
 		listBoxI->getSelectedItem();
+		std::string cellname = listBoxI->getSelectedItem();
+		if (cellname == "Passive")
+		{
+			insertCellPtr = (CellFactory::getCell(Cell::Type::Passive));
+		}
+		else if (cellname == "Aggressive")
+		{
+			insertCellPtr= (CellFactory::getCell(Cell::Type::Aggressive));
+		}
+		else if (cellname == "Random")
+		{
+			insertCellPtr = (CellFactory::getCell(Cell::Type::Random));
+		}
+		else if (cellname == "Green Lettuce")
+		{
+			insertCellPtr = (CellFactory::getCell(Cell::Type::GreenLettuce));
+		}
+		else if (cellname == "Pizza")
+		{
+			insertCellPtr = (CellFactory::getCell(Cell::Type::Pizza));
+		}
+		else
+		{
+			insertCellPtr = (SaveManager::getInstance().readCellFromFile(cellname));
+		}
 	});
 
 	listBoxI->connect("DoubleClicked", [=]()
 	{
-		listBoxI->getSelectedItem();
+		std::string cellname = listBoxI->getSelectedItem();
+		if (cellname == "Passive")
+		{
+			CellInsertionTool::getInstance().setCellBlueprint(CellFactory::getCell(Cell::Type::Passive));
+		}
+		else if (cellname == "Aggressive")
+		{
+			CellInsertionTool::getInstance().setCellBlueprint(CellFactory::getCell(Cell::Type::Aggressive));
+		}
+		else if (cellname == "Random")
+		{
+			CellInsertionTool::getInstance().setRandomMode();
+		}
+		else if (cellname == "Green Lettuce")
+		{
+			CellInsertionTool::getInstance().setCellBlueprint(CellFactory::getCell(Cell::Type::GreenLettuce));
+		}
+		else if (cellname == "Pizza")
+		{
+			CellInsertionTool::getInstance().setCellBlueprint(CellFactory::getCell(Cell::Type::Pizza));
+		}
+		else
+		{
+			CellInsertionTool::getInstance().setCellBlueprint(SaveManager::getInstance().readCellFromFile(cellname));
+		}
 	});
 }
 

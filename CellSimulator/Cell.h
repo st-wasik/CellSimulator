@@ -127,27 +127,6 @@ private:
 	// abbreviation used to save cell to file
 	struct VarAbbrv final
 	{
-		//static constexpr const char *const currentRotation = "Rotation";
-		//static constexpr const char *const currentPosition = "Position";
-		//static constexpr const char *const color = "Color";
-		//static constexpr const char *const currentAge = "Age";
-		//static constexpr const char *const currentSpeed = "Speed";
-		//static constexpr const char *const currentSize = "Size";
-		//static constexpr const char *const isDead = "isDead";
-		//static constexpr const char *const currentFoodLevel = "FoodLevel";
-		//static constexpr const char *const isFreezed = "isFreezed";
-		//static constexpr const char *const horniness = "Fertility";
-		//static constexpr const char *const cellRoles = "Roles";
-
-		//static constexpr const char *const aggression = "G_Aggression";
-		//static constexpr const char *const divisionTh = "G_DivisionTh";
-		//static constexpr const char *const foodLimit = "G_FoodLimit";
-		//static constexpr const char *const maxAge = "G_MaxAge";
-		//static constexpr const char *const maxSize = "G_MaxSize";
-		//static constexpr const char *const maxSpeed = "G_MaxSpeed";
-		//static constexpr const char *const radarRange = "G_RadarRg";
-		//static constexpr const char *const metabolism = "G_Metabolism";
-
 		static constexpr const char *const currentRotation = "Rt";
 		static constexpr const char *const currentPosition = "Ps";
 		static constexpr const char *const color = "C";
@@ -168,6 +147,8 @@ private:
 		static constexpr const char *const maxSpeed = "GSp";
 		static constexpr const char *const radarRange = "GRR";
 		static constexpr const char *const metabolism = "GM";
+		static constexpr const char *const type = "Tp";
+		static constexpr const char *const turningRate = "TR";
 
 	private:
 		VarAbbrv() = delete;

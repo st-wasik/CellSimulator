@@ -129,9 +129,11 @@ void CellSimApp::run()
 					bool wasSimActive = Environment::getInstance().getIsSimulationActive();
 					Environment::getInstance().pauseSimulation();
 
-					SaveManager::getInstance().saveCellToFile(cell, "quick_cell_save");
+					if (SaveManager::getInstance().saveCellToFile(cell, "quick_cell_save"))
+					{
+						MessagesManager::getInstance().append("Cell saved as quick_cell_save.cell.");
+					}
 
-					MessagesManager::getInstance().append("Cell saved as quick_cell_save.cell.");
 					if (wasSimActive)
 						Environment::getInstance().startSimualtion();
 				}
