@@ -15,6 +15,9 @@ public:
 	void setBrushDelay(int delay);
 	int getBrushDelay();
 
+	void setHardness(double hardness);
+	double getHardness();
+
 	void setBrushRadius(float size);
 	float getBrushRadius();
 
@@ -24,7 +27,8 @@ public:
 private:
 	bool isActive;
 	int delay;
-	sf::Clock deltaTimeClock;
+	int elapsedTime;
+	double hardness;
 	sf::CircleShape brush;
 };
 

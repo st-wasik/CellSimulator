@@ -59,12 +59,14 @@ void CellRoles::moveForward(Cell * c)
 
 	auto moveSpeed = (Environment::getInstance().getTemperature() + 100) / 100 * c->currentSpeed;
 	c->shape.move(moveSpeed * std::sin((PI / 180)*c->getRotation()) * CellSimApp::getInstance().getDeltaTime(), moveSpeed * -std::cos((PI / 180)*c->getRotation()) * CellSimApp::getInstance().getDeltaTime());
+	c->typeShape.setPosition(c->getPosition());
 
 	for (int attempt = 0; checkEnvironmentBounds(c); ++attempt)
 	{
 		c->shape.setPosition(prevPosition);
 		c->shape.setRotation(c->getRotation() + 90);
 		c->shape.move(moveSpeed * std::sin((PI / 180)*c->getRotation()) * CellSimApp::getInstance().getDeltaTime(), moveSpeed * -std::cos((PI / 180)*c->getRotation()) * CellSimApp::getInstance().getDeltaTime());
+		c->typeShape.setPosition(c->getPosition());
 
 		if (attempt > 5) { c->setPosition(Environment::getInstance().getSize() / 2.f); break; }
 	}
@@ -88,11 +90,13 @@ void CellRoles::changeDirection(Cell * c)
 	{
 		if (randomInt(0, 100) <= 50)
 		{
-			c->shape.rotate(randomReal(-25, 0));
+			c->rotate(randomReal(-25, 0));
+			c->typeShape.setRotation(c->shape.getRotation());
 		}
 		else
 		{
-			c->shape.rotate(randomReal(0, 25));
+			c->rotate(randomReal(0, 25));
+			c->typeShape.setRotation(c->shape.getRotation());
 		}
 	}
 }
@@ -137,7 +141,7 @@ void CellRoles::updateColor(Cell * c)
 	}
 	else if (0.7 > aggression)
 	{
-		bodyColor = sf::Color(255 * aggression/3, 255*aggression, 255 * aggression/3);
+		bodyColor = sf::Color(255 * aggression / 3, 255 * aggression, 255 * aggression / 3);
 	}
 	else
 	{
@@ -154,10 +158,31 @@ void CellRoles::updateColor(Cell * c)
 	}
 	else
 	{
-		outlineColor = sf::Color(255*maxSpeed, 255*maxSpeed, 0, 80);
+		outlineColor = sf::Color(255 * maxSpeed, 255 * maxSpeed, 0, 80);
 	}
 
-
+	if (c->genes.type.get() == 0)
+	{
+		c->typeShape.setFillColor(sf::Color(192, 0, 0,100));
+		c->typeShape.setPointCount(3);
+		c->typeShape.setOutlineThickness(-2);
+		c->typeShape.setOutlineColor(sf::Color(192, 192, 128));
+	}
+	else if (c->genes.type.get() == 1)
+	{
+		c->typeShape.setFillColor(sf::Color(0, 192, 0,100));
+		c->typeShape.setPointCount(4);
+		c->typeShape.setOutlineThickness(-2);
+		c->typeShape.setOutlineColor(sf::Color(192, 192, 128));
+	}
+	else if (c->genes.type.get() == 2)
+	{
+		c->typeShape.setFillColor(sf::Color(0, 0, 192,100));
+		c->typeShape.setPointCount(7);
+		c->typeShape.setOutlineThickness(-2);
+		c->typeShape.setOutlineColor(sf::Color(192, 192, 128));
+	}
+	
 	c->setBaseColor(bodyColor);
 	c->setOutlineColor(outlineColor);
 	c->setOutlineThickness(c->getSize()*0.7*foodLimit*(-1));
@@ -195,14 +220,20 @@ void CellRoles::beDead(Cell * c)
 {
 	auto color = c->shape.getFillColor();
 	auto color2 = c->shape.getOutlineColor();
+	auto color3 = c->typeShape.getFillColor();
+	auto color4 = c->typeShape.getOutlineColor();
 	if (color.a > 0)
 	{
 		double a = static_cast<double>(color.a) - ((Environment::getInstance().getTemperature() + 100 + 1)*0.01*CellSimApp::getInstance().getDeltaTime());
 		if (0 > a) a = 0;
 		color.a = a;
 		color2.a = a;
+		color3.a = a;
+		color4.a = a;
 		c->shape.setFillColor(color);
 		c->shape.setOutlineColor(color2);
+		c->typeShape.setFillColor(color3);
+		c->typeShape.setOutlineColor(color4);
 	}
 	else
 	{
@@ -312,74 +343,74 @@ void CellRoles::makeFood(Cell * c)
 
 void CellRoles::fight(Cell * c)
 {
-	std::vector<std::shared_ptr<Cell>> &cells = Environment::getInstance().getCellsVector();
+	auto &cells = c->CellCollisionVector;
 	c->delayTime += CellSimApp::getInstance().getDeltaTime();
 
 	if (c->delayTime > 250)
 	{
 		c->delayTime = 0;
-		for (auto& cell : cells)
+		for (auto& cell : *cells)
 		{
-			if (c->collision(cell).first && c != cell.get())
-			{
-				if (cell->getGenes().type.get() != c->getGenes().type.get()) {
+			if (cell->getGenes().type.get() != c->getGenes().type.get()) {
+
+				cell->delayTime = 0;
 				
-					double sizeWeight = 0.2;
-					double agressionWeight = 0.4;
-					double randomWeight = 0.4;
+				double sizeWeight = 0.2;
+				double agressionWeight = 0.4;
+				double randomWeight = 0.4;
 
-					if (c->getSize() * sizeWeight + c->getGenes().aggresion.get() * agressionWeight + randomInt(1, 20) * randomWeight >
-						cell->getSize() * sizeWeight + cell->getGenes().aggresion.get() * agressionWeight + randomInt(1, 20) * randomWeight)
+				if (c->getSize() * sizeWeight + c->getGenes().aggresion.get() * agressionWeight + randomInt(1, 20) * randomWeight >
+					cell->getSize() * sizeWeight + cell->getGenes().aggresion.get() * agressionWeight + randomInt(1, 20) * randomWeight)
+				{
+					cell->setSize(cell->getSize() - 2);
+					if (c->getFoodLevel() + 2 < c->getGenes().foodLimit.get())
 					{
-						cell->setSize(cell->getSize() - 2);
-						if (c->getFoodLevel() + 2 < c->getGenes().foodLimit.get())
-						{
-							c->foodLevel += 2;
-						}
-					
-					}
-					else
-					{
-						c->setSize(c->getSize() - 2);
-						if (cell->getFoodLevel() + 2 < cell->getGenes().foodLimit.get())
-						{
-							cell->foodLevel += 2;
-						}
+						c->foodLevel += 2;
 					}
 
-					if (c->getSize() < 5)
+				}
+				else
+				{
+					c->setSize(c->getSize() - 2);
+					if (cell->getFoodLevel() + 2 < cell->getGenes().foodLimit.get())
 					{
-						c->kill();
-					}
-					if (cell->getSize() < 5)
-					{
-						cell->kill();
+						cell->foodLevel += 2;
 					}
 				}
-			
-				/*float cSize = c->getSize();
-				float cellSize = cell->getSize();
-				int sizeDelta = 2;
 
-				if (cSize > cellSize) {
-					c->setSize(cSize - sizeDelta);
-					cell->setSize(cellSize + sizeDelta);
-					cell->foodLevel += sizeDelta;
+				if (c->getSize() < 5)
+				{
+					c->kill();
 				}
-				else if (cSize < cellSize) {
-					c->setSize(cSize + sizeDelta);
-					c->foodLevel += sizeDelta;
-					cell->setSize(cellSize - sizeDelta);
-				}*/
-	/*
-				double cCurrentSpeed = c->getCurrentSpeed();
-				double cellCurrentSpeed = cell->getCurrentSpeed();
-
-				c->setRotation(c->getRotation() + 180);
-				c->shape.move(cCurrentSpeed * std::sin((PI / 180)*c->getRotation()) * CellSimApp::getInstance().getDeltaTime(), cCurrentSpeed * -std::cos((PI / 180)*c->getRotation()) * CellSimApp::getInstance().getDeltaTime());
-				cell->setRotation(c->getRotation() + 180);
-				cell->shape.move(cellCurrentSpeed * std::sin((PI / 180)*cell->getRotation()) * CellSimApp::getInstance().getDeltaTime(), cellCurrentSpeed * -std::cos((PI / 180)*cell->getRotation()) * CellSimApp::getInstance().getDeltaTime());*/
+				if (cell->getSize() < 5)
+				{
+					cell->kill();
+				}
 			}
+
+			/*float cSize = c->getSize();
+			float cellSize = cell->getSize();
+			int sizeDelta = 2;
+
+			if (cSize > cellSize) {
+				c->setSize(cSize - sizeDelta);
+				cell->setSize(cellSize + sizeDelta);
+				cell->foodLevel += sizeDelta;
+			}
+			else if (cSize < cellSize) {
+				c->setSize(cSize + sizeDelta);
+				c->foodLevel += sizeDelta;
+				cell->setSize(cellSize - sizeDelta);
+			}*/
+			/*
+						double cCurrentSpeed = c->getCurrentSpeed();
+						double cellCurrentSpeed = cell->getCurrentSpeed();
+
+						c->setRotation(c->getRotation() + 180);
+						c->shape.move(cCurrentSpeed * std::sin((PI / 180)*c->getRotation()) * CellSimApp::getInstance().getDeltaTime(), cCurrentSpeed * -std::cos((PI / 180)*c->getRotation()) * CellSimApp::getInstance().getDeltaTime());
+						cell->setRotation(c->getRotation() + 180);
+						cell->shape.move(cellCurrentSpeed * std::sin((PI / 180)*cell->getRotation()) * CellSimApp::getInstance().getDeltaTime(), cellCurrentSpeed * -std::cos((PI / 180)*cell->getRotation()) * CellSimApp::getInstance().getDeltaTime());*/
+
 		}
 	}
 }
@@ -436,22 +467,22 @@ void CellRoles::sniffForFood(Cell * c)
 		{
 			if (360 - abscfDiffrence < angle_change)
 			{
-				c->shape.rotate(cfDiffrence <= 0 ? -(360 - abscfDiffrence)*CellSimApp::getInstance().getDeltaTime() : (360 - abscfDiffrence)*CellSimApp::getInstance().getDeltaTime());
+				c->rotate(cfDiffrence <= 0 ? -(360 - abscfDiffrence)*CellSimApp::getInstance().getDeltaTime() : (360 - abscfDiffrence)*CellSimApp::getInstance().getDeltaTime());
 			}
 			else
 			{
-				c->shape.rotate(cfDiffrence <= 0 ? -angle_change : angle_change);
+				c->rotate(cfDiffrence <= 0 ? -angle_change : angle_change);
 			}
 		}
 		else
 		{
 			if (abscfDiffrence < angle_change)
 			{
-				c->shape.rotate(cfDiffrence >= 0 ? -abscfDiffrence * CellSimApp::getInstance().getDeltaTime() : abscfDiffrence * CellSimApp::getInstance().getDeltaTime());
+				c->rotate(cfDiffrence >= 0 ? -abscfDiffrence * CellSimApp::getInstance().getDeltaTime() : abscfDiffrence * CellSimApp::getInstance().getDeltaTime());
 			}
 			else
 			{
-				c->shape.rotate(cfDiffrence >= 0 ? -angle_change : angle_change);
+				c->rotate(cfDiffrence >= 0 ? -angle_change : angle_change);
 			}
 		}
 	}
@@ -494,22 +525,22 @@ void CellRoles::sniffForCell(Cell * c)
 		{
 			if (360 - abscfDiffrence < angle_change)
 			{
-				c->shape.rotate(cfDiffrence <= 0 ? -(360 - abscfDiffrence)*CellSimApp::getInstance().getDeltaTime() : (360 - abscfDiffrence)*CellSimApp::getInstance().getDeltaTime());
+				c->rotate(cfDiffrence <= 0 ? -(360 - abscfDiffrence)*CellSimApp::getInstance().getDeltaTime() : (360 - abscfDiffrence)*CellSimApp::getInstance().getDeltaTime());
 			}
 			else
 			{
-				c->shape.rotate(cfDiffrence <= 0 ? -angle_change : angle_change);
+				c->rotate(cfDiffrence <= 0 ? -angle_change : angle_change);
 			}
 		}
 		else
 		{
 			if (abscfDiffrence < angle_change)
 			{
-				c->shape.rotate(cfDiffrence >= 0 ? -abscfDiffrence * CellSimApp::getInstance().getDeltaTime() : abscfDiffrence * CellSimApp::getInstance().getDeltaTime());
+				c->rotate(cfDiffrence >= 0 ? -abscfDiffrence * CellSimApp::getInstance().getDeltaTime() : abscfDiffrence * CellSimApp::getInstance().getDeltaTime());
 			}
 			else
 			{
-				c->shape.rotate(cfDiffrence >= 0 ? -angle_change : angle_change);
+				c->rotate(cfDiffrence >= 0 ? -angle_change : angle_change);
 			}
 		}
 	}
