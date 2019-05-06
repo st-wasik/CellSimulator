@@ -56,8 +56,8 @@ private:
 		loadWindow;
 
 	std::shared_ptr<tgui::EditBox>
-		width,
-		height,
+		widthN,
+		heightN,
 		nameSave;
 
 	std::shared_ptr<tgui::ListBox>

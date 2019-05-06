@@ -166,6 +166,7 @@ void Cell::modifyValueFromString(std::string valueName, std::string value)
 	else if (v == VarAbbrv::currentSpeed)		this->currentSpeed = (std::stod(value));
 	else if (v == VarAbbrv::currentSize)		this->setSize((std::stod(value)));
 	else if (v == VarAbbrv::isDead)				this->dead = (std::stod(value));
+
 	else if (v == VarAbbrv::currentFoodLevel)	this->foodLevel = (std::stod(value));
 	else if (v == VarAbbrv::isFreezed)			this->freezed = (std::stod(value));
 	else if (v == VarAbbrv::horniness)			this->horniness = (std::stod(value));
