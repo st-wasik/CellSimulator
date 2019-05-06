@@ -15,7 +15,7 @@ public:
 	static Environment& getInstance();
 	static sf::Vector2i getCollisionSectorCoords(std::shared_ptr<BaseObj> o);
 
-	void configure(sf::Vector2f envSize = {2000,1000}, bool fill = false);
+	void configure(sf::Vector2f envSize = {2000,1000}, bool randomFill = false);
 	void configure(std::string formattedEnvString);
 	void clear();
 	void update();
