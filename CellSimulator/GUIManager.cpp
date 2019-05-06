@@ -520,33 +520,19 @@ void GUIManager::configure(std::shared_ptr<sf::RenderWindow> window)
 	}
 
 	//CELL INSERT
-	sizeValTTI = createLabel(insertGui, "", 0, 0, 18, nullptr, 1, "ToolTip");
+	sizeValI = createProgressBar(insertGui, 70, 20, 200, 12 + offset, 16, nullptr, 1);
 
-	sizeValI = createProgressBar(insertGui, 70, 20, 200, 12 + offset, 16, sizeValTTI);
+	speedValI = createProgressBar(insertGui, 70, 20, 200, 42 + offset, 16, nullptr, 1);
 
-	speedValTTI = createLabel(insertGui, "", 0, 0, 18, nullptr, 1, "ToolTip");
+	ageValI = createProgressBar(insertGui, 70, 20, 200, 72 + offset, 16, nullptr, 1);
 
-	speedValI = createProgressBar(insertGui, 70, 20, 200, 42 + offset, 16, speedValTTI);
+	aggresionValI = createProgressBar(insertGui, 70, 20, 200, 102 + offset, 16, nullptr, 1);
 
-	ageValTTI = createLabel(insertGui, "", 0, 0, 18, nullptr, 1, "ToolTip");
+	foodLevelValI = createProgressBar(insertGui, 70, 20, 200, 132 + offset, 16, nullptr, 1);
 
-	ageValI = createProgressBar(insertGui, 70, 20, 200, 72 + offset, 16, ageValTTI);
+	divisionThresholdValI = createProgressBar(insertGui, 70, 20, 200, 162 + offset, 16, nullptr, 1);
 
-	aggresionValTTI = createLabel(insertGui, "", 0, 0, 18, nullptr, 1, "ToolTip");
-
-	aggresionValI = createProgressBar(insertGui, 70, 20, 200, 102 + offset, 16, aggresionValTTI);
-
-	foodLevelValTTI = createLabel(insertGui, "", 0, 0, 18, nullptr, 1, "ToolTip");
-
-	foodLevelValI = createProgressBar(insertGui, 70, 20, 200, 132 + offset, 16, foodLevelValTTI);
-
-	divisionThresholdTTI = createLabel(insertGui, "Division Threshold", 0, 0, 18, nullptr, 1, "ToolTip");
-
-	divisionThresholdValI = createProgressBar(insertGui, 70, 20, 200, 162 + offset, 16, nullptr);
-
-	radarRangeTTI = createLabel(insertGui, "Detection Range", 0, 0, 18, nullptr, 1, "ToolTip");
-
-	radarRangeValI = createProgressBar(insertGui, 70, 20, 200, 192 + offset, 16, nullptr);
+	radarRangeValI = createProgressBar(insertGui, 70, 20, 200, 192 + offset, 16, nullptr, 1);
 
 	listBoxI = createListBox(insertGui, 200, 120, 80, 270 + offset);
 
@@ -1039,8 +1025,8 @@ void GUIManager::update()
 
 		switch (cell->getGenes().type.get())
 		{
-		case 0: 
-			buttonOmnivoreM->setEnabled(0); buttonOmnivoreM->setInheritedOpacity(0.5); 
+		case 0:
+			buttonOmnivoreM->setEnabled(0); buttonOmnivoreM->setInheritedOpacity(0.5);
 			buttonHerbivoreM->setEnabled(1); buttonHerbivoreM->setInheritedOpacity(1);
 			buttonCarnivoreM->setEnabled(1); buttonCarnivoreM->setInheritedOpacity(1);
 			break;
@@ -1051,10 +1037,10 @@ void GUIManager::update()
 			buttonCarnivoreM->setEnabled(1); buttonCarnivoreM->setInheritedOpacity(1);
 			break;
 
-		case 2: 
+		case 2:
 			buttonOmnivoreM->setEnabled(1); buttonOmnivoreM->setInheritedOpacity(1);
 			buttonHerbivoreM->setEnabled(1); buttonHerbivoreM->setInheritedOpacity(1);
-			buttonCarnivoreM->setEnabled(0); buttonCarnivoreM->setInheritedOpacity(0.5); 
+			buttonCarnivoreM->setEnabled(0); buttonCarnivoreM->setInheritedOpacity(0.5);
 			break;
 		}
 
