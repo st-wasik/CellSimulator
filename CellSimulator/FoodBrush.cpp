@@ -17,13 +17,15 @@ void FoodBrush::update()
 {
 	if (isActive)
 	{
+		
 		elapsedTime += CellSimApp::getInstance().getDeltaTime();
 		brush.setPosition(CellSimMouse::getPosition());
 		if (CellSimMouse::isLeftPressed() && elapsedTime > delay)
 		{
 			elapsedTime = 0;
 			float radius = brush.getRadius();
-			for (int i = 0; i < (CellSimApp::getInstance().getDeltaTime() * 3.14 * (radius / 2)) / 250; i++)
+			Logger::log((CellSimApp::getInstance().getDeltaTime() * 3.14 * (radius / 2)) * 0.002 * hardness);
+			for (int i = 0; i < (CellSimApp::getInstance().getDeltaTime() * 3.14 * (radius / 2)) * 0.002 * hardness; i++)
 			{
 				double angle = randomReal(0, 360);
 				std::shared_ptr<Food> food;
@@ -66,6 +68,16 @@ int FoodBrush::getBrushDelay()
 	return this->delay;
 }
 
+void FoodBrush::setHardness(double hardness)
+{
+	this->hardness = hardness;
+}
+
+double FoodBrush::getHardness()
+{
+	return this->hardness;
+}
+
 void FoodBrush::setBrushRadius(float radius)
 {
 	if (radius > 10.f)
@@ -93,7 +105,8 @@ FoodBrush::FoodBrush()
 	brush.setOrigin(brush.getRadius(), brush.getRadius());
 	isActive = false;
 	elapsedTime = 0;
-	delay = 2;
+	hardness = 2;
+	delay = 1;
 }
 
 
