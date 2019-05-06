@@ -996,6 +996,14 @@ void GUIManager::configure(std::shared_ptr<sf::RenderWindow> window)
 		{
 			insertCellPtr = (SaveManager::getInstance().readCellFromFile(cellname));
 		}
+
+		sizeValI->setText(doubleToString(insertCellPtr->getGenes().maxSize.get(), 2));
+		speedValI->setText(doubleToString(insertCellPtr->getGenes().maxSpeed.get(), 2));
+		ageValI->setText(doubleToString(insertCellPtr->getGenes().maxAge.get(), 2));
+		aggresionValI->setText(doubleToString(insertCellPtr->getGenes().aggresion.get(), 2));
+		foodLevelValI->setText(doubleToString(insertCellPtr->getGenes().foodLimit.get(), 2));
+		divisionThresholdValI->setText(doubleToString(insertCellPtr->getGenes().divisionThreshold.get(), 2));
+		radarRangeValI->setText(doubleToString(insertCellPtr->getGenes().radarRange.get(), 2));
 	});
 
 	listBoxI->connect("DoubleClicked", [=]()
