@@ -39,6 +39,7 @@ std::shared_ptr<tgui::EditBox> GUIManager::createEditBox(std::shared_ptr<tgui::G
 	EditBox->setTextSize(textSize);
 	EditBox->setPosition(x, y);
 	EditBox->setDefaultText(defaultText);
+	EditBox->setAlignment(tgui::EditBox::Alignment::Center);
 	if (!enabled)
 	{
 		EditBox->setEnabled(enabled);
@@ -156,6 +157,7 @@ std::shared_ptr<tgui::ListBox> GUIManager::createListBox(std::shared_ptr<tgui::G
 	std::shared_ptr<tgui::ListBox> ListBox = tgui::ListBox::create();
 	ListBox->setRenderer(theme.getRenderer("ListBox"));
 	ListBox->setSize(width, height);
+	ListBox->setTextSize(18);
 	ListBox->setItemHeight(24);
 	ListBox->setPosition(x, y);
 	ListBox->addItem("Aggressive");
@@ -276,171 +278,184 @@ void GUIManager::configure(std::shared_ptr<sf::RenderWindow> window)
 
 	buttonFeed = createButton(mainGui, 70, 40, 285, 335, "Feed");
 
-
 	//GUI OFFSET
 	constexpr int offset = 400;
 
 	//CELL PREVIEW
-	sizeValLabel = createLabel(previewGui, "Size", 10, 10 + offset, 18);
-	insertGui->add(sizeValLabel);
+	createLabel(previewGui, "Size", 10, 10 + offset, 18);
+	sizeValLabel = createLabel(insertGui, "Max Size (20 - 50)", 10, 10 + offset, 18);
 	modifyGui->add(sizeValLabel);
 	createGui->add(sizeValLabel);
 
 	sizeValTT = createLabel(previewGui, "", 0, 0, 18, nullptr, 1, "ToolTip");
 
-	sizeVal = createProgressBar(previewGui, 170, 20, 150, 9 + offset, 16, sizeValTT);
+	sizeVal = createProgressBar(previewGui, 170, 20, 150, 12 + offset, 16, sizeValTT);
 	widgetsPreview.push_back(sizeVal);
 
-	speedValLabel = createLabel(previewGui, "Speed", 10, 40 + offset, 18);
-	insertGui->add(speedValLabel);
+	createLabel(previewGui, "Speed", 10, 40 + offset, 18);
+	speedValLabel = createLabel(insertGui, "Max Speed (0.1-2)", 10, 40 + offset, 18);
 	modifyGui->add(speedValLabel);
 	createGui->add(speedValLabel);
 
 	speedValTT = createLabel(previewGui, "", 0, 0, 18, nullptr, 1, "ToolTip");
 
-	speedVal = createProgressBar(previewGui, 170, 20, 150, 39 + offset, 16, speedValTT);
+	speedVal = createProgressBar(previewGui, 170, 20, 150, 42 + offset, 16, speedValTT);
 	widgetsPreview.push_back(speedVal);
 
-	ageValLabel = createLabel(previewGui, "Age", 10, 70 + offset, 18);
-	insertGui->add(ageValLabel);
+	createLabel(previewGui, "Age", 10, 70 + offset, 18);
+	ageValLabel = createLabel(insertGui, "Max Age (1-100)", 10, 70 + offset, 18);
 	modifyGui->add(ageValLabel);
 	createGui->add(ageValLabel);
 
 	ageValTT = createLabel(previewGui, "", 0, 0, 18, nullptr, 1, "ToolTip");
 
-	ageVal = createProgressBar(previewGui, 170, 20, 150, 69 + offset, 16, ageValTT);
+	ageVal = createProgressBar(previewGui, 170, 20, 150, 72 + offset, 16, ageValTT);
 	widgetsPreview.push_back(ageVal);
 
-	horninessValLabel = createLabel(previewGui, "Fertility", 10, 100 + offset, 18);
-	insertGui->add(horninessValLabel);
-	modifyGui->add(horninessValLabel);
-	createGui->add(horninessValLabel);
+	createLabel(previewGui, "Fertility", 10, 100 + offset, 18);
 
 	horninessValTT = createLabel(previewGui, "", 0, 0, 18, nullptr, 1, "ToolTip");
 
-	horninessVal = createProgressBar(previewGui, 170, 20, 150, 99 + offset, 16, horninessValTT);
+	horninessVal = createProgressBar(previewGui, 170, 20, 150, 102 + offset, 16, horninessValTT);
 	widgetsPreview.push_back(horninessVal);
 
-	aggresionValLabel = createLabel(previewGui, "Aggresion", 10, 130 + offset, 18);
-	insertGui->add(aggresionValLabel);
+	createLabel(previewGui, "Aggresion", 10, 130 + offset, 18);
+	aggresionValLabel = createLabel(insertGui, "Aggresion (0-100)", 10, 100 + offset, 18);
 	modifyGui->add(aggresionValLabel);
 	createGui->add(aggresionValLabel);
 
 	aggresionValTT = createLabel(previewGui, "", 0, 0, 18, nullptr, 1, "ToolTip");
 
-	aggresionVal = createProgressBar(previewGui, 170, 20, 150, 129 + offset, 16, aggresionValTT);
+	aggresionVal = createProgressBar(previewGui, 170, 20, 150, 132 + offset, 16, aggresionValTT);
 	widgetsPreview.push_back(aggresionVal);
 
-	foodLevelValLabel = createLabel(previewGui, "Food level", 10, 160 + offset, 18);
-	insertGui->add(foodLevelValLabel);
+	createLabel(previewGui, "Food level", 10, 160 + offset, 18);
+	foodLevelValLabel = createLabel(insertGui, "Food limit (0-150)", 10, 130 + offset, 18);
 	modifyGui->add(foodLevelValLabel);
 	createGui->add(foodLevelValLabel);
 
 	foodLevelValTT = createLabel(previewGui, "", 0, 0, 18, nullptr, 1, "ToolTip");
 
-	foodLevelVal = createProgressBar(previewGui, 170, 20, 150, 159 + offset, 16, foodLevelValTT);
+	foodLevelVal = createProgressBar(previewGui, 170, 20, 150, 162 + offset, 16, foodLevelValTT);
 	widgetsPreview.push_back(foodLevelVal);
 
 	divisionThresholdTT = createLabel(previewGui, "Division Threshold", 0, 0, 18, nullptr, 1, "ToolTip");
 
-	divisionThresholdValLabel = createLabel(previewGui, "Div. th", 10, 190 + offset, 18, divisionThresholdTT);
-	insertGui->add(divisionThresholdValLabel);
+	createLabel(previewGui, "Div. th", 10, 190 + offset, 18, divisionThresholdTT);
+	divisionThresholdValLabel = createLabel(insertGui, "Div. th", 10, 160 + offset, 18, divisionThresholdTT);
 	modifyGui->add(divisionThresholdValLabel);
 	createGui->add(divisionThresholdValLabel);
 
-	divisionThresholdVal = createTextBox(previewGui, 60, 20, 205, 189 + offset, 16);
+	divisionThresholdVal = createProgressBar(previewGui, 70, 20, 200, 192 + offset, 16, nullptr);
 	widgetsPreview.push_back(divisionThresholdVal);
 
 	radarRangeTT = createLabel(previewGui, "Detection Range", 0, 0, 18, nullptr, 1, "ToolTip");
 
-	radarRangeValLabel = createLabel(previewGui, "Detec. rg", 10, 220 + offset, 18, radarRangeTT);
-	insertGui->add(radarRangeValLabel);
+	createLabel(previewGui, "Detec. rg", 10, 220 + offset, 18, radarRangeTT);
+	radarRangeValLabel = createLabel(insertGui, "Detec. rg", 10, 190 + offset, 18, radarRangeTT);
 	modifyGui->add(radarRangeValLabel);
 	createGui->add(radarRangeValLabel);
 
-	radarRangeVal = createTextBox(previewGui, 70, 20, 200, 219 + offset, 16);
+	radarRangeVal = createProgressBar(previewGui, 70, 20, 200, 222 + offset, 16, nullptr);
 	widgetsPreview.push_back(radarRangeVal);
 
 	//CELL CREATE
-	sizeC = createEditBox(createGui, 70, 20, 18, 200, 9 + offset, "");
+	createCellPtr = CellFactory::getCell(Cell::Type::Default);
 
-	speedC = createEditBox(createGui, 70, 20, 18, 200, 39 + offset, "");
+	sizeC = createEditBox(createGui, 70, 20, 18, 200, 12 + offset, doubleToString(createCellPtr->getGenes().maxSize.get(), 2));
 
-	ageC = createEditBox(createGui, 70, 20, 18, 200, 69 + offset, "");
+	speedC = createEditBox(createGui, 70, 20, 18, 200, 42 + offset, doubleToString(createCellPtr->getGenes().maxSpeed.get(), 2));
 
-	horninessC = createEditBox(createGui, 70, 20, 18, 200, 99 + offset, "");
+	ageC = createEditBox(createGui, 70, 20, 18, 200, 72 + offset, doubleToString(createCellPtr->getGenes().maxAge.get(), 2));
 
-	aggresionC = createEditBox(createGui, 70, 20, 18, 200, 129 + offset, "");
+	aggresionC = createEditBox(createGui, 70, 20, 18, 200, 102 + offset, doubleToString(createCellPtr->getGenes().aggresion.get(), 2));
 
-	foodLevelC = createEditBox(createGui, 70, 20, 18, 200, 159 + offset, "");
+	foodLevelC = createEditBox(createGui, 70, 20, 18, 200, 132 + offset, doubleToString(createCellPtr->getGenes().foodLimit.get(), 2));
 
-	divisionThresholdC = createEditBox(createGui, 70, 20, 18, 200, 189 + offset, "");
+	divisionThresholdC = createEditBox(createGui, 70, 20, 18, 200, 162 + offset, doubleToString(createCellPtr->getGenes().divisionThreshold.get(), 2));
 
-	radarRangeC = createEditBox(createGui, 70, 20, 18, 200, 219 + offset, "");
+	radarRangeC = createEditBox(createGui, 70, 20, 18, 200, 192 + offset, doubleToString(createCellPtr->getGenes().radarRange.get(), 2));
 
-	nameC = createEditBox(createGui, 100, 20, 18, 130, 270 + offset, "   Name");
+	buttonCarnivoreC = createButton(createGui, 70, 30, 25, 240 + offset, "Carnivore",0);
 
-	buttonCreateC = createButton(createGui, 70, 40, 105, 300 + offset, "Create");
+	buttonOmnivoreC = createButton(createGui, 70, 30, 145, 240 + offset, "Omnivore");
 
-	buttonSaveC = createButton(createGui, 70, 40, 185, 300 + offset, "Save");
+	buttonHerbivoreC = createButton(createGui, 70, 30, 265, 240 + offset, "Herbivore");
+
+	nameC = createEditBox(createGui, 140, 26, 18, 110, 280 + offset, "Name");
+
+	buttonCreateC = createButton(createGui, 70, 40, 105, 320 + offset, "Create");
+
+	buttonSaveC = createButton(createGui, 70, 40, 185, 320 + offset, "Save");
 
 	//CELL MODIFY
-	sizeM = createEditBox(modifyGui, 70, 20, 18, 200, 9 + offset, "");
+	sizeM = createEditBox(modifyGui, 70, 20, 18, 200, 12 + offset, "");
+	widgetsModify.push_back(sizeM);
 
-	speedM = createEditBox(modifyGui, 70, 20, 18, 200, 39 + offset, "");
+	speedM = createEditBox(modifyGui, 70, 20, 18, 200, 42 + offset, "");
+	widgetsModify.push_back(speedM);
 
-	ageM = createEditBox(modifyGui, 70, 20, 18, 200, 69 + offset, "");
+	ageM = createEditBox(modifyGui, 70, 20, 18, 200, 72 + offset, "");
+	widgetsModify.push_back(ageM);
 
-	horninessM = createEditBox(modifyGui, 70, 20, 18, 200, 99 + offset, "");
+	aggresionM = createEditBox(modifyGui, 70, 20, 18, 200, 102 + offset, "");
+	widgetsModify.push_back(aggresionM);
 
-	aggresionM = createEditBox(modifyGui, 70, 20, 18, 200, 129 + offset, "");
+	foodLevelM = createEditBox(modifyGui, 70, 20, 18, 200, 132 + offset, "");
+	widgetsModify.push_back(foodLevelM);
 
-	foodLevelM = createEditBox(modifyGui, 70, 20, 18, 200, 159 + offset, "");
+	divisionThresholdM = createEditBox(modifyGui, 70, 20, 18, 200, 162 + offset, "");
+	widgetsModify.push_back(divisionThresholdM);
 
-	divisionThresholdM = createEditBox(modifyGui, 70, 20, 18, 200, 189 + offset, "");
+	radarRangeM = createEditBox(modifyGui, 70, 20, 18, 200, 192 + offset, "");
+	widgetsModify.push_back(radarRangeM);
 
-	radarRangeM = createEditBox(modifyGui, 70, 20, 18, 200, 219 + offset, "");
+	buttonCarnivoreM = createButton(modifyGui, 70, 30, 25, 240 + offset, "Carnivore",0);
 
-	nameM = createEditBox(modifyGui, 100, 20, 18, 130, 270 + offset, "   Name");
+	buttonOmnivoreM = createButton(modifyGui, 70, 30, 145, 240 + offset, "Omnivore");
 
-	buttonModifyM = createButton(modifyGui, 100, 40, 130, 300 + offset, "Modify");
+	buttonHerbivoreM = createButton(modifyGui, 70, 30, 265, 240 + offset, "Herbivore");
+
+	nameM = createEditBox(modifyGui, 140, 26, 18, 110, 280 + offset, "Name");
+	widgetsModify.push_back(nameM);
+
+	buttonModifyM = createButton(modifyGui, 100, 40, 130, 320 + offset, "Modify");
+
+	for (int i = 0; i < widgetsModify.size(); i++)
+	{
+		widgetsModify[i]->setAlignment(tgui::EditBox::Alignment::Left);
+	}
 
 	//CELL INSERT
 	sizeValTTI = createLabel(insertGui, "", 0, 0, 18, nullptr, 1, "ToolTip");
 
-	sizeValI = createProgressBar(insertGui, 170, 20, 150, 9 + offset, 16, sizeValTTI);
+	sizeValI = createProgressBar(insertGui, 70, 20, 200, 12 + offset, 16, sizeValTTI);
 
 	speedValTTI = createLabel(insertGui, "", 0, 0, 18, nullptr, 1, "ToolTip");
 
-	speedValI = createProgressBar(insertGui, 170, 20, 150, 39 + offset, 16, speedValTTI);
+	speedValI = createProgressBar(insertGui, 70, 20, 200, 42 + offset, 16, speedValTTI);
 
 	ageValTTI = createLabel(insertGui, "", 0, 0, 18, nullptr, 1, "ToolTip");
 
-	ageValI = createProgressBar(insertGui, 170, 20, 150, 69 + offset, 16, ageValTTI);
-
-	horninessValTTI = createLabel(insertGui, "", 0, 0, 18, nullptr, 1, "ToolTip");
-
-	horninessValI = createProgressBar(insertGui, 170, 20, 150, 99 + offset, 16, horninessValTTI);
+	ageValI = createProgressBar(insertGui, 70, 20, 200, 72 + offset, 16, ageValTTI);
 
 	aggresionValTTI = createLabel(insertGui, "", 0, 0, 18, nullptr, 1, "ToolTip");
 
-	aggresionValI = createProgressBar(insertGui, 170, 20, 150, 129 + offset, 16, aggresionValTTI);
+	aggresionValI = createProgressBar(insertGui, 70, 20, 200, 102 + offset, 16, aggresionValTTI);
 
 	foodLevelValTTI = createLabel(insertGui, "", 0, 0, 18, nullptr, 1, "ToolTip");
 
-	foodLevelValI = createProgressBar(insertGui, 170, 20, 150, 159 + offset, 16, foodLevelValTTI);
+	foodLevelValI = createProgressBar(insertGui, 70, 20, 200, 132 + offset, 16, foodLevelValTTI);
 
 	divisionThresholdTTI = createLabel(insertGui, "Division Threshold", 0, 0, 18, nullptr, 1, "ToolTip");
 
-	divisionThresholdValI = createTextBox(insertGui, 60, 20, 205, 189 + offset, 16);
+	divisionThresholdValI = createProgressBar(insertGui, 70, 20, 200, 162 + offset, 16, nullptr);
 
 	radarRangeTTI = createLabel(insertGui, "Detection Range", 0, 0, 18, nullptr, 1, "ToolTip");
 
-	radarRangeValI = createTextBox(insertGui, 70, 20, 200, 219 + offset, 16);
+	radarRangeValI = createProgressBar(insertGui, 70, 20, 200, 192 + offset, 16, nullptr);
 
-	listBoxI = createListBox(insertGui, 160, 72, 100, 270 + offset);
-
-	buttonInsertI = createButton(insertGui, 80, 40, 140, 370 + offset, "Insert");
+	listBoxI = createListBox(insertGui, 200, 120, 80, 270 + offset);
 
 	//FEED
 
@@ -462,19 +477,6 @@ void GUIManager::configure(std::shared_ptr<sf::RenderWindow> window)
 
 	//MOVE MENU
 	menuBar->moveToFront();
-
-	//CELL CREATE DEFAULT VALUES CONFIGURE
-	createCellPtr = CellFactory::getCell(Cell::Type::Default);
-
-	sizeC->setText(doubleToString(createCellPtr->getGenes().maxSize.get(), 2));
-	speedC->setText(doubleToString(createCellPtr->getGenes().maxSpeed.get(), 2));
-	ageC->setText(doubleToString(createCellPtr->getGenes().maxAge.get(), 2));
-	horninessC->setText(doubleToString(createCellPtr->getHorniness().get(), 2));
-	aggresionC->setText(doubleToString(createCellPtr->getGenes().aggresion.get(), 2));
-	foodLevelC->setText(doubleToString(createCellPtr->getGenes().foodLimit.get(), 2));
-	divisionThresholdC->setText(doubleToString(createCellPtr->getGenes().divisionThreshold.get(), 2));
-	radarRangeC->setText(doubleToString(createCellPtr->getGenes().radarRange.get(), 2));
-	nameC->setText(createCellPtr->getName());
 
 	//EVENTS ENV
 	sliderTemp->connect("ValueChanged", [&]()
@@ -672,51 +674,149 @@ void GUIManager::configure(std::shared_ptr<sf::RenderWindow> window)
 
 	buttonSaveC->connect("pressed", [=]()
 	{
-		auto checkValue = [](std::shared_ptr<tgui::EditBox> textBox, std::string geneName, DynamicRanged<double>& gene)->void
+		auto checkValue = [](std::shared_ptr<tgui::EditBox> textBox, std::string geneName, DynamicRanged<double>& gene)->bool
 		{
 			std::regex number(RegexPattern::Double);
 			std::string text = textBox->getText();
+			if (text.empty())
+				text = textBox->getDefaultText();
 			if (std::regex_match(text, number))
 			{
-				double value = 0;
-				value = std::stod(text);
+				double value = std::stod(text);
 				if (value >= gene.getMin() && value <= gene.getMax())
 				{
 					gene = value;
 				}
 				else
 				{
-					textBox->setText(doubleToString(gene.get(), 2));
+					textBox->setText("");
 					MessagesManager::getInstance().append(geneName + " must be between " + doubleToString(gene.getMin(), 2) + " and " + doubleToString(gene.getMax(), 2) + ".");
+					return false;
 				}
 			}
 			else
 			{
-				textBox->setText(doubleToString(gene.get(), 2));
+				textBox->setText("");
 				MessagesManager::getInstance().append(geneName + " must be a real value.");
+				return false;
 			}
+			return true;
 		};
 
-		checkValue(sizeC, "Max Size", createCellPtr->getGenes().maxSize);
-		checkValue(speedC, "Max Speed", createCellPtr->getGenes().maxSpeed);
-		checkValue(ageC, "Max Age", createCellPtr->getGenes().maxAge);
-		checkValue(horninessC, "Max Fertility", createCellPtr->getHorniness());
-		checkValue(foodLevelC, "Max Food Level", createCellPtr->getGenes().foodLimit);
-		checkValue(divisionThresholdC, "Max Division Threshold", createCellPtr->getGenes().divisionThreshold);
-		checkValue(radarRangeC, "Max Size", createCellPtr->getGenes().radarRange);
+		std::vector<bool> checkResults;
+		checkResults.push_back(checkValue(sizeC, "Max Size", createCellPtr->getGenes().maxSize));
+		checkResults.push_back(checkValue(speedC, "Max Speed", createCellPtr->getGenes().maxSpeed));
+		checkResults.push_back(checkValue(ageC, "Max Age", createCellPtr->getGenes().maxAge));
+		checkResults.push_back(checkValue(foodLevelC, "Max Food Level", createCellPtr->getGenes().foodLimit));
+		checkResults.push_back(checkValue(divisionThresholdC, "Max Division Threshold", createCellPtr->getGenes().divisionThreshold));
+		checkResults.push_back(checkValue(radarRangeC, "Max Size", createCellPtr->getGenes().radarRange));
 
 		std::regex word(RegexPattern::Word);
 		std::string text = nameC->getText();
 		if (std::regex_match(text, word))
 		{
 			createCellPtr->setName(text);
+			checkResults.push_back(true);
 		}
 		else
 		{
 			nameC->setText(createCellPtr->getName());
 			MessagesManager::getInstance().append("Cell Name must consist of letters only.");
+			checkResults.push_back(false);
+		}
+
+		if (std::all_of(checkResults.begin(), checkResults.end(), [&](auto r) {return r == true; }))
+		{
+			auto cellNames = SaveManager::getInstance().getAvailableCellSaves();
+			if (std::all_of(cellNames.begin(), cellNames.end(), [&](auto name)->bool { return name != nameC->getText(); }))
+			{
+				listBoxI->addItem(nameC->getText());
+				SaveManager::getInstance().saveCellToFile(createCellPtr, nameC->getText());
+				MessagesManager::getInstance().append("Cell saved.");
+			}
+			else
+			{
+				MessagesManager::getInstance().append("Cell name exists.");
+			}
 		}
 	});
+
+	buttonCreateC->connect("pressed", [=]()
+	{
+
+	});
+
+	buttonModifyM->connect("pressed", [=]()
+	{
+
+	});
+
+	buttonCarnivoreC->connect("pressed", [=]()
+	{
+		typeC = 1;
+		buttonCarnivoreC->setEnabled(0);
+		buttonCarnivoreC->setInheritedOpacity(0.5);
+		buttonOmnivoreC->setEnabled(1);
+		buttonOmnivoreC->setInheritedOpacity(1);
+		buttonHerbivoreC->setEnabled(1);
+		buttonHerbivoreC->setInheritedOpacity(1);
+	});
+
+	buttonOmnivoreC->connect("pressed", [=]()
+	{
+		typeC = 2;
+		buttonOmnivoreC->setEnabled(0);
+		buttonOmnivoreC->setInheritedOpacity(0.5);
+		buttonCarnivoreC->setEnabled(1);
+		buttonCarnivoreC->setInheritedOpacity(1);
+		buttonHerbivoreC->setEnabled(1);
+		buttonHerbivoreC->setInheritedOpacity(1);
+	});
+
+	buttonHerbivoreC->connect("pressed", [=]()
+	{
+		typeC = 3;
+		buttonHerbivoreC->setEnabled(0);
+		buttonHerbivoreC->setInheritedOpacity(0.5);
+		buttonCarnivoreC->setEnabled(1);
+		buttonCarnivoreC->setInheritedOpacity(1);
+		buttonOmnivoreC->setEnabled(1);
+		buttonOmnivoreC->setInheritedOpacity(1);
+	});
+
+	buttonCarnivoreM->connect("pressed", [=]()
+	{
+		typeM = 1;
+		buttonCarnivoreM->setEnabled(0);
+		buttonCarnivoreM->setInheritedOpacity(0.5);
+		buttonOmnivoreM->setEnabled(1);
+		buttonOmnivoreM->setInheritedOpacity(1);
+		buttonHerbivoreM->setEnabled(1);
+		buttonHerbivoreM->setInheritedOpacity(1);
+	});
+
+	buttonOmnivoreM->connect("pressed", [=]()
+	{
+		typeM = 2;
+		buttonOmnivoreM->setEnabled(0);
+		buttonOmnivoreM->setInheritedOpacity(0.5);
+		buttonCarnivoreM->setEnabled(1);
+		buttonCarnivoreM->setInheritedOpacity(1);
+		buttonHerbivoreM->setEnabled(1);
+		buttonHerbivoreM->setInheritedOpacity(1);
+	});
+
+	buttonHerbivoreM->connect("pressed", [=]()
+	{
+		typeM = 3;
+		buttonHerbivoreM->setEnabled(0);
+		buttonHerbivoreM->setInheritedOpacity(0.5);
+		buttonCarnivoreM->setEnabled(1);
+		buttonCarnivoreM->setInheritedOpacity(1);
+		buttonOmnivoreM->setEnabled(1);
+		buttonOmnivoreM->setInheritedOpacity(1);
+	});
+
 }
 
 void GUIManager::handleEvent(sf::Event & e)
@@ -770,25 +870,32 @@ void GUIManager::update()
 		//size
 		updateValues(sizeValTT, sizeVal, "Min: " + doubleToString(cell->getGenes().maxSize.getMin(), 2) + "\nMax: " + doubleToString(cell->getGenes().maxSize.get(), 2),
 			doubleToString(cell->getSize(), 2), cell->getGenes().maxSize.get() * 100, cell->getGenes().maxSize.getMin() * 100, cell->getSize() * 100);
+		sizeM->setDefaultText(doubleToString(cell->getGenes().maxSize.get(),2));
 		//speed
 		updateValues(speedValTT, speedVal, "Min: " + doubleToString(cell->getGenes().maxSpeed.getMin(), 2) + "\nMax: " + doubleToString(cell->getGenes().maxSpeed.get(), 2),
 			doubleToString(cell->getCurrentSpeed(), 2), cell->getGenes().maxSpeed.get() * 100, cell->getGenes().maxSpeed.getMin() * 100, cell->getCurrentSpeed() * 100);
+		speedM->setDefaultText(doubleToString(cell->getGenes().maxSpeed.get(), 2));
 		//age
 		updateValues(ageValTT, ageVal, "Min: " + doubleToString(cell->getGenes().maxAge.getMin(), 2) + "\nMax: " + doubleToString(cell->getGenes().maxAge.get(), 2),
 			doubleToString(cell->age, 2), cell->getGenes().maxAge.get() * 100, cell->getGenes().maxAge.getMin() * 100, cell->age * 100);
+		ageM->setDefaultText(doubleToString(cell->getGenes().maxAge.get(), 2));
 		//horniness
 		updateValues(horninessValTT, horninessVal, "Min: " + doubleToString(cell->getHorniness().getMin(), 2) + "\nMax: " + doubleToString(cell->getHorniness().getMax(), 2),
 			doubleToString(cell->getHorniness().get(), 2), cell->getHorniness().getMax() * 100, cell->getHorniness().getMin() * 100, cell->getHorniness().get() * 100);
 		//aggresion
 		updateValues(aggresionValTT, aggresionVal, "Min: " + doubleToString(cell->getGenes().aggresion.getMin(), 2) + "\nMax: " + doubleToString(cell->getGenes().aggresion.getMax(), 2),
 			doubleToString(cell->getGenes().aggresion.get(), 2), cell->getGenes().aggresion.getMax() * 100, cell->getGenes().aggresion.getMin() * 100, cell->getGenes().aggresion.get() * 100);
+		aggresionM->setDefaultText(doubleToString(cell->getGenes().aggresion.get(), 2));
 		//food level
 		updateValues(foodLevelValTT, foodLevelVal, "Min: " + doubleToString(cell->getGenes().foodLimit.getMin(), 2) + "\nMax: " + doubleToString(cell->getGenes().foodLimit.getMax(), 2),
 			doubleToString(cell->getFoodLevel(), 2), cell->getGenes().foodLimit.get() * 100, cell->getGenes().foodLimit.getMin() * 100, cell->getFoodLevel() * 100);
+		foodLevelM->setDefaultText(doubleToString(cell->getGenes().foodLimit.get(), 2));
 		//divisionThreshold
-		divisionThresholdVal->setText(" " + doubleToString(cell->getGenes().divisionThreshold.get(), 2));
+		divisionThresholdVal->setText(doubleToString(cell->getGenes().divisionThreshold.get(), 2));
+		divisionThresholdM->setDefaultText(doubleToString(cell->getGenes().divisionThreshold.get(), 2));
 		//radarRange
-		radarRangeVal->setText(" " + doubleToString(cell->getGenes().radarRange.get(), 2));
+		radarRangeVal->setText(doubleToString(cell->getGenes().radarRange.get(), 2));
+		radarRangeM->setDefaultText(doubleToString(cell->getGenes().radarRange.get(), 2));
 
 		cell->setPosition(sf::Vector2f(175, 900));
 		auto factor = cell->getOutlineThickness() / cell->getSize();
@@ -801,6 +908,11 @@ void GUIManager::update()
 	else
 	{
 		setVisible(widgetsPreview, 0);
+		for (int i = 0; i < widgetsModify.size(); i++)
+		{
+			widgetsModify[i]->setDefaultText("");
+			widgetsModify[i]->setText("");
+		}
 	}
 }
 

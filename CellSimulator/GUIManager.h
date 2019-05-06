@@ -116,13 +116,13 @@ private:
 		speedVal,
 		sizeVal,
 		horninessVal,
-		ageVal;
-
-	std::shared_ptr<tgui::TextBox>
+		ageVal,
 		radarRangeVal,
 		divisionThresholdVal;
 
 	//CELL CREATE
+	int typeC = 1;
+
 	std::shared_ptr<tgui::EditBox>
 		sizeC,
 		speedC,
@@ -135,10 +135,17 @@ private:
 		nameC;
 
 	std::shared_ptr<tgui::Button>
+		buttonCarnivoreC,
+		buttonOmnivoreC,
+		buttonHerbivoreC,
 		buttonCreateC,
 		buttonSaveC;
 
 	//CELL MODIFY
+	int typeM = 1;
+
+	std::vector<std::shared_ptr<tgui::EditBox>> widgetsModify;
+
 	std::shared_ptr<tgui::EditBox>
 		sizeM,
 		speedM,
@@ -151,6 +158,9 @@ private:
 		nameM;
 
 	std::shared_ptr<tgui::Button>
+		buttonCarnivoreM,
+		buttonOmnivoreM,
+		buttonHerbivoreM,
 		buttonModifyM;
 
 	//CELL INSERT
@@ -170,9 +180,7 @@ private:
 		speedValI,
 		sizeValI,
 		horninessValI,
-		ageValI;
-
-	std::shared_ptr<tgui::TextBox>
+		ageValI,
 		radarRangeValI,
 		divisionThresholdValI;
 
