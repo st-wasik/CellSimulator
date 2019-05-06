@@ -87,6 +87,7 @@ private:
 	std::atomic<int> _foodCount;
 	std::atomic_bool _clearEnvironment;
 	std::atomic_bool _simulationActive;
+	bool _wasAutofeederActive;
 
 	struct VarAbbrv final
 	{
