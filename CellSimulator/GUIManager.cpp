@@ -792,9 +792,11 @@ void GUIManager::update()
 
 		cell->setPosition(sf::Vector2f(175, 900));
 		auto factor = cell->getOutlineThickness() / cell->getSize();
+		auto typeShapeFactor = cell->getTypeShape().getOutlineThickness() / cell->getTypeShape().getRadius();
 		cell->setOutlineThickness(150 * factor);
 		cell->setSize(150);
 		cell->setRotation(0);
+		cell->getTypeShape().setOutlineThickness(150 / 2 * typeShapeFactor);
 	}
 	else
 	{

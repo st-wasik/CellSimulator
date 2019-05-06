@@ -457,6 +457,11 @@ void Cell::rotate(const float & r)
 	typeShape.setRotation(shape.getRotation());
 }
 
+sf::CircleShape & Cell::getTypeShape()
+{
+	return typeShape;
+}
+
 void Cell::getFoodCollisionVector()
 {
 	this->FoodCollisionVector->clear();
