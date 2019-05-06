@@ -15,6 +15,8 @@ public:
 
 	std::string getSaveString();
 
+	float getMaxSize();
+
 private:
 	Food(float size, sf::Vector2f position, sf::Color color, float maxSize);
 	Food(std::string formattedFoodString);

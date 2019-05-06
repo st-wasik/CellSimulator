@@ -17,7 +17,6 @@ void FoodBrush::update()
 {
 	if (isActive)
 	{
-		
 		elapsedTime += CellSimApp::getInstance().getDeltaTime();
 		brush.setPosition(CellSimMouse::getPosition());
 		if (CellSimMouse::isLeftPressed() && elapsedTime > delay)
@@ -31,7 +30,7 @@ void FoodBrush::update()
 				std::shared_ptr<Food> food;
 				sf::Vector2f position(CellSimMouse::getPosition().x + randomReal(-radius * std::cos(angle * PI / 180), radius * std::cos(angle * PI / 180)), CellSimMouse::getPosition().y + randomReal(-radius * std::sin(angle * PI / 180), radius * std::sin(angle * PI / 180)));
 				food = Food::create(2, position, sf::Color(0, randomInt(128, 255), randomInt(0, 64)), randomInt(3, 10));
-				if (Environment::getInstance().isObjInEnvironmentBounds(food))
+				if (Environment::getInstance().isObjInEnvironmentBounds(food, food->getMaxSize()))
 				{
 					Environment::getInstance().insertNewFood(food);
 				}

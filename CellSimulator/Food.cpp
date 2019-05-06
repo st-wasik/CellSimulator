@@ -132,3 +132,8 @@ std::string Food::getSaveString()
 
 	return result.str();
 }
+
+float Food::getMaxSize()
+{
+	return maxSize;
+}
