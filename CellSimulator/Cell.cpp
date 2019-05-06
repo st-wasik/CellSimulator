@@ -275,7 +275,9 @@ void Cell::kill()
 		auto color = randomInt(0, 32);
 		auto color2 = randomInt(0, 32);
 		shape.setFillColor(sf::Color(color, color, color, 255));
+		typeShape.setFillColor(sf::Color(color, color, color, 255));
 		shape.setOutlineColor(sf::Color(color2, color2, color2, 255));
+		typeShape.setOutlineColor(sf::Color(color2, color2, color2, 255));
 
 		auto size = getSize();
 
