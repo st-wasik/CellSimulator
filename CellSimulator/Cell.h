@@ -82,6 +82,8 @@ public:
 	void setRotation(const float & r);
 	void rotate(const float & r);
 
+	sf::CircleShape& getTypeShape();
+
 private:
 	explicit Cell();
 	Cell(float size, sf::Vector2f position, sf::Color color);
