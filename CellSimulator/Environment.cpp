@@ -455,28 +455,30 @@ Environment::Environment()
 	_simulationActive = true;
 }
 
-bool Environment::isObjInEnvironmentBounds(BaseObj::Ptr o)
+bool Environment::isObjInEnvironmentBounds(BaseObj::Ptr o, float expectedSize)
 {
 	const auto& envSize = getSize();
 	const auto& cellPos = o->getPosition();
 
+	const float size = (expectedSize == 0 ? o->getSize() : expectedSize);
+
 	//check left bound
-	if (o->getPosition().x - o->getSize() <= 0)
+	if (o->getPosition().x - size <= 0)
 	{
 		return false;
 	}
 	//check right bound
-	else if (o->getPosition().x + o->getSize() >= envSize.x)
+	else if (o->getPosition().x + size >= envSize.x)
 	{
 		return false;
 	}
 	//check top bound
-	else if (o->getPosition().y - o->getSize() <= 0)
+	else if (o->getPosition().y - size <= 0)
 	{
 		return false;
 	}
 	//check bottom bound
-	else if (o->getPosition().y + o->getSize() >= envSize.y)
+	else if (o->getPosition().y + size >= envSize.y)
 	{
 		return false;
 	}
