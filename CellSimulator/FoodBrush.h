@@ -24,7 +24,7 @@ public:
 private:
 	bool isActive;
 	int delay;
-	sf::Clock deltaTimeClock;
+	int elapsedTime;
 	sf::CircleShape brush;
 };
 

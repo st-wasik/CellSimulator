@@ -3,8 +3,9 @@
 #include "MessagesManager.h"
 #include "Environment.h"
 #include "Food.h"
+#include "CellSimApp.h"
 
-
+#define PI 3.14159265
 
 FoodBrush & FoodBrush::getInstance()
 {
@@ -14,16 +15,25 @@ FoodBrush & FoodBrush::getInstance()
 
 void FoodBrush::update()
 {
-	if (isActive) 
+	if (isActive)
 	{
+		elapsedTime += CellSimApp::getInstance().getDeltaTime();
 		brush.setPosition(CellSimMouse::getPosition());
-		if (CellSimMouse::isLeftPressed() && deltaTimeClock.getElapsedTime().asMilliseconds() > delay)
+		if (CellSimMouse::isLeftPressed() && elapsedTime > delay)
 		{
-			deltaTimeClock.restart();
+			elapsedTime = 0;
 			float radius = brush.getRadius();
-			sf::Vector2f position(CellSimMouse::getPosition().x + randomInt(-radius*0.7, radius*0.7), CellSimMouse::getPosition().y + randomInt(-radius*0.7, radius*0.7));
-			auto food = Food::create(0, position, sf::Color::Green, randomInt(3, 10));
-			Environment::getInstance().insertNewFood(food);
+			for (int i = 0; i < (CellSimApp::getInstance().getDeltaTime() * 3.14 * (radius / 2)) / 250; i++)
+			{
+				double angle = randomReal(0, 360);
+				std::shared_ptr<Food> food;
+				sf::Vector2f position(CellSimMouse::getPosition().x + randomReal(-radius * std::cos(angle * PI / 180), radius * std::cos(angle * PI / 180)), CellSimMouse::getPosition().y + randomReal(-radius * std::sin(angle * PI / 180), radius * std::sin(angle * PI / 180)));
+				food = Food::create(0, position, sf::Color::Green, randomInt(3, 10));
+				if (Environment::getInstance().isObjInEnvironmentBounds(food))
+				{
+					Environment::getInstance().insertNewFood(food);
+				}
+			}
 		}
 	}
 }
@@ -63,7 +73,7 @@ void FoodBrush::setBrushRadius(float radius)
 		brush.setRadius(radius);
 		brush.setOrigin(radius, radius);
 	}
-	else 
+	else
 	{
 		MessagesManager::getInstance().append("Brush radius cannot be smaller than 10.0!");
 	}
@@ -77,13 +87,13 @@ float FoodBrush::getBrushRadius()
 FoodBrush::FoodBrush()
 {
 	brush.setFillColor(sf::Color::Transparent);
-	brush.setOutlineColor(sf::Color(255,255,255,128));
+	brush.setOutlineColor(sf::Color(255, 255, 255, 128));
 	brush.setRadius(50.f);
 	brush.setOutlineThickness(4.f);
 	brush.setOrigin(brush.getRadius(), brush.getRadius());
 	isActive = false;
-	deltaTimeClock.restart();
-	delay = 25;
+	elapsedTime = 0;
+	delay = 2;
 }
 
 
