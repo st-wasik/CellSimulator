@@ -652,6 +652,8 @@ void GUIManager::configure(std::shared_ptr<sf::RenderWindow> window)
 		buttonInsert->setInheritedOpacity(1);
 		buttonFeed->setEnabled(1);
 		buttonFeed->setInheritedOpacity(1);
+
+		ToolManager::getInstance().setActiveTool(ToolManager::Tool::Insertion);
 	});
 
 	buttonModify->connect("pressed", [=]()
