@@ -59,12 +59,14 @@ void CellRoles::moveForward(Cell * c)
 
 	auto moveSpeed = (Environment::getInstance().getTemperature() + 100) / 100 * c->currentSpeed;
 	c->shape.move(moveSpeed * std::sin((PI / 180)*c->getRotation()) * CellSimApp::getInstance().getDeltaTime(), moveSpeed * -std::cos((PI / 180)*c->getRotation()) * CellSimApp::getInstance().getDeltaTime());
+	c->typeShape.setPosition(c->getPosition());
 
 	for (int attempt = 0; checkEnvironmentBounds(c); ++attempt)
 	{
 		c->shape.setPosition(prevPosition);
 		c->shape.setRotation(c->getRotation() + 90);
 		c->shape.move(moveSpeed * std::sin((PI / 180)*c->getRotation()) * CellSimApp::getInstance().getDeltaTime(), moveSpeed * -std::cos((PI / 180)*c->getRotation()) * CellSimApp::getInstance().getDeltaTime());
+		c->typeShape.setPosition(c->getPosition());
 
 		if (attempt > 5) { c->setPosition(Environment::getInstance().getSize() / 2.f); break; }
 	}
@@ -89,10 +91,12 @@ void CellRoles::changeDirection(Cell * c)
 		if (randomInt(0, 100) <= 50)
 		{
 			c->shape.rotate(randomReal(-25, 0));
+			c->typeShape.setRotation(c->shape.getRotation());
 		}
 		else
 		{
 			c->shape.rotate(randomReal(0, 25));
+			c->typeShape.setRotation(c->shape.getRotation());
 		}
 	}
 }
@@ -157,7 +161,28 @@ void CellRoles::updateColor(Cell * c)
 		outlineColor = sf::Color(255 * maxSpeed, 255 * maxSpeed, 0, 80);
 	}
 
-
+	if (c->genes.type.get() == 0)
+	{
+		c->typeShape.setFillColor(sf::Color(192, 0, 0,100));
+		c->typeShape.setPointCount(3);
+		c->typeShape.setOutlineThickness(-2);
+		c->typeShape.setOutlineColor(sf::Color(192, 192, 128));
+	}
+	else if (c->genes.type.get() == 1)
+	{
+		c->typeShape.setFillColor(sf::Color(0, 192, 0,100));
+		c->typeShape.setPointCount(4);
+		c->typeShape.setOutlineThickness(-2);
+		c->typeShape.setOutlineColor(sf::Color(192, 192, 128));
+	}
+	else if (c->genes.type.get() == 2)
+	{
+		c->typeShape.setFillColor(sf::Color(0, 0, 192,100));
+		c->typeShape.setPointCount(7);
+		c->typeShape.setOutlineThickness(-2);
+		c->typeShape.setOutlineColor(sf::Color(192, 192, 128));
+	}
+	
 	c->setBaseColor(bodyColor);
 	c->setOutlineColor(outlineColor);
 	c->setOutlineThickness(c->getSize()*0.7*foodLimit*(-1));
@@ -195,14 +220,20 @@ void CellRoles::beDead(Cell * c)
 {
 	auto color = c->shape.getFillColor();
 	auto color2 = c->shape.getOutlineColor();
+	auto color3 = c->typeShape.getFillColor();
+	auto color4 = c->typeShape.getOutlineColor();
 	if (color.a > 0)
 	{
 		double a = static_cast<double>(color.a) - ((Environment::getInstance().getTemperature() + 100 + 1)*0.01*CellSimApp::getInstance().getDeltaTime());
 		if (0 > a) a = 0;
 		color.a = a;
 		color2.a = a;
+		color3.a = a;
+		color4.a = a;
 		c->shape.setFillColor(color);
 		c->shape.setOutlineColor(color2);
+		c->typeShape.setFillColor(color3);
+		c->typeShape.setOutlineColor(color4);
 	}
 	else
 	{

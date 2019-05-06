@@ -16,13 +16,13 @@ public:
 	virtual void update() = 0;
 
 	float getSize();
-	void setSize(const float&);
+	virtual void setSize(const float&);
 
 	float getRotation();
-	void setRotation(const float&);
+	virtual void setRotation(const float&);
 
 	sf::Vector2f getPosition();
-	void setPosition(const sf::Vector2f&);
+	virtual void setPosition(const sf::Vector2f&);
 
 	sf::Color getBaseColor();
 	void setBaseColor(sf::Color, bool updateShapeColor = false);
