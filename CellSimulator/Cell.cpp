@@ -22,7 +22,7 @@ Cell::Cell() : BaseObj(), horniness(0, 100, 0)
 	delayTime = CellSimApp::getInstance().getDeltaTime();
 
 	setSize(20);
-	setPosition({0,0});
+	setPosition({ 0,0 });
 	typeShape.setPointCount(3);
 }
 
@@ -42,10 +42,10 @@ Cell::Cell(float size, sf::Vector2f position, sf::Color color) : BaseObj(size, p
 	setPosition(position);
 	typeShape.setPointCount(3);
 
-	int textureSize = randomInt(6,12);
+	int textureSize = randomInt(6, 12);
 	float rnd = randomInt(0, 32); //64 - texture size
 	TextureProvider::getInstance().getTexture("whiteNoise")->setRepeated(true);
-	shape.setTextureRect(sf::IntRect( sf::Vector2i(rnd, rnd), sf::Vector2i( textureSize, textureSize )));
+	shape.setTextureRect(sf::IntRect(sf::Vector2i(rnd, rnd), sf::Vector2i(textureSize, textureSize)));
 	shape.setTexture(TextureProvider::getInstance().getTexture("whiteNoise").get());
 
 	shape.setOutlineThickness(-5);
@@ -151,7 +151,8 @@ Cell::Cell(std::string formattedCellString) : Cell()
 
 		//TODO: add cell name
 	}
-	CellRoles::updateColor(this);
+	if (genes.type.get() != -1)
+		CellRoles::updateColor(this);
 
 	delayTime = CellSimApp::getInstance().getDeltaTime();
 }
@@ -446,8 +447,8 @@ void Cell::setPosition(const sf::Vector2f & v)
 void Cell::setSize(const float & s)
 {
 	BaseObj::setSize(s);
-	typeShape.setRadius(s/2);
-	typeShape.setOrigin(s/2,s/2);
+	typeShape.setRadius(s / 2);
+	typeShape.setOrigin(s / 2, s / 2);
 }
 
 void Cell::setRotation(const float & f)

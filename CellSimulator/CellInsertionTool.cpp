@@ -69,7 +69,8 @@ void CellInsertionTool::setCellBlueprint(Cell::Ptr cell)
 	random = false;
 
 	auto newCell = Cell::create(*cell);
-	CellRoles::updateColor(newCell.get());
+	if (cell->getGenes().type.get() != -1)
+		CellRoles::updateColor(newCell.get());
 	newCell->freeze();
 	newCell->setRotation(0);
 	cellBlueprint = newCell;
