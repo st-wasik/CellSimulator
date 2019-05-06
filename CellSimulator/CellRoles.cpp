@@ -90,12 +90,12 @@ void CellRoles::changeDirection(Cell * c)
 	{
 		if (randomInt(0, 100) <= 50)
 		{
-			c->shape.rotate(randomReal(-25, 0));
+			c->rotate(randomReal(-25, 0));
 			c->typeShape.setRotation(c->shape.getRotation());
 		}
 		else
 		{
-			c->shape.rotate(randomReal(0, 25));
+			c->rotate(randomReal(0, 25));
 			c->typeShape.setRotation(c->shape.getRotation());
 		}
 	}
@@ -467,22 +467,22 @@ void CellRoles::sniffForFood(Cell * c)
 		{
 			if (360 - abscfDiffrence < angle_change)
 			{
-				c->shape.rotate(cfDiffrence <= 0 ? -(360 - abscfDiffrence)*CellSimApp::getInstance().getDeltaTime() : (360 - abscfDiffrence)*CellSimApp::getInstance().getDeltaTime());
+				c->rotate(cfDiffrence <= 0 ? -(360 - abscfDiffrence)*CellSimApp::getInstance().getDeltaTime() : (360 - abscfDiffrence)*CellSimApp::getInstance().getDeltaTime());
 			}
 			else
 			{
-				c->shape.rotate(cfDiffrence <= 0 ? -angle_change : angle_change);
+				c->rotate(cfDiffrence <= 0 ? -angle_change : angle_change);
 			}
 		}
 		else
 		{
 			if (abscfDiffrence < angle_change)
 			{
-				c->shape.rotate(cfDiffrence >= 0 ? -abscfDiffrence * CellSimApp::getInstance().getDeltaTime() : abscfDiffrence * CellSimApp::getInstance().getDeltaTime());
+				c->rotate(cfDiffrence >= 0 ? -abscfDiffrence * CellSimApp::getInstance().getDeltaTime() : abscfDiffrence * CellSimApp::getInstance().getDeltaTime());
 			}
 			else
 			{
-				c->shape.rotate(cfDiffrence >= 0 ? -angle_change : angle_change);
+				c->rotate(cfDiffrence >= 0 ? -angle_change : angle_change);
 			}
 		}
 	}
@@ -525,22 +525,22 @@ void CellRoles::sniffForCell(Cell * c)
 		{
 			if (360 - abscfDiffrence < angle_change)
 			{
-				c->shape.rotate(cfDiffrence <= 0 ? -(360 - abscfDiffrence)*CellSimApp::getInstance().getDeltaTime() : (360 - abscfDiffrence)*CellSimApp::getInstance().getDeltaTime());
+				c->rotate(cfDiffrence <= 0 ? -(360 - abscfDiffrence)*CellSimApp::getInstance().getDeltaTime() : (360 - abscfDiffrence)*CellSimApp::getInstance().getDeltaTime());
 			}
 			else
 			{
-				c->shape.rotate(cfDiffrence <= 0 ? -angle_change : angle_change);
+				c->rotate(cfDiffrence <= 0 ? -angle_change : angle_change);
 			}
 		}
 		else
 		{
 			if (abscfDiffrence < angle_change)
 			{
-				c->shape.rotate(cfDiffrence >= 0 ? -abscfDiffrence * CellSimApp::getInstance().getDeltaTime() : abscfDiffrence * CellSimApp::getInstance().getDeltaTime());
+				c->rotate(cfDiffrence >= 0 ? -abscfDiffrence * CellSimApp::getInstance().getDeltaTime() : abscfDiffrence * CellSimApp::getInstance().getDeltaTime());
 			}
 			else
 			{
-				c->shape.rotate(cfDiffrence >= 0 ? -angle_change : angle_change);
+				c->rotate(cfDiffrence >= 0 ? -angle_change : angle_change);
 			}
 		}
 	}

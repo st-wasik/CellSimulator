@@ -80,6 +80,7 @@ public:
 	void setSize(const float&);
 
 	void setRotation(const float & r);
+	void rotate(const float & r);
 
 private:
 	explicit Cell();
