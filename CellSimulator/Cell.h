@@ -26,7 +26,7 @@ public:
 
 	enum class Type
 	{
-		Passive, Aggressive, Random, GreenLettuce, Pizza, Default
+		Passive, Aggressive, Random, GreenLettuce, Pizza, Default, Speed
 	};
 
 	template <typename ... Types>

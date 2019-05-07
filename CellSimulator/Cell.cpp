@@ -59,16 +59,10 @@ Cell::Cell(float size, sf::Vector2f position, sf::Color color) : BaseObj(size, p
 
 
 	roles.push_back(CellRoles::changeDirection);
-	if (this->genes.type.get() == 1 || this->genes.type.get() == 0)
-	{
-		roles.push_back(CellRoles::sniffForFood);
-		roles.push_back(CellRoles::eat);
-	}
-	if (this->genes.type.get() == 2 || this->genes.type.get() == 0)
-	{
-		roles.push_back(CellRoles::sniffForCell);
-		roles.push_back(CellRoles::fight);
-	}
+	roles.push_back(CellRoles::sniffForFood);
+	roles.push_back(CellRoles::eat);
+	roles.push_back(CellRoles::sniffForCell);
+	roles.push_back(CellRoles::fight);
 	roles.push_back(CellRoles::changeSpeed);
 	roles.push_back(CellRoles::updateColor);
 	roles.push_back(CellRoles::simulateHunger);
@@ -100,7 +94,7 @@ Cell::Cell(Cell a, Cell b) : Cell(20, (a.getPosition() + b.getPosition()) / 2.0f
 	delayTime = CellSimApp::getInstance().getDeltaTime();
 }
 
-Cell::Cell(std::string formattedCellString) : Cell(20, {0,0}, sf::Color::White)
+Cell::Cell(std::string formattedCellString) : Cell(20, { 0,0 }, sf::Color::White)
 {
 	static std::regex cellRegex("CELL->( " + RegexPattern::Word + ":((" + RegexPattern::Double + ")|(" + RegexPattern::Vector + ")|(" + RegexPattern::Word + ")))* ");
 	if (!std::regex_match(formattedCellString.begin(), formattedCellString.end(), cellRegex))

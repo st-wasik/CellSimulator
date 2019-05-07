@@ -19,8 +19,10 @@ std::shared_ptr<Cell> CellFactory::getCell(Cell::Type type)
 		result->genes.maxSpeed = 2;
 		result->genes.radarRange = 350;
 		result->genes.type = 2;
+		result->setFoodLevel(60);
 		result->setBaseColor(sf::Color::Red);
 		result->dropRole(CellRoles::sniffForFood);
+		result->dropRole(CellRoles::eat);
 		CellRoles::updateColor(result.get());
 		break;
 
@@ -33,8 +35,24 @@ std::shared_ptr<Cell> CellFactory::getCell(Cell::Type type)
 		result->genes.maxSpeed = 1;
 		result->genes.radarRange = 200;
 		result->genes.type = 1;
+		result->setFoodLevel(60);
 		result->setBaseColor(sf::Color::Blue);
 		result->dropRole(CellRoles::sniffForCell);
+		result->dropRole(CellRoles::fight);
+		CellRoles::updateColor(result.get());
+		break;
+
+	case Cell::Type::Speed:
+		result->genes.aggresion = 50;
+		result->genes.divisionThreshold = 90;
+		result->genes.foodLimit = 150;
+		result->genes.maxAge = 85;
+		result->genes.maxSize = 35;
+		result->genes.maxSpeed = 2;
+		result->genes.radarRange = 300;
+		result->genes.type = 0;
+		result->setFoodLevel(60);
+		result->setBaseColor(sf::Color::Yellow);
 		CellRoles::updateColor(result.get());
 		break;
 

@@ -166,7 +166,7 @@ void CellRoles::updateColor(Cell * c)
 		if (c->genes.type.get() == 0)
 		{
 			c->typeShape.setFillColor(sf::Color(192, 0, 0, 100));
-			c->typeShape.setPointCount(3);
+			c->typeShape.setPointCount(7);
 			c->typeShape.setOutlineThickness(-2);
 			c->typeShape.setOutlineColor(sf::Color(192, 192, 128));
 		}
@@ -180,7 +180,7 @@ void CellRoles::updateColor(Cell * c)
 		else if (c->genes.type.get() == 2)
 		{
 			c->typeShape.setFillColor(sf::Color(0, 0, 192, 100));
-			c->typeShape.setPointCount(7);
+			c->typeShape.setPointCount(3);
 			c->typeShape.setOutlineThickness(-2);
 			c->typeShape.setOutlineColor(sf::Color(192, 192, 128));
 		}
@@ -378,7 +378,7 @@ void CellRoles::fight(Cell * c)
 					cell->setSize(cell->getSize() - 2);
 					if (c->getFoodLevel() + 2 < c->getGenes().foodLimit.get())
 					{
-						c->foodLevel += 2;
+						c->foodLevel += 5;
 					}
 
 				}
@@ -387,7 +387,7 @@ void CellRoles::fight(Cell * c)
 					c->setSize(c->getSize() - 2);
 					if (cell->getFoodLevel() + 2 < cell->getGenes().foodLimit.get())
 					{
-						cell->foodLevel += 2;
+						cell->foodLevel += 5;
 					}
 				}
 
