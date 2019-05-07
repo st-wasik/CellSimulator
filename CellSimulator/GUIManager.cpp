@@ -133,7 +133,6 @@ std::shared_ptr<tgui::MenuBar> GUIManager::createMenuBar(std::shared_ptr<tgui::G
 	newWindow = tgui::ChildWindow::create();
 	newWindow->setRenderer(theme.getRenderer("ChildWindow"));
 	newWindow->setSize(360, 160);
-	newWindow->setPosition(window->getSize().x / 2 - 180, window->getSize().y / 2 - 80);
 	newWindow->setTitle("Insert width and height of new simulation window");
 	newWindow->setEnabled(1);
 	newWindow->setVisible(1);
@@ -141,7 +140,6 @@ std::shared_ptr<tgui::MenuBar> GUIManager::createMenuBar(std::shared_ptr<tgui::G
 	saveWindow = tgui::ChildWindow::create();
 	saveWindow->setRenderer(theme.getRenderer("ChildWindow"));
 	saveWindow->setSize(360, 160);
-	saveWindow->setPosition(window->getSize().x / 2 - 180, window->getSize().y / 2 - 80);
 	saveWindow->setTitle("   Save");
 	saveWindow->setEnabled(1);
 	saveWindow->setVisible(1);
@@ -149,7 +147,6 @@ std::shared_ptr<tgui::MenuBar> GUIManager::createMenuBar(std::shared_ptr<tgui::G
 	loadWindow = tgui::ChildWindow::create();
 	loadWindow->setRenderer(theme.getRenderer("ChildWindow"));
 	loadWindow->setSize(360, 160);
-	loadWindow->setPosition(window->getSize().x / 2 - 180, window->getSize().y / 2 - 80);
 	loadWindow->setTitle("Load");
 	loadWindow->setEnabled(1);
 	loadWindow->setVisible(1);
@@ -199,15 +196,15 @@ std::shared_ptr<tgui::MenuBar> GUIManager::createMenuBar(std::shared_ptr<tgui::G
 	MenuBar->addMenu("Simulation");
 	MenuBar->addMenu("Help");
 	MenuBar->addMenuItem("Simulation", "New");
-	MenuBar->connectMenuItem("Simulation", "New", [this, gui]() { gui->add(newWindow); });
+	MenuBar->connectMenuItem("Simulation", "New", [this, gui]() {newWindow->setPosition(window->getSize().x / 2 - 180, window->getSize().y / 2 - 80); saveWindow->destroy(); loadWindow->destroy(); gui->add(newWindow, "new"); });
 	MenuBar->addMenuItem("Simulation", "New Random");
 	MenuBar->connectMenuItem("Simulation", "New Random", []() {Environment::getInstance().configure(sf::Vector2f(randomReal(0.5, 3.5) * 1000, randomReal(0.5, 3.5) * 1000), true); });
 	MenuBar->addMenuItem("Simulation", "Clear");
 	MenuBar->connectMenuItem("Simulation", "Clear", []() {Environment::getInstance().clear(); });
 	MenuBar->addMenuItem("Simulation", "Save");
-	MenuBar->connectMenuItem("Simulation", "Save", [this, gui]() { gui->add(saveWindow); });
+	MenuBar->connectMenuItem("Simulation", "Save", [this, gui]() { saveWindow->setPosition(window->getSize().x / 2 - 180, window->getSize().y / 2 - 80); newWindow->destroy(); loadWindow->destroy(); gui->add(saveWindow, "save"); });
 	MenuBar->addMenuItem("Simulation", "Load");
-	MenuBar->connectMenuItem("Simulation", "Load", [this, gui]() { gui->add(loadWindow); });
+	MenuBar->connectMenuItem("Simulation", "Load", [this, gui]() {loadWindow->setPosition(window->getSize().x / 2 - 180, window->getSize().y / 2 - 80);;  newWindow->destroy(); saveWindow->destroy();  gui->add(loadWindow, "load"); });
 	MenuBar->addMenuItem("Simulation", "Exit (Esc)");
 	MenuBar->connectMenuItem("Simulation", "Exit (Esc)", []() {CellSimApp::getInstance().close(); });
 	MenuBar->addMenuItem("Help", "Info");
@@ -256,6 +253,7 @@ std::shared_ptr<tgui::ListBox> GUIManager::createListBox(std::shared_ptr<tgui::G
 	ListBox->setPosition(x, y);
 	ListBox->addItem("Aggressive");
 	ListBox->addItem("Passive");
+	ListBox->addItem("Speed");
 	ListBox->addItem("Random");
 	ListBox->addItem("Green Lettuce");
 	ListBox->addItem("Pizza");
@@ -1008,6 +1006,10 @@ void GUIManager::configure(std::shared_ptr<sf::RenderWindow> window)
 		{
 			insertCellPtr = (CellFactory::getCell(Cell::Type::Pizza));
 		}
+		else if (cellname == "Speed")
+		{
+			insertCellPtr = (CellFactory::getCell(Cell::Type::Speed));
+		}
 		else
 		{
 			insertCellPtr = (SaveManager::getInstance().readCellFromFile(cellname));
@@ -1044,6 +1046,10 @@ void GUIManager::configure(std::shared_ptr<sf::RenderWindow> window)
 		else if (cellname == "Pizza")
 		{
 			CellInsertionTool::getInstance().setCellBlueprint(CellFactory::getCell(Cell::Type::Pizza));
+		}
+		else if (cellname == "Speed")
+		{
+			CellInsertionTool::getInstance().setCellBlueprint(CellFactory::getCell(Cell::Type::Speed));
 		}
 		else
 		{
@@ -1115,14 +1121,22 @@ void GUIManager::update()
 	// gui panel position = {0,0}
 	sf::FloatRect guiCollisionRect{ (view.getCenter().x - view.getSize().x / 2), (view.getCenter().y - view.getSize().y / 2), background.getSize().x*xFactor, background.getSize().y*yFactor };
 
-	if (guiCollisionRect.contains(CellSimMouse::getPosition()))
+	if(mainGui->get("new") != nullptr || mainGui->get("load") != nullptr || mainGui->get("save") != nullptr)
 	{
 		CellSimMouse::setWheelDelta(0);
 		ToolManager::getInstance().disable();
 	}
 	else
 	{
-		ToolManager::getInstance().enable();
+		if (guiCollisionRect.contains(CellSimMouse::getPosition()))
+		{
+			CellSimMouse::setWheelDelta(0);
+			ToolManager::getInstance().disable();
+		}
+		else
+		{
+			ToolManager::getInstance().enable();
+		}
 	}
 
 	selectedCellPtr = CellSelectionTool::getInstance().getSelectedCellCopy();
