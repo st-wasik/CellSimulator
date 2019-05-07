@@ -162,10 +162,15 @@ void CellSimApp::run()
 			if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::F12)
 				CellInsertionTool::getInstance().setCellBlueprint(CellFactory::getCell(Cell::Type::Pizza));
 
-			if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::PageUp)
-				FoodBrush::getInstance().setBrushRadius(FoodBrush::getInstance().getBrushRadius() + 2);
-			if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::PageDown)
-				FoodBrush::getInstance().setBrushRadius(FoodBrush::getInstance().getBrushRadius() - 2);
+			if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::F8)
+			{
+				zoomByOneStep = !zoomByOneStep;
+			}
+
+			//if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::PageUp)
+			//	FoodBrush::getInstance().setBrushRadius(FoodBrush::getInstance().getBrushRadius() + 2);
+			//if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::PageDown)
+			//	FoodBrush::getInstance().setBrushRadius(FoodBrush::getInstance().getBrushRadius() - 2);
 
 
 			GUIManager::getInstance().handleEvent(event);
@@ -295,7 +300,7 @@ void CellSimApp::updateViewZoom()
 			_expectedZoom -= 2;
 	}
 
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Numpad0) && window->hasFocus()) _expectedZoom = 0;
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::F7) && window->hasFocus()) _expectedZoom = 0;
 
 	if (zoomByOneStep)
 	{
