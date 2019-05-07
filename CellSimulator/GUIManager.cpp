@@ -1152,7 +1152,7 @@ void GUIManager::update()
 		setVisible(widgetsPreview, 1);
 		//size
 		updateValues(sizeValTT, sizeVal, "Min: " + doubleToString(cell->getGenes().maxSize.getMin(), 2) + "\nMax: " + doubleToString(cell->getGenes().maxSize.get(), 2),
-			doubleToString(cell->getSize(), 2), cell->getGenes().maxSize.get() * 100, cell->getGenes().maxSize.getMin() * 100, cell->getSize() * 100);
+			doubleToString(cell->getSize(), 2), (cell->getGenes().maxSize.get() == cell->getGenes().maxSize.getMin() ? cell->getGenes().maxSize.get() + 1 : cell->getGenes().maxSize.get()) * 100, cell->getGenes().maxSize.getMin() * 100, (cell->getGenes().maxSize.get() == cell->getGenes().maxSize.getMin() ?  cell->getSize() + 1 : cell->getSize()) * 100);
 		sizeM->setDefaultText(doubleToString(cell->getGenes().maxSize.get(), 2));
 		//speed
 		updateValues(speedValTT, speedVal, "Min: " + doubleToString(cell->getGenes().maxSpeed.getMin(), 2) + "\nMax: " + doubleToString(cell->getGenes().maxSpeed.get(), 2),
