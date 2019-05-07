@@ -466,19 +466,28 @@ void CellRoles::sniffForFood(Cell * c)
 	if (c->foodLevel <= c->genes.foodLimit.get()*0.8 && c->closestFood.first != nullptr && c->closestFood.second <= c->genes.radarRange.get()*c->genes.radarRange.get() + c->getSize())
 	{
 		auto v = c->closestFood.first->getPosition() - c->getPosition();
-		auto angle = atan2(v.y, v.x);
-		double angle_change = c->genes.turningRate.get() * CellSimApp::getInstance().getDeltaTime();
+		float angle = atan2(v.y, v.x);
+		float angle_change = c->genes.turningRate.get() * CellSimApp::getInstance().getDeltaTime();
 		angle = angle * (180 / PI);
 		if (angle < 0)
 		{
 			angle = 360 - (-angle);
 		}
 		angle += 90; //Remove this for some magic
-		double cfDiffrence = c->getRotation() - angle;
-		double abscfDiffrence = abs(cfDiffrence);
-		if (abscfDiffrence > 180)
+		if (angle > 360)
 		{
-			if (360 - abscfDiffrence < angle_change)
+			angle -= 360;
+		}
+
+		float cfDiffrence = c->getRotation() - angle;
+		if (cfDiffrence < 0.25 && cfDiffrence > -0.25)
+		{
+			return;
+		}
+		float abscfDiffrence = abs(cfDiffrence);
+		if (abscfDiffrence * CellSimApp::getInstance().getDeltaTime() > 180)
+		{
+			if (360 - abscfDiffrence * CellSimApp::getInstance().getDeltaTime() < angle_change)
 			{
 				c->rotate(cfDiffrence <= 0 ? -(360 - abscfDiffrence)*CellSimApp::getInstance().getDeltaTime() : (360 - abscfDiffrence)*CellSimApp::getInstance().getDeltaTime());
 			}
@@ -489,7 +498,7 @@ void CellRoles::sniffForFood(Cell * c)
 		}
 		else
 		{
-			if (abscfDiffrence < angle_change)
+			if (abscfDiffrence * CellSimApp::getInstance().getDeltaTime() < angle_change)
 			{
 				c->rotate(cfDiffrence >= 0 ? -abscfDiffrence * CellSimApp::getInstance().getDeltaTime() : abscfDiffrence * CellSimApp::getInstance().getDeltaTime());
 			}
