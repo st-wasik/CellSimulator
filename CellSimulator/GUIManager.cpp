@@ -11,6 +11,7 @@
 #include "SaveManager.h"
 #include "CellFactory.h"
 #include "DoubleToString.h"
+#include "FoodBrush.h"
 #include <regex>
 #include "RegexPattern.h"
 
@@ -541,17 +542,17 @@ void GUIManager::configure(std::shared_ptr<sf::RenderWindow> window)
 
 	createLabel(feedGui, "Radius", 75, 35 + offset, 18);
 
-	editBoxRadius = createEditBox(feedGui, 60, 25, 18, 220, 52 + offset, std::to_string((int)AutoFeederTool::getInstance().getMaxThresholdValue()));
+	editBoxRadius = createEditBox(feedGui, 60, 25, 18, 220, 52 + offset, "50");
 
-	sliderRadius = createSlider(feedGui, 200, 9, 10, 60 + offset, 100, 1, AutoFeederTool::getInstance().getMaxThresholdValue());
+	sliderRadius = createSlider(feedGui, 200, 9, 10, 60 + offset, 200, 10, 50);
 
 	buttonRadius = createButton(feedGui, 60, 25, 285, 52 + offset, "SET");
 
-	createLabel(feedGui, "Frequency", 60, 100 + offset, 18);
+	createLabel(feedGui, "Hardness", 63, 100 + offset, 18);
 
-	editBoxFreqF = createEditBox(feedGui, 60, 25, 18, 220, 117 + offset, std::to_string((int)AutoFeederTool::getInstance().getMaxFoodPerSec()));
+	editBoxFreqF = createEditBox(feedGui, 60, 25, 18, 220, 117 + offset, "25");
 
-	sliderFreqF = createSlider(feedGui, 200, 9, 10, 125 + offset, 250, 1, AutoFeederTool::getInstance().getMaxFoodPerSec());
+	sliderFreqF = createSlider(feedGui, 200, 9, 10, 125 + offset, 50, 1, 25);
 
 	buttonFreqF = createButton(feedGui, 60, 25, 285, 117 + offset, "SET");
 
@@ -1032,6 +1033,42 @@ void GUIManager::configure(std::shared_ptr<sf::RenderWindow> window)
 		else
 		{
 			CellInsertionTool::getInstance().setCellBlueprint(SaveManager::getInstance().readCellFromFile(cellname));
+		}
+	});
+
+	sliderRadius->connect("ValueChanged", [&]()
+	{
+		FoodBrush::getInstance().setBrushRadius(sliderRadius->getValue());
+		if (editBoxRadius->getText() != "")
+			editBoxRadius->setText("");
+		editBoxRadius->setDefaultText(std::to_string((int)sliderRadius->getValue()));
+	});
+
+	buttonRadius->connect("pressed", [=]()
+	{
+		if (editBoxRadius->getText() != "")
+		{
+			sliderRadius->setValue(std::stoi(editBoxRadius->getText().toAnsiString()));
+			editBoxRadius->setDefaultText(std::to_string((int)sliderRadius->getValue()));
+			editBoxRadius->setText("");
+		}
+	});
+
+	sliderFreqF->connect("ValueChanged", [&]()
+	{
+		FoodBrush::getInstance().setHardness(sliderFreqF->getValue());
+		if (editBoxFreqF->getText() != "")
+			editBoxFreqF->setText("");
+		editBoxFreqF->setDefaultText(std::to_string((int)sliderFreqF->getValue()));
+	});
+
+	buttonFreqF->connect("pressed", [=]()
+	{
+		if (editBoxFreqF->getText() != "")
+		{
+			sliderFreqF->setValue(std::stoi(editBoxFreqF->getText().toAnsiString()));
+			editBoxFreqF->setDefaultText(std::to_string((int)sliderFreqF->getValue()));
+			editBoxFreqF->setText("");
 		}
 	});
 }

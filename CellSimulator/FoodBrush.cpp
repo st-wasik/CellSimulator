@@ -79,7 +79,7 @@ double FoodBrush::getHardness()
 
 void FoodBrush::setBrushRadius(float radius)
 {
-	if (radius > 10.f)
+	if (radius >= 10.f)
 	{
 		brush.setRadius(radius);
 		brush.setOrigin(radius, radius);
