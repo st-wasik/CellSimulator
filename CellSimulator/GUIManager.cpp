@@ -661,6 +661,7 @@ void GUIManager::configure(std::shared_ptr<sf::RenderWindow> window)
 		buttonInsert->setInheritedOpacity(1);
 		buttonFeed->setEnabled(1);
 		buttonFeed->setInheritedOpacity(1);
+		CellSelectionTool::getInstance().clearSelectedCell();
 
 		ToolManager::getInstance().setActiveTool(ToolManager::Tool::Insertion);
 	});
@@ -695,6 +696,7 @@ void GUIManager::configure(std::shared_ptr<sf::RenderWindow> window)
 		buttonModify->setInheritedOpacity(1);
 		buttonFeed->setEnabled(1);
 		buttonFeed->setInheritedOpacity(1);
+		CellSelectionTool::getInstance().clearSelectedCell();
 
 		ToolManager::getInstance().setActiveTool(ToolManager::Tool::Insertion);
 	});
@@ -712,6 +714,7 @@ void GUIManager::configure(std::shared_ptr<sf::RenderWindow> window)
 		buttonCreate->setInheritedOpacity(1);
 		buttonModify->setEnabled(1);
 		buttonModify->setInheritedOpacity(1);
+		CellSelectionTool::getInstance().clearSelectedCell();
 
 		ToolManager::getInstance().setActiveTool(ToolManager::Tool::Feeder);
 	});
@@ -805,7 +808,6 @@ void GUIManager::configure(std::shared_ptr<sf::RenderWindow> window)
 		}
 		else
 		{
-			nameC->setText(createCellPtr->getName());
 			MessagesManager::getInstance().append("Cell Name must consist of letters only.");
 			checkResults.push_back(false);
 		}
@@ -836,6 +838,19 @@ void GUIManager::configure(std::shared_ptr<sf::RenderWindow> window)
 		checkResults.push_back(checkValue(foodLevelC, "Max Food Level", createCellPtr->getGenes().foodLimit));
 		checkResults.push_back(checkValue(divisionThresholdC, "Max Division Threshold", createCellPtr->getGenes().divisionThreshold));
 		checkResults.push_back(checkValue(radarRangeC, "Max Size", createCellPtr->getGenes().radarRange));
+
+		std::regex word(RegexPattern::Word);
+		std::string text = nameC->getText();
+		if (std::regex_match(text, word) || text.empty())
+		{
+			createCellPtr->setName(text);
+			checkResults.push_back(true);
+		}
+		else
+		{
+			MessagesManager::getInstance().append("Cell Name must consist of letters only.");
+			checkResults.push_back(false);
+		}
 
 		if (std::all_of(checkResults.begin(), checkResults.end(), [&](auto r) {return r == true; }))
 		{
@@ -1114,6 +1129,8 @@ void GUIManager::update()
 		radarRangeVal->setText(doubleToString(cell->getGenes().radarRange.get(), 2));
 		radarRangeM->setDefaultText(doubleToString(cell->getGenes().radarRange.get(), 2));
 
+		nameM->setDefaultText(cell->getName());
+
 		switch (cell->getGenes().type.get())
 		{
 		case 0:
@@ -1132,6 +1149,12 @@ void GUIManager::update()
 			buttonOmnivoreM->setEnabled(1); buttonOmnivoreM->setInheritedOpacity(1);
 			buttonHerbivoreM->setEnabled(1); buttonHerbivoreM->setInheritedOpacity(1);
 			buttonCarnivoreM->setEnabled(0); buttonCarnivoreM->setInheritedOpacity(0.5);
+			break;
+
+		default:
+			buttonOmnivoreM->setEnabled(1); buttonOmnivoreM->setInheritedOpacity(1);
+			buttonHerbivoreM->setEnabled(1); buttonHerbivoreM->setInheritedOpacity(1);
+			buttonCarnivoreM->setEnabled(1); buttonCarnivoreM->setInheritedOpacity(1);
 			break;
 		}
 
