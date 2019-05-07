@@ -57,23 +57,24 @@ Cell::Cell(float size, sf::Vector2f position, sf::Color color) : BaseObj(size, p
 	// make sure that checkCollisions is always the first role-function
 	roles.push_back(CellRoles::checkCollisions);
 
+
 	roles.push_back(CellRoles::changeDirection);
 	if (this->genes.type.get() == 1 || this->genes.type.get() == 0)
 	{
 		roles.push_back(CellRoles::sniffForFood);
+		roles.push_back(CellRoles::eat);
 	}
 	if (this->genes.type.get() == 2 || this->genes.type.get() == 0)
 	{
 		roles.push_back(CellRoles::sniffForCell);
+		roles.push_back(CellRoles::fight);
 	}
 	roles.push_back(CellRoles::changeSpeed);
-	roles.push_back(CellRoles::eat);
 	roles.push_back(CellRoles::updateColor);
 	roles.push_back(CellRoles::simulateHunger);
 	roles.push_back(CellRoles::divideAndConquer);
 	roles.push_back(CellRoles::getingHot);
 	roles.push_back(CellRoles::grow);
-	roles.push_back(CellRoles::fight);
 	roles.push_back(CellRoles::makeOlder);
 	roles.push_back(CellRoles::mutate);
 
