@@ -1119,7 +1119,8 @@ void GUIManager::update()
 	auto yFactor = view.getSize().y / window->getSize().y;
 
 	// gui panel position = {0,0}
-	sf::FloatRect guiCollisionRect{ (view.getCenter().x - view.getSize().x / 2), (view.getCenter().y - view.getSize().y / 2), background.getSize().x*xFactor, background.getSize().y*yFactor };
+	constexpr float margin = 10;
+	sf::FloatRect guiCollisionRect{ (view.getCenter().x - view.getSize().x / 2) - margin, (view.getCenter().y - view.getSize().y / 2) - margin, background.getSize().x*xFactor, background.getSize().y*yFactor };
 
 	if(mainGui->get("new") != nullptr || mainGui->get("load") != nullptr || mainGui->get("save") != nullptr)
 	{
