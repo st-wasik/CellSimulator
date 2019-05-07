@@ -133,6 +133,7 @@ std::shared_ptr<Cell> CellFactory::getCell(Cell::Type type)
 		result->genes.type = 0;
 		result->genes.turningRate = 3.25;
 		result->setBaseColor(sf::Color::White);
+		result->setFoodLevel(60);
 		result->setSize(20);
 		break;
 	}

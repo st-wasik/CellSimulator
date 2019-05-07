@@ -423,7 +423,7 @@ void GUIManager::configure(std::shared_ptr<sf::RenderWindow> window)
 	widgetsPreview.push_back(aggresionVal);
 
 	createLabel(previewGui, "Food level", 10, 160 + offset, 18);
-	foodLevelValLabel = createLabel(insertGui, "Food limit (0-150)", 10, 130 + offset, 18);
+	foodLevelValLabel = createLabel(insertGui, "Food limit (50-150)", 10, 130 + offset, 18);
 	modifyGui->add(foodLevelValLabel);
 	createGui->add(foodLevelValLabel);
 
@@ -434,8 +434,8 @@ void GUIManager::configure(std::shared_ptr<sf::RenderWindow> window)
 
 	divisionThresholdTT = createLabel(previewGui, "Division Threshold", 0, 0, 18, nullptr, 1, "ToolTip");
 
-	createLabel(previewGui, "Div. th", 10, 190 + offset, 18, divisionThresholdTT);
-	divisionThresholdValLabel = createLabel(insertGui, "Div. th", 10, 160 + offset, 18, divisionThresholdTT);
+	createLabel(previewGui, "Division Th", 10, 190 + offset, 18, divisionThresholdTT);
+	divisionThresholdValLabel = createLabel(insertGui, "Division Th (0-100)", 10, 160 + offset, 18, divisionThresholdTT);
 	modifyGui->add(divisionThresholdValLabel);
 	createGui->add(divisionThresholdValLabel);
 
@@ -444,8 +444,8 @@ void GUIManager::configure(std::shared_ptr<sf::RenderWindow> window)
 
 	radarRangeTT = createLabel(previewGui, "Detection Range", 0, 0, 18, nullptr, 1, "ToolTip");
 
-	createLabel(previewGui, "Detec. rg", 10, 220 + offset, 18, radarRangeTT);
-	radarRangeValLabel = createLabel(insertGui, "Detec. rg", 10, 190 + offset, 18, radarRangeTT);
+	createLabel(previewGui, "Detection Rg", 10, 220 + offset, 18, radarRangeTT);
+	radarRangeValLabel = createLabel(insertGui, "Detect. Rg (0-500)", 10, 190 + offset, 18, radarRangeTT);
 	modifyGui->add(radarRangeValLabel);
 	createGui->add(radarRangeValLabel);
 
@@ -534,7 +534,7 @@ void GUIManager::configure(std::shared_ptr<sf::RenderWindow> window)
 
 	radarRangeValI = createProgressBar(insertGui, 70, 20, 200, 192 + offset, 16, nullptr, 1);
 
-	listBoxI = createListBox(insertGui, 200, 120, 80, 270 + offset);
+	listBoxI = createListBox(insertGui, 300, 300, 30, 270 + offset);
 
 	//FEED
 
@@ -1171,8 +1171,8 @@ void GUIManager::update()
 			doubleToString(cell->getGenes().aggresion.get(), 2), cell->getGenes().aggresion.getMax() * 100, cell->getGenes().aggresion.getMin() * 100, cell->getGenes().aggresion.get() * 100);
 		aggresionM->setDefaultText(doubleToString(cell->getGenes().aggresion.get(), 2));
 		//food level
-		updateValues(foodLevelValTT, foodLevelVal, "Min: " + doubleToString(cell->getGenes().foodLimit.getMin(), 2) + "\nMax: " + doubleToString(cell->getGenes().foodLimit.getMax(), 2),
-			doubleToString(cell->getFoodLevel(), 2), cell->getGenes().foodLimit.get() * 100, cell->getGenes().foodLimit.getMin() * 100, cell->getFoodLevel() * 100);
+		updateValues(foodLevelValTT, foodLevelVal, "Min: " + doubleToString(0, 2) + "\nMax: " + doubleToString(cell->getGenes().foodLimit.get(), 2),
+			doubleToString(cell->getFoodLevel(), 2), cell->getGenes().foodLimit.get() * 100, 0 * 100, cell->getFoodLevel() * 100);
 		foodLevelM->setDefaultText(doubleToString(cell->getGenes().foodLimit.get(), 2));
 		//divisionThreshold
 		divisionThresholdVal->setText(doubleToString(cell->getGenes().divisionThreshold.get(), 2));
