@@ -289,6 +289,14 @@ void Cell::kill()
 			auto food = Food::create(foodSize, position, sf::Color::Black, foodSize);
 			Environment::getInstance().insertNewFood(food);
 		}
+
+		// update collision sectors
+		const auto currentCollisionSectorCoords = Environment::getCollisionSectorCoords(getSelfPtr());
+
+		auto& sectors = Environment::getInstance().getCellCollisionSectors();
+		auto& cellCollisionSector = sectors[currentCollisionSectorCoords.x][currentCollisionSectorCoords.y];
+
+		cellCollisionSector.erase(std::remove(cellCollisionSector.begin(), cellCollisionSector.end(), getSelfPtr()), cellCollisionSector.end());
 	}
 }
 

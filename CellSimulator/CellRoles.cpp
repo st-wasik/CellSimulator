@@ -119,6 +119,14 @@ void CellRoles::eat(Cell * c)
 		{
 			c->foodLevel += static_cast<float>(f->getSize());
 			f->markToDelete();
+
+			// update collision sectors
+			const auto currentCollisionSectorCoords = Environment::getCollisionSectorCoords(f);
+
+			auto& sectors = Environment::getInstance().getCellCollisionSectors();
+			auto& foodCollisionSector = sectors[currentCollisionSectorCoords.x][currentCollisionSectorCoords.y];
+
+			foodCollisionSector.erase(std::remove(foodCollisionSector.begin(), foodCollisionSector.end(), f), foodCollisionSector.end());
 		}
 	}
 }
