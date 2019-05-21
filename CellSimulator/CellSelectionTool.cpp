@@ -68,6 +68,22 @@ void CellSelectionTool::updateSelectionMarker()
 		selectionMarker.setOrigin(size, size);
 		selectionMarker.setPosition(pos);
 
+		auto closestCell = selectedCell->getClosestCell();
+		if (closestCell != nullptr)
+		{
+			targetCellSelectionMarker.setRadius(closestCell->getSize() + 20);
+			targetCellSelectionMarker.setOrigin(closestCell->getSize() + 20, closestCell->getSize() + 20);
+			targetCellSelectionMarker.setPosition(closestCell->getPosition());
+		}
+
+		auto closestFood = selectedCell->getClosestFood();
+		if (closestFood != nullptr)
+		{
+			targetFoodSelectionMarker.setRadius(closestFood->getSize() + 20);
+			targetFoodSelectionMarker.setOrigin(closestFood->getSize() + 20, closestFood->getSize() + 20);
+			targetFoodSelectionMarker.setPosition(closestFood->getPosition());
+		}
+
 		auto radarRadius = selectedCell->getGenes().radarRange.get();
 		cellRadarRange.setOrigin(sf::Vector2f(radarRadius, radarRadius));
 		cellRadarRange.setRadius(radarRadius);
@@ -86,6 +102,11 @@ void CellSelectionTool::draw(sf::RenderWindow &w)
 		w.draw(selectionMarker);
 		w.draw(cellRadarRange);
 		w.draw(selectedCellName);
+		if (selectedCell->getClosestCell() != nullptr)
+			w.draw(targetCellSelectionMarker);
+
+		if (selectedCell->getClosestFood() != nullptr)
+			w.draw(targetFoodSelectionMarker);
 	}
 }
 
@@ -104,6 +125,19 @@ void CellSelectionTool::setSelectedCell(std::shared_ptr<Cell> &s)
 	selectionMarker.setOutlineColor(sf::Color(192, 192, 192, 128));
 	selectionMarker.setOutlineThickness(5);
 	selectionMarker.setPosition(selectedCell->getPosition());
+
+
+	auto targetCell = selectedCell->getClosestCell();
+	if (targetCell != nullptr)
+	{
+		targetCellSelectionMarker.setPosition(targetCell->getPosition());
+	}
+
+	auto targetFood = selectedCell->getClosestFood();
+	if (targetCell != nullptr)
+	{
+		targetFoodSelectionMarker.setPosition(targetCell->getPosition());
+	}
 
 	cellRadarRange.setFillColor(sf::Color(0, 0, 0, 16));
 	auto radius = selectedCell->getGenes().radarRange.get() * 50;
@@ -159,4 +193,12 @@ CellSelectionTool::CellSelectionTool() : selectedCellCopyValid(false), isActive(
 	selectedCellName.setFillColor(sf::Color::White);
 
 	selectedMovedCell = false;
+
+	targetCellSelectionMarker.setFillColor(sf::Color::Transparent);
+	targetCellSelectionMarker.setOutlineColor(sf::Color(216, 0, 0, 128));
+	targetCellSelectionMarker.setOutlineThickness(5);
+
+	targetFoodSelectionMarker.setFillColor(sf::Color::Transparent);
+	targetFoodSelectionMarker.setOutlineColor(sf::Color(0, 216, 0, 128));
+	targetFoodSelectionMarker.setOutlineThickness(5);
 }

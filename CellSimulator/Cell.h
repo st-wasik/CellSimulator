@@ -86,6 +86,9 @@ public:
 
 	sf::CircleShape& getTypeShape();
 
+	std::shared_ptr<BaseObj> getClosestCell();
+	std::shared_ptr<BaseObj> getClosestFood();
+
 private:
 	explicit Cell();
 	Cell(float size, sf::Vector2f position, sf::Color color);

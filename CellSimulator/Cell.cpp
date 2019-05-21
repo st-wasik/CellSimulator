@@ -479,6 +479,16 @@ sf::CircleShape & Cell::getTypeShape()
 	return typeShape;
 }
 
+ std::shared_ptr<BaseObj> Cell::getClosestCell()
+{
+	 return closestCell.first;
+}
+
+ std::shared_ptr<BaseObj> Cell::getClosestFood()
+ {
+	 return closestFood.first;
+ }
+
 void Cell::getFoodCollisionVector()
 {
 	this->FoodCollisionVector->clear();

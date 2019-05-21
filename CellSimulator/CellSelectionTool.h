@@ -41,6 +41,8 @@ private:
 
 	sf::Text selectedCellName;
 	sf::CircleShape selectionMarker;
+	sf::CircleShape targetCellSelectionMarker;
+	sf::CircleShape targetFoodSelectionMarker;
 	sf::CircleShape cellRadarRange;
 
 	std::atomic_bool followSelectedCell;
