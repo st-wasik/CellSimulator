@@ -127,6 +127,9 @@ private:
 	std::shared_ptr<std::vector<std::shared_ptr<Cell>>> CellCollisionVector = std::make_shared<std::vector<std::shared_ptr<Cell>>>();
 	std::pair<std::shared_ptr<BaseObj>, double> closestCell;
 	std::pair<std::shared_ptr<BaseObj>, double> closestFood;
+	float closestCellAngle;
+	float closestFoodAngle;
+
 	// abbreviation used to save cell to file
 	struct VarAbbrv final
 	{

@@ -86,17 +86,52 @@ void CellRoles::moveForward(Cell * c)
 
 void CellRoles::changeDirection(Cell * c)
 {
-	if (randomInt(0, 100) > 97)
+	
+
+	if (c->genes.type.get() == 1 && c->closestFood.first != nullptr && c->closestFoodAngle != 0)
 	{
-		if (randomInt(0, 100) <= 50)
+		c->rotate(c->closestFoodAngle);
+	}
+	else if (c->genes.type.get() == 2 && c->closestCell.first != nullptr && c->closestCellAngle != 0)
+	{
+		c->rotate(c->closestCellAngle);
+	}
+	else if (c->genes.type.get() == 0 && (c->closestFood.first != nullptr || c->closestCell.first != nullptr) && (c->closestFoodAngle != 0 || c->closestCellAngle != 0))
+	{
+		if (c->closestFood.first != nullptr && c->closestCell.first == nullptr && c->closestFoodAngle != 0)
 		{
-			c->rotate(randomReal(-25, 0));
-			c->typeShape.setRotation(c->shape.getRotation());
+			c->rotate(c->closestFoodAngle);
+		}
+		else if (c->closestFood.first == nullptr && c->closestCell.first != nullptr && c->closestCellAngle != 0)
+		{
+			c->rotate(c->closestCellAngle);
 		}
 		else
 		{
-			c->rotate(randomReal(0, 25));
-			c->typeShape.setRotation(c->shape.getRotation());
+			if (c->closestCell.second > c->closestFood.second)
+			{
+				c->rotate(c->closestFoodAngle);
+			}
+			else
+			{
+				c->rotate(c->closestCellAngle);
+			}
+		}
+
+	}
+	else
+	{
+
+		if (randomInt(0, 100) > 97)
+		{
+			if (randomInt(0, 100) <= 50)
+			{
+				c->rotate(randomReal(-25, 0));
+			}
+			else
+			{
+				c->rotate(randomReal(0, 25));
+			}
 		}
 	}
 }
@@ -386,7 +421,7 @@ void CellRoles::fight(Cell * c)
 					cell->setSize(cell->getSize() - 2);
 					if (c->getFoodLevel() + 2 < c->getGenes().foodLimit.get())
 					{
-						c->foodLevel += 5;
+						c->foodLevel += 10;
 					}
 
 				}
@@ -395,7 +430,7 @@ void CellRoles::fight(Cell * c)
 					c->setSize(c->getSize() - 2);
 					if (cell->getFoodLevel() + 2 < cell->getGenes().foodLimit.get())
 					{
-						cell->foodLevel += 5;
+						cell->foodLevel += 10;
 					}
 				}
 
@@ -471,6 +506,7 @@ void CellRoles::mutate(Cell * c)
 
 void CellRoles::sniffForFood(Cell * c)
 {
+	c->closestFoodAngle = 0;
 	if (c->foodLevel <= c->genes.foodLimit.get()*0.8 && c->closestFood.first != nullptr && c->closestFood.second <= c->genes.radarRange.get()*c->genes.radarRange.get() + c->getSize())
 	{
 		auto v = c->closestFood.first->getPosition() - c->getPosition();
@@ -493,26 +529,26 @@ void CellRoles::sniffForFood(Cell * c)
 			return;
 		}
 		float abscfDiffrence = abs(cfDiffrence);
-		if (abscfDiffrence * CellSimApp::getInstance().getDeltaTime() > 180)
+		if (abscfDiffrence > 180)
 		{
-			if (360 - abscfDiffrence * CellSimApp::getInstance().getDeltaTime() < angle_change)
+			if (360 - abscfDiffrence < angle_change)
 			{
-				c->rotate(cfDiffrence <= 0 ? -(360 - abscfDiffrence)*CellSimApp::getInstance().getDeltaTime() : (360 - abscfDiffrence)*CellSimApp::getInstance().getDeltaTime());
+				c->closestFoodAngle = (cfDiffrence <= 0 ? -(360 - abscfDiffrence): (360 - abscfDiffrence));
 			}
 			else
 			{
-				c->rotate(cfDiffrence <= 0 ? -angle_change : angle_change);
+				c->closestFoodAngle = (cfDiffrence <= 0 ? -angle_change : angle_change);
 			}
 		}
 		else
 		{
-			if (abscfDiffrence * CellSimApp::getInstance().getDeltaTime() < angle_change)
+			if (abscfDiffrence < angle_change)
 			{
-				c->rotate(cfDiffrence >= 0 ? -abscfDiffrence * CellSimApp::getInstance().getDeltaTime() : abscfDiffrence * CellSimApp::getInstance().getDeltaTime());
+				c->closestFoodAngle = (cfDiffrence >= 0 ? -abscfDiffrence : abscfDiffrence);
 			}
 			else
 			{
-				c->rotate(cfDiffrence >= 0 ? -angle_change : angle_change);
+				c->closestFoodAngle = (cfDiffrence >= 0 ? -angle_change : angle_change);
 			}
 		}
 	}
@@ -538,39 +574,49 @@ void CellRoles::checkCollisions(Cell * c)
 
 void CellRoles::sniffForCell(Cell * c)
 {
+	c->closestCellAngle = 0;
 	if (c->foodLevel <= c->genes.foodLimit.get()*0.8 && c->closestCell.first != nullptr && c->closestCell.second <= c->genes.radarRange.get()*c->genes.radarRange.get() + c->getSize())
 	{
 		auto v = c->closestCell.first->getPosition() - c->getPosition();
-		auto angle = atan2(v.y, v.x);
-		double angle_change = c->genes.turningRate.get() * CellSimApp::getInstance().getDeltaTime();
+		float angle = atan2(v.y, v.x);
+		float angle_change = c->genes.turningRate.get() * CellSimApp::getInstance().getDeltaTime();
 		angle = angle * (180 / PI);
 		if (angle < 0)
 		{
 			angle = 360 - (-angle);
 		}
 		angle += 90; //Remove this for some magic
-		double cfDiffrence = c->getRotation() - angle;
-		double abscfDiffrence = abs(cfDiffrence);
+		if (angle > 360)
+		{
+			angle -= 360;
+		}
+
+		float cfDiffrence = c->getRotation() - angle;
+		if (cfDiffrence < 0.25 && cfDiffrence > -0.25)
+		{
+			return;
+		}
+		float abscfDiffrence = abs(cfDiffrence);
 		if (abscfDiffrence > 180)
 		{
 			if (360 - abscfDiffrence < angle_change)
 			{
-				c->rotate(cfDiffrence <= 0 ? -(360 - abscfDiffrence)*CellSimApp::getInstance().getDeltaTime() : (360 - abscfDiffrence)*CellSimApp::getInstance().getDeltaTime());
+				c->closestCellAngle = (cfDiffrence <= 0 ? -(360 - abscfDiffrence) : (360 - abscfDiffrence));
 			}
 			else
 			{
-				c->rotate(cfDiffrence <= 0 ? -angle_change : angle_change);
+				c->closestCellAngle = (cfDiffrence <= 0 ? -angle_change : angle_change);
 			}
 		}
 		else
 		{
 			if (abscfDiffrence < angle_change)
 			{
-				c->rotate(cfDiffrence >= 0 ? -abscfDiffrence * CellSimApp::getInstance().getDeltaTime() : abscfDiffrence * CellSimApp::getInstance().getDeltaTime());
+				c->closestCellAngle = (cfDiffrence >= 0 ? -abscfDiffrence : abscfDiffrence);
 			}
 			else
 			{
-				c->rotate(cfDiffrence >= 0 ? -angle_change : angle_change);
+				c->closestCellAngle = (cfDiffrence >= 0 ? -angle_change : angle_change);
 			}
 		}
 	}
