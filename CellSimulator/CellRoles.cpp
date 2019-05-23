@@ -421,7 +421,7 @@ void CellRoles::fight(Cell * c)
 					cell->setSize(cell->getSize() - 2);
 					if (c->getFoodLevel() + 2 < c->getGenes().foodLimit.get())
 					{
-						c->foodLevel += 5;
+						c->foodLevel += 10;
 					}
 
 				}
@@ -430,7 +430,7 @@ void CellRoles::fight(Cell * c)
 					c->setSize(c->getSize() - 2);
 					if (cell->getFoodLevel() + 2 < cell->getGenes().foodLimit.get())
 					{
-						cell->foodLevel += 5;
+						cell->foodLevel += 10;
 					}
 				}
 
