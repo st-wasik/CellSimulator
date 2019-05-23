@@ -133,6 +133,7 @@ private:
 		static constexpr const char *const currentRotation = "Rt";
 		static constexpr const char *const currentPosition = "Ps";
 		static constexpr const char *const color = "C";
+		static constexpr const char *const makedFoodColor = "MFC";
 		static constexpr const char *const currentAge = "A";
 		static constexpr const char *const currentSpeed = "Sp";
 		static constexpr const char *const currentSize = "Si";

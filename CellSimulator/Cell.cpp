@@ -147,7 +147,14 @@ Cell::Cell(std::string formattedCellString) : Cell(20, { 0,0 }, sf::Color::White
 		//TODO: add cell name
 	}
 	if (genes.type.get() != -1)
+	{
 		CellRoles::updateColor(this);
+	}
+	else
+	{
+		typeShape.setFillColor(sf::Color::Transparent);
+		typeShape.setOutlineColor(sf::Color::Transparent);
+	}
 
 	delayTime = CellSimApp::getInstance().getDeltaTime();
 }
@@ -206,6 +213,15 @@ void Cell::modifyValueFromVector(std::string valueName, const std::vector<std::s
 			return;
 		}
 		this->setBaseColor(sf::Color(std::stod(values[0]), std::stod(values[1]), std::stod(values[2]), std::stod(values[3])));
+	}
+	else if (v == VarAbbrv::makedFoodColor)
+	{
+		if (values.size() != 4)
+		{
+			Logger::log("Wrong values count for " + std::string(VarAbbrv::makedFoodColor) + ": " + std::to_string(values.size()) + ". <" + values[0] + ">");
+			return;
+		}
+		this->setMakedFoodColor(sf::Color(std::stod(values[0]), std::stod(values[1]), std::stod(values[2]), std::stod(values[3])));
 	}
 	else if (v == BaseObj::VarAbbrv::textureRect)
 	{
@@ -385,6 +401,11 @@ std::string Cell::getSaveString()
 		static_cast<int>(this->getBaseColor().g) << ", " <<
 		static_cast<int>(this->getBaseColor().b) << ", " <<
 		static_cast<int>(this->getBaseColor().a) << "} " <<
+		VarAbbrv::makedFoodColor << ":{" <<
+		static_cast<int>(this->getMakedFoodColor().r) << ", " <<
+		static_cast<int>(this->getMakedFoodColor().g) << ", " <<
+		static_cast<int>(this->getMakedFoodColor().b) << ", " <<
+		static_cast<int>(this->getMakedFoodColor().a) << "} " <<
 		BaseObj::VarAbbrv::textureRect << ":{" << this->shape.getTextureRect().left << ", " <<
 		this->shape.getTextureRect().top << ", " <<
 		this->shape.getTextureRect().width << ", " <<
