@@ -223,8 +223,16 @@ std::shared_ptr<tgui::MenuBar> GUIManager::createMenuBar(std::shared_ptr<tgui::G
 	confirmS->connect("pressed", [=]()
 	{
 		SaveManager::getInstance().saveEnvironmentToFile(nameSave->getText());
-		SaveManager::getInstance().readEnvironmentFromFile(loadList->getSelectedItem().toAnsiString());
-		loadList->addItem(nameSave->getText());
+		if (!loadList->contains(nameSave->getText()))
+		{
+			MessagesManager::getInstance().append("Simulation saved as " + nameSave->getText().toAnsiString() + SaveManager::getInstance().envSaveFormat + ".");
+			loadList->addItem(nameSave->getText());
+		}
+		else
+		{
+			MessagesManager::getInstance().append("Overwriting file " + nameSave->getText().toAnsiString() + SaveManager::getInstance().envSaveFormat + ".");
+			MessagesManager::getInstance().append("Simulation saved as " + nameSave->getText().toAnsiString() + SaveManager::getInstance().envSaveFormat + ".");
+		}
 		saveWindow->destroy();
 	});
 	cancelS->connect("pressed", [=]()
@@ -992,7 +1000,7 @@ void GUIManager::configure(std::shared_ptr<sf::RenderWindow> window)
 		}
 		else if (cellname == "Aggressive")
 		{
-			insertCellPtr= (CellFactory::getCell(Cell::Type::Aggressive));
+			insertCellPtr = (CellFactory::getCell(Cell::Type::Aggressive));
 		}
 		else if (cellname == "Random")
 		{
@@ -1122,7 +1130,7 @@ void GUIManager::update()
 	constexpr float margin = 10;
 	sf::FloatRect guiCollisionRect{ (view.getCenter().x - view.getSize().x / 2) - margin, (view.getCenter().y - view.getSize().y / 2) - margin, background.getSize().x*xFactor, background.getSize().y*yFactor };
 
-	if(mainGui->get("new") != nullptr || mainGui->get("load") != nullptr || mainGui->get("save") != nullptr)
+	if (mainGui->get("new") != nullptr || mainGui->get("load") != nullptr || mainGui->get("save") != nullptr)
 	{
 		CellSimMouse::setWheelDelta(0);
 		ToolManager::getInstance().disable();
@@ -1153,7 +1161,7 @@ void GUIManager::update()
 		setVisible(widgetsPreview, 1);
 		//size
 		updateValues(sizeValTT, sizeVal, "Min: " + doubleToString(cell->getGenes().maxSize.getMin(), 2) + "\nMax: " + doubleToString(cell->getGenes().maxSize.get(), 2),
-			doubleToString(cell->getSize(), 2), (cell->getGenes().maxSize.get() == cell->getGenes().maxSize.getMin() ? cell->getGenes().maxSize.get() + 1 : cell->getGenes().maxSize.get()) * 100, cell->getGenes().maxSize.getMin() * 100, (cell->getGenes().maxSize.get() == cell->getGenes().maxSize.getMin() ?  cell->getSize() + 1 : cell->getSize()) * 100);
+			doubleToString(cell->getSize(), 2), (cell->getGenes().maxSize.get() == cell->getGenes().maxSize.getMin() ? cell->getGenes().maxSize.get() + 1 : cell->getGenes().maxSize.get()) * 100, cell->getGenes().maxSize.getMin() * 100, (cell->getGenes().maxSize.get() == cell->getGenes().maxSize.getMin() ? cell->getSize() + 1 : cell->getSize()) * 100);
 		sizeM->setDefaultText(doubleToString(cell->getGenes().maxSize.get(), 2));
 		//speed
 		updateValues(speedValTT, speedVal, "Min: " + doubleToString(cell->getGenes().maxSpeed.getMin(), 2) + "\nMax: " + doubleToString(cell->getGenes().maxSpeed.get(), 2),
