@@ -39,17 +39,24 @@ void Environment::clear()
 void Environment::sterilizeEnvironment()
 {
 	for (auto& o : cells) o->markToDelete();
+	for(auto& o : newCells) o->markToDelete();
 	for (auto& o : deadCells) o->markToDelete();
 	for (auto& o : food) o->markToDelete();
+	for (auto& o : newFood) o->markToDelete();
+
 	cells.clear();
+	newCells.clear();
 	deadCells.clear();
+	
 	food.clear();
+	newFood.clear();
 
 	for (auto& c : cellCollisionSectors)
 	{
 		for (auto& cc : c)
 			cc.clear();
 	}
+
 	for (auto& f : foodCollisionSectors)
 	{
 		for (auto& ff : f)
