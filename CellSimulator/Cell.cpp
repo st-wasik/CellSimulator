@@ -112,6 +112,7 @@ Cell::Cell(std::string formattedCellString) : Cell(20, { 0,0 }, sf::Color::White
 	{
 		std::string settingStr = i->str();
 		static std::regex type(RegexPattern::Word);
+		static std::regex name(RegexPattern::Word);
 		static std::regex value(RegexPattern::Double);
 		static std::regex vectorValue(RegexPattern::Vector);
 
@@ -140,8 +141,11 @@ Cell::Cell(std::string formattedCellString) : Cell(20, { 0,0 }, sf::Color::White
 		else
 		{
 			auto value_i = std::sregex_iterator(settingStr.begin(), settingStr.end(), value);
+			auto name_i = std::sregex_iterator(settingStr.begin(), settingStr.end(), name);
 			if (type_i != std::sregex_iterator() && value_i != std::sregex_iterator())
 				modifyValueFromString(type_i->str(), value_i->str());
+			else if (type_i != std::sregex_iterator() && name_i != std::sregex_iterator())
+				modifyValueFromString(type_i->str(), name_i->str());
 		}
 
 		//TODO: add cell name
@@ -169,6 +173,7 @@ void Cell::modifyValueFromString(std::string valueName, std::string value)
 	else if (v == VarAbbrv::currentSpeed)		this->currentSpeed = (std::stod(value));
 	else if (v == VarAbbrv::currentSize)		this->setSize((std::stod(value)));
 	else if (v == VarAbbrv::isDead)				this->dead = (std::stod(value));
+	else if (v == VarAbbrv::name)				this->name = (value);
 
 	else if (v == VarAbbrv::currentFoodLevel)	this->foodLevel = (std::stod(value));
 	else if (v == VarAbbrv::isFreezed)			this->freezed = (std::stod(value));
@@ -392,6 +397,7 @@ std::string Cell::getSaveString()
 		VarAbbrv::currentSpeed << ":" << this->currentSpeed << " " <<
 		VarAbbrv::currentSize << ":" << this->getSize() << " " <<
 		VarAbbrv::isDead << ":" << this->dead << " " <<
+		VarAbbrv::name << ":" << this->name << " " <<
 		VarAbbrv::currentFoodLevel << ":" << this->foodLevel << " " <<
 		VarAbbrv::isFreezed << ":" << this->freezed << " " <<
 		VarAbbrv::horniness << ":" << this->horniness << " " <<

@@ -142,6 +142,7 @@ private:
 		static constexpr const char *const isFreezed = "FF";
 		static constexpr const char *const horniness = "Hr";
 		static constexpr const char *const cellRoles = "Rl";
+		static constexpr const char *const name = "Na";
 
 		static constexpr const char *const aggression = "GAr";
 		static constexpr const char *const divisionTh = "GDi";
