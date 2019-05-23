@@ -396,8 +396,14 @@ std::string Cell::getSaveString()
 		VarAbbrv::currentAge << ":" << this->age << " " <<
 		VarAbbrv::currentSpeed << ":" << this->currentSpeed << " " <<
 		VarAbbrv::currentSize << ":" << this->getSize() << " " <<
-		VarAbbrv::isDead << ":" << this->dead << " " <<
-		VarAbbrv::name << ":" << this->name << " " <<
+		VarAbbrv::isDead << ":" << this->dead << " ";
+
+	if (!this->name.empty())
+	{
+		result << VarAbbrv::name << ":" << this->name << " ";
+	}
+
+	result <<
 		VarAbbrv::currentFoodLevel << ":" << this->foodLevel << " " <<
 		VarAbbrv::isFreezed << ":" << this->freezed << " " <<
 		VarAbbrv::horniness << ":" << this->horniness << " " <<
