@@ -58,10 +58,10 @@ Cell::Cell(float size, sf::Vector2f position, sf::Color color) : BaseObj(size, p
 	roles.push_back(CellRoles::checkCollisions);
 
 
-	roles.push_back(CellRoles::changeDirection);
 	roles.push_back(CellRoles::sniffForFood);
-	roles.push_back(CellRoles::eat);
 	roles.push_back(CellRoles::sniffForCell);
+	roles.push_back(CellRoles::changeDirection);
+	roles.push_back(CellRoles::eat);
 	roles.push_back(CellRoles::fight);
 	roles.push_back(CellRoles::changeSpeed);
 	roles.push_back(CellRoles::updateColor);
