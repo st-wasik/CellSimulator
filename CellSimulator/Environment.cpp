@@ -212,6 +212,8 @@ void Environment::configure(std::string formattedEnvString)
 		else Logger::log("Not recognized data format in environment save string.");
 	}
 
+	this->pauseSimulation();
+	MessagesManager::getInstance().append("Press Enter to start simulation.");
 }
 
 void Environment::updateBackground()

@@ -75,12 +75,12 @@ void SaveManager::readEnvironmentFromFile(std::string filename)
 	try
 	{
 		saveString = FilesManager::getInstance().readFile(fullpath);
+		Environment::getInstance().configure(saveString);
 	}
 	catch (std::exception e)
 	{
 		Logger::log(e.what());
 	}
-	Environment::getInstance().configure(saveString);
 }
 
 // https://stackoverflow.com/questions/612097/how-can-i-get-the-list-of-files-in-a-directory-using-c-or-c
