@@ -72,6 +72,9 @@ private:
 		confirmL,
 		cancelL;
 
+	std::shared_ptr<tgui::Label>
+		ToolTipNew;
+
 	//ENV SETTINGS
 	std::shared_ptr<tgui::Label>
 		labelQuan,

@@ -151,10 +151,15 @@ std::shared_ptr<tgui::MenuBar> GUIManager::createMenuBar(std::shared_ptr<tgui::G
 	loadWindow->setEnabled(1);
 	loadWindow->setVisible(1);
 
+	ToolTipNew = createLabel(gui, "In range of 150-5000", 0, 0, 18, nullptr, 1, "ToolTip");
 	widthN = createEditBox(nullptr, 80, 25, 18, 70, 40, "Width");
+	widthN->setInputValidator("[1-9][0-9]*");
+	widthN->setToolTip(ToolTipNew);
 	newWindow->add(widthN);
 
 	heightN = createEditBox(nullptr, 80, 25, 18, 210, 40, "Height");
+	heightN->setInputValidator("[1-9][0-9]*");
+	heightN->setToolTip(ToolTipNew);
 	newWindow->add(heightN);
 
 	confirmN = createButton(nullptr, 70, 30, 100, 100, "Confirm");
@@ -213,11 +218,19 @@ std::shared_ptr<tgui::MenuBar> GUIManager::createMenuBar(std::shared_ptr<tgui::G
 
 	confirmN->connect("pressed", [=]()
 	{
-		Environment::getInstance().configure(sf::Vector2f(std::stod(widthN->getText().toAnsiString()), std::stod(heightN->getText().toAnsiString())));
+		if (std::stod(widthN->getText().toAnsiString()) > 149 && std::stod(widthN->getText().toAnsiString()) < 5001 && std::stod(heightN->getText().toAnsiString()) > 149 && std::stod(heightN->getText().toAnsiString()) < 5001)
+			Environment::getInstance().configure(sf::Vector2f(std::stod(widthN->getText().toAnsiString()), std::stod(heightN->getText().toAnsiString())));
+		else
+			MessagesManager::getInstance().append("Invalid size - must be in range of 150-5000");
+		std::cout << std::stod(widthN->getText().toAnsiString());
+		widthN->setText("");
+		heightN->setText("");
 		newWindow->destroy();
 	});
 	cancelN->connect("pressed", [=]()
 	{
+		widthN->setText("");
+		heightN->setText("");
 		newWindow->destroy();
 	});
 	confirmS->connect("pressed", [=]()
@@ -233,10 +246,12 @@ std::shared_ptr<tgui::MenuBar> GUIManager::createMenuBar(std::shared_ptr<tgui::G
 			MessagesManager::getInstance().append("Overwriting file " + nameSave->getText().toAnsiString() + SaveManager::getInstance().envSaveFormat + ".");
 			MessagesManager::getInstance().append("Simulation saved as " + nameSave->getText().toAnsiString() + SaveManager::getInstance().envSaveFormat + ".");
 		}
+		nameSave->setText("");
 		saveWindow->destroy();
 	});
 	cancelS->connect("pressed", [=]()
 	{
+		nameSave->setText("");
 		saveWindow->destroy();
 	});
 	confirmL->connect("pressed", [=]()
