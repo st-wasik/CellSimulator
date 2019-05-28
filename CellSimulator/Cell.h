@@ -101,8 +101,8 @@ private:
 	// vector of pointers to role-functions
 	std::vector<void(*)(Cell*)> roles;
 
-	void getFoodCollisionVector();
-	void getCellCollisionVector();
+	void calcFoodCollisionVector();
+	void calcCellCollisionVector();
 	// curent cell stats:
 
 	double currentSpeed;

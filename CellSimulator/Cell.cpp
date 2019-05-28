@@ -83,6 +83,7 @@ Cell::Cell(float size, sf::Vector2f position, sf::Color color) : BaseObj(size, p
 Cell::Cell(Cell a, Cell b) : Cell(20, (a.getPosition() + b.getPosition()) / 2.0f, a.getBaseColor()*b.getBaseColor())
 {
 	double mutationRatio = Environment::getInstance().getRadiation();
+
 	genes.aggresion = mutationRatio <= randomReal(0, 100) ? MixDouble(a.genes.aggresion.get(), b.genes.divisionThreshold.get()) : (a.genes.aggresion.get() + b.genes.divisionThreshold.get()) / 2;
 	genes.divisionThreshold = mutationRatio <= randomReal(0, 100) ? MixDouble(a.genes.divisionThreshold.get(), b.genes.divisionThreshold.get()) : (a.genes.divisionThreshold.get() + b.genes.divisionThreshold.get()) / 2;
 	genes.foodLimit = mutationRatio <= randomReal(0, 100) ? MixDouble(a.genes.foodLimit.get(), b.genes.foodLimit.get()) : (a.genes.foodLimit.get() + b.genes.foodLimit.get()) / 2;
@@ -90,6 +91,7 @@ Cell::Cell(Cell a, Cell b) : Cell(20, (a.getPosition() + b.getPosition()) / 2.0f
 	genes.maxSize = mutationRatio <= randomReal(0, 100) ? MixDouble(a.genes.maxSize.get(), b.genes.maxSize.get()) : (a.genes.maxSize.get() + b.genes.maxSize.get()) / 2;
 	genes.maxSpeed = mutationRatio <= randomReal(0, 100) ? MixDouble(a.genes.maxSpeed.get(), b.genes.maxSpeed.get()) : (a.genes.maxSpeed.get() + b.genes.maxSpeed.get()) / 2;
 	genes.radarRange = mutationRatio <= randomReal(0, 100) ? MixDouble(a.genes.radarRange.get(), b.genes.radarRange.get()) : (a.genes.radarRange.get() + b.genes.radarRange.get()) / 2;
+
 
 	delayTime = CellSimApp::getInstance().getDeltaTime();
 }
@@ -147,8 +149,6 @@ Cell::Cell(std::string formattedCellString) : Cell(20, { 0,0 }, sf::Color::White
 			else if (type_i != std::sregex_iterator() && name_i != std::sregex_iterator())
 				modifyValueFromString(type_i->str(), name_i->str());
 		}
-
-		//TODO: add cell name
 	}
 	if (genes.type.get() != -1)
 	{
@@ -522,7 +522,7 @@ sf::CircleShape & Cell::getTypeShape()
 	 return closestFood.first;
  }
 
-void Cell::getFoodCollisionVector()
+void Cell::calcFoodCollisionVector()
 {
 	this->FoodCollisionVector->clear();
 	auto& foodSectors = Environment::getInstance().getFoodCollisionSectors();
@@ -569,7 +569,7 @@ void Cell::getFoodCollisionVector()
 	}
 }
 
-void Cell::getCellCollisionVector()
+void Cell::calcCellCollisionVector()
 {
 	this->CellCollisionVector->clear();
 	auto& cellSectors = Environment::getInstance().getCellCollisionSectors();

@@ -108,7 +108,7 @@ void Food::update()
 	auto currentSize = shape.getRadius();
 	if (currentSize < maxSize)
 	{
-		currentSize += 0.7 * CellSimApp::getInstance().getDeltaTime();
+		currentSize += 0.07 * CellSimApp::getInstance().getDeltaTime();
 		if (currentSize > maxSize) currentSize = maxSize;
 		setSize(currentSize);
 	}

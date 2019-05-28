@@ -21,8 +21,6 @@ std::shared_ptr<Cell> CellFactory::getCell(Cell::Type type)
 		result->genes.type = 2;
 		result->setFoodLevel(60);
 		result->setBaseColor(sf::Color::Red);
-		result->dropRole(CellRoles::sniffForFood);
-		result->dropRole(CellRoles::eat);
 		CellRoles::updateColor(result.get());
 		break;
 
@@ -37,8 +35,6 @@ std::shared_ptr<Cell> CellFactory::getCell(Cell::Type type)
 		result->genes.type = 1;
 		result->setFoodLevel(60);
 		result->setBaseColor(sf::Color::Blue);
-		result->dropRole(CellRoles::sniffForCell);
-		result->dropRole(CellRoles::fight);
 		CellRoles::updateColor(result.get());
 		break;
 

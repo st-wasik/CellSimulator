@@ -146,7 +146,7 @@ std::shared_ptr<tgui::MenuBar> GUIManager::createMenuBar(std::shared_ptr<tgui::G
 
 	loadWindow = tgui::ChildWindow::create();
 	loadWindow->setRenderer(theme.getRenderer("ChildWindow"));
-	loadWindow->setSize(360, 160);
+	loadWindow->setSize(360, 232);
 	loadWindow->setTitle("Load");
 	loadWindow->setEnabled(1);
 	loadWindow->setVisible(1);
@@ -179,27 +179,27 @@ std::shared_ptr<tgui::MenuBar> GUIManager::createMenuBar(std::shared_ptr<tgui::G
 
 	loadList = tgui::ListBox::create();
 	loadList->setRenderer(theme.getRenderer("ListBox"));
-	loadList->setSize(160, 72);
+	loadList->setSize(260, 144);
 	loadList->setTextSize(18);
 	loadList->setItemHeight(24);
-	loadList->setPosition(100, 10);
+	loadList->setPosition(50, 10);
 	for (int i = 0; i < SaveManager::getInstance().getAvailableEnvSaves().size(); i++)
 	{
 		loadList->addItem(SaveManager::getInstance().getAvailableEnvSaves()[i]);
 	}
 	loadWindow->add(loadList);
 
-	confirmL = createButton(nullptr, 70, 30, 100, 100, "Confirm");
+	confirmL = createButton(nullptr, 70, 30, 100, 172, "Confirm");
 	loadWindow->add(confirmL);
 
-	cancelL = createButton(nullptr, 70, 30, 190, 100, "Cancel");
+	cancelL = createButton(nullptr, 70, 30, 190, 172, "Cancel");
 	loadWindow->add(cancelL);
 
 	std::shared_ptr<tgui::MenuBar> MenuBar = tgui::MenuBar::create();
 	MenuBar->setRenderer(theme.getRenderer("MenuBar"));
 	MenuBar->setSize(width, height);
 	MenuBar->addMenu("Simulation");
-	MenuBar->addMenu("Help");
+	//MenuBar->addMenu("Help");
 	MenuBar->addMenuItem("Simulation", "New");
 	MenuBar->connectMenuItem("Simulation", "New", [this, gui]() {newWindow->setPosition(window->getSize().x / 2 - 180, window->getSize().y / 2 - 80); saveWindow->destroy(); loadWindow->destroy(); gui->add(newWindow, "new"); });
 	MenuBar->addMenuItem("Simulation", "New Random");
@@ -209,11 +209,11 @@ std::shared_ptr<tgui::MenuBar> GUIManager::createMenuBar(std::shared_ptr<tgui::G
 	MenuBar->addMenuItem("Simulation", "Save");
 	MenuBar->connectMenuItem("Simulation", "Save", [this, gui]() { saveWindow->setPosition(window->getSize().x / 2 - 180, window->getSize().y / 2 - 80); newWindow->destroy(); loadWindow->destroy(); gui->add(saveWindow, "save"); });
 	MenuBar->addMenuItem("Simulation", "Load");
-	MenuBar->connectMenuItem("Simulation", "Load", [this, gui]() {loadWindow->setPosition(window->getSize().x / 2 - 180, window->getSize().y / 2 - 80);;  newWindow->destroy(); saveWindow->destroy();  gui->add(loadWindow, "load"); });
+	MenuBar->connectMenuItem("Simulation", "Load", [this, gui]() {loadWindow->setPosition(window->getSize().x / 2 - 180, window->getSize().y / 2 - 116);;  newWindow->destroy(); saveWindow->destroy();  gui->add(loadWindow, "load"); });
 	MenuBar->addMenuItem("Simulation", "Exit (Esc)");
 	MenuBar->connectMenuItem("Simulation", "Exit (Esc)", []() {CellSimApp::getInstance().close(); });
-	MenuBar->addMenuItem("Help", "Info");
-	MenuBar->addMenuItem("Help", "Authors");
+	//MenuBar->addMenuItem("Help", "Info");
+	//MenuBar->addMenuItem("Help", "Authors");
 	gui->add(MenuBar);
 
 	confirmN->connect("pressed", [=]()

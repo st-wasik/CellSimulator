@@ -102,10 +102,10 @@ void CellSelectionTool::draw(sf::RenderWindow &w)
 		w.draw(selectionMarker);
 		w.draw(cellRadarRange);
 		w.draw(selectedCellName);
-		if (selectedCell->getClosestCell() != nullptr)
+		if (selectedCell->getClosestCell() != nullptr && selectedCell->getGenes().type.get() != 1)
 			w.draw(targetCellSelectionMarker);
 
-		if (selectedCell->getClosestFood() != nullptr)
+		if (selectedCell->getClosestFood() != nullptr  && selectedCell->getGenes().type.get() != 2)
 			w.draw(targetFoodSelectionMarker);
 	}
 }

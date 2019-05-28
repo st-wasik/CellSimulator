@@ -64,7 +64,7 @@ void CellRoles::moveForward(Cell * c)
 	for (int attempt = 0; checkEnvironmentBounds(c); ++attempt)
 	{
 		c->shape.setPosition(prevPosition);
-		c->shape.setRotation(c->getRotation() + 90);
+		c->shape.setRotation(c->getRotation() + (randomInt(0,1) == 0 ? -90 : 90));
 		c->shape.move(moveSpeed * std::sin((PI / 180)*c->getRotation()) * CellSimApp::getInstance().getDeltaTime(), moveSpeed * -std::cos((PI / 180)*c->getRotation()) * CellSimApp::getInstance().getDeltaTime());
 		c->typeShape.setPosition(c->getPosition());
 
@@ -86,8 +86,6 @@ void CellRoles::moveForward(Cell * c)
 
 void CellRoles::changeDirection(Cell * c)
 {
-	
-
 	if (c->genes.type.get() == 1 && c->closestFood.first != nullptr && c->closestFoodAngle != 0)
 	{
 		c->rotate(c->closestFoodAngle);
@@ -145,6 +143,8 @@ void CellRoles::changeSpeed(Cell * c)
 
 void CellRoles::eat(Cell * c)
 {
+	if (c->genes.type.get() == 2) return;
+
 	auto& foods = Environment::getInstance().getFoodsVector();
 	auto& collisions = c->FoodCollisionVector;
 
@@ -313,6 +313,7 @@ void CellRoles::divideAndConquer(Cell * c)
 		c->foodLevel -= c->genes.foodLimit.get() / 2;
 		c->setSize(c->genes.maxSize.get() / 2);
 		auto ptr = Cell::create(*c);
+		ptr->age = 0;
 		Environment::getInstance().insertNewCell(ptr);
 		c->setRotation(c->getRotation() + 180);
 	}
@@ -346,6 +347,7 @@ void CellRoles::getingHot(Cell * c)
 	{
 		c->setHorniness(c->getHorniness().get() + (randomReal(0.01, 0.05)*CellSimApp::getInstance().getDeltaTime()));
 	}
+
 	if (c->horniness.isMax())
 	{
 		auto & cells = c->CellCollisionVector;
@@ -358,6 +360,7 @@ void CellRoles::getingHot(Cell * c)
 				cell->setHorniness(0);
 				cell->foodLevel = c->genes.foodLimit.get() / 2;
 				std::shared_ptr<Cell> tmp = Cell::create(*c, *cell);
+				tmp->age = 0;
 				Environment::getInstance().insertNewCell(tmp);
 			}
 		}
@@ -399,6 +402,8 @@ void CellRoles::makeFood(Cell * c)
 
 void CellRoles::fight(Cell * c)
 {
+	if (c->genes.type.get() == 1) return;
+
 	auto &cells = c->CellCollisionVector;
 	c->delayTime += CellSimApp::getInstance().getDeltaTime();
 
@@ -506,6 +511,7 @@ void CellRoles::mutate(Cell * c)
 
 void CellRoles::sniffForFood(Cell * c)
 {
+	if (c->genes.type.get() == 2) return;
 	c->closestFoodAngle = 0;
 	if (c->foodLevel <= c->genes.foodLimit.get()*0.8 && c->closestFood.first != nullptr && c->closestFood.second <= c->genes.radarRange.get()*c->genes.radarRange.get() + c->getSize())
 	{
@@ -533,7 +539,7 @@ void CellRoles::sniffForFood(Cell * c)
 		{
 			if (360 - abscfDiffrence < angle_change)
 			{
-				c->closestFoodAngle = (cfDiffrence <= 0 ? -(360 - abscfDiffrence): (360 - abscfDiffrence));
+				c->closestFoodAngle = (cfDiffrence <= 0 ? -(360 - abscfDiffrence) : (360 - abscfDiffrence));
 			}
 			else
 			{
@@ -562,18 +568,13 @@ void CellRoles::checkCollisions(Cell * c)
 	c->closestCell.first = nullptr;
 	c->closestFood.second = -1;
 	c->closestCell.second = -1;
-	if (c->genes.type.get() != 2)
-	{
-		c->getFoodCollisionVector();
-	}
-	if (c->genes.type.get() != 1)
-	{
-		c->getCellCollisionVector();
-	}
+	c->calcFoodCollisionVector();
+	c->calcCellCollisionVector();
 }
 
 void CellRoles::sniffForCell(Cell * c)
 {
+	if (c->genes.type.get() == 1) return;
 	c->closestCellAngle = 0;
 	if (c->foodLevel <= c->genes.foodLimit.get()*0.8 && c->closestCell.first != nullptr && c->closestCell.second <= c->genes.radarRange.get()*c->genes.radarRange.get() + c->getSize())
 	{
